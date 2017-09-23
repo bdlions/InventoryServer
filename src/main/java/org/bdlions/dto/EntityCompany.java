@@ -14,23 +14,28 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(
-        name = "account_status",
+        name = "company",
         indexes = {
             @Index(name = "idx_name", columnList = "title", unique = true)
         }
 )
-public class AccountStatus {
+public class EntityCompany {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    
+    @Column(name = "id")    
     private int id;
 
     @Column(name = "title")
     private String title;
+    
+    @Column(name = "address")
+    private String address;
+    
+    @Column(name = "website")
+    private String website;
 
-    public AccountStatus() 
+    public EntityCompany() 
     {
         
     }

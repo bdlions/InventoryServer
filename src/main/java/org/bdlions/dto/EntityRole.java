@@ -19,7 +19,7 @@ import javax.persistence.Table;
             @Index(name = "idx_name", columnList = "title", unique = true)
         }
 )
-public class Role {
+public class EntityRole {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class Role {
     @Column(name = "description")
     private String description;
 
-    public Role() 
+    public EntityRole() 
     {
         
     }

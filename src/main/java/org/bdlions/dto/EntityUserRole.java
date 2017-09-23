@@ -14,28 +14,26 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(
-        name = "company",
+        name = "user_role",
         indexes = {
-            @Index(name = "idx_name", columnList = "title", unique = true)
+            @Index(name = "idx_name", columnList = "user_id, role_id", unique = true)
         }
 )
-public class Company {
+public class EntityUserRole {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")    
+    @Column(name = "id")
+    
     private int id;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "user_id")
+    private int userId;
     
-    @Column(name = "address")
-    private String address;
-    
-    @Column(name = "website")
-    private String website;
+    @Column(name = "role_id")
+    private int roleId;
 
-    public Company() 
+    public EntityUserRole() 
     {
         
     }
@@ -48,12 +46,19 @@ public class Company {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
-    
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 }

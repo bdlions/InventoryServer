@@ -3,8 +3,8 @@ package org.bdlions.util;
 
 import com.bdlions.dto.Credential;
 import com.bdlions.util.ACTION;
-import org.bdlions.dto.User;
-import org.bdlions.manager.UserManager;
+import org.bdlions.dto.EntityUser;
+import org.bdlions.manager.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,8 +39,8 @@ public class DBUserProvider implements IDBUserProvider{
         if( !StringUtils.isNullOrEmpty(credential.getUserName()) && !StringUtils.isNullOrEmpty(credential.getPassword()) ){
             String userName = credential.getUserName();
             String password = credential.getPassword();
-            UserManager userManager = new UserManager();
-            User user = userManager.getUserByCredential(userName, password);
+            User userManager = new User();
+            EntityUser user = userManager.getUserByCredential(userName, password);
             if(user != null)
             {
                 credential.setAppType(100);

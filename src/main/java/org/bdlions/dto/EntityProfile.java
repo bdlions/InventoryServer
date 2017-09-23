@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -21,7 +23,13 @@ import javax.persistence.Transient;
             @Index(name = "idx_name", columnList = "user_id, company_id", unique = true)
         }
 )
-public class Profile extends ClientResponse implements java.io.Serializable{
+@NamedQueries({
+    @NamedQuery(
+            name = "getProfileByUserId",
+            query = "from EntityProfile profile where profile.userId = :userId"
+    ),
+})
+public class EntityProfile extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,12 +49,12 @@ public class Profile extends ClientResponse implements java.io.Serializable{
     private String designation;
     
     @Transient
-    private User user;
+    private EntityUser user;
     
     @Transient
-    private Company company;
+    private EntityCompany company;
 
-    public Profile() 
+    public EntityProfile() 
     {
         //user = new User();
         //company = new Company();
@@ -92,19 +100,19 @@ public class Profile extends ClientResponse implements java.io.Serializable{
         this.designation = designation;
     }
 
-    public User getUser() {
+    public EntityUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(EntityUser user) {
         this.user = user;
     }
 
-    public Company getCompany() {
+    public EntityCompany getCompany() {
         return company;
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(EntityCompany company) {
         this.company = company;
     }    
 }

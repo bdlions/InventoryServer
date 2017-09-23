@@ -1,9 +1,10 @@
 package org.bdlions.library;
 
-import org.bdlions.dto.Company;
-import org.bdlions.dto.Profile;
-import org.bdlions.dto.User;
-import org.bdlions.manager.UserManager;
+import org.bdlions.dto.EntityCompany;
+import org.bdlions.dto.EntityProfile;
+import org.bdlions.dto.EntityUser;
+import org.bdlions.manager.Profile;
+import org.bdlions.manager.User;
 
 /**
  *
@@ -22,18 +23,20 @@ public class ProfileLibrary
      * @return User user info
      * @author nazmul hasan on 2nd August 2017
      */
-    public Profile getProfileInfo(int userId)
+    public EntityProfile getProfileInfo(int userId)
     {
-        UserManager userManager = new UserManager();
-        Profile profile = null;
-        User user = null;
-        Company company = null;
+        Profile profileManager = new Profile();
+        User userManager = new User();
+        
+        EntityProfile profile = null;
+        EntityUser user = null;
+        EntityCompany company = null;
         try
         {
-            profile = userManager.getUserProfileById(userId);
+            profile = profileManager.getUserProfileById(userId);
             if(profile != null)
             {
-                user = userManager.getUserInfoById(userId);
+                user = userManager.getUserById(userId);
                 int companyId = 0;
                 if(profile != null && profile.getCompanyId() > 0)
                 {

@@ -6,19 +6,21 @@
     <session-factory>
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.password"></property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/einventory_db</property>
+        
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/inventory_db</property>
         <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">pass1234</property>
+        
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</property>
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>
         <property name="connection.pool_size">1</property>
         
-        <mapping class="org.bdlions.dto.AccountStatus" />
-        <mapping class="org.bdlions.dto.Role" />
-        <mapping class="org.bdlions.dto.User" />
-        <mapping class="org.bdlions.dto.UserRole" />        
-        <mapping class="org.bdlions.dto.Company" />
-        <mapping class="org.bdlions.dto.Profile" />
+        <mapping class="org.bdlions.dto.EntityAccountStatus" />
+        <mapping class="org.bdlions.dto.EntityRole" />
+        <mapping class="org.bdlions.dto.EntityUser" />
+        <mapping class="org.bdlions.dto.EntityUserRole" />        
+        <mapping class="org.bdlions.dto.EntityCompany" />
+        <mapping class="org.bdlions.dto.EntityProfile" />
     </session-factory>
 </hibernate-configuration>
