@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <RollingFile name="E-CARD" fileName="logs/e-card.log" filePattern="logs/e-card-%d{MM-dd-yyyy}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %C{1} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>     
+            
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5p %d  Class name-%C Thread-[%t]  Method-%M() Message-%m%n"/>
+        </Console>
+    </Appenders>
+    <loggers>
+        <Logger name="org.bdlions.ecard" level="debug">
+            <AppenderRef ref="E-CARD"/>
+        </Logger>                                                          
+        <root level="ERROR">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </loggers>
+</Configuration>
+

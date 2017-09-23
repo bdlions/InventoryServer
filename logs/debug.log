@@ -1,0 +1,949 @@
+2017-09-23 13:16:17,133 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:16:17,133 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:16:17,133 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:16:17,163 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:16:17,153 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:16:17,153 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:16:17,173 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:16:17,173 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:16:17,173 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:16:17,183 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:16:17,183 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:16:17,237 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:47:04,707 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:47:04,707 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:47:04,707 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:47:04,951 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:47:04,951 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:47:04,963 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:47:05,004 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:47:04,995 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:47:05,003 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:47:05,007 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:47:05,007 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:47:05,024 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:49:01,516 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:49:01,516 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:49:01,516 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:49:01,637 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:49:01,639 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:49:01,641 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:49:01,642 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:49:01,651 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:49:01,651 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:49:01,651 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:49:01,651 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:49:01,651 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:50:07,826 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:50:08,008 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:50:08,008 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:50:08,052 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:50:08,044 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:50:08,046 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:50:08,079 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:50:08,080 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:50:08,080 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:50:08,086 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:50:08,086 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:50:08,102 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:54:02,640 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:54:02,640 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:54:02,640 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:54:02,860 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:54:02,860 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:54:02,861 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:54:02,874 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:54:02,889 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:54:02,891 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:54:02,892 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:54:02,910 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:54:02,912 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:01:40,392 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:01:40,392 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:01:40,392 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:01:40,407 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:01:40,404 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:01:40,404 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:01:40,424 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:01:40,427 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:01:40,462 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:01:40,462 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:01:40,462 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:01:40,448 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:08:26,107 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:08:26,113 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:08:26,110 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:08:26,122 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:08:26,122 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:08:26,121 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:08:26,141 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:08:26,152 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:08:26,142 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:08:26,167 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:08:26,167 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:08:26,171 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:13:50,938 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 13:13:50,938 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 13:13:50,938 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 13:13:50,950 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 13:13:50,949 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 13:13:50,949 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 13:13:50,960 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 13:13:50,964 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 13:13:50,964 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 13:13:50,964 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 13:13:50,964 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 13:13:50,965 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 13:14:09,547 [ClientRequestHandler.java:http-nio-8080-exec-2:142] - Request is going to be processed. starts..
+2017-09-23 13:14:09,557 [ClientRequestHandler.java:http-nio-8080-exec-2:146] - {"action":"1001","requestType":"1","sessionId":"sessionId-111"}
+2017-09-23 13:14:09,558 [ClientRequestHandler.java:http-nio-8080-exec-2:156] - session id : sessionId-111
+2017-09-23 13:14:09,583 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 13:14:09,594 [DefaultSecurityManager.java:http-nio-8080-exec-2:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:14:09,596 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:213] - No sessionValidationScheduler set.  Attempting to create default instance.
+2017-09-23 13:14:09,600 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:218] - Created default SessionValidationScheduler instance of type [org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler].
+2017-09-23 13:14:09,601 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:233] - Enabling session validation scheduler...
+2017-09-23 13:14:09,604 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@75c7a026
+2017-09-23 13:14:09,606 [DefaultSecurityManager.java:http-nio-8080-exec-2:447] - Resolved SubjectContext context session is invalid.  Ignoring and creating an anonymous (session-less) Subject instance.
+org.apache.shiro.session.UnknownSessionException: There is no session with id [sessionId-111]
+	at org.apache.shiro.session.mgt.eis.AbstractSessionDAO.readSession(AbstractSessionDAO.java:170)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSessionFromDataSource(DefaultSessionManager.java:236)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSession(DefaultSessionManager.java:222)
+	at org.apache.shiro.session.mgt.AbstractValidatingSessionManager.doGetSession(AbstractValidatingSessionManager.java:118)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.lookupSession(AbstractNativeSessionManager.java:148)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.getSession(AbstractNativeSessionManager.java:140)
+	at org.apache.shiro.mgt.SessionsSecurityManager.getSession(SessionsSecurityManager.java:156)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveContextSession(DefaultSecurityManager.java:456)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveSession(DefaultSecurityManager.java:442)
+	at org.apache.shiro.mgt.DefaultSecurityManager.createSubject(DefaultSecurityManager.java:338)
+	at org.apache.shiro.subject.Subject$Builder.buildSubject(Subject.java:846)
+	at org.bdlions.session.UserSessionManagerImpl.getSessionBySessionId(UserSessionManagerImpl.java:45)
+	at org.bdlions.util.ClientRequestHandler.executeRequest(ClientRequestHandler.java:158)
+	at org.bdlions.controller.RequestIndex.processRequest(RequestIndex.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:869)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:775)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:981)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:915)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:881)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:855)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:799)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1455)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2017-09-23 13:14:09,620 [DefaultSecurityManager.java:http-nio-8080-exec-2:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 13:14:09,621 [DefaultSecurityManager.java:http-nio-8080-exec-2:516] - No remembered identity found.  Returning original context.
+2017-09-23 13:14:09,635 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,636 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,636 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,636 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,637 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,637 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,638 [ClientRequestHandler.java:http-nio-8080-exec-2:162] - method for action : SIGN_IN is org.bdlions.request.handler.RequestExecutorInfo@3e556c79
+2017-09-23 13:14:09,642 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 13:14:09,643 [DefaultSecurityManager.java:http-nio-8080-exec-2:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:14:09,659 [DefaultSecurityManager.java:http-nio-8080-exec-2:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 13:14:09,659 [DefaultSecurityManager.java:http-nio-8080-exec-2:516] - No remembered identity found.  Returning original context.
+2017-09-23 13:14:09,660 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,661 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,662 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,663 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,663 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,664 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,665 [AbstractAuthenticator.java:http-nio-8080-exec-2:194] - Authentication attempt received for token [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true]
+2017-09-23 13:14:09,811 [AuthenticatingRealm.java:http-nio-8080-exec-2:569] - Looked up AuthenticationInfo [org.bdlions.session.UserAuthentificationInfo@16ccdb08] from doGetAuthenticationInfo
+2017-09-23 13:14:09,812 [AuthenticatingRealm.java:http-nio-8080-exec-2:507] - AuthenticationInfo caching is disabled for info [org.bdlions.session.UserAuthentificationInfo@16ccdb08].  Submitted token: [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true].
+2017-09-23 13:14:09,812 [SimpleCredentialsMatcher.java:http-nio-8080-exec-2:96] - Performing credentials equality check for tokenCredentials of type [[C and accountCredentials of type [java.lang.String]
+2017-09-23 13:14:09,813 [SimpleCredentialsMatcher.java:http-nio-8080-exec-2:102] - Both credentials arguments can be easily converted to byte arrays.  Performing array equals comparison
+2017-09-23 13:14:09,870 [AbstractAuthenticator.java:http-nio-8080-exec-2:233] - Authentication successful for token [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true].  Returned account [org.bdlions.session.UserAuthentificationInfo@16ccdb08]
+2017-09-23 13:14:09,871 [DefaultSubjectContext.java:http-nio-8080-exec-2:102] - No SecurityManager available in subject context map.  Falling back to SecurityUtils.getSecurityManager() lookup.
+2017-09-23 13:14:09,871 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 13:14:09,872 [DefaultSecurityManager.java:http-nio-8080-exec-2:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:14:09,872 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,874 [DefaultSubjectContext.java:http-nio-8080-exec-2:102] - No SecurityManager available in subject context map.  Falling back to SecurityUtils.getSecurityManager() lookup.
+2017-09-23 13:14:09,875 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 13:14:09,875 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,876 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,877 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,877 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,878 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,881 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:09,882 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = true; session is null = true; session has id = false
+2017-09-23 13:14:09,882 [DelegatingSubject.java:http-nio-8080-exec-2:334] - Starting session for host null
+2017-09-23 13:14:09,887 [DefaultSessionManager.java:http-nio-8080-exec-2:156] - Creating session for host null
+2017-09-23 13:14:09,888 [DefaultSessionManager.java:http-nio-8080-exec-2:175] - Creating new EIS record for new session instance [org.apache.shiro.session.mgt.SimpleSession,id=null]
+2017-09-23 13:14:09,890 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,891 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:14:09,891 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,892 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,893 [DefaultSecurityManager.java:http-nio-8080-exec-2:217] - This org.apache.shiro.mgt.DefaultSecurityManager instance does not have a [org.apache.shiro.mgt.RememberMeManager] instance configured.  RememberMe services will not be performed for account [org.bdlions.session.UserAuthentificationInfo@16ccdb08].
+2017-09-23 13:14:09,894 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:14:09,897 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = true; session is null = false; session has id = true
+2017-09-23 13:14:09,898 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,898 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,899 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,901 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,902 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,903 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,904 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,905 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,906 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,907 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,908 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:09,909 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@33418721
+2017-09-23 13:14:41,065 [ClientRequestHandler.java:http-nio-8080-exec-3:142] - Request is going to be processed. starts..
+2017-09-23 13:14:41,067 [ClientRequestHandler.java:http-nio-8080-exec-3:146] - {"action":"1002","requestType":"1","sessionId":"24db3bb4-5122-4d97-abd9-fb15bd8a5b75"}
+2017-09-23 13:14:41,067 [ClientRequestHandler.java:http-nio-8080-exec-3:156] - session id : 24db3bb4-5122-4d97-abd9-fb15bd8a5b75
+2017-09-23 13:14:41,068 [ThreadContext.java:http-nio-8080-exec-3:126] - get() - in thread [http-nio-8080-exec-3]
+2017-09-23 13:14:41,069 [DefaultSecurityManager.java:http-nio-8080-exec-3:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:14:41,071 [AbstractValidatingSessionManager.java:http-nio-8080-exec-3:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@77729c19
+2017-09-23 13:14:41,080 [DefaultSecurityManager.java:http-nio-8080-exec-3:447] - Resolved SubjectContext context session is invalid.  Ignoring and creating an anonymous (session-less) Subject instance.
+org.apache.shiro.session.UnknownSessionException: There is no session with id [24db3bb4-5122-4d97-abd9-fb15bd8a5b75]
+	at org.apache.shiro.session.mgt.eis.AbstractSessionDAO.readSession(AbstractSessionDAO.java:170)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSessionFromDataSource(DefaultSessionManager.java:236)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSession(DefaultSessionManager.java:222)
+	at org.apache.shiro.session.mgt.AbstractValidatingSessionManager.doGetSession(AbstractValidatingSessionManager.java:118)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.lookupSession(AbstractNativeSessionManager.java:148)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.getSession(AbstractNativeSessionManager.java:140)
+	at org.apache.shiro.mgt.SessionsSecurityManager.getSession(SessionsSecurityManager.java:156)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveContextSession(DefaultSecurityManager.java:456)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveSession(DefaultSecurityManager.java:442)
+	at org.apache.shiro.mgt.DefaultSecurityManager.createSubject(DefaultSecurityManager.java:338)
+	at org.apache.shiro.subject.Subject$Builder.buildSubject(Subject.java:846)
+	at org.bdlions.session.UserSessionManagerImpl.getSessionBySessionId(UserSessionManagerImpl.java:45)
+	at org.bdlions.util.ClientRequestHandler.executeRequest(ClientRequestHandler.java:158)
+	at org.bdlions.controller.RequestIndex.processRequest(RequestIndex.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:869)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:775)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:981)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:915)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:881)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:855)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:799)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1455)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2017-09-23 13:14:41,103 [DefaultSecurityManager.java:http-nio-8080-exec-3:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 13:14:41,104 [DefaultSecurityManager.java:http-nio-8080-exec-3:516] - No remembered identity found.  Returning original context.
+2017-09-23 13:14:41,105 [DelegatingSubject.java:http-nio-8080-exec-3:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:41,108 [DelegatingSubject.java:http-nio-8080-exec-3:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:41,109 [DelegatingSubject.java:http-nio-8080-exec-3:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:41,109 [DelegatingSubject.java:http-nio-8080-exec-3:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:41,109 [DelegatingSubject.java:http-nio-8080-exec-3:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:41,110 [DelegatingSubject.java:http-nio-8080-exec-3:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:14:41,110 [ClientRequestHandler.java:http-nio-8080-exec-3:162] - method for action : SIGN_OUT is org.bdlions.request.handler.RequestExecutorInfo@7d8af769
+2017-09-23 13:15:17,268 [ClientRequestHandler.java:http-nio-8080-exec-4:142] - Request is going to be processed. starts..
+2017-09-23 13:15:17,269 [ClientRequestHandler.java:http-nio-8080-exec-4:146] - {"action":"1001","requestType":"1","sessionId":"sessionId-111"}
+2017-09-23 13:15:17,270 [ClientRequestHandler.java:http-nio-8080-exec-4:156] - session id : sessionId-111
+2017-09-23 13:15:17,271 [ThreadContext.java:http-nio-8080-exec-4:126] - get() - in thread [http-nio-8080-exec-4]
+2017-09-23 13:15:17,271 [DefaultSecurityManager.java:http-nio-8080-exec-4:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:15:17,271 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@2b56a8db
+2017-09-23 13:15:17,272 [DefaultSecurityManager.java:http-nio-8080-exec-4:447] - Resolved SubjectContext context session is invalid.  Ignoring and creating an anonymous (session-less) Subject instance.
+org.apache.shiro.session.UnknownSessionException: There is no session with id [sessionId-111]
+	at org.apache.shiro.session.mgt.eis.AbstractSessionDAO.readSession(AbstractSessionDAO.java:170)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSessionFromDataSource(DefaultSessionManager.java:236)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSession(DefaultSessionManager.java:222)
+	at org.apache.shiro.session.mgt.AbstractValidatingSessionManager.doGetSession(AbstractValidatingSessionManager.java:118)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.lookupSession(AbstractNativeSessionManager.java:148)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.getSession(AbstractNativeSessionManager.java:140)
+	at org.apache.shiro.mgt.SessionsSecurityManager.getSession(SessionsSecurityManager.java:156)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveContextSession(DefaultSecurityManager.java:456)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveSession(DefaultSecurityManager.java:442)
+	at org.apache.shiro.mgt.DefaultSecurityManager.createSubject(DefaultSecurityManager.java:338)
+	at org.apache.shiro.subject.Subject$Builder.buildSubject(Subject.java:846)
+	at org.bdlions.session.UserSessionManagerImpl.getSessionBySessionId(UserSessionManagerImpl.java:45)
+	at org.bdlions.util.ClientRequestHandler.executeRequest(ClientRequestHandler.java:158)
+	at org.bdlions.controller.RequestIndex.processRequest(RequestIndex.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:869)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:775)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:981)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:915)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:881)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:855)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:799)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1455)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2017-09-23 13:15:17,274 [DefaultSecurityManager.java:http-nio-8080-exec-4:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 13:15:17,274 [DefaultSecurityManager.java:http-nio-8080-exec-4:516] - No remembered identity found.  Returning original context.
+2017-09-23 13:15:17,275 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:17,275 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:17,275 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:17,275 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:17,276 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:17,276 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:17,276 [ClientRequestHandler.java:http-nio-8080-exec-4:162] - method for action : SIGN_IN is org.bdlions.request.handler.RequestExecutorInfo@3e556c79
+2017-09-23 13:15:17,277 [ThreadContext.java:http-nio-8080-exec-4:126] - get() - in thread [http-nio-8080-exec-4]
+2017-09-23 13:15:17,277 [DefaultSecurityManager.java:http-nio-8080-exec-4:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:15:17,277 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@21aec3ab
+2017-09-23 13:15:17,278 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,278 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,281 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,282 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,282 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:17,282 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:17,283 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,283 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:17,283 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,283 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:17,284 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,285 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:17,288 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,290 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:17,291 [DelegatingSubject.java:http-nio-8080-exec-4:317] - attempting to get session; create = true; session is null = false; session has id = true
+2017-09-23 13:15:17,291 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:17,291 [AbstractValidatingSessionManager.java:http-nio-8080-exec-4:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@64ac59fa
+2017-09-23 13:15:24,134 [ClientRequestHandler.java:http-nio-8080-exec-1:142] - Request is going to be processed. starts..
+2017-09-23 13:15:24,135 [ClientRequestHandler.java:http-nio-8080-exec-1:146] - {"action":"1001","requestType":"1","sessionId":"sessionId-111"}
+2017-09-23 13:15:24,136 [ClientRequestHandler.java:http-nio-8080-exec-1:156] - session id : sessionId-111
+2017-09-23 13:15:24,137 [ThreadContext.java:http-nio-8080-exec-1:126] - get() - in thread [http-nio-8080-exec-1]
+2017-09-23 13:15:24,137 [DefaultSecurityManager.java:http-nio-8080-exec-1:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:15:24,137 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@18d75bc3
+2017-09-23 13:15:24,137 [DefaultSecurityManager.java:http-nio-8080-exec-1:447] - Resolved SubjectContext context session is invalid.  Ignoring and creating an anonymous (session-less) Subject instance.
+org.apache.shiro.session.UnknownSessionException: There is no session with id [sessionId-111]
+	at org.apache.shiro.session.mgt.eis.AbstractSessionDAO.readSession(AbstractSessionDAO.java:170)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSessionFromDataSource(DefaultSessionManager.java:236)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSession(DefaultSessionManager.java:222)
+	at org.apache.shiro.session.mgt.AbstractValidatingSessionManager.doGetSession(AbstractValidatingSessionManager.java:118)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.lookupSession(AbstractNativeSessionManager.java:148)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.getSession(AbstractNativeSessionManager.java:140)
+	at org.apache.shiro.mgt.SessionsSecurityManager.getSession(SessionsSecurityManager.java:156)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveContextSession(DefaultSecurityManager.java:456)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveSession(DefaultSecurityManager.java:442)
+	at org.apache.shiro.mgt.DefaultSecurityManager.createSubject(DefaultSecurityManager.java:338)
+	at org.apache.shiro.subject.Subject$Builder.buildSubject(Subject.java:846)
+	at org.bdlions.session.UserSessionManagerImpl.getSessionBySessionId(UserSessionManagerImpl.java:45)
+	at org.bdlions.util.ClientRequestHandler.executeRequest(ClientRequestHandler.java:158)
+	at org.bdlions.controller.RequestIndex.processRequest(RequestIndex.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:869)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:775)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:981)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:915)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:881)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:855)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:799)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1455)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2017-09-23 13:15:24,142 [DefaultSecurityManager.java:http-nio-8080-exec-1:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 13:15:24,142 [DefaultSecurityManager.java:http-nio-8080-exec-1:516] - No remembered identity found.  Returning original context.
+2017-09-23 13:15:24,142 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:24,143 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:24,143 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:24,143 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:24,143 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:24,144 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:15:24,144 [ClientRequestHandler.java:http-nio-8080-exec-1:162] - method for action : SIGN_IN is org.bdlions.request.handler.RequestExecutorInfo@3e556c79
+2017-09-23 13:15:24,216 [ThreadContext.java:http-nio-8080-exec-1:126] - get() - in thread [http-nio-8080-exec-1]
+2017-09-23 13:15:24,217 [DefaultSecurityManager.java:http-nio-8080-exec-1:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:15:24,217 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@122f30b3
+2017-09-23 13:15:24,217 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,218 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,218 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,218 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,219 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:24,219 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:24,219 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,219 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:24,219 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,220 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:24,220 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,220 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:24,220 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,220 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:15:24,221 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = true; session is null = false; session has id = true
+2017-09-23 13:15:24,221 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:15:24,221 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@572dbc92
+2017-09-23 13:17:21,026 [ClientRequestHandler.java:http-nio-8080-exec-5:142] - Request is going to be processed. starts..
+2017-09-23 13:17:21,027 [ClientRequestHandler.java:http-nio-8080-exec-5:146] - {"action":"1001","requestType":"1","sessionId":"sessionId-111"}
+2017-09-23 13:17:21,027 [ClientRequestHandler.java:http-nio-8080-exec-5:156] - session id : sessionId-111
+2017-09-23 13:17:21,027 [ThreadContext.java:http-nio-8080-exec-5:126] - get() - in thread [http-nio-8080-exec-5]
+2017-09-23 13:17:21,028 [DefaultSecurityManager.java:http-nio-8080-exec-5:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:17:21,028 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@3a64f746
+2017-09-23 13:17:21,029 [DefaultSecurityManager.java:http-nio-8080-exec-5:447] - Resolved SubjectContext context session is invalid.  Ignoring and creating an anonymous (session-less) Subject instance.
+org.apache.shiro.session.UnknownSessionException: There is no session with id [sessionId-111]
+	at org.apache.shiro.session.mgt.eis.AbstractSessionDAO.readSession(AbstractSessionDAO.java:170)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSessionFromDataSource(DefaultSessionManager.java:236)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSession(DefaultSessionManager.java:222)
+	at org.apache.shiro.session.mgt.AbstractValidatingSessionManager.doGetSession(AbstractValidatingSessionManager.java:118)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.lookupSession(AbstractNativeSessionManager.java:148)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.getSession(AbstractNativeSessionManager.java:140)
+	at org.apache.shiro.mgt.SessionsSecurityManager.getSession(SessionsSecurityManager.java:156)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveContextSession(DefaultSecurityManager.java:456)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveSession(DefaultSecurityManager.java:442)
+	at org.apache.shiro.mgt.DefaultSecurityManager.createSubject(DefaultSecurityManager.java:338)
+	at org.apache.shiro.subject.Subject$Builder.buildSubject(Subject.java:846)
+	at org.bdlions.session.UserSessionManagerImpl.getSessionBySessionId(UserSessionManagerImpl.java:45)
+	at org.bdlions.util.ClientRequestHandler.executeRequest(ClientRequestHandler.java:158)
+	at org.bdlions.controller.RequestIndex.processRequest(RequestIndex.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:869)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:775)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:981)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:915)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:881)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:855)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:799)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1455)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2017-09-23 13:17:21,035 [DefaultSecurityManager.java:http-nio-8080-exec-5:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 13:17:21,036 [DefaultSecurityManager.java:http-nio-8080-exec-5:516] - No remembered identity found.  Returning original context.
+2017-09-23 13:17:21,036 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:17:21,036 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:17:21,036 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:17:21,036 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:17:21,036 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:17:21,037 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 13:17:21,037 [ClientRequestHandler.java:http-nio-8080-exec-5:162] - method for action : SIGN_IN is org.bdlions.request.handler.RequestExecutorInfo@3e556c79
+2017-09-23 13:17:21,037 [ThreadContext.java:http-nio-8080-exec-5:126] - get() - in thread [http-nio-8080-exec-5]
+2017-09-23 13:17:21,038 [DefaultSecurityManager.java:http-nio-8080-exec-5:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 13:17:21,038 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@309c9c36
+2017-09-23 13:17:21,038 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,038 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,038 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,039 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,039 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:17:21,039 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:17:21,039 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,039 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:17:21,039 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,040 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:17:21,040 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,042 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:17:21,043 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,043 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 13:17:21,053 [DelegatingSubject.java:http-nio-8080-exec-5:317] - attempting to get session; create = true; session is null = false; session has id = true
+2017-09-23 13:17:21,053 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 13:17:21,053 [AbstractValidatingSessionManager.java:http-nio-8080-exec-5:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@759e0441
+2017-09-23 21:57:18,031 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 21:57:18,047 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 21:57:18,049 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 21:57:18,052 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 21:57:18,047 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 21:57:18,075 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 21:57:18,075 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 21:57:18,073 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 21:57:18,052 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 21:57:18,051 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 21:57:18,049 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 21:57:18,099 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 22:14:06,006 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 22:14:06,006 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 22:14:06,006 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 22:14:06,038 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 22:14:06,038 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 22:14:06,040 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 22:14:06,039 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 22:14:06,039 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 22:14:06,037 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 22:14:06,043 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 22:14:06,044 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 22:14:06,047 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 22:15:24,105 [ClientRequestHandler.java:http-nio-8080-exec-1:142] - Request is going to be processed. starts..
+2017-09-23 22:15:24,126 [ClientRequestHandler.java:http-nio-8080-exec-1:146] - {"action":"1001","requestType":"1","sessionId":"sessionId-111"}
+2017-09-23 22:15:24,128 [ClientRequestHandler.java:http-nio-8080-exec-1:156] - session id : sessionId-111
+2017-09-23 22:15:24,165 [ThreadContext.java:http-nio-8080-exec-1:126] - get() - in thread [http-nio-8080-exec-1]
+2017-09-23 22:15:24,189 [DefaultSecurityManager.java:http-nio-8080-exec-1:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 22:15:24,194 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:213] - No sessionValidationScheduler set.  Attempting to create default instance.
+2017-09-23 22:15:24,200 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:218] - Created default SessionValidationScheduler instance of type [org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler].
+2017-09-23 22:15:24,202 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:233] - Enabling session validation scheduler...
+2017-09-23 22:15:24,215 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@5ac56556
+2017-09-23 22:15:24,219 [DefaultSecurityManager.java:http-nio-8080-exec-1:447] - Resolved SubjectContext context session is invalid.  Ignoring and creating an anonymous (session-less) Subject instance.
+org.apache.shiro.session.UnknownSessionException: There is no session with id [sessionId-111]
+	at org.apache.shiro.session.mgt.eis.AbstractSessionDAO.readSession(AbstractSessionDAO.java:170)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSessionFromDataSource(DefaultSessionManager.java:236)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSession(DefaultSessionManager.java:222)
+	at org.apache.shiro.session.mgt.AbstractValidatingSessionManager.doGetSession(AbstractValidatingSessionManager.java:118)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.lookupSession(AbstractNativeSessionManager.java:148)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.getSession(AbstractNativeSessionManager.java:140)
+	at org.apache.shiro.mgt.SessionsSecurityManager.getSession(SessionsSecurityManager.java:156)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveContextSession(DefaultSecurityManager.java:456)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveSession(DefaultSecurityManager.java:442)
+	at org.apache.shiro.mgt.DefaultSecurityManager.createSubject(DefaultSecurityManager.java:338)
+	at org.apache.shiro.subject.Subject$Builder.buildSubject(Subject.java:846)
+	at org.bdlions.session.UserSessionManagerImpl.getSessionBySessionId(UserSessionManagerImpl.java:45)
+	at org.bdlions.util.ClientRequestHandler.executeRequest(ClientRequestHandler.java:158)
+	at org.bdlions.controller.RequestIndex.processRequest(RequestIndex.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:869)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:775)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:981)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:915)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:881)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:855)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:799)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1455)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2017-09-23 22:15:24,265 [DefaultSecurityManager.java:http-nio-8080-exec-1:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 22:15:24,267 [DefaultSecurityManager.java:http-nio-8080-exec-1:516] - No remembered identity found.  Returning original context.
+2017-09-23 22:15:24,283 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:24,285 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:24,287 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:24,289 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:24,291 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:24,294 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:24,297 [ClientRequestHandler.java:http-nio-8080-exec-1:162] - method for action : SIGN_IN is org.bdlions.request.handler.RequestExecutorInfo@5fe7c1d3
+2017-09-23 22:15:48,417 [ThreadContext.java:http-nio-8080-exec-1:126] - get() - in thread [http-nio-8080-exec-1]
+2017-09-23 22:15:48,421 [DefaultSecurityManager.java:http-nio-8080-exec-1:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 22:15:48,424 [DefaultSecurityManager.java:http-nio-8080-exec-1:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 22:15:48,428 [DefaultSecurityManager.java:http-nio-8080-exec-1:516] - No remembered identity found.  Returning original context.
+2017-09-23 22:15:48,431 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,434 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,439 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,441 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,442 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,444 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,445 [AbstractAuthenticator.java:http-nio-8080-exec-1:194] - Authentication attempt received for token [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true]
+2017-09-23 22:15:48,895 [AuthenticatingRealm.java:http-nio-8080-exec-1:569] - Looked up AuthenticationInfo [org.bdlions.session.UserAuthentificationInfo@785b3c8e] from doGetAuthenticationInfo
+2017-09-23 22:15:48,896 [AuthenticatingRealm.java:http-nio-8080-exec-1:507] - AuthenticationInfo caching is disabled for info [org.bdlions.session.UserAuthentificationInfo@785b3c8e].  Submitted token: [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true].
+2017-09-23 22:15:48,897 [SimpleCredentialsMatcher.java:http-nio-8080-exec-1:96] - Performing credentials equality check for tokenCredentials of type [[C and accountCredentials of type [java.lang.String]
+2017-09-23 22:15:48,899 [SimpleCredentialsMatcher.java:http-nio-8080-exec-1:102] - Both credentials arguments can be easily converted to byte arrays.  Performing array equals comparison
+2017-09-23 22:15:48,918 [AbstractAuthenticator.java:http-nio-8080-exec-1:233] - Authentication successful for token [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true].  Returned account [org.bdlions.session.UserAuthentificationInfo@785b3c8e]
+2017-09-23 22:15:48,920 [DefaultSubjectContext.java:http-nio-8080-exec-1:102] - No SecurityManager available in subject context map.  Falling back to SecurityUtils.getSecurityManager() lookup.
+2017-09-23 22:15:48,922 [ThreadContext.java:http-nio-8080-exec-1:126] - get() - in thread [http-nio-8080-exec-1]
+2017-09-23 22:15:48,924 [DefaultSecurityManager.java:http-nio-8080-exec-1:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 22:15:48,927 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,943 [DefaultSubjectContext.java:http-nio-8080-exec-1:102] - No SecurityManager available in subject context map.  Falling back to SecurityUtils.getSecurityManager() lookup.
+2017-09-23 22:15:48,945 [ThreadContext.java:http-nio-8080-exec-1:126] - get() - in thread [http-nio-8080-exec-1]
+2017-09-23 22:15:48,946 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,947 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,949 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,950 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,951 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,952 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:15:48,953 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = true; session is null = true; session has id = false
+2017-09-23 22:15:48,954 [DelegatingSubject.java:http-nio-8080-exec-1:334] - Starting session for host null
+2017-09-23 22:15:48,978 [DefaultSessionManager.java:http-nio-8080-exec-1:156] - Creating session for host null
+2017-09-23 22:15:48,979 [DefaultSessionManager.java:http-nio-8080-exec-1:175] - Creating new EIS record for new session instance [org.apache.shiro.session.mgt.SimpleSession,id=null]
+2017-09-23 22:15:48,986 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:48,989 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 22:15:48,991 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:48,992 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:48,995 [DefaultSecurityManager.java:http-nio-8080-exec-1:217] - This org.apache.shiro.mgt.DefaultSecurityManager instance does not have a [org.apache.shiro.mgt.RememberMeManager] instance configured.  RememberMe services will not be performed for account [org.bdlions.session.UserAuthentificationInfo@785b3c8e].
+2017-09-23 22:15:48,996 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 22:15:48,998 [DelegatingSubject.java:http-nio-8080-exec-1:317] - attempting to get session; create = true; session is null = false; session has id = true
+2017-09-23 22:15:48,999 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,001 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,002 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,003 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,005 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,008 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,010 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,012 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,014 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:15:49,016 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:16:04,205 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:16:04,487 [AbstractValidatingSessionManager.java:http-nio-8080-exec-1:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@fc6ddb7
+2017-09-23 22:39:56,755 [AbstractChannel.java:main:74] - Relay Channel 1 started.
+2017-09-23 22:39:56,912 [AbstractChannel.java:main:74] - Client Channel 1 started.
+2017-09-23 22:39:56,755 [PacketReceiver.java:Receiver-Relay Channel 1:60] - Packet receiver thread started
+2017-09-23 22:39:56,755 [QueueProcessorImpl.java:QueueProcessor-Relay Channel 1:45] - QueueProcessor started
+2017-09-23 22:39:56,917 [QueueProcessorImpl.java:QueueProcessor-Client Channel 2:45] - QueueProcessor started
+2017-09-23 22:39:56,916 [PacketReceiver.java:Receiver-Client Channel 1:60] - Packet receiver thread started
+2017-09-23 22:39:56,913 [QueueProcessorImpl.java:QueueProcessor-Client Channel 1:45] - QueueProcessor started
+2017-09-23 22:39:56,913 [AbstractChannel.java:main:74] - Client Channel 2 started.
+2017-09-23 22:39:56,916 [PacketReceiver.java:Receiver-Client Channel 2:60] - Packet receiver thread started
+2017-09-23 22:39:56,934 [AbstractChannel.java:main:74] - Client Channel 3 started.
+2017-09-23 22:39:56,972 [PacketReceiver.java:Receiver-Client Channel 3:60] - Packet receiver thread started
+2017-09-23 22:39:56,975 [QueueProcessorImpl.java:QueueProcessor-Client Channel 3:45] - QueueProcessor started
+2017-09-23 22:40:48,000 [ClientRequestHandler.java:http-nio-8080-exec-2:142] - Request is going to be processed. starts..
+2017-09-23 22:40:48,006 [ClientRequestHandler.java:http-nio-8080-exec-2:146] - {"action":"1001","requestType":"1","sessionId":"sessionId-111"}
+2017-09-23 22:40:48,006 [ClientRequestHandler.java:http-nio-8080-exec-2:156] - session id : sessionId-111
+2017-09-23 22:40:48,021 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 22:40:48,029 [DefaultSecurityManager.java:http-nio-8080-exec-2:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 22:40:48,031 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:213] - No sessionValidationScheduler set.  Attempting to create default instance.
+2017-09-23 22:40:48,042 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:218] - Created default SessionValidationScheduler instance of type [org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler].
+2017-09-23 22:40:48,043 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:233] - Enabling session validation scheduler...
+2017-09-23 22:40:48,046 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@12e7845a
+2017-09-23 22:40:48,047 [DefaultSecurityManager.java:http-nio-8080-exec-2:447] - Resolved SubjectContext context session is invalid.  Ignoring and creating an anonymous (session-less) Subject instance.
+org.apache.shiro.session.UnknownSessionException: There is no session with id [sessionId-111]
+	at org.apache.shiro.session.mgt.eis.AbstractSessionDAO.readSession(AbstractSessionDAO.java:170)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSessionFromDataSource(DefaultSessionManager.java:236)
+	at org.apache.shiro.session.mgt.DefaultSessionManager.retrieveSession(DefaultSessionManager.java:222)
+	at org.apache.shiro.session.mgt.AbstractValidatingSessionManager.doGetSession(AbstractValidatingSessionManager.java:118)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.lookupSession(AbstractNativeSessionManager.java:148)
+	at org.apache.shiro.session.mgt.AbstractNativeSessionManager.getSession(AbstractNativeSessionManager.java:140)
+	at org.apache.shiro.mgt.SessionsSecurityManager.getSession(SessionsSecurityManager.java:156)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveContextSession(DefaultSecurityManager.java:456)
+	at org.apache.shiro.mgt.DefaultSecurityManager.resolveSession(DefaultSecurityManager.java:442)
+	at org.apache.shiro.mgt.DefaultSecurityManager.createSubject(DefaultSecurityManager.java:338)
+	at org.apache.shiro.subject.Subject$Builder.buildSubject(Subject.java:846)
+	at org.bdlions.session.UserSessionManagerImpl.getSessionBySessionId(UserSessionManagerImpl.java:45)
+	at org.bdlions.util.ClientRequestHandler.executeRequest(ClientRequestHandler.java:158)
+	at org.bdlions.controller.RequestIndex.processRequest(RequestIndex.java:60)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:869)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:775)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:981)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:915)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:978)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:881)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:855)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:799)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1455)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2017-09-23 22:40:48,061 [DefaultSecurityManager.java:http-nio-8080-exec-2:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 22:40:48,062 [DefaultSecurityManager.java:http-nio-8080-exec-2:516] - No remembered identity found.  Returning original context.
+2017-09-23 22:40:48,077 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,079 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,080 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,081 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,082 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,083 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,083 [ClientRequestHandler.java:http-nio-8080-exec-2:162] - method for action : SIGN_IN is org.bdlions.request.handler.RequestExecutorInfo@55554763
+2017-09-23 22:40:48,093 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 22:40:48,094 [DefaultSecurityManager.java:http-nio-8080-exec-2:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 22:40:48,094 [DefaultSecurityManager.java:http-nio-8080-exec-2:490] - No identity (PrincipalCollection) found in the context.  Looking for a remembered identity.
+2017-09-23 22:40:48,094 [DefaultSecurityManager.java:http-nio-8080-exec-2:516] - No remembered identity found.  Returning original context.
+2017-09-23 22:40:48,095 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,095 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,096 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,096 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,097 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,097 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,098 [AbstractAuthenticator.java:http-nio-8080-exec-2:194] - Authentication attempt received for token [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true]
+2017-09-23 22:40:48,260 [AuthenticatingRealm.java:http-nio-8080-exec-2:569] - Looked up AuthenticationInfo [org.bdlions.session.UserAuthentificationInfo@20870e17] from doGetAuthenticationInfo
+2017-09-23 22:40:48,261 [AuthenticatingRealm.java:http-nio-8080-exec-2:507] - AuthenticationInfo caching is disabled for info [org.bdlions.session.UserAuthentificationInfo@20870e17].  Submitted token: [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true].
+2017-09-23 22:40:48,261 [SimpleCredentialsMatcher.java:http-nio-8080-exec-2:96] - Performing credentials equality check for tokenCredentials of type [[C and accountCredentials of type [java.lang.String]
+2017-09-23 22:40:48,262 [SimpleCredentialsMatcher.java:http-nio-8080-exec-2:102] - Both credentials arguments can be easily converted to byte arrays.  Performing array equals comparison
+2017-09-23 22:40:48,263 [AbstractAuthenticator.java:http-nio-8080-exec-2:233] - Authentication successful for token [org.apache.shiro.authc.UsernamePasswordToken - user1@gmail.com, rememberMe=true].  Returned account [org.bdlions.session.UserAuthentificationInfo@20870e17]
+2017-09-23 22:40:48,264 [DefaultSubjectContext.java:http-nio-8080-exec-2:102] - No SecurityManager available in subject context map.  Falling back to SecurityUtils.getSecurityManager() lookup.
+2017-09-23 22:40:48,264 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 22:40:48,265 [DefaultSecurityManager.java:http-nio-8080-exec-2:412] - Context already contains a SecurityManager instance.  Returning.
+2017-09-23 22:40:48,265 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,279 [DefaultSubjectContext.java:http-nio-8080-exec-2:102] - No SecurityManager available in subject context map.  Falling back to SecurityUtils.getSecurityManager() lookup.
+2017-09-23 22:40:48,280 [ThreadContext.java:http-nio-8080-exec-2:126] - get() - in thread [http-nio-8080-exec-2]
+2017-09-23 22:40:48,281 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,281 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,282 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,283 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,283 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,284 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = true; session has id = false
+2017-09-23 22:40:48,284 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = true; session is null = true; session has id = false
+2017-09-23 22:40:48,285 [DelegatingSubject.java:http-nio-8080-exec-2:334] - Starting session for host null
+2017-09-23 22:40:48,303 [DefaultSessionManager.java:http-nio-8080-exec-2:156] - Creating session for host null
+2017-09-23 22:40:48,304 [DefaultSessionManager.java:http-nio-8080-exec-2:175] - Creating new EIS record for new session instance [org.apache.shiro.session.mgt.SimpleSession,id=null]
+2017-09-23 22:40:48,307 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,309 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 22:40:48,310 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,312 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,313 [DefaultSecurityManager.java:http-nio-8080-exec-2:217] - This org.apache.shiro.mgt.DefaultSecurityManager instance does not have a [org.apache.shiro.mgt.RememberMeManager] instance configured.  RememberMe services will not be performed for account [org.bdlions.session.UserAuthentificationInfo@20870e17].
+2017-09-23 22:40:48,314 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = false; session is null = false; session has id = true
+2017-09-23 22:40:48,317 [DelegatingSubject.java:http-nio-8080-exec-2:317] - attempting to get session; create = true; session is null = false; session has id = true
+2017-09-23 22:40:48,318 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,318 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,319 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,319 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,320 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,320 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,321 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,321 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,322 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,323 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,323 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21
+2017-09-23 22:40:48,324 [AbstractValidatingSessionManager.java:http-nio-8080-exec-2:116] - Attempting to retrieve session with key org.apache.shiro.session.mgt.DefaultSessionKey@401b6b21

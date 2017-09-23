@@ -1,0 +1,89 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'application'
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+//applicationDefaultJvmArgs = ["-Dlogging.config=conf/log4j.properties", "-Dlog4j.configurationFile=conf/log4j2.xml", "-Xms1024m"]
+
+// copy essential files into build directory
+task processConfig(type: Copy) {
+    from 'conf', {
+        include '**/*.xml'
+        include '**/*.properties'
+//        into 'conf'
+    }
+    from('src/main/java') {
+        include '**/*.properties'
+    }
+    into 'build/classes/main'
+}
+classes {
+    classes.dependsOn processConfig
+}
+
+war {
+    baseName = 'InventoryServer'
+    version =  '1.0.0'
+}
+
+
+
+// NetBeans will automatically add "run" and "debug" tasks relying on the
+// "mainClass" property. You may however define the property prior executing
+// tasks by passing a "-PmainClass=<QUALIFIED_CLASS_NAME>" argument.
+//
+// Note however, that you may define your own "run" and "debug" task if you
+// prefer. In this case NetBeans will not add these tasks but you may rely on
+// your own implementation.
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'org.bdlions.Main'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/release" }
+    maven { url "http://repo.spring.io/milestone" }
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://repo.spring.io/libs-snapshot" }
+    flatDir {
+        dirs 'lib'
+    }
+    
+    // You may define additional repositories, or even remove "mavenCentral()".
+    // Read more about repositories here:
+    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:repositories
+}
+configurations {
+    compile.exclude module: 'spring-boot-starter-logging'
+}
+
+dependencies {
+    //maven repository dependency
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.0.M3'
+    compile group: 'org.springframework', name: 'spring-context', version: '5.0.0.RC2'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.1'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.7-dmr'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-alpha2'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.8.0-alpha2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
+    compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
+
+    
+    
+    
+    //external library dependency
+    compile files('../AuthCommons/dist/AuthCommons.jar')
+    compile files('../AuthSession/dist/AuthSession.jar')
+    compile files('../AuthTransport/dist/AuthTransport.jar')
+    
+    //runtime dependency
+    providedRuntime group : 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.0.0.M3'    
+    
+    //test dependency
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+    
+    
+}

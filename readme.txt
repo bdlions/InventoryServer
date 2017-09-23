@@ -1,0 +1,3 @@
+- create database einventory_db
+- Place AuthCommon, AuthSession, AuthTransport into the same diretory of project root directory.
+- After run the project, insert default data from the schema file kept inside project directory.
