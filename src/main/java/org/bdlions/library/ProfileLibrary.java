@@ -42,7 +42,7 @@ public class ProfileLibrary
                 {
                     companyId = profile.getCompanyId();
                 }
-                company = userManager.getUserCompanyById(userId, companyId);
+                company = profileManager.getUserCompanyById(userId, companyId);
                 profile.setUser(user);
                 profile.setCompany(company);
             }

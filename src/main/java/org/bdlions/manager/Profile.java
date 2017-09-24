@@ -6,6 +6,7 @@
 package org.bdlions.manager;
 
 import org.bdlions.db.HibernateUtil;
+import org.bdlions.dto.EntityCompany;
 import org.bdlions.dto.EntityProfile;
 import org.bdlions.dto.EntityUser;
 import org.hibernate.Session;
@@ -97,5 +98,33 @@ public class Profile {
         }
         return false;
     }
+    
+    /**
+     * This method will return company info by company id or user id
+     *
+     * @param userId user id
+     * @param companyId company id
+     * @return Company company info
+     * @author nazmul hasan on 2nd August 2017
+     */
+    public EntityCompany getUserCompanyById(int userId, int companyId) {
+        Session session = HibernateUtil.getSession();
+        
+        try{
+            Query<Integer> query = session.getNamedQuery("getCompanyIdByUserId");
+            query.setParameter("userId", userId);
+            int id = query.uniqueResult();
+            if(id == 0 ){
+                return null;
+            }
+            Company company = new Company();
+            return company.getCompanyById(id);
+            
+        }
+        finally{
+            session.close();
+        }
+    }
+
 
 }

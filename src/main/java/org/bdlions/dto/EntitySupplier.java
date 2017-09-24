@@ -1,14 +1,16 @@
 package org.bdlions.dto;
 
+import com.bdlions.dto.response.ClientResponse;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
+import javax.persistence.Transient;
 
 /**
  *
@@ -16,32 +18,20 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(
-        name = "user_role",
+        name = "suppliers",
         indexes = {
-            @Index(name = "idx_name", columnList = "user_id, role_id", unique = true)
+            
         }
 )
 @NamedQueries({
-    @NamedQuery(name = "getUserRolesByUserId", query = "select userRole.id from EntityUserRole userRole where userRole.userId = :userId")
+    
 })
-public class EntityUserRole {
+public class EntitySupplier extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    
+    @Column(name = "id")    
     private int id;
-
-    @Column(name = "user_id")
-    private int userId;
-    
-    @Column(name = "role_id")
-    private int roleId;
-
-    public EntityUserRole() 
-    {
-        
-    }
 
     public int getId() {
         return id;
@@ -59,11 +49,22 @@ public class EntityUserRole {
         this.userId = userId;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public int getRemarks() {
+        return remarks;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRemarks(int remarks) {
+        this.remarks = remarks;
     }
+
+
+    @Column(name = "user_id", columnDefinition = "int(11) NOT NULL")
+    private int userId;
+    
+    @Column(name = "remarks", length = 1000)
+    private int remarks;
+
+    
+    
+    
 }

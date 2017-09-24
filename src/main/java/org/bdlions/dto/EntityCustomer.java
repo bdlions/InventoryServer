@@ -1,14 +1,16 @@
 package org.bdlions.dto;
 
+import com.bdlions.dto.response.ClientResponse;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
+import javax.persistence.Transient;
 
 /**
  *
@@ -16,33 +18,25 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(
-        name = "user_role",
+        name = "customers",
         indexes = {
-            @Index(name = "idx_name", columnList = "user_id, role_id", unique = true)
+            
         }
 )
 @NamedQueries({
-    @NamedQuery(name = "getUserRolesByUserId", query = "select userRole.id from EntityUserRole userRole where userRole.userId = :userId")
+    
 })
-public class EntityUserRole {
+public class EntityCustomer extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    
+    @Column(name = "id")    
     private int id;
-
-    @Column(name = "user_id")
+    @Column(name = "user_id", columnDefinition = "int(11) NOT NULL")
     private int userId;
     
-    @Column(name = "role_id")
-    private int roleId;
-
-    public EntityUserRole() 
-    {
-        
-    }
-
+    
+    
     public int getId() {
         return id;
     }
@@ -59,11 +53,6 @@ public class EntityUserRole {
         this.userId = userId;
     }
 
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
+    
+    
 }

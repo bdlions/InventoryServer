@@ -1,13 +1,12 @@
 package org.bdlions.dto;
 
+import com.bdlions.dto.response.ClientResponse;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -16,19 +15,15 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(
-        name = "company",
+        name = "uoms",
         indexes = {
-            @Index(name = "idx_name", columnList = "title", unique = true)
+            
         }
 )
 @NamedQueries({
-    @NamedQuery(
-            name = "getCompanyById",
-            query = "from EntityCompany company where company.id = :companyId"
-    )
     
 })
-public class EntityCompany {
+public class EntityUOM extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -38,16 +33,11 @@ public class EntityCompany {
     @Column(name = "title")
     private String title;
     
-    @Column(name = "address")
-    private String address;
-    
-    @Column(name = "website")
-    private String website;
+    @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private int created_on;
 
-    public EntityCompany() 
-    {
-        
-    }
+    @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private int modified_on;
 
     public int getId() {
         return id;
@@ -64,5 +54,22 @@ public class EntityCompany {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getCreated_on() {
+        return created_on;
+    }
+
+    public void setCreated_on(int created_on) {
+        this.created_on = created_on;
+    }
+
+    public int getModified_on() {
+        return modified_on;
+    }
+
+    public void setModified_on(int modified_on) {
+        this.modified_on = modified_on;
+    }
+    
     
 }

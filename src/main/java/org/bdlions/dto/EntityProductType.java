@@ -1,5 +1,6 @@
 package org.bdlions.dto;
 
+import com.bdlions.dto.response.ClientResponse;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -16,19 +18,15 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(
-        name = "company",
+        name = "product_type",
         indexes = {
-            @Index(name = "idx_name", columnList = "title", unique = true)
+            
         }
 )
 @NamedQueries({
-    @NamedQuery(
-            name = "getCompanyById",
-            query = "from EntityCompany company where company.id = :companyId"
-    )
     
 })
-public class EntityCompany {
+public class EntityProductType extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -38,16 +36,11 @@ public class EntityCompany {
     @Column(name = "title")
     private String title;
     
-    @Column(name = "address")
-    private String address;
-    
-    @Column(name = "website")
-    private String website;
+    @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private int createdOn;
 
-    public EntityCompany() 
-    {
-        
-    }
+    @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private int modifiedOn;
 
     public int getId() {
         return id;
@@ -64,5 +57,23 @@ public class EntityCompany {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(int createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public int getModifiedOn() {
+        return modifiedOn;
+    }
+
+    public void setModifiedOn(int modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
+
+    
     
 }

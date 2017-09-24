@@ -28,6 +28,10 @@ import javax.persistence.Transient;
             name = "getProfileByUserId",
             query = "from EntityProfile profile where profile.userId = :userId"
     ),
+    @NamedQuery(
+            name = "getCompanyIdByUserId",
+            query = "select profile.companyId from EntityProfile profile where profile.userId = :userId"
+    ),
 })
 public class EntityProfile extends ClientResponse implements java.io.Serializable{
 

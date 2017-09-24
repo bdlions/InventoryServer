@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -18,6 +20,12 @@ import javax.persistence.Table;
         indexes = {
             @Index(name = "idx_name", columnList = "title", unique = true)
         }
+)
+@NamedQueries(
+    {
+        @NamedQuery(name = "getRoleById", query =  "from EntityRole role where role.id = :roleId"),
+        
+    }
 )
 public class EntityRole {
 

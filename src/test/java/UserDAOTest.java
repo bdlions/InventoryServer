@@ -48,9 +48,26 @@ public class UserDAOTest {
     // public void hello() {}
     
     @Test
-    public void getUserByUserName() throws Exception{
+    public void getUserByUserName(){
         User user = new User();
         EntityUser u = user.getUserByIdentity("alamgir@yopmail.com");
         System.out.println("Email: " + u.getEmail());
     }
+    
+    
+    @Test
+    public void getUserByCredential(){
+        User user = new User();
+        EntityUser u = user.getUserByCredential("alamgir@yopmail.com", "password");
+        System.out.println("Email: " + u.getEmail());
+    }
+
+    @Test
+    public void getUserById(){
+        User user = new User();
+        EntityUser u = user.getUserById(1);
+        System.out.println("Email: " + u.getEmail());
+    }
+    
+    
 }

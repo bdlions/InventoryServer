@@ -22,5 +22,24 @@
         <mapping class="org.bdlions.dto.EntityUserRole" />        
         <mapping class="org.bdlions.dto.EntityCompany" />
         <mapping class="org.bdlions.dto.EntityProfile" />
+        <mapping class="org.bdlions.dto.EntityProductCategory" />
+        <mapping class="org.bdlions.dto.EntityProduct" />
+        <mapping class="org.bdlions.dto.EntityProductType" />
+        <mapping class="org.bdlions.dto.EntityUOM" />
+        <mapping class="org.bdlions.dto.EntityAddressType" />
+        <mapping class="org.bdlions.dto.EntityAddressCategory" />
+        <mapping class="org.bdlions.dto.EntityUserAddress" />
+        <mapping class="org.bdlions.dto.EntitySupplier" />
+        <mapping class="org.bdlions.dto.EntityCustomer" />
+        <mapping class="org.bdlions.dto.EntityPurchaseOrder" />
+        <mapping class="org.bdlions.dto.EntityPurchaseOrderStatus" />
+        <mapping class="org.bdlions.dto.EntityWarehouseProduct" />
+        <mapping class="org.bdlions.dto.EntityWarehouseTransactionCategory" />
+        <mapping class="org.bdlions.dto.EntityWarehouseStock" />
+        <mapping class="org.bdlions.dto.EntityShowRoomProduct" />
+        <mapping class="org.bdlions.dto.EntitySaleOrderStatus" />
+        <mapping class="org.bdlions.dto.EntitySaleOrder" />
+        <mapping class="org.bdlions.dto.EntitySaleTransactionCategory" />
+        <mapping class="org.bdlions.dto.EntityShowRoomStock" />
     </session-factory>
 </hibernate-configuration>

@@ -1,5 +1,6 @@
 package org.bdlions.dto;
 
+import com.bdlions.dto.response.ClientResponse;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -16,38 +18,24 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(
-        name = "company",
+        name = "sale_order_statuses",
         indexes = {
-            @Index(name = "idx_name", columnList = "title", unique = true)
+            
         }
 )
 @NamedQueries({
-    @NamedQuery(
-            name = "getCompanyById",
-            query = "from EntityCompany company where company.id = :companyId"
-    )
     
 })
-public class EntityCompany {
+public class EntitySaleOrderStatus extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")    
     private int id;
 
-    @Column(name = "title")
-    private String title;
     
-    @Column(name = "address")
-    private String address;
-    
-    @Column(name = "website")
-    private String website;
-
-    public EntityCompany() 
-    {
-        
-    }
+    @Column(name = "description", length = 200)
+    private String description;
 
     public int getId() {
         return id;
@@ -57,12 +45,13 @@ public class EntityCompany {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDescription(String description) {
+        this.description = description;
     }
+    
     
 }
