@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(
-        name = "warehouse_products",
+        name = "po_showroom_products",
         indexes = {
             
         }
@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @NamedQueries({
     
 })
-public class EntityWarehouseProduct extends ClientResponse implements java.io.Serializable{
+public class EntityPOShowRoomProduct extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -44,10 +44,10 @@ public class EntityWarehouseProduct extends ClientResponse implements java.io.Se
     private double unitPrice;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int created_on;
+    private int createdOn;
 
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int modified_on;
+    private int modifiedOn;
 
     public int getId() {
         return id;
@@ -89,22 +89,21 @@ public class EntityWarehouseProduct extends ClientResponse implements java.io.Se
         this.unitPrice = unitPrice;
     }
 
-    public int getCreated_on() {
-        return created_on;
+    public int getCreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated_on(int created_on) {
-        this.created_on = created_on;
+    public void setCreatedOn(int createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public int getModified_on() {
-        return modified_on;
+    public int getModifiedOn() {
+        return modifiedOn;
     }
 
-    public void setModified_on(int modified_on) {
-        this.modified_on = modified_on;
+    public void setModifiedOn(int modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
 
-    
     
 }

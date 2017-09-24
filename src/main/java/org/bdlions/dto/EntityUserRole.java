@@ -16,7 +16,7 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(
-        name = "user_role",
+        name = "users_roles",
         indexes = {
             @Index(name = "idx_name", columnList = "user_id, role_id", unique = true)
         }

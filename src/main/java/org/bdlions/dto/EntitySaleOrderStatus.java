@@ -34,8 +34,8 @@ public class EntitySaleOrderStatus extends ClientResponse implements java.io.Ser
     private int id;
 
     
-    @Column(name = "description", length = 200)
-    private String description;
+    @Column(name = "title", length = 200)
+    private String title;
 
     public int getId() {
         return id;
@@ -45,13 +45,11 @@ public class EntitySaleOrderStatus extends ClientResponse implements java.io.Ser
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String title) {
+        this.title = title;
     }
-    
-    
 }

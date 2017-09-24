@@ -34,7 +34,7 @@ public class EntityPurchaseOrderStatus extends ClientResponse implements java.io
     private int id;
 
     
-    @Column(name = "description", length = 200)
+    @Column(name = "title", length = 200)
     private String title;
 
     public int getId() {

@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(
-        name = "product_type",
+        name = "sale_order_products",
         indexes = {
             
         }
@@ -26,31 +26,33 @@ import javax.persistence.Transient;
 @NamedQueries({
     
 })
-public class EntityShowRoomProduct extends ClientResponse implements java.io.Serializable{
+public class EntitySaleOrderProduct extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")    
     private int id;
-
-    
-    @Column(name = "product_id", columnDefinition = "int NOT NULL")
+   
+    @Column(name = "product_id")
     private int productId;
-
-    @Column(name = "orderNo")
-    private String orderNo;
     
+    @Column(name = "sale_order_no", length = 200)
+    private String saleOrderNo;
+    
+    @Column(name = "purchase_order_no", length = 200)
+    private String purchaseOrderNo;
+
     @Column(name = "unit_price")
-    private double unit_price;
+    private double unitPrice;
 
     @Column(name = "discount")
     private double discount;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int created_on;
+    private int createdOn;
 
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int modified_on;
+    private int modifiedOn;
 
     public int getId() {
         return id;
@@ -68,20 +70,28 @@ public class EntityShowRoomProduct extends ClientResponse implements java.io.Ser
         this.productId = productId;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    public String getSaleOrderNo() {
+        return saleOrderNo;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setSaleOrderNo(String saleOrderNo) {
+        this.saleOrderNo = saleOrderNo;
     }
 
-    public double getUnit_price() {
-        return unit_price;
+    public String getPurchaseOrderNo() {
+        return purchaseOrderNo;
     }
 
-    public void setUnit_price(double unit_price) {
-        this.unit_price = unit_price;
+    public void setPurchaseOrderNo(String purchaseOrderNo) {
+        this.purchaseOrderNo = purchaseOrderNo;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public double getDiscount() {
@@ -92,20 +102,20 @@ public class EntityShowRoomProduct extends ClientResponse implements java.io.Ser
         this.discount = discount;
     }
 
-    public int getCreated_on() {
-        return created_on;
+    public int getCreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated_on(int created_on) {
-        this.created_on = created_on;
+    public void setCreatedOn(int createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public int getModified_on() {
-        return modified_on;
+    public int getModifiedOn() {
+        return modifiedOn;
     }
 
-    public void setModified_on(int modified_on) {
-        this.modified_on = modified_on;
+    public void setModifiedOn(int modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
 
     

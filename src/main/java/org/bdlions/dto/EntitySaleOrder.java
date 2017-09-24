@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(
-        name = "product_type",
+        name = "sale_orders",
         indexes = {
             
         }
@@ -33,27 +33,30 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     @Column(name = "id")    
     private int id;
    
-    @Column(name = "product_id")
-    private String productId;
+    @Column(name = "order_no", length = 200)
+    private String orderNo;
     
-    @Column(name = "sale_order_no", length = 200)
-    private String saleOorderNo;
+    @Column(name = "customer_user_id", columnDefinition = "int(11) NOT NULL")
+    private int customerUserId;
     
-    @Column(name = "purchase_order_no", length = 200)
-    private String purchaseOrderNo;
-
-    @Column(name = "unit_price")
-    private double unitPrice;
-
+    @Column(name = "status_id", columnDefinition = "int(11) NOT NULL")
+    private int statusId;
+    
+    @Column(name = "sale_date", columnDefinition = "int(11) NOT NULL")
+    private int saleDate;
+    
     @Column(name = "discount")
     private double discount;
+    
+    @Column(name = "remarks", length = 500)
+    private String remarks;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int createdOn;
 
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int modifiedOn;
-
+    
     public int getId() {
         return id;
     }
@@ -62,36 +65,36 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
         this.id = id;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
-    public String getSaleOorderNo() {
-        return saleOorderNo;
+    public int getCustomerUserId() {
+        return customerUserId;
     }
 
-    public void setSaleOorderNo(String saleOorderNo) {
-        this.saleOorderNo = saleOorderNo;
+    public void setCustomerUserId(int customerUserId) {
+        this.customerUserId = customerUserId;
     }
 
-    public String getPurchaseOrderNo() {
-        return purchaseOrderNo;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setPurchaseOrderNo(String purchaseOrderNo) {
-        this.purchaseOrderNo = purchaseOrderNo;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
-    public double getUnitPrice() {
-        return unitPrice;
+    public int getSaleDate() {
+        return saleDate;
     }
 
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setSaleDate(int saleDate) {
+        this.saleDate = saleDate;
     }
 
     public double getDiscount() {
@@ -118,6 +121,11 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
         this.modifiedOn = modifiedOn;
     }
 
-    
-    
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 }

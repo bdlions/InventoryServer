@@ -17,7 +17,7 @@ import org.junit.Test;
  */
 public class ProfileDAOTest {
     
-    @Test
+    //@Test
     public void getProfileById(){
         Profile profile = new Profile();
         EntityCompany c = profile.getUserCompanyById(1, 1);

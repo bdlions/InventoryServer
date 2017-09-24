@@ -9,7 +9,7 @@
         
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/inventory_db</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">pass1234</property>
+        <property name="hibernate.connection.password"></property>
         
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</property>
         <property name="show_sql">true</property>
@@ -33,13 +33,14 @@
         <mapping class="org.bdlions.dto.EntityCustomer" />
         <mapping class="org.bdlions.dto.EntityPurchaseOrder" />
         <mapping class="org.bdlions.dto.EntityPurchaseOrderStatus" />
-        <mapping class="org.bdlions.dto.EntityWarehouseProduct" />
-        <mapping class="org.bdlions.dto.EntityWarehouseTransactionCategory" />
+        <mapping class="org.bdlions.dto.EntityPOWarehouseProduct" />
+		<mapping class="org.bdlions.dto.EntityPOShowRoomProduct" />
+        <mapping class="org.bdlions.dto.EntityWSTransactionCategory" />
         <mapping class="org.bdlions.dto.EntityWarehouseStock" />
-        <mapping class="org.bdlions.dto.EntityShowRoomProduct" />
         <mapping class="org.bdlions.dto.EntitySaleOrderStatus" />
         <mapping class="org.bdlions.dto.EntitySaleOrder" />
-        <mapping class="org.bdlions.dto.EntitySaleTransactionCategory" />
+		<mapping class="org.bdlions.dto.EntitySaleOrderProduct" />
+        <mapping class="org.bdlions.dto.EntitySSTransactionCategory" />
         <mapping class="org.bdlions.dto.EntityShowRoomStock" />
     </session-factory>
 </hibernate-configuration>

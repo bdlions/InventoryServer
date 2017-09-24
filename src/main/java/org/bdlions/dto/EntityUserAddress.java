@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(
-        name = "user_addresses",
+        name = "users_addresses",
         indexes = {
             
         }

@@ -41,7 +41,7 @@ public class CompanyDAOTest {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-     @Test
+     //@Test
      public void getCompanyIdByUserId() {
          Company c = new Company();
          EntityCompany ec = c.getCompanyById(1);

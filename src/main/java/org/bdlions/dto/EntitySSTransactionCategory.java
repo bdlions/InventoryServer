@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(
-        name = "ws_transaction_categories",
+        name = "ss_transaction_categories",
         indexes = {
             
         }
@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 @NamedQueries({
     
 })
-public class EntityWarehouseTransactionCategory extends ClientResponse implements java.io.Serializable{
+public class EntitySSTransactionCategory extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,8 +34,8 @@ public class EntityWarehouseTransactionCategory extends ClientResponse implement
     private int id;
 
    
-    @Column(name = "description")
-    private String description;
+    @Column(name = "title")
+    private String title;
 
     public int getId() {
         return id;
@@ -45,13 +45,11 @@ public class EntityWarehouseTransactionCategory extends ClientResponse implement
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String title) {
+        this.title = title;
     }
-    
-    
 }

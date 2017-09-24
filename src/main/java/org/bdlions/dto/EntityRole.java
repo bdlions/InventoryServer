@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(
-        name = "role",
+        name = "roles",
         indexes = {
             @Index(name = "idx_name", columnList = "title", unique = true)
         }
@@ -35,10 +35,10 @@ public class EntityRole {
     
     private int id;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 200)
     private String title;
     
-    @Column(name = "description")
+    @Column(name = "description", length = 200)
     private String description;
 
     public EntityRole() 

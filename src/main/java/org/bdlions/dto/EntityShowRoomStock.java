@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(
-        name = "showroom_stock",
+        name = "showroom_stocks",
         indexes = {
             
         }
@@ -33,17 +33,23 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
     @Column(name = "id")    
     private int id;
  
+    @Column(name = "purchase_order_no", length = 200)
+    private String purchaseOrderNo;
+    
     @Column(name = "sale_order_no", length = 200)
     private String saleOrderNo;
     
-    @Column(name = "product_id", length = 200)
-    private String productId;
+    @Column(name = "product_id")
+    private int productId;
     
     @Column(name = "stock_in")
     private double stockIn;
     
     @Column(name = "stock_out")
     private double stockOut;
+    
+    @Column(name = "transaction_category_id")
+    private int transactionCategoryId;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int createdOn;
@@ -59,6 +65,14 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
         this.id = id;
     }
 
+    public String getPurchaseOrderNo() {
+        return purchaseOrderNo;
+    }
+
+    public void setPurchaseOrderNo(String purchaseOrderNo) {
+        this.purchaseOrderNo = purchaseOrderNo;
+    }
+
     public String getSaleOrderNo() {
         return saleOrderNo;
     }
@@ -67,11 +81,11 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
         this.saleOrderNo = saleOrderNo;
     }
 
-    public String getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
@@ -91,6 +105,14 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
         this.stockOut = stockOut;
     }
 
+    public int getTransactionCategoryId() {
+        return transactionCategoryId;
+    }
+
+    public void setTransactionCategoryId(int transactionCategoryId) {
+        this.transactionCategoryId = transactionCategoryId;
+    }
+
     public int getCreatedOn() {
         return createdOn;
     }
@@ -107,6 +129,7 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
         this.modifiedOn = modifiedOn;
     }
 
+    
     
     
 }

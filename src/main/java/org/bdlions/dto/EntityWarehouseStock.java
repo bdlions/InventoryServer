@@ -32,10 +32,9 @@ public class EntityWarehouseStock extends ClientResponse implements java.io.Seri
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")    
     private int id;
-
    
     @Column(name = "order_no", length = 200)
-    private String order_no;
+    private String orderNo;
     
     @Column(name = "product_id", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int productId;
@@ -47,10 +46,10 @@ public class EntityWarehouseStock extends ClientResponse implements java.io.Seri
     private double stockOut;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int created_on;
+    private int createdOn;
 
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int modified_on;
+    private int modifiedOn;
 
     public int getId() {
         return id;
@@ -60,12 +59,12 @@ public class EntityWarehouseStock extends ClientResponse implements java.io.Seri
         this.id = id;
     }
 
-    public String getOrder_no() {
-        return order_no;
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setOrder_no(String order_no) {
-        this.order_no = order_no;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
     public int getProductId() {
@@ -92,22 +91,22 @@ public class EntityWarehouseStock extends ClientResponse implements java.io.Seri
         this.stockOut = stockOut;
     }
 
-    public int getCreated_on() {
-        return created_on;
+    public int getCreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated_on(int created_on) {
-        this.created_on = created_on;
+    public void setCreatedOn(int createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public int getModified_on() {
-        return modified_on;
+    public int getModifiedOn() {
+        return modifiedOn;
     }
 
-    public void setModified_on(int modified_on) {
-        this.modified_on = modified_on;
+    public void setModifiedOn(int modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
+
     
-
     
 }

@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(
-        name = "product",
+        name = "products",
         indexes = {
             
         }
@@ -36,6 +36,9 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     @Column(name = "category_id", columnDefinition = "int(11) DEFAULT NULL")
     private int categoryId;
     
+    @Column(name = "type_id", columnDefinition = "int(11) DEFAULT NULL")
+    private int typeId;
+    
     @Column(name = "name", length = 200)
     private String name;
 
@@ -47,15 +50,15 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
 
     @Column(name = "height", length = 200)
     private String height;
+    
+    @Column(name = "weight", length = 200)
+    private String weight;
 
     @Column(name = "unit_price", length = 200)
     private double unitPrice;
 
     @Column(name = "length", length = 200)
     private String length;
-    
-    @Column(name = "type_id", columnDefinition = "int(11) DEFAULT NULL")
-    private int typeId;
     
     @Column(name = "standard_uom_id", columnDefinition = "int(11) DEFAULT NULL")
     private int standardUOMId;
@@ -184,6 +187,13 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     public void setModifiedOn(int modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
-    
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
     
 }

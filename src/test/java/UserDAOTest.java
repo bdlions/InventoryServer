@@ -47,7 +47,7 @@ public class UserDAOTest {
     // @Test
     // public void hello() {}
     
-    @Test
+    //@Test
     public void getUserByUserName(){
         User user = new User();
         EntityUser u = user.getUserByIdentity("alamgir@yopmail.com");
@@ -55,14 +55,14 @@ public class UserDAOTest {
     }
     
     
-    @Test
+    //@Test
     public void getUserByCredential(){
         User user = new User();
         EntityUser u = user.getUserByCredential("alamgir@yopmail.com", "password");
         System.out.println("Email: " + u.getEmail());
     }
 
-    @Test
+    //@Test
     public void getUserById(){
         User user = new User();
         EntityUser u = user.getUserById(1);

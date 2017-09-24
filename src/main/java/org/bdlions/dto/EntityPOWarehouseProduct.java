@@ -6,11 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -18,7 +15,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(
-        name = "product_types",
+        name = "po_warehouse_products",
         indexes = {
             
         }
@@ -26,15 +23,25 @@ import javax.persistence.Transient;
 @NamedQueries({
     
 })
-public class EntityProductType extends ClientResponse implements java.io.Serializable{
+public class EntityPOWarehouseProduct extends ClientResponse implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")    
     private int id;
+  
+    @Column(name = "order_no", length = 200)
+    private String orderNo;
+    
+    @Column(name = "product_id", columnDefinition = "int(11) NOT NULL")
+    private int productId;
+   
+    
+    @Column(name = "discount")
+    private double discount;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "unit_price")
+    private double unitPrice;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int createdOn;
@@ -50,12 +57,36 @@ public class EntityProductType extends ClientResponse implements java.io.Seriali
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public int getCreatedOn() {
@@ -74,6 +105,5 @@ public class EntityProductType extends ClientResponse implements java.io.Seriali
         this.modifiedOn = modifiedOn;
     }
 
-    
     
 }

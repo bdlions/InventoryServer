@@ -40,7 +40,7 @@ public class RoleDAOTest {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-     @Test
+     //@Test
      public void getRoleByRoleId() {
          Role r = new Role();
          r.getRoleByRoleId(1);
