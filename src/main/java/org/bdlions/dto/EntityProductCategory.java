@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +22,10 @@ import javax.persistence.Table;
         }
 )
 @NamedQueries({
-    
+    @NamedQuery(
+            name = "getAllProductCategories",
+            query = "from EntityProductCategory productCategory"
+    )
 })
 public class EntityProductCategory extends ClientResponse implements java.io.Serializable{
 

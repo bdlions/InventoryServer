@@ -158,21 +158,6 @@ public class AuthHandler {
         return response;
     }
     
-    @ClientRequest(action = ACTION.FETCH_PROFILE_INFO)
-    public ClientResponse getProfileInfo(ISession session, IPacket packet) throws Exception 
-    {
-        int userId = (int)session.getUserId();
-        ProfileLibrary profileLibrary = new ProfileLibrary();
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
-        Gson gson = gsonBuilder.create();
-        String profileString = gson.toJson(profileLibrary.getProfileInfo(userId));        
-        EntityProfile profile = gson.fromJson(profileString, EntityProfile.class); 
-        profile.setMessage("Profile Info.");
-        profile.setSuccess(true);
-        return profile;
-    }
-    
     @ClientRequest(action = ACTION.UPDATE_PROFILE_INFO)
     public ClientResponse updateProfile(ISession session, IPacket packet) throws Exception 
     {

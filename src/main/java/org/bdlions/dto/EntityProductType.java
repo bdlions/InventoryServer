@@ -24,7 +24,10 @@ import javax.persistence.Transient;
         }
 )
 @NamedQueries({
-    
+    @NamedQuery(
+            name = "getAllProductTypes",
+            query = "from EntityProductType productType"
+    )
 })
 public class EntityProductType extends ClientResponse implements java.io.Serializable{
 
