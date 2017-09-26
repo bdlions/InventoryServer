@@ -34,7 +34,7 @@ public class EntityProductCategory extends ClientResponse implements java.io.Ser
     @Column(name = "id")    
     private int id;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 200)
     private String title;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")

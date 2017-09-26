@@ -158,7 +158,7 @@ public class AuthHandler {
         return response;
     }
     
-    @ClientRequest(action = ACTION.UPDATE_PROFILE_INFO)
+    /*@ClientRequest(action = ACTION.UPDATE_PROFILE_INFO)
     public ClientResponse updateProfile(ISession session, IPacket packet) throws Exception 
     {
         Gson gson = new Gson();
@@ -185,5 +185,5 @@ public class AuthHandler {
             response.setSuccess(false);
         } 
         return response;
-    }
+    }*/
 }

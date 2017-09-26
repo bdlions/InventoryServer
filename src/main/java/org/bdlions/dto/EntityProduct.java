@@ -24,7 +24,14 @@ import javax.persistence.Transient;
         }
 )
 @NamedQueries({
-    
+    @NamedQuery(
+            name = "getProductByProductId",
+            query = "from EntityProduct product where product.id = :productId"
+    ),
+    @NamedQuery(
+            name = "getProducts",
+            query = "from EntityProduct product"
+    )
 })
 public class EntityProduct extends ClientResponse implements java.io.Serializable{
 
@@ -33,18 +40,24 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     @Column(name = "id")    
     private int id;
 
-    @Column(name = "category_id", columnDefinition = "int(11) DEFAULT NULL")
-    private int categoryId;
-    
-    @Column(name = "type_id", columnDefinition = "int(11) DEFAULT NULL")
-    private int typeId;
-    
     @Column(name = "name", length = 200)
     private String name;
 
     @Column(name = "code", length = 200)
     private String code;
-
+    
+    @Column(name = "category_id", columnDefinition = "int(11) DEFAULT NULL")
+    private int categoryId;
+    
+    @Column(name = "category_title", length = 200)
+    private String categoryTitle;
+    
+    @Column(name = "type_id", columnDefinition = "int(11) DEFAULT NULL")
+    private int typeId;
+    
+    @Column(name = "type_title", length = 200)
+    private String typeTitle;
+    
     @Column(name = "width", length = 200)
     private String width;
 
@@ -194,6 +207,22 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public String getCategoryTitle() {
+        return categoryTitle;
+    }
+
+    public void setCategoryTitle(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
+    }
+
+    public String getTypeTitle() {
+        return typeTitle;
+    }
+
+    public void setTypeTitle(String typeTitle) {
+        this.typeTitle = typeTitle;
     }
     
 }
