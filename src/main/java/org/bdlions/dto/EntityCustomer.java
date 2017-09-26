@@ -24,7 +24,14 @@ import javax.persistence.Transient;
         }
 )
 @NamedQueries({
-    
+    @NamedQuery(
+            name = "getCustomerByCustomerId",
+            query = "from EntityCustomer customer where customer.id = :customerId"
+    ),
+    @NamedQuery(
+            name = "getCustomerByUserId",
+            query = "from EntityCustomer customer where customer.userId = :userId"
+    )
 })
 public class EntityCustomer extends ClientResponse implements java.io.Serializable{
 

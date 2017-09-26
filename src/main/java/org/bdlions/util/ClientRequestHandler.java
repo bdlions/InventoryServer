@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import org.bdlions.request.handler.CustomerHandler;
 import org.bdlions.request.handler.ProductHandler;
 import org.bdlions.request.handler.UserHandler;
 import org.bdlions.session.UserSessionManagerImpl;
@@ -125,7 +126,7 @@ public class ClientRequestHandler implements IClientRequestHandler{
     }
 
     private Class[] getDelegators() {
-        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class};
+        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class, CustomerHandler.class};
         return delegators;
     }
 

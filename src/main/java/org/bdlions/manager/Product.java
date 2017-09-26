@@ -2,6 +2,7 @@ package org.bdlions.manager;
 
 import java.util.List;
 import org.bdlions.db.HibernateUtil;
+import org.bdlions.dto.DTOProduct;
 import org.bdlions.dto.EntityProduct;
 import org.bdlions.dto.EntityProductCategory;
 import org.bdlions.dto.EntityProductType;
@@ -99,10 +100,11 @@ public class Product {
         return false;
     }
     
-    public List<EntityProduct> getProducts() 
+    public List<EntityProduct> getProducts(DTOProduct dtoProduct) 
     {
         Session session = HibernateUtil.getSession();
         try {
+            //set limit, offset and other params in named query
             Query<EntityProduct> query = session.getNamedQuery("getProducts");
             return query.getResultList();
         } finally {

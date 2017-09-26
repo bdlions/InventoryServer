@@ -8,6 +8,7 @@ import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import java.util.List;
+import org.bdlions.dto.DTOProduct;
 import org.bdlions.dto.EntityProduct;
 import org.bdlions.dto.EntityProductCategory;
 import org.bdlions.dto.EntityProductType;
@@ -109,8 +110,10 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.FETCH_PRODUCTS)
     public ClientResponse getProducts(ISession session, IPacket packet) throws Exception 
     {
+        Gson gson = new Gson();
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);     
         Product product = new Product();
-        List<EntityProduct> products = product.getProducts();
+        List<EntityProduct> products = product.getProducts(dtoProduct);
         ListProduct response = new ListProduct();
         response.setProducts(products);
         response.setSuccess(true);
