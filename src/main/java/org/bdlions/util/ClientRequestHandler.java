@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import org.bdlions.request.handler.CustomerHandler;
 import org.bdlions.request.handler.ProductHandler;
+import org.bdlions.request.handler.SupplierHandler;
 import org.bdlions.request.handler.UserHandler;
 import org.bdlions.session.UserSessionManagerImpl;
 import org.bdlions.util.handler.request.IClientRequestHandler;
@@ -126,7 +127,7 @@ public class ClientRequestHandler implements IClientRequestHandler{
     }
 
     private Class[] getDelegators() {
-        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class, CustomerHandler.class};
+        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class, CustomerHandler.class, SupplierHandler.class};
         return delegators;
     }
 
