@@ -9,14 +9,10 @@ import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import java.util.List;
 import org.bdlions.dto.DTOCustomer;
-import org.bdlions.dto.EntityProduct;
 import org.bdlions.util.annotation.ClientRequest;
-import org.bdlions.dto.EntityUser;
 import org.bdlions.dto.ListCustomer;
 import org.bdlions.library.CustomerLibrary;
-import org.bdlions.library.ProductLibrary;
 import org.bdlions.manager.Customer;
-import org.bdlions.manager.User;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 

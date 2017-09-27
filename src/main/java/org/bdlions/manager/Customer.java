@@ -24,7 +24,7 @@ public class Customer {
     
     public boolean createCustomer(DTOCustomer dtoCustomer) {
         Session session = HibernateUtil.getSession();
-        Transaction tx = session.beginTransaction();        
+        Transaction tx = session.getTransaction(); 
         try {
             tx.begin();
             if (dtoCustomer != null && dtoCustomer.getEntityUser() != null) {
@@ -47,13 +47,13 @@ public class Customer {
     
     public boolean updateCustomer(DTOCustomer dtoCustomer) {
         Session session = HibernateUtil.getSession();
-        Transaction tx = session.beginTransaction();        
+        Transaction tx = session.getTransaction();
         try {
             tx.begin();
             if (dtoCustomer != null && dtoCustomer.getEntityUser() != null) {
                 EntityUser user = dtoCustomer.getEntityUser();
-                session.save(user);
-                session.save(dtoCustomer.getEntityCustomer());
+                session.update(user);
+                session.update(dtoCustomer.getEntityCustomer());
                 tx.commit();
                 return true;
             }
