@@ -6,11 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -24,7 +22,14 @@ import javax.persistence.Transient;
         }
 )
 @NamedQueries({
-    
+    @NamedQuery(
+            name = "getPurchaseOrderByOrderNo",
+            query = "from EntityPurchaseOrder purchaseOrder where purchaseOrder.orderNo = :orderNo"
+    ),
+    @NamedQuery(
+            name = "getAllPurchaseOrders",
+            query = "from EntityPurchaseOrder purchaseOrder"
+    )
 })
 public class EntityPurchaseOrder extends ClientResponse implements java.io.Serializable{
 
@@ -39,14 +44,23 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     @Column(name = "supplier_user_id", columnDefinition = "int(11) NOT NULL")
     private int supplierUserId;
     
-    @Column(name = "order_date", columnDefinition = "int(11) unsigned NOT NULL")
+    @Column(name = "order_date", columnDefinition = "int(11) unsigned DEFAULT 0")
     private int orderDate;
 
-    @Column(name = "requested_ship_date", columnDefinition = "int(11) unsigned NOT NULL")
+    @Column(name = "requested_ship_date", columnDefinition = "int(11) unsigned DEFAULT 0")
     private int requestedShipDate;
     
-    @Column(name = "discount")
+    @Column(name = "subtotal", columnDefinition = "int(11) unsigned DEFAULT 0")
+    private double subtotal;
+    
+    @Column(name = "discount", columnDefinition = "int(11) unsigned DEFAULT 0")
     private double discount;
+    
+    @Column(name = "total", columnDefinition = "int(11) unsigned DEFAULT 0")
+    private double total;
+    
+    @Column(name = "paid", columnDefinition = "int(11) unsigned DEFAULT 0")
+    private double paid;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int createdOn;
@@ -116,6 +130,30 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
 
     public void setModifiedOn(int modifiedOn) {
         this.modifiedOn = modifiedOn;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public double getPaid() {
+        return paid;
+    }
+
+    public void setPaid(double paid) {
+        this.paid = paid;
     }
 
     

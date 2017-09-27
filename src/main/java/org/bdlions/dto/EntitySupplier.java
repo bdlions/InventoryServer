@@ -37,6 +37,15 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")    
     private int id;
+    
+    @Column(name = "user_id", columnDefinition = "int(11) NOT NULL")
+    private int userId;
+    
+    @Column(name = "remarks", length = 1000)
+    private int remarks;
+
+    @Column(name = "balance")
+    private double balance;
 
     public int getId() {
         return id;
@@ -62,14 +71,12 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
         this.remarks = remarks;
     }
 
+    public double getBalance() {
+        return balance;
+    }
 
-    @Column(name = "user_id", columnDefinition = "int(11) NOT NULL")
-    private int userId;
-    
-    @Column(name = "remarks", length = 1000)
-    private int remarks;
-
-    
-    
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
     
 }

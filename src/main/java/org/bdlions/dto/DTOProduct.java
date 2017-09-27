@@ -7,6 +7,7 @@ package org.bdlions.dto;
 public class DTOProduct {
     public int limit;
     public int offset;
+    public double quantity;
     public EntityProduct entityProduct;
     public DTOProduct()
     {
@@ -29,6 +30,14 @@ public class DTOProduct {
         this.offset = offset;
     }
 
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+    
     public EntityProduct getEntityProduct() {
         return entityProduct;
     }

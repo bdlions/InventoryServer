@@ -7,16 +7,18 @@ import org.bdlions.dto.EntityProduct;
 import org.bdlions.dto.EntityProductCategory;
 import org.bdlions.dto.EntityProductType;
 import org.bdlions.dto.EntityUOM;
-import org.bdlions.dto.EntityUser;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul
  */
 public class Product {
+    private final Logger logger = LoggerFactory.getLogger(Product.class);
     public List<EntityProductCategory> getAllProductCategories(){
         Session session = HibernateUtil.getSession();
         try {
@@ -60,6 +62,7 @@ public class Product {
             }            
         }
         catch(Exception ex){
+            logger.error(ex.toString());
             tx.rollback();
         }
         finally {
@@ -92,6 +95,7 @@ public class Product {
             }            
         }
         catch(Exception ex){
+            logger.error(ex.toString());
             tx.rollback();
         }
         finally {

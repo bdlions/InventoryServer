@@ -9,12 +9,15 @@ import org.bdlions.dto.EntityUser;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul Hasan
  */
 public class Supplier {
+    private final Logger logger = LoggerFactory.getLogger(Supplier.class);
     public boolean createSupplier(DTOSupplier dtoSupplier) {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
@@ -23,6 +26,7 @@ public class Supplier {
             if (dtoSupplier != null && dtoSupplier.getEntityUser() != null) {
                 EntityUser user = dtoSupplier.getEntityUser();
                 session.save(user);
+                dtoSupplier.getEntityUserRole().setUserId(user.getId());
                 dtoSupplier.getEntitySupplier().setUserId(user.getId());
                 session.save(dtoSupplier.getEntitySupplier());
                 tx.commit();
@@ -30,6 +34,7 @@ public class Supplier {
             }
         }
         catch(Exception ex){
+            logger.error(ex.toString());
             tx.rollback();
         }
         finally {
@@ -52,6 +57,7 @@ public class Supplier {
             }
         }
         catch(Exception ex){
+            logger.error(ex.toString());
             tx.rollback();
         }
         finally {

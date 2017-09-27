@@ -2,7 +2,9 @@ package org.bdlions.library;
 
 import com.bdlions.dto.response.GeneralResponse;
 import org.bdlions.dto.DTOSupplier;
+import org.bdlions.dto.EntityUserRole;
 import org.bdlions.manager.Supplier;
+import org.bdlions.util.Constants;
 
 /**
  *
@@ -12,6 +14,9 @@ public class SupplierLibrary {
     public GeneralResponse createSupplier(DTOSupplier dtoSupplier)
     {
         GeneralResponse response = new GeneralResponse();
+        EntityUserRole entityUserRole = new EntityUserRole();
+        entityUserRole.setRoleId(Constants.ROLE_ID_SUPPLIER);
+        dtoSupplier.setEntityUserRole(entityUserRole);
         Supplier supplier = new Supplier();
         //check whether supplier identity exists or not
         if(supplier.createSupplier(dtoSupplier))

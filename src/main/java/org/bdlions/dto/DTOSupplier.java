@@ -12,10 +12,12 @@ public class DTOSupplier extends ClientResponse implements java.io.Serializable{
     public int offset;
     public EntitySupplier entitySupplier;
     public EntityUser entityUser;
+    public EntityUserRole entityUserRole;
     public DTOSupplier()
     {
         entitySupplier = new EntitySupplier();
         entityUser = new EntityUser();
+        entityUserRole = new EntityUserRole();
     }
 
     public int getLimit() {
@@ -48,6 +50,14 @@ public class DTOSupplier extends ClientResponse implements java.io.Serializable{
 
     public void setEntityUser(EntityUser entityUser) {
         this.entityUser = entityUser;
+    }
+
+    public EntityUserRole getEntityUserRole() {
+        return entityUserRole;
+    }
+
+    public void setEntityUserRole(EntityUserRole entityUserRole) {
+        this.entityUserRole = entityUserRole;
     }
     
 }

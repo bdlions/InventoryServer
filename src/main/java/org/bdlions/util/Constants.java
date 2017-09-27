@@ -9,8 +9,13 @@ public class Constants {
     public static final int ACCOUNT_STATUS_ID_INACTIVE = 2;
     
     public static final int ROLE_ID_ADMIN = 1;
-    public static final int ROLE_ID_LANDLORD = 2;
-    public static final int ROLE_ID_TANENT = 3;
+    public static final int ROLE_ID_STAFF = 2;
+    public static final int ROLE_ID_CUSTOMER = 3;
+    public static final int ROLE_ID_SUPPLIER = 4;
+    
+    public static final int SS_TRANSACTION_CATEGORY_ID_PURCASE_IN = 1;
+    public static final int SS_TRANSACTION_CATEGORY_ID_SALE_OUT = 5;
+    
     
     public static final int CURRENCY_UNIT_DEFAULT = 1;    
    

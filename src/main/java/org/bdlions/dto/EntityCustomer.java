@@ -39,10 +39,12 @@ public class EntityCustomer extends ClientResponse implements java.io.Serializab
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")    
     private int id;
+    
     @Column(name = "user_id", columnDefinition = "int(11) NOT NULL")
     private int userId;
     
-    
+    @Column(name = "balance")
+    private double balance;
     
     public int getId() {
         return id;
@@ -60,6 +62,12 @@ public class EntityCustomer extends ClientResponse implements java.io.Serializab
         this.userId = userId;
     }
 
-    
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }    
     
 }

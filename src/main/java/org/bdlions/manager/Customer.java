@@ -10,18 +10,20 @@ import java.util.List;
 import org.bdlions.db.HibernateUtil;
 import org.bdlions.dto.DTOCustomer;
 import org.bdlions.dto.EntityCustomer;
-import org.bdlions.dto.EntityProduct;
 import org.bdlions.dto.EntityUser;
+import org.bdlions.dto.EntityUserRole;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul
  */
 public class Customer {
-    
+    private final Logger logger = LoggerFactory.getLogger(Customer.class);
     public boolean createCustomer(DTOCustomer dtoCustomer) {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
@@ -30,6 +32,7 @@ public class Customer {
             if (dtoCustomer != null && dtoCustomer.getEntityUser() != null) {
                 EntityUser user = dtoCustomer.getEntityUser();
                 session.save(user);
+                dtoCustomer.getEntityUserRole().setUserId(user.getId());
                 dtoCustomer.getEntityCustomer().setUserId(user.getId());
                 session.save(dtoCustomer.getEntityCustomer());
                 tx.commit();
@@ -37,6 +40,7 @@ public class Customer {
             }
         }
         catch(Exception ex){
+            logger.error(ex.toString());
             tx.rollback();
         }
         finally {
@@ -59,6 +63,7 @@ public class Customer {
             }
         }
         catch(Exception ex){
+            logger.error(ex.toString());
             tx.rollback();
         }
         finally {

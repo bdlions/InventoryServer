@@ -11,10 +11,12 @@ public class DTOCustomer extends ClientResponse implements java.io.Serializable{
     public int offset;
     public EntityCustomer entityCustomer;
     public EntityUser entityUser;
+    public EntityUserRole entityUserRole;
     public DTOCustomer()
     {
         entityCustomer = new EntityCustomer();
         entityUser = new EntityUser();
+        entityUserRole = new EntityUserRole();
     }
 
     public int getLimit() {
@@ -47,6 +49,14 @@ public class DTOCustomer extends ClientResponse implements java.io.Serializable{
 
     public void setEntityUser(EntityUser entityUser) {
         this.entityUser = entityUser;
+    }
+
+    public EntityUserRole getEntityUserRole() {
+        return entityUserRole;
+    }
+
+    public void setEntityUserRole(EntityUserRole entityUserRole) {
+        this.entityUserRole = entityUserRole;
     }
     
 }

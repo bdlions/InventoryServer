@@ -24,7 +24,14 @@ import javax.persistence.Transient;
         }
 )
 @NamedQueries({
-    
+    @NamedQuery(
+            name = "getSaleOrderByOrderNo",
+            query = "from EntitySaleOrder saleOrder where saleOrder.orderNo = :orderNo"
+    ),
+    @NamedQuery(
+            name = "getAllSaleOrders",
+            query = "from EntitySaleOrder saleOrder"
+    )
 })
 public class EntitySaleOrder extends ClientResponse implements java.io.Serializable{
 

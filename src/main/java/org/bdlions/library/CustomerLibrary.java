@@ -3,8 +3,10 @@ package org.bdlions.library;
 import com.bdlions.dto.response.GeneralResponse;
 import org.bdlions.dto.DTOCustomer;
 import org.bdlions.dto.EntityProduct;
+import org.bdlions.dto.EntityUserRole;
 import org.bdlions.manager.Customer;
 import org.bdlions.manager.Product;
+import org.bdlions.util.Constants;
 
 /**
  *
@@ -14,6 +16,9 @@ public class CustomerLibrary {
     public GeneralResponse createCustomer(DTOCustomer dtoCustomer)
     {
         GeneralResponse response = new GeneralResponse();
+        EntityUserRole entityUserRole = new EntityUserRole();
+        entityUserRole.setRoleId(Constants.ROLE_ID_CUSTOMER);
+        dtoCustomer.setEntityUserRole(entityUserRole);
         Customer customer = new Customer();
         //check whether customer identity exists or not
         if(customer.createCustomer(dtoCustomer))
