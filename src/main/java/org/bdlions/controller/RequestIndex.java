@@ -20,16 +20,17 @@ import org.bdlions.transport.packet.IPacket;
 import org.bdlions.transport.packet.IPacketHeader;
 import org.bdlions.transport.packet.RequestPacketImpl;
 import org.bdlions.util.ClientRequestHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.*;
+import org.springframework.stereotype.*;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
  * @author nazmul hasan
  */
-@RestController
+@CrossOrigin
+@Controller
 public class RequestIndex {
     @RequestMapping("/")
     String home() {
