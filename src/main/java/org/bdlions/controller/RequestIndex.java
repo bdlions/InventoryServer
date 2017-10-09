@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
  * @author nazmul hasan
  */
 @CrossOrigin
-@Controller
+@RestController
 public class RequestIndex {
     @RequestMapping("/")
     String home() {

@@ -46,13 +46,13 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     @Column(name = "code", length = 200)
     private String code;
     
-    @Column(name = "category_id", columnDefinition = "int(11) DEFAULT NULL")
+    @Column(name = "category_id", columnDefinition = "int(11) DEFAULT 1")
     private int categoryId;
     
     @Column(name = "category_title", length = 200)
     private String categoryTitle;
     
-    @Column(name = "type_id", columnDefinition = "int(11) DEFAULT NULL")
+    @Column(name = "type_id", columnDefinition = "int(11) DEFAULT 1")
     private int typeId;
     
     @Column(name = "type_title", length = 200)
@@ -73,13 +73,13 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     @Column(name = "length", length = 200)
     private String length;
     
-    @Column(name = "standard_uom_id", columnDefinition = "int(11) DEFAULT NULL")
+    @Column(name = "standard_uom_id", columnDefinition = "int(11) unsigned DEFAULT 1")
     private int standardUOMId;
     
-    @Column(name = "sale_uom_id", columnDefinition = "int(11) DEFAULT NULL")
+    @Column(name = "sale_uom_id", columnDefinition = "int(11) unsigned DEFAULT 1")
     private int saleUOMId;
     
-    @Column(name = "purchase_uom_id", columnDefinition = "int(11) DEFAULT NULL")
+    @Column(name = "purchase_uom_id", columnDefinition = "int(11) unsigned DEFAULT 1")
     private int purchaseUOMId;
     
     

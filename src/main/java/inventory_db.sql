@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2017 at 06:25 PM
+-- Generation Time: Sep 29, 2017 at 12:43 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 5.6.31
 
@@ -100,6 +100,7 @@ CREATE TABLE `company` (
 
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL,
+  `balance` double DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -143,21 +144,30 @@ CREATE TABLE `po_warehouse_products` (
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `category_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT '1',
+  `category_title` varchar(200) DEFAULT NULL,
   `code` varchar(200) DEFAULT NULL,
   `created_on` int(11) UNSIGNED DEFAULT '0',
   `height` varchar(200) DEFAULT NULL,
   `length` varchar(200) DEFAULT NULL,
   `modified_on` int(11) UNSIGNED DEFAULT '0',
   `name` varchar(200) DEFAULT NULL,
-  `purchase_uom_id` int(11) DEFAULT NULL,
-  `sale_uom_id` int(11) DEFAULT NULL,
-  `standard_uom_id` int(11) DEFAULT NULL,
-  `type_id` int(11) DEFAULT NULL,
+  `purchase_uom_id` int(11) UNSIGNED DEFAULT '1',
+  `sale_uom_id` int(11) UNSIGNED DEFAULT '1',
+  `standard_uom_id` int(11) UNSIGNED DEFAULT '1',
+  `type_id` int(11) DEFAULT '1',
+  `type_title` varchar(200) DEFAULT NULL,
   `unit_price` double DEFAULT NULL,
   `weight` varchar(200) DEFAULT NULL,
   `width` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `category_id`, `category_title`, `code`, `created_on`, `height`, `length`, `modified_on`, `name`, `purchase_uom_id`, `sale_uom_id`, `standard_uom_id`, `type_id`, `type_title`, `unit_price`, `weight`, `width`) VALUES
+(1, 1, 'Product category1', 'code1', 0, NULL, NULL, 0, 'product1', 0, 0, 0, 1, 'Product type1', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -169,7 +179,7 @@ CREATE TABLE `product_categories` (
   `id` int(11) NOT NULL,
   `created_on` int(11) UNSIGNED DEFAULT '0',
   `modified_on` int(11) UNSIGNED DEFAULT '0',
-  `title` varchar(255) DEFAULT NULL
+  `title` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -190,7 +200,7 @@ CREATE TABLE `product_types` (
   `id` int(11) NOT NULL,
   `created_on` int(11) UNSIGNED DEFAULT '0',
   `modified_on` int(11) UNSIGNED DEFAULT '0',
-  `title` varchar(255) DEFAULT NULL
+  `title` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -224,12 +234,15 @@ CREATE TABLE `profile` (
 CREATE TABLE `purchase_orders` (
   `id` int(11) NOT NULL,
   `created_on` int(11) UNSIGNED DEFAULT '0',
-  `discount` double DEFAULT NULL,
+  `discount` int(11) UNSIGNED DEFAULT '0',
   `modified_on` int(11) UNSIGNED DEFAULT '0',
-  `order_date` int(11) UNSIGNED NOT NULL,
+  `order_date` int(11) UNSIGNED DEFAULT '0',
   `order_no` varchar(200) DEFAULT NULL,
-  `requested_ship_date` int(11) UNSIGNED NOT NULL,
-  `supplier_user_id` int(11) NOT NULL
+  `paid` int(11) UNSIGNED DEFAULT '0',
+  `requested_ship_date` int(11) UNSIGNED DEFAULT '0',
+  `subtotal` int(11) UNSIGNED DEFAULT '0',
+  `supplier_user_id` int(11) NOT NULL,
+  `total` int(11) UNSIGNED DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -373,8 +386,8 @@ INSERT INTO `ss_transaction_categories` (`id`, `title`) VALUES
 (2, 'Purchase Partial In'),
 (3, 'Purchase partial Out'),
 (4, 'Purchase Delete'),
-(5, 'Sale In'),
-(6, 'Sale partial Out'),
+(5, 'Sale Out'),
+(6, 'Sale Return partial In'),
 (7, 'Sale Delete');
 
 -- --------------------------------------------------------
@@ -385,6 +398,7 @@ INSERT INTO `ss_transaction_categories` (`id`, `title`) VALUES
 
 CREATE TABLE `suppliers` (
   `id` int(11) NOT NULL,
+  `balance` double DEFAULT NULL,
   `remarks` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -721,7 +735,7 @@ ALTER TABLE `po_warehouse_products`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `product_categories`
 --
