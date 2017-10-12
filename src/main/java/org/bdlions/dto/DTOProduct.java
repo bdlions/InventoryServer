@@ -8,10 +8,14 @@ public class DTOProduct {
     public int limit;
     public int offset;
     public double quantity;
+    public EntityProductType entityProductType;
+    public EntityProductCategory entityProductCategory;
     public EntityProduct entityProduct;
     public DTOProduct()
     {
-        entityProduct = new EntityProduct();
+        entityProductType = new EntityProductType();
+        entityProductCategory = new EntityProductCategory();
+        entityProduct = new EntityProduct();        
     }
 
     public int getLimit() {
@@ -45,5 +49,20 @@ public class DTOProduct {
     public void setEntityProduct(EntityProduct entityProduct) {
         this.entityProduct = entityProduct;
     }
-    
+
+    public EntityProductType getEntityProductType() {
+        return entityProductType;
+    }
+
+    public void setEntityProductType(EntityProductType entityProductType) {
+        this.entityProductType = entityProductType;
+    }
+
+    public EntityProductCategory getEntityProductCategory() {
+        return entityProductCategory;
+    }
+
+    public void setEntityProductCategory(EntityProductCategory entityProductCategory) {
+        this.entityProductCategory = entityProductCategory;
+    }    
 }
