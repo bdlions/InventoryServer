@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.db.HibernateUtil;
 import org.bdlions.dto.DTOCustomer;
+import org.bdlions.dto.DTOSupplier;
 import org.bdlions.dto.EntityCustomer;
+import org.bdlions.dto.EntitySupplier;
 import org.bdlions.dto.EntityUser;
 import org.bdlions.dto.EntityUserRole;
 import org.hibernate.Session;
@@ -96,6 +98,24 @@ public class Customer {
     
     public List<DTOCustomer> getCustomers(DTOCustomer dtoCustomer) {
         List<DTOCustomer> customers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try {
+            //set limit, offset and other params in named query
+            Query<EntityCustomer> query = session.getNamedQuery("getCustomers");
+            List<EntityCustomer> entityCustomers = query.getResultList();
+            for(EntityCustomer entityCustomer : entityCustomers)
+            {
+                Query<EntityUser> queryUser = session.getNamedQuery("getUserByUserId");
+                queryUser.setParameter("userId", entityCustomer.getUserId());
+                EntityUser entityUser = queryUser.uniqueResult();
+                DTOCustomer tempDTOCustomer = new DTOCustomer();
+                tempDTOCustomer.setEntityCustomer(entityCustomer);
+                tempDTOCustomer.setEntityUser(entityUser);
+                customers.add(tempDTOCustomer);
+            }
+        } finally {
+            session.close();
+        }
         return customers;
     }
 }

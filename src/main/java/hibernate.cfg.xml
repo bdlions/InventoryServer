@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/inventory_db</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">$Adm1n#S1gntechBD</property>
+        
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="connection.pool_size">500</property>
+        
+        <mapping class="org.bdlions.dto.EntityAccountStatus" />
+        <mapping class="org.bdlions.dto.EntityRole" />
+        <mapping class="org.bdlions.dto.EntityUser" />
+        <mapping class="org.bdlions.dto.EntityUserRole" />        
+        <mapping class="org.bdlions.dto.EntityCompany" />
+        <mapping class="org.bdlions.dto.EntityProfile" />
+        <mapping class="org.bdlions.dto.EntityProductCategory" />
+        <mapping class="org.bdlions.dto.EntityProduct" />
+        <mapping class="org.bdlions.dto.EntityProductType" />
+        <mapping class="org.bdlions.dto.EntityUOM" />
+        <mapping class="org.bdlions.dto.EntityAddressType" />
+        <mapping class="org.bdlions.dto.EntityAddressCategory" />
+        <mapping class="org.bdlions.dto.EntityUserAddress" />
+        <mapping class="org.bdlions.dto.EntitySupplier" />
+        <mapping class="org.bdlions.dto.EntityCustomer" />
+        <mapping class="org.bdlions.dto.EntityPurchaseOrder" />
+        <mapping class="org.bdlions.dto.EntityPurchaseOrderStatus" />
+        <mapping class="org.bdlions.dto.EntityPOWarehouseProduct" />
+		<mapping class="org.bdlions.dto.EntityPOShowRoomProduct" />
+        <mapping class="org.bdlions.dto.EntityWSTransactionCategory" />
+        <mapping class="org.bdlions.dto.EntityWarehouseStock" />
+        <mapping class="org.bdlions.dto.EntitySaleOrderStatus" />
+        <mapping class="org.bdlions.dto.EntitySaleOrder" />
+		<mapping class="org.bdlions.dto.EntitySaleOrderProduct" />
+        <mapping class="org.bdlions.dto.EntitySSTransactionCategory" />
+        <mapping class="org.bdlions.dto.EntityShowRoomStock" />
+    </session-factory>
+</hibernate-configuration>

@@ -29,6 +29,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getSupplierByUserId",
             query = "from EntitySupplier supplier where supplier.userId = :userId"
+    ),
+    @NamedQuery(
+            name = "getSuppliers",
+            query = "from EntitySupplier supplier"
     )
 })
 public class EntitySupplier extends ClientResponse implements java.io.Serializable{
@@ -42,7 +46,7 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
     private int userId;
     
     @Column(name = "remarks", length = 1000)
-    private int remarks;
+    private String remarks;
 
     @Column(name = "balance")
     private double balance;
@@ -63,11 +67,11 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
         this.userId = userId;
     }
 
-    public int getRemarks() {
+    public String getRemarks() {
         return remarks;
     }
 
-    public void setRemarks(int remarks) {
+    public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
 

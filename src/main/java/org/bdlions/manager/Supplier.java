@@ -90,6 +90,24 @@ public class Supplier {
     
     public List<DTOSupplier> getSuppliers(DTOSupplier dtoSupplier) {
         List<DTOSupplier> suppliers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try {
+            //set limit, offset and other params in named query
+            Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
+            List<EntitySupplier> entitySuppliers = query.getResultList();
+            for(EntitySupplier entitySupplier : entitySuppliers)
+            {
+                Query<EntityUser> queryUser = session.getNamedQuery("getUserByUserId");
+                queryUser.setParameter("userId", entitySupplier.getUserId());
+                EntityUser entityUser = queryUser.uniqueResult();
+                DTOSupplier tempDTOSupplier = new DTOSupplier();
+                tempDTOSupplier.setEntitySupplier(entitySupplier);
+                tempDTOSupplier.setEntityUser(entityUser);
+                suppliers.add(tempDTOSupplier);
+            }
+        } finally {
+            session.close();
+        }
         return suppliers;
     }
 }
