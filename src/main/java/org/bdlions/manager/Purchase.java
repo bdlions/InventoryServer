@@ -6,6 +6,7 @@ import org.bdlions.db.HibernateUtil;
 import org.bdlions.dto.DTOProduct;
 import org.bdlions.dto.DTOPurchaseOrder;
 import org.bdlions.dto.EntityPOShowRoomProduct;
+import org.bdlions.dto.EntityProduct;
 import org.bdlions.dto.EntityPurchaseOrder;
 import org.bdlions.dto.EntityShowRoomStock;
 import org.bdlions.util.Constants;
@@ -67,10 +68,39 @@ public class Purchase {
     {
         Session session = HibernateUtil.getSession();
         try {
+            
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderByOrderNo");
             query.setParameter("orderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             EntityPurchaseOrder entityPurchaseOrder =  query.getSingleResult();
             dtoPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
+            
+            Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("getPurchaseOrderProductsByOrderNo");
+            queryShowRoomProducts.setParameter("orderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+            List<EntityPOShowRoomProduct> showRoomProducts =  queryShowRoomProducts.getResultList();
+            if(showRoomProducts != null)
+            {
+                for(int counter = 0; counter < showRoomProducts.size(); counter++)
+                {
+                    EntityPOShowRoomProduct entityPOShowRoomProduct = showRoomProducts.get(counter);
+                    Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getPurchaseOrderProductByOrderNoAndCategoryId");
+                    queryStockProducts.setParameter("purchaseOrderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                    queryStockProducts.setParameter("transactionCategoryId", Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                    queryStockProducts.setParameter("productId", entityPOShowRoomProduct.getProductId());
+                    EntityShowRoomStock stockProduct =  queryStockProducts.getSingleResult();
+                    
+                    Query<EntityProduct> queryEntityEntityProduct = session.getNamedQuery("getProductByProductId");
+                    queryEntityEntityProduct.setParameter("productId", stockProduct.getProductId());
+                    EntityProduct entityProduct =  queryEntityEntityProduct.getSingleResult();
+                    
+                    DTOProduct dtoProduct = new DTOProduct();
+                    dtoProduct.setQuantity(stockProduct.getStockIn());
+                    dtoProduct.setEntityProduct(entityProduct);
+                    dtoProduct.getEntityProduct().setUnitPrice(entityPOShowRoomProduct.getUnitPrice());
+                    
+                    dtoPurchaseOrder.getProducts().add(dtoProduct);
+                }
+            }
+            
         } finally {
             session.close();
         }

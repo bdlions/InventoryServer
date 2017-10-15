@@ -54,7 +54,7 @@ public class SupplierHandler {
         Gson gson = new Gson();
         DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);      
         Supplier supplier = new Supplier();
-        DTOSupplier response = supplier.getSupplierInfo(dtoSupplier.getEntitySupplier().getId());
+        DTOSupplier response = supplier.getSupplierInfo(dtoSupplier.getEntitySupplier());
         if(response == null)
         {
             GeneralResponse generalResponse = new GeneralResponse();

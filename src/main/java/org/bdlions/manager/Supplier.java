@@ -66,22 +66,33 @@ public class Supplier {
         return false;
     }
     
-    public DTOSupplier getSupplierInfo(int supplierId) {
+    public DTOSupplier getSupplierInfo(EntitySupplier reqEntitySupplier) {
         DTOSupplier dtoSupplier = null;
         Session session = HibernateUtil.getSession();
         try {
-            Query<EntitySupplier> query1 = session.getNamedQuery("getSupplierBySupplierId");
-            query1.setParameter("supplierId", supplierId);
-            EntitySupplier entitySupplier = query1.getSingleResult();
-            
-            Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
-            query2.setParameter("userId", entitySupplier.getUserId());
-            EntityUser entityUser = query2.getSingleResult();
-            
-            dtoSupplier = new DTOSupplier();
-            dtoSupplier.setEntitySupplier(entitySupplier);
-            dtoSupplier.setEntityUser(entityUser);
-            
+            EntitySupplier entitySupplier = new EntitySupplier();
+            if(reqEntitySupplier.getId() > 0)
+            {
+                Query<EntitySupplier> query1 = session.getNamedQuery("getSupplierBySupplierId");
+                query1.setParameter("supplierId", reqEntitySupplier.getId());
+                entitySupplier = query1.getSingleResult();
+            }
+            else if(reqEntitySupplier.getUserId() > 0)
+            {
+                Query<EntitySupplier> query1 = session.getNamedQuery("getSupplierByUserId");
+                query1.setParameter("userId", reqEntitySupplier.getUserId());
+                entitySupplier = query1.getSingleResult();
+            }
+            if(entitySupplier.getId() > 0)
+            {
+                Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
+                query2.setParameter("userId", entitySupplier.getUserId());
+                EntityUser entityUser = query2.getSingleResult();
+
+                dtoSupplier = new DTOSupplier();
+                dtoSupplier.setEntitySupplier(entitySupplier);
+                dtoSupplier.setEntityUser(entityUser);
+            }            
         } finally {
             session.close();
         }
