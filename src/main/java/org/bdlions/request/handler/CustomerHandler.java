@@ -54,7 +54,7 @@ public class CustomerHandler {
         Gson gson = new Gson();
         DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);      
         Customer customer = new Customer();
-        DTOCustomer response = customer.getCustomerInfo(dtoCustomer.getEntityCustomer().getId());
+        DTOCustomer response = customer.getCustomerInfo(dtoCustomer.getEntityCustomer());
         if(response == null)
         {
             GeneralResponse generalResponse = new GeneralResponse();

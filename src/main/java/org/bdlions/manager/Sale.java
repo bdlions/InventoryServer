@@ -7,6 +7,7 @@ import org.bdlions.dto.DTOProduct;
 import org.bdlions.dto.DTOPurchaseOrder;
 import org.bdlions.dto.DTOSaleOrder;
 import org.bdlions.dto.EntityPOShowRoomProduct;
+import org.bdlions.dto.EntityProduct;
 import org.bdlions.dto.EntityPurchaseOrder;
 import org.bdlions.dto.EntitySaleOrder;
 import org.bdlions.dto.EntitySaleOrderProduct;
@@ -74,6 +75,33 @@ public class Sale {
             query.setParameter("orderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
             EntitySaleOrder entitySaleOrder =  query.getSingleResult();
             dtoSaleOrder.setEntitySaleOrder(entitySaleOrder);
+            
+            Query<EntitySaleOrderProduct> queryShowRoomProducts = session.getNamedQuery("getSaleOrderProductsByOrderNo");
+            queryShowRoomProducts.setParameter("saleOrderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+            List<EntitySaleOrderProduct> showRoomProducts =  queryShowRoomProducts.getResultList();
+            if(showRoomProducts != null)
+            {
+                for(int counter = 0; counter < showRoomProducts.size(); counter++)
+                {
+                    EntitySaleOrderProduct entitySaleOrderProduct = showRoomProducts.get(counter);
+                    Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getSaleOrderProductByOrderNoAndCategoryId");
+                    queryStockProducts.setParameter("saleOrderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+                    queryStockProducts.setParameter("transactionCategoryId", Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                    queryStockProducts.setParameter("productId", entitySaleOrderProduct.getProductId());
+                    EntityShowRoomStock stockProduct =  queryStockProducts.getSingleResult();
+                    
+                    Query<EntityProduct> queryEntityEntityProduct = session.getNamedQuery("getProductByProductId");
+                    queryEntityEntityProduct.setParameter("productId", stockProduct.getProductId());
+                    EntityProduct entityProduct =  queryEntityEntityProduct.getSingleResult();
+                    
+                    DTOProduct dtoProduct = new DTOProduct();
+                    dtoProduct.setQuantity(stockProduct.getStockOut());
+                    dtoProduct.setEntityProduct(entityProduct);
+                    dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
+                    
+                    dtoSaleOrder.getProducts().add(dtoProduct);
+                }
+            }
         } finally {
             session.close();
         }

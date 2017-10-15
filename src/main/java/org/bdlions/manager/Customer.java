@@ -74,22 +74,33 @@ public class Customer {
         return false;
     }
     
-    public DTOCustomer getCustomerInfo(int customerId) {
+    public DTOCustomer getCustomerInfo(EntityCustomer reqEntityCustomer) {
         DTOCustomer dtoCustomer = null;
         Session session = HibernateUtil.getSession();
         try {
-            Query<EntityCustomer> query1 = session.getNamedQuery("getCustomerByCustomerId");
-            query1.setParameter("customerId", customerId);
-            EntityCustomer entityCustomer = query1.getSingleResult();
-            
-            Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
-            query2.setParameter("userId", entityCustomer.getUserId());
-            EntityUser entityUser = query2.getSingleResult();
-            
-            dtoCustomer = new DTOCustomer();
-            dtoCustomer.setEntityCustomer(entityCustomer);
-            dtoCustomer.setEntityUser(entityUser);
-            
+            EntityCustomer entityCustomer = new EntityCustomer();
+            if(reqEntityCustomer.getId() > 0)
+            {
+                Query<EntityCustomer> query1 = session.getNamedQuery("getCustomerByCustomerId");
+                query1.setParameter("customerId", reqEntityCustomer.getId());
+                entityCustomer = query1.getSingleResult();
+            }
+            else if(reqEntityCustomer.getUserId() > 0)
+            {
+                Query<EntityCustomer> query1 = session.getNamedQuery("getCustomerByUserId");
+                query1.setParameter("userId", reqEntityCustomer.getUserId());
+                entityCustomer = query1.getSingleResult();
+            }
+            if(entityCustomer.getId() > 0)
+            {
+                Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
+                query2.setParameter("userId", entityCustomer.getUserId());
+                EntityUser entityUser = query2.getSingleResult();
+
+                dtoCustomer = new DTOCustomer();
+                dtoCustomer.setEntityCustomer(entityCustomer);
+                dtoCustomer.setEntityUser(entityUser);
+            }
         } finally {
             session.close();
         }

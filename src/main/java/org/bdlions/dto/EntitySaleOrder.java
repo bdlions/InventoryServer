@@ -58,6 +58,9 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     @Column(name = "remarks", length = 500)
     private String remarks;
     
+    @Column(name = "total", columnDefinition = "int(11) unsigned DEFAULT 0")
+    private double total;
+    
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int createdOn;
 
@@ -112,6 +115,14 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
         this.discount = discount;
     }
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
     public int getCreatedOn() {
         return createdOn;
     }

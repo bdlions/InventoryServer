@@ -27,6 +27,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getPurchaseOrderProductByOrderNoAndCategoryId",
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.purchaseOrderNo = :purchaseOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
+    ),
+    @NamedQuery(
+            name = "getSaleOrderProductByOrderNoAndCategoryId",
+            query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     )
 })
 public class EntityShowRoomStock extends ClientResponse implements java.io.Serializable{
