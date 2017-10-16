@@ -31,6 +31,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getSaleOrderProductByOrderNoAndCategoryId",
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
+    ),
+    @NamedQuery(
+            name = "getCurrentStock",
+            query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock group by productId"
     )
 })
 public class EntityShowRoomStock extends ClientResponse implements java.io.Serializable{
