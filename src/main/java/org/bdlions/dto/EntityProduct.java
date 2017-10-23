@@ -30,7 +30,7 @@ import javax.persistence.Transient;
     ),
     @NamedQuery(
             name = "getProducts",
-            query = "from EntityProduct product"
+            query = "from EntityProduct product order by name asc"
     )
 })
 public class EntityProduct extends ClientResponse implements java.io.Serializable{

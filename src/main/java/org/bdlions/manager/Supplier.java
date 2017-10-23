@@ -28,6 +28,7 @@ public class Supplier {
                 session.save(user);
                 dtoSupplier.getEntityUserRole().setUserId(user.getId());
                 dtoSupplier.getEntitySupplier().setUserId(user.getId());
+                session.save(dtoSupplier.getEntityUserRole());
                 session.save(dtoSupplier.getEntitySupplier());
                 tx.commit();
                 return true;
@@ -51,6 +52,7 @@ public class Supplier {
             if (dtoSupplier != null && dtoSupplier.getEntityUser() != null) {
                 EntityUser user = dtoSupplier.getEntityUser();
                 session.update(user);
+                //update user role if required.
                 session.update(dtoSupplier.getEntitySupplier());
                 tx.commit();
                 return true;
@@ -88,7 +90,7 @@ public class Supplier {
                 Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
                 query2.setParameter("userId", entitySupplier.getUserId());
                 EntityUser entityUser = query2.getSingleResult();
-
+                //set user role if required
                 dtoSupplier = new DTOSupplier();
                 dtoSupplier.setEntitySupplier(entitySupplier);
                 dtoSupplier.setEntityUser(entityUser);
@@ -114,6 +116,7 @@ public class Supplier {
                 DTOSupplier tempDTOSupplier = new DTOSupplier();
                 tempDTOSupplier.setEntitySupplier(entitySupplier);
                 tempDTOSupplier.setEntityUser(entityUser);
+                //set user role if required
                 suppliers.add(tempDTOSupplier);
             }
         } finally {

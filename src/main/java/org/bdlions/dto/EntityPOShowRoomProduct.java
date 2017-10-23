@@ -25,6 +25,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getPurchaseOrderProductsByOrderNo",
             query = "from EntityPOShowRoomProduct product where product.orderNo = :orderNo"
+    ),
+    @NamedQuery(
+            name = "deletePurchaseOrderProductsByOrderNo",
+            query = " delete from EntityPOShowRoomProduct product where product.orderNo = :orderNo"
     )
 })
 public class EntityPOShowRoomProduct extends ClientResponse implements java.io.Serializable{

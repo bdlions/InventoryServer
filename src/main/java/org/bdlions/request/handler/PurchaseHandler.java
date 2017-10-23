@@ -77,4 +77,27 @@ public class PurchaseHandler {
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
         return listPurchaseOrder;
     }
+    
+    @ClientRequest(action = ACTION.UPDATE_PURCHASE_ORDER_INFO)
+    public ClientResponse updatePurchaseOrderInfo(ISession session, IPacket packet) throws Exception 
+    {
+        GeneralResponse response = new GeneralResponse();
+        Gson gson = new Gson();
+        DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);     
+        Purchase purchase = new Purchase();
+        if(dtoPurchaseOrder != null && dtoPurchaseOrder.getEntityPurchaseOrder() != null && dtoPurchaseOrder.getEntityPurchaseOrder().getId() > 0)
+        {
+            if(purchase.updatePurchaseOrderInfo(dtoPurchaseOrder))
+            {
+                response.setSuccess(true);
+                response.setMessage("Purchase order is updated successfully.");
+            }
+        }
+        else
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Purchase Order Info. Please try again later.");
+        }        
+        return response;
+    }
 }

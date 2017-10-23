@@ -20,8 +20,6 @@
         <mapping class="org.bdlions.dto.EntityRole" />
         <mapping class="org.bdlions.dto.EntityUser" />
         <mapping class="org.bdlions.dto.EntityUserRole" />        
-        <mapping class="org.bdlions.dto.EntityCompany" />
-        <mapping class="org.bdlions.dto.EntityProfile" />
         <mapping class="org.bdlions.dto.EntityProductCategory" />
         <mapping class="org.bdlions.dto.EntityProduct" />
         <mapping class="org.bdlions.dto.EntityProductType" />
@@ -34,12 +32,12 @@
         <mapping class="org.bdlions.dto.EntityPurchaseOrder" />
         <mapping class="org.bdlions.dto.EntityPurchaseOrderStatus" />
         <mapping class="org.bdlions.dto.EntityPOWarehouseProduct" />
-		<mapping class="org.bdlions.dto.EntityPOShowRoomProduct" />
+	<mapping class="org.bdlions.dto.EntityPOShowRoomProduct" />
         <mapping class="org.bdlions.dto.EntityWSTransactionCategory" />
         <mapping class="org.bdlions.dto.EntityWarehouseStock" />
         <mapping class="org.bdlions.dto.EntitySaleOrderStatus" />
         <mapping class="org.bdlions.dto.EntitySaleOrder" />
-		<mapping class="org.bdlions.dto.EntitySaleOrderProduct" />
+	<mapping class="org.bdlions.dto.EntitySaleOrderProduct" />
         <mapping class="org.bdlions.dto.EntitySSTransactionCategory" />
         <mapping class="org.bdlions.dto.EntityShowRoomStock" />
     </session-factory>

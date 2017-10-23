@@ -36,6 +36,7 @@ public class Customer {
                 session.save(user);
                 dtoCustomer.getEntityUserRole().setUserId(user.getId());
                 dtoCustomer.getEntityCustomer().setUserId(user.getId());
+                session.save(dtoCustomer.getEntityUserRole());
                 session.save(dtoCustomer.getEntityCustomer());
                 tx.commit();
                 return true;
@@ -59,6 +60,7 @@ public class Customer {
             if (dtoCustomer != null && dtoCustomer.getEntityUser() != null) {
                 EntityUser user = dtoCustomer.getEntityUser();
                 session.update(user);
+                //update user role if required.
                 session.update(dtoCustomer.getEntityCustomer());
                 tx.commit();
                 return true;
@@ -96,7 +98,7 @@ public class Customer {
                 Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
                 query2.setParameter("userId", entityCustomer.getUserId());
                 EntityUser entityUser = query2.getSingleResult();
-
+                //set user role if required
                 dtoCustomer = new DTOCustomer();
                 dtoCustomer.setEntityCustomer(entityCustomer);
                 dtoCustomer.setEntityUser(entityUser);
@@ -122,6 +124,7 @@ public class Customer {
                 DTOCustomer tempDTOCustomer = new DTOCustomer();
                 tempDTOCustomer.setEntityCustomer(entityCustomer);
                 tempDTOCustomer.setEntityUser(entityUser);
+                //set user role if required
                 customers.add(tempDTOCustomer);
             }
         } finally {

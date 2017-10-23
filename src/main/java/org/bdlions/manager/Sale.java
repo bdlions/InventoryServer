@@ -27,11 +27,12 @@ public class Sale {
     private final Logger logger = LoggerFactory.getLogger(Sale.class);
     public boolean addSaleOrderInfo(DTOSaleOrder dtoSaleOrder)
     {
+        boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
         try {
-            tx.begin();
             if (dtoSaleOrder != null && dtoSaleOrder.getEntitySaleOrder() != null) {
+                tx.begin();
                 EntitySaleOrder entitySaleOrder = dtoSaleOrder.getEntitySaleOrder();
                 session.save(entitySaleOrder);
                 List<DTOProduct> products = dtoSaleOrder.getProducts();
@@ -54,7 +55,7 @@ public class Sale {
                     session.save(entityShowRoomStock);
                 }
                 tx.commit();
-                return true;
+                status = true;
             }
         }
         catch(Exception ex){
@@ -64,7 +65,7 @@ public class Sale {
         finally {
             session.close();
         }
-        return false;
+        return status;
     }
     
     public DTOSaleOrder getSaleOrderInfo(DTOSaleOrder dtoSaleOrder)
@@ -126,5 +127,82 @@ public class Sale {
             session.close();
         }
         return saleOrders;
+    }
+    
+    public EntitySaleOrder getEntitySaleOrder(EntitySaleOrder entitySaleOrder)
+    {
+        EntitySaleOrder resultEntitySaleOrder = null;
+        Session session = HibernateUtil.getSession();
+        try {
+            Query<EntitySaleOrder> query = session.getNamedQuery("getSaleOrderById");
+            query.setParameter("id", entitySaleOrder.getId());
+            resultEntitySaleOrder =  query.getSingleResult();
+            
+        } finally {
+            session.close();
+        }
+        return resultEntitySaleOrder;
+    }
+    
+    public boolean updateSaleOrderInfo(DTOSaleOrder dtoSaleOrder)
+    {
+        boolean status = false;
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        try {
+            if (dtoSaleOrder != null && dtoSaleOrder.getEntitySaleOrder() != null) {
+                //getting current entity sale order based on entity sale order id
+                EntitySaleOrder currEntitySaleOrder =  this.getEntitySaleOrder(dtoSaleOrder.getEntitySaleOrder());
+                if(currEntitySaleOrder != null && currEntitySaleOrder.getId() > 0)
+                {
+                    tx.begin();
+                    //updating entity sale order table
+                    EntitySaleOrder entitySaleOrder = dtoSaleOrder.getEntitySaleOrder();
+                    session.update(entitySaleOrder);
+                    
+                    //we have to follow delete then insert approach and update some tables.
+                    //delete entitySaleOrderProduct based on existing order no
+                    Query<EntitySaleOrderProduct> querySaleOrderProducts = session.getNamedQuery("deleteSaleOrderProductsByOrderNo");
+                    querySaleOrderProducts.setParameter("saleOrderNo", currEntitySaleOrder.getOrderNo());
+                    int code =  querySaleOrderProducts.executeUpdate();
+                    
+                    //delete entityShowRoomStock based on existing order no
+                    Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deleteSaleOrderShowRoomProductsByOrderNo");
+                    queryStockProducts.setParameter("saleOrderNo", currEntitySaleOrder.getOrderNo());
+                    queryStockProducts.setParameter("transactionCategoryId", Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                    code =  queryStockProducts.executeUpdate();
+                    
+                    List<DTOProduct> products = dtoSaleOrder.getProducts();
+                    int totalProducts = products.size();
+                    for(int counter = 0; counter < totalProducts; counter++)
+                    {
+                        DTOProduct dtoProduct = products.get(counter);
+                        EntitySaleOrderProduct entitySaleOrderProduct = new EntitySaleOrderProduct();
+                        entitySaleOrderProduct.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+                        entitySaleOrderProduct.setProductId(dtoProduct.getEntityProduct().getId());
+                        entitySaleOrderProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());                    
+                        session.save(entitySaleOrderProduct);
+
+                        EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
+                        entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+                        entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+                        entityShowRoomStock.setStockIn(0);
+                        entityShowRoomStock.setStockOut(dtoProduct.getQuantity());
+                        entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                        session.save(entityShowRoomStock);
+                    }
+                    tx.commit();
+                    status = true;
+                }                
+            }
+        }
+        catch(Exception ex){
+            logger.error(ex.toString());
+            tx.rollback();
+        }
+        finally {
+            session.close();
+        }
+        return status;
     }
 }

@@ -42,16 +42,16 @@ public class EntityUserAddress extends ClientResponse implements java.io.Seriali
     private int addressCategoryId;
     
     @Column(name = "address", length = 500)
-    private int address;
+    private String address;
     
     @Column(name = "city", length = 500)
-    private int city;
+    private String city;
    
     @Column(name = "state", length = 500)
-    private int state;
+    private String state;
    
     @Column(name = "zip", length = 500)
-    private int zip;
+    private String zip;
 
     public int getId() {
         return id;
@@ -85,38 +85,35 @@ public class EntityUserAddress extends ClientResponse implements java.io.Seriali
         this.addressCategoryId = addressCategoryId;
     }
 
-    public int getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(int address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public int getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(int city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public int getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    public int getZip() {
+    public String getZip() {
         return zip;
     }
 
-    public void setZip(int zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
-    
-    
-    
 }

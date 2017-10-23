@@ -27,6 +27,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getSaleOrderProductsByOrderNo",
             query = "from EntitySaleOrderProduct product where product.saleOrderNo = :saleOrderNo"
+    ),
+    @NamedQuery(
+            name = "deleteSaleOrderProductsByOrderNo",
+            query = " delete from EntitySaleOrderProduct product where product.saleOrderNo = :saleOrderNo"
     )
 })
 public class EntitySaleOrderProduct extends ClientResponse implements java.io.Serializable{

@@ -75,4 +75,27 @@ public class SaleHandler {
         listSaleOrder.setSuccess(true);
         return listSaleOrder;
     }
+    
+    @ClientRequest(action = ACTION.UPDATE_SALE_ORDER_INFO)
+    public ClientResponse updateSaleOrderInfo(ISession session, IPacket packet) throws Exception 
+    {
+        GeneralResponse response = new GeneralResponse();
+        Gson gson = new Gson();
+        DTOSaleOrder dtoSaleOrder = gson.fromJson(packet.getPacketBody(), DTOSaleOrder.class);     
+        Sale sale = new Sale();
+        if(dtoSaleOrder != null && dtoSaleOrder.getEntitySaleOrder() != null && dtoSaleOrder.getEntitySaleOrder().getId() > 0)
+        {
+            if(sale.updateSaleOrderInfo(dtoSaleOrder))
+            {
+                response.setSuccess(true);
+                response.setMessage("Sale order is updated successfully.");
+            }
+        }
+        else
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Sale Order Info. Please try again later.");
+        }
+        return response;
+    }
 }

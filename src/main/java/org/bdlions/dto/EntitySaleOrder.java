@@ -25,6 +25,10 @@ import javax.persistence.Transient;
 )
 @NamedQueries({
     @NamedQuery(
+            name = "getSaleOrderById",
+            query = "from EntitySaleOrder saleOrder where saleOrder.id = :id"
+    ),
+    @NamedQuery(
             name = "getSaleOrderByOrderNo",
             query = "from EntitySaleOrder saleOrder where saleOrder.orderNo = :orderNo"
     ),

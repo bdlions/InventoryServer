@@ -35,6 +35,14 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getCurrentStock",
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock group by productId"
+    ),
+    @NamedQuery(
+            name = "deletePurchaseOrderShowRoomProductsByOrderNo",
+            query = " delete from EntityShowRoomStock product where product.purchaseOrderNo = :purchaseOrderNo AND product.transactionCategoryId = :transactionCategoryId"
+    ),
+    @NamedQuery(
+            name = "deleteSaleOrderShowRoomProductsByOrderNo",
+            query = " delete from EntityShowRoomStock product where product.saleOrderNo = :saleOrderNo AND product.transactionCategoryId = :transactionCategoryId"
     )
 })
 public class EntityShowRoomStock extends ClientResponse implements java.io.Serializable{
