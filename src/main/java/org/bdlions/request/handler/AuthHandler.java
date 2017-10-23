@@ -13,10 +13,7 @@ import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bdlions.common.HibernateProxyTypeAdapter;
-import org.bdlions.dto.EntityProfile;
 import org.bdlions.dto.EntityUser;
-import org.bdlions.library.ProfileLibrary;
-import org.bdlions.manager.Profile;
 import org.bdlions.manager.User;
 import org.bdlions.util.Constants;
 
@@ -38,37 +35,8 @@ public class AuthHandler {
     public ClientResponse signUp(ISession session, IPacket packet) throws Exception 
     {
         Gson gson = new Gson();
-        EntityProfile profile = gson.fromJson(packet.getPacketBody(), EntityProfile.class);
         User userManager = new User();
         SignInResponse response = new SignInResponse();
-        if(profile != null && profile.getUser() != null)
-        {
-//            EntityUser tempUser = userManager.getUserByIdentity(profile.getUser().getEmail());
-//            if(tempUser == null)
-//            {
-////                profile.getUser().setAccountStatusId(Constants.ACCOUNT_STATUS_ID_ACTIVE);
-//                if(userManager.createProfile(profile))
-//                {
-//                    response.setMessage("Sign up successful");
-//                    response.setSuccess(true);
-//                }
-//                else
-//                {
-//                    response.setMessage("Unable to create profile. Please try again later.");
-//                    response.setSuccess(false);
-//                }
-//            }
-//            else
-//            {
-//                response.setMessage("Email already used or invalid.");
-//                response.setSuccess(false);
-//            }
-        }
-        else
-        {
-            response.setMessage("Invalid params to create a new user. Please try again later.");
-            response.setSuccess(false);
-        } 
         return response;
     }
     
