@@ -31,20 +31,53 @@ public class CustomerHandler {
     @ClientRequest(action = ACTION.ADD_CUSTOMER_INFO)
     public ClientResponse addCustomerInfo(ISession session, IPacket packet) throws Exception 
     {
+        GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
         DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);     
-        CustomerLibrary customerLibrary = new CustomerLibrary();
-        GeneralResponse response = customerLibrary.createCustomer(dtoCustomer);
+        if(dtoCustomer == null || dtoCustomer.getEntityUser() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Customer Info. Please try again later.");
+        }
+        else if(dtoCustomer.getEntityUser().getFirstName() == null || dtoCustomer.getEntityUser().getFirstName().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Customer First Name is required.");
+        }
+        else
+        {
+            CustomerLibrary customerLibrary = new CustomerLibrary();
+            response = customerLibrary.createCustomer(dtoCustomer);
+        }        
         return response;
     }
     
     @ClientRequest(action = ACTION.UPDATE_CUSTOMER_INFO)
     public ClientResponse updateCustomerInfo(ISession session, IPacket packet) throws Exception 
     {
+        GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
-        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);     
-        CustomerLibrary customerLibrary = new CustomerLibrary();
-        GeneralResponse response = customerLibrary.updateCustomer(dtoCustomer);
+        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class); 
+        if(dtoCustomer == null || dtoCustomer.getEntityCustomer() == null || dtoCustomer.getEntityUser() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Customer Info. Please try again later.");
+        }
+        else if(dtoCustomer.getEntityCustomer().getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Customer Info. Please try again later..");
+        }
+        else if(dtoCustomer.getEntityUser().getFirstName() == null || dtoCustomer.getEntityUser().getFirstName().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Customer First Name is required.");
+        }
+        else
+        {
+            CustomerLibrary customerLibrary = new CustomerLibrary();
+            response = customerLibrary.updateCustomer(dtoCustomer);
+        }        
         return response;
     }
     

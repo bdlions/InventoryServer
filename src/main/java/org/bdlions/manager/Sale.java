@@ -144,6 +144,26 @@ public class Sale {
         return resultEntitySaleOrder;
     }
     
+    public EntitySaleOrder getEntitySaleOrderByOrderNo(EntitySaleOrder entitySaleOrder)
+    {
+        EntitySaleOrder resultEntitySaleOrder = null;
+        Session session = HibernateUtil.getSession();
+        try {
+            Query<EntitySaleOrder> query = session.getNamedQuery("getSaleOrderByOrderNo");
+            query.setParameter("orderNo", entitySaleOrder.getOrderNo());
+            resultEntitySaleOrder =  query.getSingleResult();
+            
+        } 
+        catch(Exception ex)
+        {
+        
+        }
+        finally {
+            session.close();
+        }
+        return resultEntitySaleOrder;
+    }
+    
     public boolean updateSaleOrderInfo(DTOSaleOrder dtoSaleOrder)
     {
         boolean status = false;

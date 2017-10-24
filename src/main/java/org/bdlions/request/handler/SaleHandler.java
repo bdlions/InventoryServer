@@ -9,6 +9,7 @@ import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import java.util.List;
 import org.bdlions.dto.DTOSaleOrder;
+import org.bdlions.dto.EntitySaleOrder;
 import org.bdlions.dto.ListSaleOrder;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.manager.Sale;
@@ -34,10 +35,50 @@ public class SaleHandler {
         Gson gson = new Gson();
         DTOSaleOrder dtoSaleOrder = gson.fromJson(packet.getPacketBody(), DTOSaleOrder.class);     
         Sale sale = new Sale();
+        if(dtoSaleOrder == null || dtoSaleOrder.getEntitySaleOrder() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Sale Order Info. Please try again later.");
+            return response;
+        }
+        else if(dtoSaleOrder.getEntitySaleOrder().getOrderNo() == null || dtoSaleOrder.getEntitySaleOrder().getOrderNo().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Order no is required.");
+            return response;
+        }
+        else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Customer. Please select a customer.");
+            return response;
+        }
+        else if(dtoSaleOrder.getProducts() == null || dtoSaleOrder.getProducts().isEmpty())
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product for the sale.");
+            return response;
+        }
+        
+        EntitySaleOrder tempEntitySaleOrder = new EntitySaleOrder();
+        tempEntitySaleOrder.setOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+        EntitySaleOrder resultEntitySaleOrder = sale.getEntitySaleOrderByOrderNo(tempEntitySaleOrder);
+        if(resultEntitySaleOrder != null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Order No already exists or invalid.");
+            return response;
+        }
+        
         if(sale.addSaleOrderInfo(dtoSaleOrder))
         {
             response.setSuccess(true);
-            response.setMessage("Sale order is added successfully.");
+            response.setMessage("Sale Order is added successfully.");
+        }
+        else
+        {
+            response.setSuccess(false);
+            response.setMessage("Unable to add Sale Order. Please try again later..");
         }
         return response;
     }
@@ -83,18 +124,64 @@ public class SaleHandler {
         Gson gson = new Gson();
         DTOSaleOrder dtoSaleOrder = gson.fromJson(packet.getPacketBody(), DTOSaleOrder.class);     
         Sale sale = new Sale();
-        if(dtoSaleOrder != null && dtoSaleOrder.getEntitySaleOrder() != null && dtoSaleOrder.getEntitySaleOrder().getId() > 0)
+        if(dtoSaleOrder == null || dtoSaleOrder.getEntitySaleOrder() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Sale Order Info. Please try again later.");
+            return response;
+        }
+        else if(dtoSaleOrder.getEntitySaleOrder().getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Sale Order Info. Please try again later..");
+            return response;
+        }
+        else if(dtoSaleOrder.getEntitySaleOrder().getOrderNo() == null || dtoSaleOrder.getEntitySaleOrder().getOrderNo().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Order no is required.");
+            return response;
+        }
+        else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Customer. Please select a customer.");
+            return response;
+        }
+        else if(dtoSaleOrder.getProducts() == null || dtoSaleOrder.getProducts().isEmpty())
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product for the sale.");
+            return response;
+        }
+        
+        EntitySaleOrder tempEntitySaleOrder = new EntitySaleOrder();
+        tempEntitySaleOrder.setOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+        EntitySaleOrder resultEntitySaleOrder = sale.getEntitySaleOrderByOrderNo(tempEntitySaleOrder);
+        if(resultEntitySaleOrder != null && resultEntitySaleOrder.getId() != dtoSaleOrder.getEntitySaleOrder().getId())
+        {
+            response.setSuccess(false);
+            response.setMessage("Order No already exists or invalid.");
+            return response;
+        }
+        
+        if(dtoSaleOrder.getEntitySaleOrder().getId() > 0)
         {
             if(sale.updateSaleOrderInfo(dtoSaleOrder))
             {
                 response.setSuccess(true);
                 response.setMessage("Sale order is updated successfully.");
             }
+            else 
+            {
+                response.setSuccess(false);
+                response.setMessage("Invalid Sale Order Info. Please try again later...");
+            }
         }
         else
         {
             response.setSuccess(false);
-            response.setMessage("Invalid Sale Order Info. Please try again later.");
+            response.setMessage("Invalid Sale Order Info. Please try again later....");
         }
         return response;
     }

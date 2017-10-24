@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.dto.DTOPurchaseOrder;
+import org.bdlions.dto.EntityPurchaseOrder;
 import org.bdlions.dto.ListPurchaseOrder;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.manager.Purchase;
@@ -35,11 +36,52 @@ public class PurchaseHandler {
         Gson gson = new Gson();
         DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);     
         Purchase purchase = new Purchase();
+        if(dtoPurchaseOrder == null || dtoPurchaseOrder.getEntityPurchaseOrder() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Purchase Order Info. Please try again later.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo() == null || dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Order no is required.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Supplier. Please select a supplier.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getProducts() == null || dtoPurchaseOrder.getProducts().isEmpty())
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product for the purchase.");
+            return response;
+        }
+        
+        //check whether order no exists or not
+        EntityPurchaseOrder tempEntityPurchaseOrder = new EntityPurchaseOrder();
+        tempEntityPurchaseOrder.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+        EntityPurchaseOrder resultEntityPurchaseOrder = purchase.getEntityPurchaseOrderByOrderNo(tempEntityPurchaseOrder);
+        if(resultEntityPurchaseOrder != null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Order No already exists or invalid.");
+            return response;
+        }
+        
         if(purchase.addPurchaseOrderInfo(dtoPurchaseOrder))
         {
             response.setSuccess(true);
-            response.setMessage("Purchase order is added successfully.");
-        }        
+            response.setMessage("Purchase Order is added successfully.");
+        }   
+        else
+        {
+            response.setSuccess(false);
+            response.setMessage("Unable to add Purchase Order. Please try again later..");
+        }
         return response;
     }
     
@@ -85,18 +127,65 @@ public class PurchaseHandler {
         Gson gson = new Gson();
         DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);     
         Purchase purchase = new Purchase();
-        if(dtoPurchaseOrder != null && dtoPurchaseOrder.getEntityPurchaseOrder() != null && dtoPurchaseOrder.getEntityPurchaseOrder().getId() > 0)
+        if(dtoPurchaseOrder == null || dtoPurchaseOrder.getEntityPurchaseOrder() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Purchase Order Info. Please try again later.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Purchase Order Info. Please try again later..");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo() == null || dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Order no is required.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Supplier. Please select a supplier.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getProducts() == null || dtoPurchaseOrder.getProducts().size() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product for the purchase.");
+            return response;
+        }
+        
+        //check whether order no exists or not
+        EntityPurchaseOrder tempEntityPurchaseOrder = new EntityPurchaseOrder();
+        tempEntityPurchaseOrder.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+        EntityPurchaseOrder resultEntityPurchaseOrder = purchase.getEntityPurchaseOrderByOrderNo(tempEntityPurchaseOrder);
+        if(resultEntityPurchaseOrder != null && resultEntityPurchaseOrder.getId() != dtoPurchaseOrder.getEntityPurchaseOrder().getId())
+        {
+            response.setSuccess(false);
+            response.setMessage("Order No already exists or invalid.");
+            return response;
+        }
+        
+        if(dtoPurchaseOrder.getEntityPurchaseOrder().getId() > 0)
         {
             if(purchase.updatePurchaseOrderInfo(dtoPurchaseOrder))
             {
                 response.setSuccess(true);
                 response.setMessage("Purchase order is updated successfully.");
             }
+            else
+            {
+                response.setSuccess(false);
+                response.setMessage("Invalid Purchase Order Info. Please try again later...");
+            }
         }
         else
         {
             response.setSuccess(false);
-            response.setMessage("Invalid Purchase Order Info. Please try again later.");
+            response.setMessage("Invalid Purchase Order Info. Please try again later....");
         }        
         return response;
     }

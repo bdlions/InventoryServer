@@ -124,6 +124,27 @@ public class Purchase {
         return resultEntityPurchaseOrder;
     }
     
+    public EntityPurchaseOrder getEntityPurchaseOrderByOrderNo(EntityPurchaseOrder entityPurchaseOrder)
+    {
+        EntityPurchaseOrder resultEntityPurchaseOrder = null;
+        Session session = HibernateUtil.getSession();
+        try {
+            
+            Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderByOrderNo");
+            query.setParameter("orderNo", entityPurchaseOrder.getOrderNo());
+            resultEntityPurchaseOrder =  query.getSingleResult();
+            
+        }
+        catch(Exception ex)
+        {
+        
+        }
+        finally {
+            session.close();
+        }
+        return resultEntityPurchaseOrder;
+    }
+    
     public List<DTOPurchaseOrder> getPurchaseOrders(DTOPurchaseOrder dtoPurchaseOrder)
     {
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();

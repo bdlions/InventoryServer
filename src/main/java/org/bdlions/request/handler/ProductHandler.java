@@ -71,10 +71,47 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.ADD_PRODUCT_INFO)
     public ClientResponse addProductInfo(ISession session, IPacket packet) throws Exception 
     {
+        GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
         EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
+        if(entityProduct == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Porduct Info. Please try again later.");
+            return response;
+        }
+        else if(entityProduct.getName() == null || entityProduct.getName().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Product Name is required.");
+            return response;
+        }
+        else if(entityProduct.getTypeId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product type.");
+            return response;
+        }
+        else if(entityProduct.getCategoryId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product category.");
+            return response;
+        } 
+        
+        Product product = new Product();
+        EntityProduct resultEntityProduct = new EntityProduct();
+        resultEntityProduct = product.getEntityProductByName(entityProduct);
+        if(resultEntityProduct != null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Product Name is already exists or invalid.");
+            return response;
+        }
+        
         ProductLibrary productLibrary = new ProductLibrary();
-        GeneralResponse response = productLibrary.addProduct(entityProduct);
+        response = productLibrary.addProduct(entityProduct);
+        
         return response;
     }
     
@@ -100,10 +137,53 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.UPDATE_PRODUCT_INFO)
     public ClientResponse updateProductInfo(ISession session, IPacket packet) throws Exception 
     {
+        GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
         EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
+        if(entityProduct == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Porduct Info. Please try again later.");
+            return response;
+        }
+        else if(entityProduct.getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Porduct Info. Please try again later..");
+            return response;
+        }
+        else if(entityProduct.getName() == null || entityProduct.getName().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Product Name is required.");
+            return response;
+        }
+        else if(entityProduct.getTypeId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product type.");
+            return response;
+        }
+        else if(entityProduct.getCategoryId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product category.");
+            return response;
+        }
+        
+        Product product = new Product();
+        EntityProduct resultEntityProduct = new EntityProduct();
+        resultEntityProduct = product.getEntityProductByName(entityProduct);
+        if(resultEntityProduct != null && resultEntityProduct.getId() != entityProduct.getId())
+        {
+            response.setSuccess(false);
+            response.setMessage("Product Name is already exists or invalid.");
+            return response;
+        }
+        
         ProductLibrary productLibrary = new ProductLibrary();
-        GeneralResponse response = productLibrary.updateProduct(entityProduct);
+        response = productLibrary.updateProduct(entityProduct);
+        
         return response;
     }
     

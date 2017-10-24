@@ -6,6 +6,7 @@ import org.bdlions.dto.DTOProduct;
 import org.bdlions.dto.EntityProduct;
 import org.bdlions.dto.EntityProductCategory;
 import org.bdlions.dto.EntityProductType;
+import org.bdlions.dto.EntityPurchaseOrder;
 import org.bdlions.dto.EntityUOM;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -49,7 +50,29 @@ public class Product {
         }
     }
     
+    public EntityProduct getEntityProductByName(EntityProduct entityProduct)
+    {
+        EntityProduct resultEntityProduct = null;
+        Session session = HibernateUtil.getSession();
+        try {
+            
+            Query<EntityProduct> query = session.getNamedQuery("getProductByName");
+            query.setParameter("name", entityProduct.getName());
+            resultEntityProduct =  query.getSingleResult();
+            
+        }
+        catch(Exception ex)
+        {
+        
+        }
+        finally {
+            session.close();
+        }
+        return resultEntityProduct;
+    }
+    
     public boolean createProduct(EntityProduct product) {
+        boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction();
         try {
@@ -58,7 +81,7 @@ public class Product {
             {
                 session.save(product);
                 tx.commit();
-                return true;
+                status = true;
             }            
         }
         catch(Exception ex){
@@ -68,7 +91,7 @@ public class Product {
         finally {
             session.close();
         }
-        return false;
+        return status;
     }
     
     public EntityProduct getProductInfo(int productId) {
@@ -83,6 +106,7 @@ public class Product {
     }
     
     public boolean updateProduct(EntityProduct product) {
+        boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction();
         try {
@@ -91,7 +115,7 @@ public class Product {
             {
                 session.update(product);
                 tx.commit();
-                return true;
+                status = true;
             }            
         }
         catch(Exception ex){
@@ -101,7 +125,7 @@ public class Product {
         finally {
             session.close();
         }
-        return false;
+        return status;
     }
     
     public List<EntityProduct> getProducts(DTOProduct dtoProduct) 

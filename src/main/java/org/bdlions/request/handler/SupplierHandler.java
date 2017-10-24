@@ -31,20 +31,53 @@ public class SupplierHandler {
     @ClientRequest(action = ACTION.ADD_SUPPLIER_INFO)
     public ClientResponse addSupplierInfo(ISession session, IPacket packet) throws Exception 
     {
+        GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
         DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);     
-        SupplierLibrary supplierLibrary = new SupplierLibrary();
-        GeneralResponse response = supplierLibrary.createSupplier(dtoSupplier);
+        if(dtoSupplier == null || dtoSupplier.getEntityUser() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Supplier Info. Please try again later.");
+        }
+        else if(dtoSupplier.getEntityUser().getFirstName() == null || dtoSupplier.getEntityUser().getFirstName().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Supplier First Name is required.");
+        }
+        else
+        {
+            SupplierLibrary supplierLibrary = new SupplierLibrary();
+            response = supplierLibrary.createSupplier(dtoSupplier);
+        }        
         return response;
     }
     
     @ClientRequest(action = ACTION.UPDATE_SUPPLIER_INFO)
     public ClientResponse updateSupplierInfo(ISession session, IPacket packet) throws Exception 
     {
+        GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
-        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);     
-        SupplierLibrary supplierLibrary = new SupplierLibrary();
-        GeneralResponse response = supplierLibrary.updateSupplier(dtoSupplier);
+        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);   
+        if(dtoSupplier == null || dtoSupplier.getEntitySupplier() == null || dtoSupplier.getEntityUser() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Supplier Info. Please try again later.");
+        }
+        else if(dtoSupplier.getEntitySupplier().getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Supplier Info. Please try again later..");
+        }
+        else if(dtoSupplier.getEntityUser().getFirstName() == null || dtoSupplier.getEntityUser().getFirstName().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Supplier First Name is required.");
+        }
+        else
+        {
+            SupplierLibrary supplierLibrary = new SupplierLibrary();
+            response = supplierLibrary.updateSupplier(dtoSupplier);
+        }        
         return response;
     }
     

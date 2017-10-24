@@ -29,6 +29,10 @@ import javax.persistence.Transient;
             query = "from EntityProduct product where product.id = :productId"
     ),
     @NamedQuery(
+            name = "getProductByName",
+            query = "from EntityProduct product where product.name = :name"
+    ),
+    @NamedQuery(
             name = "getProducts",
             query = "from EntityProduct product order by name asc"
     )
