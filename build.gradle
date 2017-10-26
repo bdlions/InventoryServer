@@ -15,6 +15,7 @@ task processConfig(type: Copy) {
     }
     from('src/main/java') {
         include '**/*.properties'
+        include '**/*.xml'
     }
     into 'build/classes/main'
 }
@@ -23,8 +24,8 @@ classes {
 }
 
 war {
-    baseName = 'InventoryServer'
-    version =  '1.0.0'
+    baseName = 'InvServer'
+    //version =  '1.0.0'
 }
 
 
@@ -37,7 +38,7 @@ war {
 // prefer. In this case NetBeans will not add these tasks but you may rely on
 // your own implementation.
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'org.bdlions.Main'
+    ext.mainClass = 'org.bdlions.inventory.Main'
 }
 
 repositories {

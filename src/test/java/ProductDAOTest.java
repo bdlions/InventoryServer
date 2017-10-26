@@ -5,8 +5,8 @@
  */
 
 import java.util.List;
-import org.bdlions.dto.EntityProductCategory;
-import org.bdlions.manager.Product;
+import org.bdlions.inventory.entity.EntityProductCategory;
+import org.bdlions.inventory.manager.Product;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

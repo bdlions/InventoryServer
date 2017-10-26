@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import org.bdlions.manager.Role;
+import org.bdlions.inventory.manager.Role;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

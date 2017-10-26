@@ -5,9 +5,9 @@
  */
 
 import java.util.List;
-import org.bdlions.db.HibernateUtil;
-import org.bdlions.dto.EntityUser;
-import org.bdlions.manager.User;
+import org.bdlions.inventory.db.HibernateUtil;
+import org.bdlions.inventory.entity.EntityUser;
+import org.bdlions.inventory.manager.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.junit.After;

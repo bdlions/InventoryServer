@@ -47,6 +47,6 @@ Temporary Items
 .apdisk
 /build/
 /dist/
-/logs/
+/logs/*
 /nbproject/
 /.nb-gradle/
