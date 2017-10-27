@@ -19,6 +19,14 @@ import org.slf4j.LoggerFactory;
 public class Supplier {
     private final Logger logger = LoggerFactory.getLogger(Supplier.class);
     public boolean createSupplier(DTOSupplier dtoSupplier) {
+        /*
+        Nazmul vai:
+        1. You are creating a user profile for a supplier, right??
+        So why a user profile creating depens on creating supplier??
+        Supplier is dependent with user but user is not dependent with supplier
+       
+        2. Plz adding or updating roles in role entity
+        */
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
         try {
@@ -45,6 +53,12 @@ public class Supplier {
     }
     
     public boolean updateSupplier(DTOSupplier dtoSupplier) {
+        /**
+         * Nazmul vai: 
+         * Updating user in EntityUser not here, there are lots of user type will be added
+         * whill you update user for every userTypeEntity??? if there is any changes in user table you have to change every userType entity table
+         * 
+         */
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction();
         try {
@@ -69,6 +83,12 @@ public class Supplier {
     }
     
     public DTOSupplier getSupplierInfo(EntitySupplier reqEntitySupplier) {
+        /**
+         * Nazmul vai:
+         * 
+         * Don't return any object other that Entity
+         * in this class you can only return object like EntitySupplier
+         */
         DTOSupplier dtoSupplier = null;
         Session session = HibernateUtil.getSession();
         try {
@@ -102,6 +122,12 @@ public class Supplier {
     }
     
     public List<DTOSupplier> getSuppliers(DTOSupplier dtoSupplier) {
+        /**
+         * Nazmul vai:
+         * 
+         * Don't return any List other that List<Entity>
+         * in this class you can only return list like List<EntitySupplier>
+         */
         List<DTOSupplier> suppliers = new ArrayList<>();
         Session session = HibernateUtil.getSession();
         try {
