@@ -32,6 +32,10 @@ import javax.persistence.Table;
             name = "getUserByUserId",
             query = "from EntityUser user where user.id = :userId"
     ),
+    @NamedQuery(
+            name = "getUsers",
+            query = "from EntityUser user"
+    ),
 })
 public class EntityUser extends ClientResponse implements java.io.Serializable {
 
