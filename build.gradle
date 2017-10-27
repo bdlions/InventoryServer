@@ -32,8 +32,10 @@ task processConfig(type: Copy) {
     into 'build/classes/main'
 }
 classes {
-    classes.dependsOn processConfig, copyLibs
+    classes.dependsOn copyLibs, processConfig
 }
+
+compileJava.dependsOn copyLibs
 
 war {
     baseName = 'InvServer'
@@ -85,7 +87,8 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.8.0-alpha2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
     compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
-
+    compile group :'org.apache.shiro', name: 'shiro-core', version: '1.3.2'
+    
     
     
     
@@ -94,7 +97,7 @@ dependencies {
     
     //runtime dependency
     providedRuntime group : 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.0.0.M3'    
-    providedRuntime group :'org.apache.shiro', name: 'shiro-core', version: '1.3.2'
+    //providedRuntime group :'org.apache.shiro', name: 'shiro-core', version: '1.3.2'
     
     //test dependency
     testCompile group: 'junit', name: 'junit', version: '4.10'
