@@ -6,12 +6,24 @@ sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 //applicationDefaultJvmArgs = ["-Dlogging.config=conf/log4j.properties", "-Dlog4j.configurationFile=conf/log4j2.xml", "-Xms1024m"]
 
+task copyLibs(type: Copy) {
+    from ('../AuthCommons/dist'){
+        include 'AuthCommons.jar'
+    }
+    from ('../AuthSession/dist'){
+        include 'AuthSession.jar'
+    }
+    from ('../AuthTransport/dist'){
+        include 'AuthTransport.jar'
+    }
+    into project.file('lib')
+}
 // copy essential files into build directory
 task processConfig(type: Copy) {
     from 'conf', {
         include '**/*.xml'
         include '**/*.properties'
-//        into 'conf'
+        //        into 'conf'
     }
     from('src/main/java') {
         include '**/*.properties'
@@ -20,7 +32,7 @@ task processConfig(type: Copy) {
     into 'build/classes/main'
 }
 classes {
-    classes.dependsOn processConfig
+    classes.dependsOn processConfig, copyLibs
 }
 
 war {
@@ -58,6 +70,8 @@ repositories {
 }
 configurations {
     compile.exclude module: 'spring-boot-starter-logging'
+    //    runtime.exclude group: "org.slf4j", module: "slf4j-log4j12"
+
 }
 
 dependencies {
@@ -76,12 +90,11 @@ dependencies {
     
     
     //external library dependency
-    compile files('../AuthCommons/dist/AuthCommons.jar')
-    compile files('../AuthSession/dist/AuthSession.jar')
-    compile files('../AuthTransport/dist/AuthTransport.jar')
+    compile fileTree(dir: 'lib')
     
     //runtime dependency
     providedRuntime group : 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.0.0.M3'    
+    providedRuntime group :'org.apache.shiro', name: 'shiro-core', version: '1.3.2'
     
     //test dependency
     testCompile group: 'junit', name: 'junit', version: '4.10'
