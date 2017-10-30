@@ -70,7 +70,7 @@ public class Product {
         return resultEntityProduct;
     }
     
-    public boolean createProduct(EntityProduct product) {
+    public EntityProduct createProduct(EntityProduct product) {
         boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction();
@@ -90,7 +90,14 @@ public class Product {
         finally {
             session.close();
         }
-        return status;
+        if(status)
+        {
+            return product;
+        }
+        else
+        {
+            return null;
+        }
     }
     
     public EntityProduct getProductInfo(int productId) {

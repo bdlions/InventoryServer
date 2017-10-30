@@ -9,22 +9,24 @@ import org.bdlions.inventory.manager.Product;
  * @author Nazmul Hasan
  */
 public class ProductLibrary {
-    public GeneralResponse addProduct(EntityProduct entityProduct)
+    public EntityProduct addProduct(EntityProduct entityProduct)
     {
-        GeneralResponse response = new GeneralResponse();
+        //GeneralResponse response = new GeneralResponse();
         Product product = new Product();
         //check whether product identity exists or not
-        if(product.createProduct(entityProduct))
+        EntityProduct responseEntityProduct = product.createProduct(entityProduct);
+        if(responseEntityProduct != null && responseEntityProduct.getId() > 0)
         {
-            response.setSuccess(true);
-            response.setMessage("Product is added successfully.");
+            responseEntityProduct.setSuccess(true);
+            responseEntityProduct.setMessage("Product is added successfully.");
         }
         else
         {
-            response.setSuccess(false);
-            response.setMessage("Unable to add a new product. Please try again later.");
+            responseEntityProduct = new EntityProduct();
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Unable to add a new product. Please try again later.");
         }
-        return response;
+        return responseEntityProduct;
     }
     
     public GeneralResponse updateProduct(EntityProduct entityProduct)

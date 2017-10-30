@@ -71,48 +71,47 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.ADD_PRODUCT_INFO)
     public ClientResponse addProductInfo(ISession session, IPacket packet) throws Exception 
     {
-        GeneralResponse response = new GeneralResponse();
+        EntityProduct responseEntityProduct = new EntityProduct();
         Gson gson = new Gson();
         EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
         if(entityProduct == null)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Porduct Info. Please try again later.");
-            return response;
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Invalid Porduct Info. Please try again later.");
+            return responseEntityProduct;
         }
         else if(entityProduct.getName() == null || entityProduct.getName().equals(""))
         {
-            response.setSuccess(false);
-            response.setMessage("Product Name is required.");
-            return response;
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Product Name is required.");
+            return responseEntityProduct;
         }
         else if(entityProduct.getTypeId() <= 0)
         {
-            response.setSuccess(false);
-            response.setMessage("Please select product type.");
-            return response;
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Please select product type.");
+            return responseEntityProduct;
         }
         else if(entityProduct.getCategoryId() <= 0)
         {
-            response.setSuccess(false);
-            response.setMessage("Please select product category.");
-            return response;
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Please select product category.");
+            return responseEntityProduct;
         } 
         
         Product product = new Product();
-        EntityProduct resultEntityProduct = new EntityProduct();
-        resultEntityProduct = product.getEntityProductByName(entityProduct);
+        EntityProduct resultEntityProduct = product.getEntityProductByName(entityProduct);
         if(resultEntityProduct != null)
         {
-            response.setSuccess(false);
-            response.setMessage("Product Name is already exists or invalid.");
-            return response;
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Product Name is already exists or invalid.");
+            return responseEntityProduct;
         }
         
         ProductLibrary productLibrary = new ProductLibrary();
-        response = productLibrary.addProduct(entityProduct);
+        responseEntityProduct = productLibrary.addProduct(entityProduct);
         
-        return response;
+        return responseEntityProduct;
     }
     
     @ClientRequest(action = ACTION.FETCH_PRODUCT_INFO)
