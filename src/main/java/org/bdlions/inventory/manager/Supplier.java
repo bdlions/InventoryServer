@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Supplier {
     private final Logger logger = LoggerFactory.getLogger(Supplier.class);
-    public boolean createSupplier(DTOSupplier dtoSupplier) {
+    public DTOSupplier createSupplier(DTOSupplier dtoSupplier) {
         /*
         Nazmul vai:
         1. You are creating a user profile for a supplier, right??
@@ -27,6 +27,7 @@ public class Supplier {
        
         2. Plz adding or updating roles in role entity
         */
+        boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
         try {
@@ -39,7 +40,7 @@ public class Supplier {
                 session.save(dtoSupplier.getEntityUserRole());
                 session.save(dtoSupplier.getEntitySupplier());
                 tx.commit();
-                return true;
+                status = true;
             }
         }
         catch(Exception ex){
@@ -49,7 +50,14 @@ public class Supplier {
         finally {
             session.close();
         }
-        return false;
+        if(status)
+        {
+            return dtoSupplier;
+        }
+        else
+        {
+            return null;
+        }
     }
     
     public boolean updateSupplier(DTOSupplier dtoSupplier) {

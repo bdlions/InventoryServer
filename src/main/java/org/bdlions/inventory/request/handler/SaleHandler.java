@@ -31,33 +31,34 @@ public class SaleHandler {
     @ClientRequest(action = ACTION.ADD_SALE_ORDER_INFO)
     public ClientResponse addSaleOrderInfo(ISession session, IPacket packet) throws Exception 
     {
-        GeneralResponse response = new GeneralResponse();
+        DTOSaleOrder responseDTOSaleOrder = new DTOSaleOrder();
+        //GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
         DTOSaleOrder dtoSaleOrder = gson.fromJson(packet.getPacketBody(), DTOSaleOrder.class);     
         Sale sale = new Sale();
         if(dtoSaleOrder == null || dtoSaleOrder.getEntitySaleOrder() == null)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Sale Order Info. Please try again later.");
-            return response;
+            responseDTOSaleOrder.setSuccess(false);
+            responseDTOSaleOrder.setMessage("Invalid Sale Order Info. Please try again later.");
+            return responseDTOSaleOrder;
         }
         else if(dtoSaleOrder.getEntitySaleOrder().getOrderNo() == null || dtoSaleOrder.getEntitySaleOrder().getOrderNo().equals(""))
         {
-            response.setSuccess(false);
-            response.setMessage("Order no is required.");
-            return response;
+            responseDTOSaleOrder.setSuccess(false);
+            responseDTOSaleOrder.setMessage("Order no is required.");
+            return responseDTOSaleOrder;
         }
         else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Customer. Please select a customer.");
-            return response;
+            responseDTOSaleOrder.setSuccess(false);
+            responseDTOSaleOrder.setMessage("Invalid Customer. Please select a customer.");
+            return responseDTOSaleOrder;
         }
         else if(dtoSaleOrder.getProducts() == null || dtoSaleOrder.getProducts().isEmpty())
         {
-            response.setSuccess(false);
-            response.setMessage("Please select product for the sale.");
-            return response;
+            responseDTOSaleOrder.setSuccess(false);
+            responseDTOSaleOrder.setMessage("Please select product for the sale.");
+            return responseDTOSaleOrder;
         }
         
         EntitySaleOrder tempEntitySaleOrder = new EntitySaleOrder();
@@ -65,22 +66,23 @@ public class SaleHandler {
         EntitySaleOrder resultEntitySaleOrder = sale.getEntitySaleOrderByOrderNo(tempEntitySaleOrder);
         if(resultEntitySaleOrder != null)
         {
-            response.setSuccess(false);
-            response.setMessage("Order No already exists or invalid.");
-            return response;
+            responseDTOSaleOrder.setSuccess(false);
+            responseDTOSaleOrder.setMessage("Order No already exists or invalid.");
+            return responseDTOSaleOrder;
         }
-        
-        if(sale.addSaleOrderInfo(dtoSaleOrder))
+        responseDTOSaleOrder = sale.addSaleOrderInfo(dtoSaleOrder);
+        if(responseDTOSaleOrder != null && responseDTOSaleOrder.getEntitySaleOrder().getId() > 0)
         {
-            response.setSuccess(true);
-            response.setMessage("Sale Order is added successfully.");
+            responseDTOSaleOrder.setSuccess(true);
+            responseDTOSaleOrder.setMessage("Sale Order is added successfully.");
         }
         else
         {
-            response.setSuccess(false);
-            response.setMessage("Unable to add Sale Order. Please try again later..");
+            responseDTOSaleOrder = new DTOSaleOrder();
+            responseDTOSaleOrder.setSuccess(false);
+            responseDTOSaleOrder.setMessage("Unable to add Sale Order. Please try again later..");
         }
-        return response;
+        return responseDTOSaleOrder;
     }
     
     @ClientRequest(action = ACTION.FETCH_SALE_ORDER_INFO)

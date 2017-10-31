@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Purchase {
     private final Logger logger = LoggerFactory.getLogger(Purchase.class);
-    public boolean addPurchaseOrderInfo(DTOPurchaseOrder dtoPurchaseOrder)
+    public DTOPurchaseOrder addPurchaseOrderInfo(DTOPurchaseOrder dtoPurchaseOrder)
     {
         boolean status = false;
         Session session = HibernateUtil.getSession();
@@ -62,7 +62,14 @@ public class Purchase {
         finally {
             session.close();
         }
-        return status;
+        if(status)
+        {
+            return dtoPurchaseOrder;
+        }
+        else
+        {
+            return null;
+        }
     }
     
     public DTOPurchaseOrder getPurchaseOrderInfo(DTOPurchaseOrder dtoPurchaseOrder)

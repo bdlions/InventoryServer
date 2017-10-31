@@ -11,25 +11,27 @@ import org.bdlions.inventory.util.Constants;
  * @author Nazmul Hasan
  */
 public class SupplierLibrary {
-    public GeneralResponse createSupplier(DTOSupplier dtoSupplier)
+    public DTOSupplier createSupplier(DTOSupplier dtoSupplier)
     {
-        GeneralResponse response = new GeneralResponse();
+        //GeneralResponse response = new GeneralResponse();
         EntityUserRole entityUserRole = new EntityUserRole();
         entityUserRole.setRoleId(Constants.ROLE_ID_SUPPLIER);
         dtoSupplier.setEntityUserRole(entityUserRole);
         Supplier supplier = new Supplier();
         //check whether supplier identity exists or not
-        if(supplier.createSupplier(dtoSupplier))
+        DTOSupplier resultDTOSupplier = supplier.createSupplier(dtoSupplier);
+        if(resultDTOSupplier != null && resultDTOSupplier.getEntitySupplier().getId() > 0)
         {
-            response.setSuccess(true);
-            response.setMessage("Supplier is added successfully.");
+            resultDTOSupplier.setSuccess(true);
+            resultDTOSupplier.setMessage("Supplier is added successfully.");
         }
         else
         {
-            response.setSuccess(false);
-            response.setMessage("Unable to create a supplier. Please try again later.");
+            resultDTOSupplier = new DTOSupplier();            
+            resultDTOSupplier.setSuccess(false);
+            resultDTOSupplier.setMessage("Unable to create a supplier. Please try again later.");
         }
-        return response;
+        return resultDTOSupplier;
     }
     
     public GeneralResponse updateSupplier(DTOSupplier dtoSupplier)

@@ -31,25 +31,28 @@ public class SupplierHandler {
     @ClientRequest(action = ACTION.ADD_SUPPLIER_INFO)
     public ClientResponse addSupplierInfo(ISession session, IPacket packet) throws Exception 
     {
-        GeneralResponse response = new GeneralResponse();
+        //GeneralResponse response = new GeneralResponse();
+        DTOSupplier responseDTOSupplier = new DTOSupplier();
         Gson gson = new Gson();
         DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);     
         if(dtoSupplier == null || dtoSupplier.getEntityUser() == null)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Supplier Info. Please try again later.");
+            responseDTOSupplier.setSuccess(false);
+            responseDTOSupplier.setMessage("Invalid Supplier Info. Please try again later.");
+            return responseDTOSupplier;
         }
         else if(dtoSupplier.getEntityUser().getFirstName() == null || dtoSupplier.getEntityUser().getFirstName().equals(""))
         {
-            response.setSuccess(false);
-            response.setMessage("Supplier First Name is required.");
+            responseDTOSupplier.setSuccess(false);
+            responseDTOSupplier.setMessage("Supplier First Name is required.");
+            return responseDTOSupplier;
         }
         else
         {
             SupplierLibrary supplierLibrary = new SupplierLibrary();
-            response = supplierLibrary.createSupplier(dtoSupplier);
+            responseDTOSupplier = supplierLibrary.createSupplier(dtoSupplier);
         }        
-        return response;
+        return responseDTOSupplier;
     }
     
     @ClientRequest(action = ACTION.UPDATE_SUPPLIER_INFO)

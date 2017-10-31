@@ -32,33 +32,34 @@ public class PurchaseHandler {
     @ClientRequest(action = ACTION.ADD_PURCHASE_ORDER_INFO)
     public ClientResponse addPurchaseOrderInfo(ISession session, IPacket packet) throws Exception 
     {
-        GeneralResponse response = new GeneralResponse();
+        DTOPurchaseOrder responseDTOPurchaseOrder = new DTOPurchaseOrder();
+        //GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
         DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);     
         Purchase purchase = new Purchase();
         if(dtoPurchaseOrder == null || dtoPurchaseOrder.getEntityPurchaseOrder() == null)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Purchase Order Info. Please try again later.");
-            return response;
+            responseDTOPurchaseOrder.setSuccess(false);
+            responseDTOPurchaseOrder.setMessage("Invalid Purchase Order Info. Please try again later.");
+            return responseDTOPurchaseOrder;
         }
         else if(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo() == null || dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo().equals(""))
         {
-            response.setSuccess(false);
-            response.setMessage("Order no is required.");
-            return response;
+            responseDTOPurchaseOrder.setSuccess(false);
+            responseDTOPurchaseOrder.setMessage("Order no is required.");
+            return responseDTOPurchaseOrder;
         }
         else if(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId() <= 0)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Supplier. Please select a supplier.");
-            return response;
+            responseDTOPurchaseOrder.setSuccess(false);
+            responseDTOPurchaseOrder.setMessage("Invalid Supplier. Please select a supplier.");
+            return responseDTOPurchaseOrder;
         }
         else if(dtoPurchaseOrder.getProducts() == null || dtoPurchaseOrder.getProducts().isEmpty())
         {
-            response.setSuccess(false);
-            response.setMessage("Please select product for the purchase.");
-            return response;
+            responseDTOPurchaseOrder.setSuccess(false);
+            responseDTOPurchaseOrder.setMessage("Please select product for the purchase.");
+            return responseDTOPurchaseOrder;
         }
         
         //check whether order no exists or not
@@ -67,22 +68,23 @@ public class PurchaseHandler {
         EntityPurchaseOrder resultEntityPurchaseOrder = purchase.getEntityPurchaseOrderByOrderNo(tempEntityPurchaseOrder);
         if(resultEntityPurchaseOrder != null)
         {
-            response.setSuccess(false);
-            response.setMessage("Order No already exists or invalid.");
-            return response;
+            responseDTOPurchaseOrder.setSuccess(false);
+            responseDTOPurchaseOrder.setMessage("Order No already exists or invalid.");
+            return responseDTOPurchaseOrder;
         }
-        
-        if(purchase.addPurchaseOrderInfo(dtoPurchaseOrder))
+        responseDTOPurchaseOrder = purchase.addPurchaseOrderInfo(dtoPurchaseOrder);
+        if(responseDTOPurchaseOrder != null && responseDTOPurchaseOrder.getEntityPurchaseOrder().getId() > 0)
         {
-            response.setSuccess(true);
-            response.setMessage("Purchase Order is added successfully.");
+            responseDTOPurchaseOrder.setSuccess(true);
+            responseDTOPurchaseOrder.setMessage("Purchase Order is added successfully.");
         }   
         else
         {
-            response.setSuccess(false);
-            response.setMessage("Unable to add Purchase Order. Please try again later..");
+            responseDTOPurchaseOrder = new DTOPurchaseOrder();
+            responseDTOPurchaseOrder.setSuccess(false);
+            responseDTOPurchaseOrder.setMessage("Unable to add Purchase Order. Please try again later..");
         }
-        return response;
+        return responseDTOPurchaseOrder;
     }
     
     @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDER_INFO)

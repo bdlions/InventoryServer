@@ -2,10 +2,8 @@ package org.bdlions.inventory.library;
 
 import com.bdlions.dto.response.GeneralResponse;
 import org.bdlions.inventory.dto.DTOCustomer;
-import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.manager.Customer;
-import org.bdlions.inventory.manager.Product;
 import org.bdlions.inventory.util.Constants;
 
 /**
@@ -13,25 +11,27 @@ import org.bdlions.inventory.util.Constants;
  * @author Nazmul Hasan
  */
 public class CustomerLibrary {
-    public GeneralResponse createCustomer(DTOCustomer dtoCustomer)
+    public DTOCustomer createCustomer(DTOCustomer dtoCustomer)
     {
-        GeneralResponse response = new GeneralResponse();
+        //GeneralResponse response = new GeneralResponse();
         EntityUserRole entityUserRole = new EntityUserRole();
         entityUserRole.setRoleId(Constants.ROLE_ID_CUSTOMER);
         dtoCustomer.setEntityUserRole(entityUserRole);
         Customer customer = new Customer();
+        DTOCustomer resultDTOCustomer = customer.createCustomer(dtoCustomer);
         //check whether customer identity exists or not
-        if(customer.createCustomer(dtoCustomer))
+        if(resultDTOCustomer != null && resultDTOCustomer.getEntityCustomer().getId() > 0)
         {
-            response.setSuccess(true);
-            response.setMessage("Customer is added successfully.");
+            resultDTOCustomer.setSuccess(true);
+            resultDTOCustomer.setMessage("Customer is added successfully.");
         }
         else
         {
-            response.setSuccess(false);
-            response.setMessage("Unable to create a customer. Please try again later.");
+            resultDTOCustomer = new DTOCustomer();
+            resultDTOCustomer.setSuccess(false);
+            resultDTOCustomer.setMessage("Unable to create a customer. Please try again later.");
         }
-        return response;
+        return resultDTOCustomer;
     }
     
     public GeneralResponse updateCustomer(DTOCustomer dtoCustomer)

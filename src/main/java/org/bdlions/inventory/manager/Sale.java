@@ -24,7 +24,7 @@ public class Sale {
 
     private final Logger logger = LoggerFactory.getLogger(Sale.class);
 
-    public boolean addSaleOrderInfo(DTOSaleOrder dtoSaleOrder) {
+    public DTOSaleOrder addSaleOrderInfo(DTOSaleOrder dtoSaleOrder) {
         boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction();
@@ -60,7 +60,14 @@ public class Sale {
         } finally {
             session.close();
         }
-        return status;
+        if(status)
+        {
+            return dtoSaleOrder;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public DTOSaleOrder getSaleOrderInfo(DTOSaleOrder dtoSaleOrder) {

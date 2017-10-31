@@ -31,25 +31,28 @@ public class CustomerHandler {
     @ClientRequest(action = ACTION.ADD_CUSTOMER_INFO)
     public ClientResponse addCustomerInfo(ISession session, IPacket packet) throws Exception 
     {
-        GeneralResponse response = new GeneralResponse();
+        DTOCustomer responseDTOCustomer = new DTOCustomer();
+        //GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
         DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);     
         if(dtoCustomer == null || dtoCustomer.getEntityUser() == null)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Customer Info. Please try again later.");
+            responseDTOCustomer.setSuccess(false);
+            responseDTOCustomer.setMessage("Invalid Customer Info. Please try again later.");
+            return responseDTOCustomer;
         }
         else if(dtoCustomer.getEntityUser().getFirstName() == null || dtoCustomer.getEntityUser().getFirstName().equals(""))
         {
-            response.setSuccess(false);
-            response.setMessage("Customer First Name is required.");
+            responseDTOCustomer.setSuccess(false);
+            responseDTOCustomer.setMessage("Customer First Name is required.");
+            return responseDTOCustomer;
         }
         else
         {
             CustomerLibrary customerLibrary = new CustomerLibrary();
-            response = customerLibrary.createCustomer(dtoCustomer);
+            responseDTOCustomer = customerLibrary.createCustomer(dtoCustomer);
         }        
-        return response;
+        return responseDTOCustomer;
     }
     
     @ClientRequest(action = ACTION.UPDATE_CUSTOMER_INFO)

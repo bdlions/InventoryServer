@@ -23,7 +23,8 @@ import org.slf4j.LoggerFactory;
  */
 public class Customer {
     private final Logger logger = LoggerFactory.getLogger(Customer.class);
-    public boolean createCustomer(DTOCustomer dtoCustomer) {
+    public DTOCustomer createCustomer(DTOCustomer dtoCustomer) {
+        boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
         try {
@@ -36,7 +37,7 @@ public class Customer {
                 session.save(dtoCustomer.getEntityUserRole());
                 session.save(dtoCustomer.getEntityCustomer());
                 tx.commit();
-                return true;
+                status = true;
             }
         }
         catch(Exception ex){
@@ -46,7 +47,14 @@ public class Customer {
         finally {
             session.close();
         }
-        return false;
+        if(status)
+        {
+            return dtoCustomer;
+        }
+        else
+        {
+            return null;
+        }
     }
     
     public boolean updateCustomer(DTOCustomer dtoCustomer) {
