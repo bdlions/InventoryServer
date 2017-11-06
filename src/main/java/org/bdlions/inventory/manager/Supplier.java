@@ -6,9 +6,12 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
+import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
+import org.bdlions.inventory.entity.manager.EntityManagerUserRole;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,29 +21,43 @@ import org.slf4j.LoggerFactory;
  */
 public class Supplier {
     private final Logger logger = LoggerFactory.getLogger(Supplier.class);
-    public DTOSupplier createSupplier(DTOSupplier dtoSupplier) {
-        /*
-        Nazmul vai:
-        1. You are creating a user profile for a supplier, right??
-        So why a user profile creating depens on creating supplier??
-        Supplier is dependent with user but user is not dependent with supplier
-       
-        2. Plz adding or updating roles in role entity
-        */
+    
+    public DTOSupplier createSupplier(DTOSupplier dtoSupplier) 
+    {
         boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
-        try {
-            tx.begin();
-            if (dtoSupplier != null && dtoSupplier.getEntityUser() != null) {
-                EntityUser user = dtoSupplier.getEntityUser();
-                session.save(user);
-                dtoSupplier.getEntityUserRole().setUserId(user.getId());
-                dtoSupplier.getEntitySupplier().setUserId(user.getId());
-                session.save(dtoSupplier.getEntityUserRole());
-                session.save(dtoSupplier.getEntitySupplier());
-                tx.commit();
-                status = true;
+        try 
+        {            
+            if (dtoSupplier != null && dtoSupplier.getEntityUser() != null && dtoSupplier.getEntityUserRole() != null && dtoSupplier.getEntitySupplier() != null) 
+            {
+                tx.begin();
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                EntityUser entityUser = entityManagerUser.createUser(dtoSupplier.getEntityUser(), session);
+                if(entityUser != null && entityUser.getId() > 0)
+                {
+                    dtoSupplier.getEntityUserRole().setUserId(entityUser.getId());
+                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+                    EntityUserRole entityUserRole = entityManagerUserRole.createUserRole(dtoSupplier.getEntityUserRole(), session); 
+                    if(entityUserRole != null && entityUserRole.getId() > 0)
+                    {
+                        dtoSupplier.setEntityUserRole(entityUserRole);
+                        
+                        dtoSupplier.getEntitySupplier().setUserId(entityUser.getId());
+                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                        EntitySupplier entitySupplier = entityManagerSupplier.createSupplier(dtoSupplier.getEntitySupplier(), session);
+                        if(entitySupplier != null && entitySupplier.getId() > 0)
+                        {
+                            dtoSupplier.setEntitySupplier(entitySupplier);
+                            tx.commit();
+                            status = true;
+                        }
+                    }
+                }
+                if(!status)
+                {
+                    tx.rollback();                
+                }             
             }
         }
         catch(Exception ex){
@@ -60,101 +77,94 @@ public class Supplier {
         }
     }
     
-    public boolean updateSupplier(DTOSupplier dtoSupplier) {
-        /**
-         * Nazmul vai: 
-         * Updating user in EntityUser not here, there are lots of user type will be added
-         * whill you update user for every userTypeEntity??? if there is any changes in user table you have to change every userType entity table
-         * 
-         */
+    public boolean updateSupplier(DTOSupplier dtoSupplier) 
+    {
+        boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction();
-        try {
-            tx.begin();
-            if (dtoSupplier != null && dtoSupplier.getEntityUser() != null) {
-                EntityUser user = dtoSupplier.getEntityUser();
-                session.update(user);
-                //update user role if required.
-                session.update(dtoSupplier.getEntitySupplier());
-                tx.commit();
-                return true;
+        try 
+        {            
+            if (dtoSupplier != null && dtoSupplier.getEntityUser() != null && dtoSupplier.getEntitySupplier() != null) 
+            {                
+                tx.begin();
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                if(entityManagerUser.updateUser(dtoSupplier.getEntityUser(), session))
+                {
+                    //update user role if required.
+                    
+                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                    if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), session))
+                    {
+                        tx.commit();
+                        status = true;
+                    }
+                }
+                if(!status)
+                {
+                    tx.rollback();
+                }                
             }
         }
-        catch(Exception ex){
+        catch(Exception ex)
+        {
             logger.error(ex.toString());
             tx.rollback();
         }
-        finally {
+        finally 
+        {
             session.close();
         }
-        return false;
+        return status;
     }
     
-    public DTOSupplier getSupplierInfo(EntitySupplier reqEntitySupplier) {
-        /**
-         * Nazmul vai:
-         * 
-         * Don't return any object other that Entity
-         * in this class you can only return object like EntitySupplier
-         */
+    public DTOSupplier getSupplierInfo(EntitySupplier reqEntitySupplier) 
+    {
         DTOSupplier dtoSupplier = null;
-        Session session = HibernateUtil.getSession();
-        try {
-            EntitySupplier entitySupplier = new EntitySupplier();
-            if(reqEntitySupplier.getId() > 0)
+        EntitySupplier entitySupplier = new EntitySupplier();
+        if(reqEntitySupplier != null && reqEntitySupplier.getId() > 0)
+        {
+            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+            entitySupplier = entityManagerSupplier.getSupplierBySupplierId(reqEntitySupplier);
+        }
+        else if(reqEntitySupplier != null && reqEntitySupplier.getUserId() > 0)
+        {
+            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+            entitySupplier = entityManagerSupplier.getSupplierByUserId(reqEntitySupplier);
+        }
+        if(entitySupplier != null && entitySupplier.getId() > 0)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entitySupplier.getUserId());
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityUser entityUser = entityManagerUser.getUserByUserId(reqEntityUser);
+            if(entityUser != null && entityUser.getId() > 0)
             {
-                Query<EntitySupplier> query1 = session.getNamedQuery("getSupplierBySupplierId");
-                query1.setParameter("supplierId", reqEntitySupplier.getId());
-                entitySupplier = query1.getSingleResult();
-            }
-            else if(reqEntitySupplier.getUserId() > 0)
-            {
-                Query<EntitySupplier> query1 = session.getNamedQuery("getSupplierByUserId");
-                query1.setParameter("userId", reqEntitySupplier.getUserId());
-                entitySupplier = query1.getSingleResult();
-            }
-            if(entitySupplier.getId() > 0)
-            {
-                Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
-                query2.setParameter("userId", entitySupplier.getUserId());
-                EntityUser entityUser = query2.getSingleResult();
                 //set user role if required
                 dtoSupplier = new DTOSupplier();
                 dtoSupplier.setEntitySupplier(entitySupplier);
                 dtoSupplier.setEntityUser(entityUser);
             }            
-        } finally {
-            session.close();
-        }
+        }           
         return dtoSupplier;
     }
     
-    public List<DTOSupplier> getSuppliers(DTOSupplier dtoSupplier) {
-        /**
-         * Nazmul vai:
-         * 
-         * Don't return any List other that List<Entity>
-         * in this class you can only return list like List<EntitySupplier>
-         */
+    public List<DTOSupplier> getSuppliers(DTOSupplier dtoSupplier) 
+    {
         List<DTOSupplier> suppliers = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
-        try {
-            //set limit, offset and other params in named query
-            Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
-            List<EntitySupplier> entitySuppliers = query.getResultList();
-            for(EntitySupplier entitySupplier : entitySuppliers)
-            {
-                Query<EntityUser> queryUser = session.getNamedQuery("getUserByUserId");
-                queryUser.setParameter("userId", entitySupplier.getUserId());
-                EntityUser entityUser = queryUser.uniqueResult();
-                DTOSupplier tempDTOSupplier = new DTOSupplier();
-                tempDTOSupplier.setEntitySupplier(entitySupplier);
-                tempDTOSupplier.setEntityUser(entityUser);
-                //set user role if required
-                suppliers.add(tempDTOSupplier);
-            }
-        } finally {
-            session.close();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        List<EntitySupplier> entitySuppliers = entityManagerSupplier.getSuppliers(dtoSupplier);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntitySupplier entitySupplier : entitySuppliers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entitySupplier.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser);
+
+            DTOSupplier tempDTOSupplier = new DTOSupplier();
+            tempDTOSupplier.setEntitySupplier(entitySupplier);
+            tempDTOSupplier.setEntityUser(entityUser);
+            //set user role if required
+            suppliers.add(tempDTOSupplier);
         }
         return suppliers;
     }
