@@ -1,12 +1,9 @@
 package org.bdlions.inventory.manager;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityUser;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.util.StringUtils;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +23,12 @@ public class User {
      * @author nazmul hasan on 2nd August 2017
      */
     public EntityUser getUserByIdentity(String identity) {
-        Session session = HibernateUtil.getSession();
+        EntityUser reqEntityUser = new EntityUser();
+        reqEntityUser.setEmail(identity);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser entityUser = entityManagerUser.getUserByEmail(reqEntityUser.getEmail());
+        return entityUser;
+        /*Session session = HibernateUtil.getSession();
         try {
 
             Query<EntityUser> query = session.getNamedQuery("getUserByEmail");
@@ -35,7 +37,7 @@ public class User {
             return query.uniqueResult();
         } finally {
             session.close();
-        }
+        }*/
     }
 
     /**
@@ -69,8 +71,14 @@ public class User {
      * @return User user info
      * @author nazmul hasan on 2nd August 2017
      */
-    public EntityUser getUserById(int userId) {
-        Session session = HibernateUtil.getSession();
+    public EntityUser getUserById(int userId) 
+    {
+        EntityUser reqEntityUser = new EntityUser();
+        reqEntityUser.setId(userId);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser entityUser = entityManagerUser.getUserByUserId(reqEntityUser.getId());
+        return entityUser;
+        /*Session session = HibernateUtil.getSession();
         try {
             Query<EntityUser> query = session.getNamedQuery("getUserByUserId");
             query.setParameter("userId", userId);
@@ -78,11 +86,15 @@ public class User {
             return query.getSingleResult();
         } finally {
             session.close();
-        }
+        }*/
     }
 
-    public List<EntityUser> getUsers(int offset, int limit) {
-        Session session = HibernateUtil.getSession();
+    public List<EntityUser> getUsers(int offset, int limit) 
+    {
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        List<EntityUser> entityUserList = entityManagerUser.getUsers(offset, limit);
+        return entityUserList;        
+        /*Session session = HibernateUtil.getSession();
         try {
             Query<EntityUser> query = session.getNamedQuery("getUsers");
             query.setFirstResult(offset);
@@ -91,7 +103,7 @@ public class User {
             return query.getResultList();
         } finally {
             session.close();
-        }
+        }*/
     }
 
 }

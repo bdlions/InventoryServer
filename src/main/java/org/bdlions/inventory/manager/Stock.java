@@ -18,7 +18,7 @@ import org.hibernate.query.Query;
 
 /**
  *
- * @author Nazmul
+ * @author Nazmul Hasan
  */
 public class Stock {
     public List<DTOProduct> getCurrentStock()

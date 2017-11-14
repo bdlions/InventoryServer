@@ -5,8 +5,9 @@
  */
 
 import java.util.List;
+import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityProductCategory;
-import org.bdlions.inventory.manager.Product;
+import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,8 +46,14 @@ public class ProductDAOTest {
     //@Test
     public void getAllProductCategories() 
     {
-        Product product = new Product();
-        List<EntityProductCategory> productCategoryList = product.getAllProductCategories();
-        System.out.println(productCategoryList.size());
+        
+    }
+    
+    @Test
+    public void getEntityProductByNameTest() 
+    {
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityProduct resultEntityProduct = entityManagerProduct.getProductByName("tshirt");
+        System.out.println(resultEntityProduct.getName());
     }
 }

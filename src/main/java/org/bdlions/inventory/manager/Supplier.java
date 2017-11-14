@@ -136,7 +136,7 @@ public class Supplier {
             EntityUser reqEntityUser = new EntityUser();
             reqEntityUser.setId(entitySupplier.getUserId());
             EntityManagerUser entityManagerUser = new EntityManagerUser();
-            EntityUser entityUser = entityManagerUser.getUserByUserId(reqEntityUser);
+            EntityUser entityUser = entityManagerUser.getUserByUserId(reqEntityUser.getId());
             if(entityUser != null && entityUser.getId() > 0)
             {
                 //set user role if required
@@ -158,7 +158,7 @@ public class Supplier {
         {
             EntityUser reqEntityUser = new EntityUser();
             reqEntityUser.setId(entitySupplier.getUserId());
-            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser);
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
 
             DTOSupplier tempDTOSupplier = new DTOSupplier();
             tempDTOSupplier.setEntitySupplier(entitySupplier);

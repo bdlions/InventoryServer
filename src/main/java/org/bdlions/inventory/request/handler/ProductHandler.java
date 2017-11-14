@@ -17,9 +17,11 @@ import org.bdlions.inventory.dto.ListProduct;
 import org.bdlions.inventory.dto.ListProductCategory;
 import org.bdlions.inventory.dto.ListProductType;
 import org.bdlions.inventory.dto.ListUOM;
-import org.bdlions.inventory.library.ProductLibrary;
+import org.bdlions.inventory.entity.manager.EntityManagerProduct;
+import org.bdlions.inventory.entity.manager.EntityManagerProductCategory;
+import org.bdlions.inventory.entity.manager.EntityManagerProductType;
+import org.bdlions.inventory.entity.manager.EntityManagerUOM;
 import org.bdlions.util.annotation.ClientRequest;
-import org.bdlions.inventory.manager.Product;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -38,8 +40,8 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.FETCH_ALL_PRODUCT_CATEGORIES)
     public ClientResponse getAllProductCategories(ISession session, IPacket packet) throws Exception 
     {
-        Product product = new Product();
-        List<EntityProductCategory> productCategorys = product.getAllProductCategories();
+        EntityManagerProductCategory entityManagerProductCategory = new EntityManagerProductCategory();
+        List<EntityProductCategory> productCategorys = entityManagerProductCategory.getAllProductCategories();
         ListProductCategory response = new ListProductCategory();
         response.setProductCategories(productCategorys);
         response.setSuccess(true);
@@ -49,8 +51,8 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.FETCH_ALL_PRODUCT_TYPES)
     public ClientResponse getAllProductTypes(ISession session, IPacket packet) throws Exception 
     {
-        Product product = new Product();
-        List<EntityProductType> productTypes = product.getAllProductTypes();
+        EntityManagerProductType entityManagerProductType = new EntityManagerProductType();
+        List<EntityProductType> productTypes = entityManagerProductType.getAllProductTypes();
         ListProductType response = new ListProductType();
         response.setProductTypes(productTypes);
         response.setSuccess(true);
@@ -60,8 +62,8 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.FETCH_ALL_UOMS)
     public ClientResponse getAllUOMs(ISession session, IPacket packet) throws Exception 
     {
-        Product product = new Product();
-        List<EntityUOM> uoms = product.getAllUOMs();
+        EntityManagerUOM entityManagerUOM = new EntityManagerUOM();
+        List<EntityUOM> uoms = entityManagerUOM.getAllUOMs();
         ListUOM response = new ListUOM();
         response.setUoms(uoms);
         response.setSuccess(true);
@@ -99,8 +101,8 @@ public class ProductHandler {
             return responseEntityProduct;
         } 
         
-        Product product = new Product();
-        EntityProduct resultEntityProduct = product.getEntityProductByName(entityProduct);
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityProduct resultEntityProduct = entityManagerProduct.getProductByName(entityProduct.getName());
         if(resultEntityProduct != null)
         {
             responseEntityProduct.setSuccess(false);
@@ -108,8 +110,18 @@ public class ProductHandler {
             return responseEntityProduct;
         }
         
-        ProductLibrary productLibrary = new ProductLibrary();
-        responseEntityProduct = productLibrary.addProduct(entityProduct);
+        responseEntityProduct = entityManagerProduct.createProduct(entityProduct);
+        if(responseEntityProduct != null && responseEntityProduct.getId() > 0)
+        {
+            responseEntityProduct.setSuccess(true);
+            responseEntityProduct.setMessage("Product is added successfully.");
+        }
+        else
+        {
+            responseEntityProduct = new EntityProduct();
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Unable to add a new product. Please try again later.");
+        }
         
         return responseEntityProduct;
     }
@@ -119,14 +131,16 @@ public class ProductHandler {
     {
         Gson gson = new Gson();
         EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
-        Product product = new Product();
-        EntityProduct response = product.getProductInfo(entityProduct.getId());
-        if(response.getId() > 0)
+        
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityProduct response = entityManagerProduct.getProductByProductId(entityProduct.getId());
+        if(response != null && response.getId() > 0)
         {
             response.setSuccess(true);
         }
         else
         {
+            response = new EntityProduct();
             response.setSuccess(false);
             response.setMessage("Invalid product.");
         }
@@ -170,9 +184,8 @@ public class ProductHandler {
             return response;
         }
         
-        Product product = new Product();
-        EntityProduct resultEntityProduct = new EntityProduct();
-        resultEntityProduct = product.getEntityProductByName(entityProduct);
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityProduct resultEntityProduct = entityManagerProduct.getProductByName(entityProduct.getName());
         if(resultEntityProduct != null && resultEntityProduct.getId() != entityProduct.getId())
         {
             response.setSuccess(false);
@@ -180,9 +193,16 @@ public class ProductHandler {
             return response;
         }
         
-        ProductLibrary productLibrary = new ProductLibrary();
-        response = productLibrary.updateProduct(entityProduct);
-        
+        if(entityManagerProduct.updateProduct(entityProduct))
+        {
+            response.setSuccess(true);
+            response.setMessage("Product is updated successfully.");
+        }
+        else
+        {
+            response.setSuccess(false);
+            response.setMessage("Unable to update product. Please try again later.");
+        }        
         return response;
     }
     
@@ -191,8 +211,8 @@ public class ProductHandler {
     {
         Gson gson = new Gson();
         DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);     
-        Product product = new Product();
-        List<EntityProduct> products = product.getProducts(dtoProduct);
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        List<EntityProduct> products = entityManagerProduct.getProducts(0, 3);
         ListProduct response = new ListProduct();
         response.setProducts(products);
         response.setSuccess(true);

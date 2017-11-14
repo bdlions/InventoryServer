@@ -1,133 +1,132 @@
 package org.bdlions.inventory.entity.manager;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
-import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerProduct {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerProduct.class);
-    
-    public EntityManagerProduct()
+public class EntityManagerProduct 
+{
+    /**
+     * This method will return product info by name
+     * @param name, product name
+     * @return EntityProduct, product info
+     */
+    public EntityProduct getProductByName(String name)
     {
-    
-    }
-    
-    public EntityProduct getEntityProductByName(EntityProduct entityProduct)
-    {
-        EntityProduct resultEntityProduct = null;
         Session session = HibernateUtil.getSession();
         try {
             
             Query<EntityProduct> query = session.getNamedQuery("getProductByName");
-            query.setParameter("name", entityProduct.getName());
-            resultEntityProduct =  query.getSingleResult();
-            
-        }
-        catch(Exception ex)
-        {
-        
-        }
-        finally {
-            session.close();
-        }
-        return resultEntityProduct;
-    }
-    
-    public EntityProduct createProduct(EntityProduct entityProduct) 
-    {
-        boolean status = false;
-        Session session = HibernateUtil.getSession();
-        Transaction tx = session.getTransaction();
-        try {
-            tx.begin();
-            if(entityProduct != null)
+            query.setParameter("name", name);            
+            //getSingleResult will throw NoResultException if query has no result
+            //return query.getSingleResult();
+            List<EntityProduct> productList = query.getResultList();
+            if(productList == null || productList.isEmpty())
             {
-                session.save(entityProduct);
-                tx.commit();
-                status = true;
-            }            
+                return null;
+            }
+            else
+            {
+                return productList.get(0);
+            }           
         }
-        catch(Exception ex){
-            logger.error(ex.toString());
-            tx.rollback();
-        }
-        finally {
+        finally 
+        {
             session.close();
-        }
-        if(status)
-        {
-            return entityProduct;
-        }
-        else
-        {
-            return null;
         }
     }
     
-    public EntityProduct getProductInfo(int productId) 
+    /**
+     * This method will return product info by product id
+     * @param productId, product id
+     * @return EntityProduct, product info
+     */
+    public EntityProduct getProductByProductId(int productId) 
     {
-        EntityProduct resultEntityProduct = null;
         Session session = HibernateUtil.getSession();
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProductByProductId");
             query.setParameter("productId", productId);
-            resultEntityProduct = query.getSingleResult();
-        } 
-        finally 
-        {
-            session.close();
-        }
-        return resultEntityProduct;
-    }
-    
-    public boolean updateProduct(EntityProduct entityProduct) {
-        boolean status = false;
-        Session session = HibernateUtil.getSession();
-        Transaction tx = session.getTransaction();
-        try {
-            tx.begin();
-            if(entityProduct != null && entityProduct.getId() > 0)
+            List<EntityProduct> productList = query.getResultList();
+            if(productList == null || productList.isEmpty())
             {
-                session.update(entityProduct);
-                tx.commit();
-                status = true;
-            }            
-        }
-        catch(Exception ex){
-            logger.error(ex.toString());
-            tx.rollback();
-        }
-        finally {
-            session.close();
-        }
-        return status;
-    }
-    
-    public List<EntityProduct> getProducts(DTOProduct dtoProduct) 
-    {
-        List<EntityProduct> listEntityProduct = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
-        try {
-            //set limit, offset and other params in named query
-            Query<EntityProduct> query = session.getNamedQuery("getProducts");
-            listEntityProduct = query.getResultList();
+                return null;
+            }
+            else
+            {
+                return productList.get(0);
+            } 
         } 
         finally 
         {
             session.close();
         }
-        return listEntityProduct;
+    }
+    
+    /**
+     * This method will create a new product
+     * @param entityProduct, product info
+     * @return EntityProduct, product info assigning id
+     */
+    public EntityProduct createProduct(EntityProduct entityProduct) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            session.save(entityProduct);
+            return entityProduct;
+        }
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will update product info
+     * @param entityProduct, product info
+     * @return boolean whether product info is updated or not
+     */
+    public boolean updateProduct(EntityProduct entityProduct) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            session.update(entityProduct);
+            return true;
+        }
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return product list
+     * @param offset, offset
+     * @param limit, limit
+     * @return List, product info list
+     */
+    public List<EntityProduct> getProducts(int offset, int limit) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("getProducts");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
     }
 }

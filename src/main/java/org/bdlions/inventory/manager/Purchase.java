@@ -9,10 +9,13 @@ import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
+import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomProduct;
+import org.bdlions.inventory.entity.manager.EntityManagerProduct;
+import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
+import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
 import org.bdlions.inventory.util.Constants;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +23,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author Nazmul Hasan
  */
-public class Purchase {
+public class Purchase 
+{
     private final Logger logger = LoggerFactory.getLogger(Purchase.class);
+    
     public DTOPurchaseOrder addPurchaseOrderInfo(DTOPurchaseOrder dtoPurchaseOrder)
     {
         boolean status = false;
@@ -31,17 +36,23 @@ public class Purchase {
             if (dtoPurchaseOrder != null && dtoPurchaseOrder.getEntityPurchaseOrder() != null) {
                 tx.begin();
                 EntityPurchaseOrder entityPurchaseOrder = dtoPurchaseOrder.getEntityPurchaseOrder();
-                session.save(entityPurchaseOrder);
+                EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+                dtoPurchaseOrder.setEntityPurchaseOrder(entityManagerPurchaseOrder.createPurchaseOrder(entityPurchaseOrder, session));
+                //session.save(entityPurchaseOrder);
+                
                 List<DTOProduct> products = dtoPurchaseOrder.getProducts();
                 int totalProducts = products.size();
+                EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct();
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
                 for(int counter = 0; counter < totalProducts; counter++)
                 {
                     DTOProduct dtoProduct = products.get(counter);
                     EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
                     entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                     entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
-                    entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());                    
-                    session.save(entityPOShowRoomProduct);
+                    entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                    entityManagerPOShowRoomProduct.addPurchaseOrderShowRoomProduct(entityPOShowRoomProduct, session);
+                    //session.save(entityPOShowRoomProduct);
                     
                     EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
                     entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
@@ -49,7 +60,8 @@ public class Purchase {
                     entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
                     entityShowRoomStock.setStockOut(0);
                     entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
-                    session.save(entityShowRoomStock);
+                    entityManagerShowRoomStock.addShowRoomStock(entityShowRoomStock, session);
+                    //session.save(entityShowRoomStock);
                 }
                 tx.commit();
                 status = true;
@@ -74,31 +86,50 @@ public class Purchase {
     
     public DTOPurchaseOrder getPurchaseOrderInfo(DTOPurchaseOrder dtoPurchaseOrder)
     {
-        Session session = HibernateUtil.getSession();
-        try {
+        //--------------if order no is null or empty then return from here
+        //Session session = HibernateUtil.getSession();
+        try 
+        {   
+            EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+            dtoPurchaseOrder.setEntityPurchaseOrder(entityManagerPurchaseOrder.getPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo()));
             
-            Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderByOrderNo");
+            /*Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderByOrderNo");
             query.setParameter("orderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             EntityPurchaseOrder entityPurchaseOrder =  query.getSingleResult();
-            dtoPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
+            dtoPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);*/
             
-            Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("getPurchaseOrderProductsByOrderNo");
+            EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct();
+            List<EntityPOShowRoomProduct> showRoomProducts = entityManagerPOShowRoomProduct.getPurchaseOrderProductsByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+            
+            /*Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("getPurchaseOrderProductsByOrderNo");
             queryShowRoomProducts.setParameter("orderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
-            List<EntityPOShowRoomProduct> showRoomProducts =  queryShowRoomProducts.getResultList();
+            List<EntityPOShowRoomProduct> showRoomProducts =  queryShowRoomProducts.getResultList();*/
+            
+            EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
             if(showRoomProducts != null)
             {
                 for(int counter = 0; counter < showRoomProducts.size(); counter++)
                 {
                     EntityPOShowRoomProduct entityPOShowRoomProduct = showRoomProducts.get(counter);
-                    Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getPurchaseOrderProductByOrderNoAndCategoryId");
+                    /*Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getPurchaseOrderProductByOrderNoAndCategoryId");
                     queryStockProducts.setParameter("purchaseOrderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                     queryStockProducts.setParameter("transactionCategoryId", Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
                     queryStockProducts.setParameter("productId", entityPOShowRoomProduct.getProductId());
-                    EntityShowRoomStock stockProduct =  queryStockProducts.getSingleResult();
+                    EntityShowRoomStock stockProduct =  queryStockProducts.getSingleResult();*/
                     
-                    Query<EntityProduct> queryEntityEntityProduct = session.getNamedQuery("getProductByProductId");
+                    EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
+                    entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                    entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                    entityShowRoomStock.setProductId(entityPOShowRoomProduct.getProductId());
+                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getPurchaseOrderProductByOrderNoAndCategoryId(entityShowRoomStock);
+                    
+                    /*Query<EntityProduct> queryEntityEntityProduct = session.getNamedQuery("getProductByProductId");
                     queryEntityEntityProduct.setParameter("productId", stockProduct.getProductId());
-                    EntityProduct entityProduct =  queryEntityEntityProduct.getSingleResult();
+                    EntityProduct entityProduct =  queryEntityEntityProduct.getSingleResult();*/
+                    
+                    EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                    EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
+                    
                     
                     DTOProduct dtoProduct = new DTOProduct();
                     dtoProduct.setQuantity(stockProduct.getStockIn());
@@ -109,15 +140,22 @@ public class Purchase {
                 }
             }
             
-        } finally {
-            session.close();
+        } 
+        catch(Exception ex)
+        {
+            logger.error(ex.toString());
         }
+        /*finally {
+            session.close();
+        }*/
         return dtoPurchaseOrder;
     }
     
     public EntityPurchaseOrder getEntityPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder)
     {
-        EntityPurchaseOrder resultEntityPurchaseOrder = null;
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        return entityManagerPurchaseOrder.getPurchaseOrderById(entityPurchaseOrder.getId());        
+        /*EntityPurchaseOrder resultEntityPurchaseOrder = null;
         Session session = HibernateUtil.getSession();
         try {
             
@@ -128,12 +166,15 @@ public class Purchase {
         } finally {
             session.close();
         }
-        return resultEntityPurchaseOrder;
+        return resultEntityPurchaseOrder;*/
     }
     
     public EntityPurchaseOrder getEntityPurchaseOrderByOrderNo(EntityPurchaseOrder entityPurchaseOrder)
     {
-        EntityPurchaseOrder resultEntityPurchaseOrder = null;
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        return entityManagerPurchaseOrder.getPurchaseOrderByOrderNo(entityPurchaseOrder.getOrderNo());  
+        
+        /*EntityPurchaseOrder resultEntityPurchaseOrder = null;
         Session session = HibernateUtil.getSession();
         try {
             
@@ -149,16 +190,20 @@ public class Purchase {
         finally {
             session.close();
         }
-        return resultEntityPurchaseOrder;
+        return resultEntityPurchaseOrder;*/
     }
     
     public List<DTOPurchaseOrder> getPurchaseOrders(DTOPurchaseOrder dtoPurchaseOrder)
     {
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        //Session session = HibernateUtil.getSession();
         try {
-            Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
-            List<EntityPurchaseOrder> entityPurchaseOrders =  query.getResultList();
+            EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+            List<EntityPurchaseOrder> entityPurchaseOrders = entityManagerPurchaseOrder.getPurchaseOrders(0, 10);
+            
+            /*Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
+            List<EntityPurchaseOrder> entityPurchaseOrders =  query.getResultList();*/
+            
             for(int counter = 0; counter < entityPurchaseOrders.size(); counter++)
             {
                 EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
@@ -166,9 +211,15 @@ public class Purchase {
                 dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
                 purchaseOrders.add(dtoPO);
             }
-        } finally {
-            session.close();
         }
+        catch(Exception ex)
+        {
+            logger.error(ex.toString());
+        }
+        /*finally {
+            session.close();
+        }*/
+        
         return purchaseOrders;
     }
     
@@ -187,20 +238,32 @@ public class Purchase {
                 {
                     tx.begin();
                     //updating entity purchase order table
-                    EntityPurchaseOrder entityPurchaseOrder = dtoPurchaseOrder.getEntityPurchaseOrder();
-                    session.update(entityPurchaseOrder);
+                    EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+                    entityManagerPurchaseOrder.updatePurchaseOrder(dtoPurchaseOrder.getEntityPurchaseOrder());
+                    
+                    /*EntityPurchaseOrder entityPurchaseOrder = dtoPurchaseOrder.getEntityPurchaseOrder();
+                    session.update(entityPurchaseOrder);*/
                     
                     //we have to follow delete then insert approach and update some tables.
                     //delete entityPOShowRoomProduct based on existing order no
-                    Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("deletePurchaseOrderProductsByOrderNo");
+                    /*Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("deletePurchaseOrderProductsByOrderNo");
                     queryShowRoomProducts.setParameter("orderNo", currEntityPurchaseOrder.getOrderNo());
-                    int code =  queryShowRoomProducts.executeUpdate();
+                    int code =  queryShowRoomProducts.executeUpdate();*/
+                    
+                    EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct();
+                    entityManagerPOShowRoomProduct.deletePurchaseOrderProductsByOrderNo(currEntityPurchaseOrder.getOrderNo(), session);
 
                     //delete entityShowRoomStock based on existing order no
-                    Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deletePurchaseOrderShowRoomProductsByOrderNo");
+                    /*Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deletePurchaseOrderShowRoomProductsByOrderNo");
                     queryStockProducts.setParameter("purchaseOrderNo", currEntityPurchaseOrder.getOrderNo());
                     queryStockProducts.setParameter("transactionCategoryId", Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
-                    code =  queryStockProducts.executeUpdate();
+                    code =  queryStockProducts.executeUpdate();*/
+                    
+                    EntityShowRoomStock eShowRoomStock = new EntityShowRoomStock();
+                    eShowRoomStock.setPurchaseOrderNo(currEntityPurchaseOrder.getOrderNo());
+                    eShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                    EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
+                    entityManagerShowRoomStock.deletePurchaseOrderShowRoomProductsByOrderNo(eShowRoomStock, session);
 
                     List<DTOProduct> products = dtoPurchaseOrder.getProducts();
                     int totalProducts = products.size();
@@ -210,8 +273,9 @@ public class Purchase {
                         EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
                         entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                         entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
-                        entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());                    
-                        session.save(entityPOShowRoomProduct);
+                        entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());    
+                        entityManagerPOShowRoomProduct.addPurchaseOrderShowRoomProduct(entityPOShowRoomProduct, session);
+                        //session.save(entityPOShowRoomProduct);
 
                         EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
                         entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
@@ -219,7 +283,8 @@ public class Purchase {
                         entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
                         entityShowRoomStock.setStockOut(0);
                         entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
-                        session.save(entityShowRoomStock);
+                        entityManagerShowRoomStock.addShowRoomStock(entityShowRoomStock, session);
+                        //session.save(entityShowRoomStock);
                     }
                     tx.commit();
                     status = true;

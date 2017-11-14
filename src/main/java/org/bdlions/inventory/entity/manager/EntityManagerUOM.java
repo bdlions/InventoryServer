@@ -1,38 +1,32 @@
 package org.bdlions.inventory.entity.manager;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityUOM;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerUOM {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerUOM.class);
-    
-    public EntityManagerUOM()
+public class EntityManagerUOM 
+{
+    /**
+     * This method will return all unit of measure list
+     * @return List, unit of measure list
+     */
+    public List<EntityUOM> getAllUOMs()
     {
-    
-    }
-    
-    public List<EntityUOM> getAllUOMs(){
-        List<EntityUOM> listUOM = new ArrayList<>();
         Session session = HibernateUtil.getSession();
         try 
         {
             Query<EntityUOM> query = session.getNamedQuery("getAllUOMs");
-            listUOM = query.getResultList();
+            return query.getResultList();
         } 
         finally 
         {
             session.close();
         }
-        return listUOM;
     }
 }

@@ -63,7 +63,7 @@ public class SaleHandler {
         
         EntitySaleOrder tempEntitySaleOrder = new EntitySaleOrder();
         tempEntitySaleOrder.setOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-        EntitySaleOrder resultEntitySaleOrder = sale.getEntitySaleOrderByOrderNo(tempEntitySaleOrder);
+        EntitySaleOrder resultEntitySaleOrder = sale.getEntitySaleOrderByOrderNo(tempEntitySaleOrder.getOrderNo());
         if(resultEntitySaleOrder != null)
         {
             responseDTOSaleOrder.setSuccess(false);
@@ -159,7 +159,7 @@ public class SaleHandler {
         
         EntitySaleOrder tempEntitySaleOrder = new EntitySaleOrder();
         tempEntitySaleOrder.setOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-        EntitySaleOrder resultEntitySaleOrder = sale.getEntitySaleOrderByOrderNo(tempEntitySaleOrder);
+        EntitySaleOrder resultEntitySaleOrder = sale.getEntitySaleOrderByOrderNo(tempEntitySaleOrder.getOrderNo());
         if(resultEntitySaleOrder != null && resultEntitySaleOrder.getId() != dtoSaleOrder.getEntitySaleOrder().getId())
         {
             response.setSuccess(false);

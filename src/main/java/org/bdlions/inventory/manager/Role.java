@@ -1,33 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.bdlions.inventory.manager;
 
-import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityRole;
+import org.bdlions.inventory.entity.manager.EntityManagerRole;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 /**
  *
- * @author alamgir
+ * @author Nazmul Hasan
  */
-public class Role {
-    public EntityRole getRoleByRoleId(int roleId){
-        Session session = HibernateUtil.getSession();
-        try{
+public class Role 
+{
+    public EntityRole getRoleByRoleId(int roleId)
+    {
+        EntityManagerRole entityManagerRole = new EntityManagerRole();
+        EntityRole entityRole = entityManagerRole.getRoleByRoleId(roleId);
+        return entityRole;
+        /*Session session = HibernateUtil.getSession();
+        try
+        {
             return getRoleByRoleId(session, roleId);
         }
-        finally{
+        finally
+        {
             session.close();
-        }
+        }*/
     }
-    public EntityRole getRoleByRoleId(Session session, int roleId){
-        Query<EntityRole> query = session.getNamedQuery("getRoleById");
+    public EntityRole getRoleByRoleId(Session session, int roleId)
+    {
+        EntityManagerRole entityManagerRole = new EntityManagerRole();
+        EntityRole entityRole = entityManagerRole.getRoleByRoleId(session, roleId);
+        return entityRole;
+        /*Query<EntityRole> query = session.getNamedQuery("getRoleById");
         query.setParameter("roleId", roleId);
-        return query.uniqueResult();
-
+        return query.uniqueResult();*/
     }
 }

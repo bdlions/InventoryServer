@@ -1,95 +1,108 @@
 package org.bdlions.inventory.entity.manager;
 
+import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
-import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
+import org.bdlions.inventory.util.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerUser {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerUser.class);
-    
+public class EntityManagerUser 
+{
     public EntityUser createUser(EntityUser entityUser)
     {
-        EntityUser resultEntityUser = null;
         Session session = HibernateUtil.getSession();
         try 
         {
-            resultEntityUser = this.createUser(entityUser, session);
+            return createUser(entityUser, session);
         } 
         finally 
         {
             session.close();
         }
-        return resultEntityUser;
     }
     
     public EntityUser createUser(EntityUser entityUser, Session session)
     {
-        try
-        {
-            session.save(entityUser);
-            return entityUser;
-        }
-        catch(Exception ex)
-        {
-            logger.error(ex.toString());
-        }
-        return null;
+        session.save(entityUser);
+        return entityUser;
     }
 
     public boolean updateUser(EntityUser entityUser)
     {
-        boolean status = false;
         Session session = HibernateUtil.getSession();
         try 
         {
-            status = this.updateUser(entityUser, session);
+            return updateUser(entityUser, session);
         } 
         finally 
         {
             session.close();
         }
-        return status;
     }
     
     public boolean updateUser(EntityUser entityUser, Session session)
     {
-        try
-        {
-            session.update(entityUser);
-            return true;
-        }
-        catch(Exception ex)
-        {
-            logger.error(ex.toString());
-        }
-        return false;
+        session.update(entityUser);
+        return true;
     }
     
-    public EntityUser getUserByUserId(EntityUser entityUser)
+    public EntityUser getUserByUserId(int userId)
     {
-        EntityUser resultEntityUser = new EntityUser();
+        if(userId <= 0)
+        {
+            return null;
+        }
         Session session = HibernateUtil.getSession();
         try 
         {            
-            if(entityUser != null && entityUser.getId() > 0)
-            {
-                Query<EntityUser> query = session.getNamedQuery("getUserByUserId");
-                query.setParameter("userId", entityUser.getId());
-                resultEntityUser = query.getSingleResult();
-            }                     
+            Query<EntityUser> query = session.getNamedQuery("getUserByUserId");
+            query.setParameter("userId", userId);
+            return query.getSingleResult();                     
         } 
         finally 
         {
             session.close();
         }
-        return resultEntityUser;
+    }
+    
+    public EntityUser getUserByEmail(String email)
+    {
+        if(StringUtils.isNullOrEmpty(email))
+        {
+            return null;
+        }
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            Query<EntityUser> query = session.getNamedQuery("getUserByEmail");
+            query.setParameter("email", email);
+            return query.getSingleResult();                    
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public List<EntityUser> getUsers(int offset, int limit) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityUser> query = session.getNamedQuery("getUsers");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
     }
 }

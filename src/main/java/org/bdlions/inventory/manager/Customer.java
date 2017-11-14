@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.bdlions.inventory.manager;
 
 import java.util.ArrayList;
@@ -11,34 +6,66 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.dto.DTOCustomer;
 import org.bdlions.inventory.entity.EntityCustomer;
 import org.bdlions.inventory.entity.EntityUser;
+import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
+import org.bdlions.inventory.entity.manager.EntityManagerUserRole;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Nazmul
+ * @author Nazmul Hasan
  */
 public class Customer {
     private final Logger logger = LoggerFactory.getLogger(Customer.class);
-    public DTOCustomer createCustomer(DTOCustomer dtoCustomer) {
+    
+    public DTOCustomer createCustomer(DTOCustomer dtoCustomer) 
+    {
         boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
-        try {
-            tx.begin();
-            if (dtoCustomer != null && dtoCustomer.getEntityUser() != null) {
-                EntityUser user = dtoCustomer.getEntityUser();
-                session.save(user);
-                dtoCustomer.getEntityUserRole().setUserId(user.getId());
-                dtoCustomer.getEntityCustomer().setUserId(user.getId());
-                session.save(dtoCustomer.getEntityUserRole());
-                session.save(dtoCustomer.getEntityCustomer());
-                tx.commit();
-                status = true;
-            }
+        try 
+        {
+            if(dtoCustomer != null && dtoCustomer.getEntityUser() != null && dtoCustomer.getEntityUserRole() != null && dtoCustomer.getEntityCustomer() != null)
+            {
+                tx.begin();
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                EntityUser entityUser = entityManagerUser.createUser(dtoCustomer.getEntityUser(), session);
+                if (entityUser != null && entityUser.getId() > 0 ) 
+                {
+                    dtoCustomer.getEntityUserRole().setUserId(entityUser.getId());
+                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+                    EntityUserRole entityUserRole = entityManagerUserRole.createUserRole(dtoCustomer.getEntityUserRole(), session); 
+                    if(entityUserRole != null && entityUserRole.getId() > 0)
+                    {
+                        dtoCustomer.setEntityUserRole(entityUserRole);
+                        dtoCustomer.getEntityCustomer().setUserId(entityUser.getId());
+                        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                        EntityCustomer entityCustomer = entityManagerCustomer.createCustomer(dtoCustomer.getEntityCustomer(), session);
+                        if(entityCustomer != null && entityCustomer.getId() > 0)
+                        {
+                            dtoCustomer.setEntityCustomer(entityCustomer);
+                            tx.commit();
+                            status = true;
+                        }                        
+                    }
+                    /*EntityUser user = dtoCustomer.getEntityUser();
+                    session.save(user);
+                    dtoCustomer.getEntityUserRole().setUserId(user.getId());
+                    dtoCustomer.getEntityCustomer().setUserId(user.getId());
+                    session.save(dtoCustomer.getEntityUserRole());
+                    session.save(dtoCustomer.getEntityCustomer());
+                    tx.commit();
+                    status = true;*/
+                }
+                if(!status)
+                {
+                    tx.rollback();                
+                } 
+            }            
         }
         catch(Exception ex){
             logger.error(ex.toString());
@@ -57,11 +84,34 @@ public class Customer {
         }
     }
     
-    public boolean updateCustomer(DTOCustomer dtoCustomer) {
+    public boolean updateCustomer(DTOCustomer dtoCustomer) 
+    {
+        boolean status = false;
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction();
-        try {
-            tx.begin();
+        try 
+        {
+            if(dtoCustomer != null && dtoCustomer.getEntityUser() != null && dtoCustomer.getEntityCustomer() != null)
+            {
+                tx.begin();
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                if(entityManagerUser.updateUser(dtoCustomer.getEntityUser(), session))
+                {
+                    //update user role if required.
+                    
+                    EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                    if(entityManagerCustomer.updateCustomer(dtoCustomer.getEntityCustomer(), session))
+                    {
+                        tx.commit();
+                        status = true;
+                    }
+                }
+                if(!status)
+                {
+                    tx.rollback();
+                }
+            }
+            /*tx.begin();
             if (dtoCustomer != null && dtoCustomer.getEntityUser() != null) {
                 EntityUser user = dtoCustomer.getEntityUser();
                 session.update(user);
@@ -69,7 +119,7 @@ public class Customer {
                 session.update(dtoCustomer.getEntityCustomer());
                 tx.commit();
                 return true;
-            }
+            }*/
         }
         catch(Exception ex){
             logger.error(ex.toString());
@@ -78,37 +128,59 @@ public class Customer {
         finally {
             session.close();
         }
-        return false;
+        return status;
     }
     
-    public DTOCustomer getCustomerInfo(EntityCustomer reqEntityCustomer) {
+    public DTOCustomer getCustomerInfo(EntityCustomer reqEntityCustomer) 
+    {
         DTOCustomer dtoCustomer = null;
         Session session = HibernateUtil.getSession();
-        try {
+        try 
+        {
             EntityCustomer entityCustomer = new EntityCustomer();
-            if(reqEntityCustomer.getId() > 0)
+            if(reqEntityCustomer != null && reqEntityCustomer.getId() > 0)
             {
-                Query<EntityCustomer> query1 = session.getNamedQuery("getCustomerByCustomerId");
+                EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                entityCustomer = entityManagerCustomer.getCustomerByCustomerId(reqEntityCustomer);
+                
+                /*Query<EntityCustomer> query1 = session.getNamedQuery("getCustomerByCustomerId");
                 query1.setParameter("customerId", reqEntityCustomer.getId());
-                entityCustomer = query1.getSingleResult();
+                entityCustomer = query1.getSingleResult();*/
             }
-            else if(reqEntityCustomer.getUserId() > 0)
+            else if(reqEntityCustomer != null && reqEntityCustomer.getUserId() > 0)
             {
-                Query<EntityCustomer> query1 = session.getNamedQuery("getCustomerByUserId");
+                EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                entityCustomer = entityManagerCustomer.getCustomerByUserId(reqEntityCustomer);
+                
+                /*Query<EntityCustomer> query1 = session.getNamedQuery("getCustomerByUserId");
                 query1.setParameter("userId", reqEntityCustomer.getUserId());
-                entityCustomer = query1.getSingleResult();
+                entityCustomer = query1.getSingleResult();*/
             }
-            if(entityCustomer.getId() > 0)
+            if(entityCustomer != null && entityCustomer.getId() > 0)
             {
-                Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
+                EntityUser reqEntityUser = new EntityUser();
+                reqEntityUser.setId(entityCustomer.getUserId());
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                EntityUser entityUser = entityManagerUser.getUserByUserId(reqEntityUser.getId());
+                if(entityUser != null && entityUser.getId() > 0)
+                {
+                    //set user role if required
+                    dtoCustomer = new DTOCustomer();
+                    dtoCustomer.setEntityCustomer(entityCustomer);
+                    dtoCustomer.setEntityUser(entityUser);
+                }    
+                
+                /*Query<EntityUser> query2 = session.getNamedQuery("getUserByUserId");
                 query2.setParameter("userId", entityCustomer.getUserId());
                 EntityUser entityUser = query2.getSingleResult();
                 //set user role if required
                 dtoCustomer = new DTOCustomer();
                 dtoCustomer.setEntityCustomer(entityCustomer);
-                dtoCustomer.setEntityUser(entityUser);
+                dtoCustomer.setEntityUser(entityUser);*/
             }
-        } finally {
+        } 
+        finally 
+        {
             session.close();
         }
         return dtoCustomer;
@@ -116,7 +188,22 @@ public class Customer {
     
     public List<DTOCustomer> getCustomers(DTOCustomer dtoCustomer) {
         List<DTOCustomer> customers = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        List<EntityCustomer> entityCustomers = entityManagerCustomer.getCustomers(0, 10);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntityCustomer entityCustomer : entityCustomers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entityCustomer.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
+
+            DTOCustomer tempDTOCustomer = new DTOCustomer();
+            tempDTOCustomer.setEntityCustomer(entityCustomer);
+            tempDTOCustomer.setEntityUser(entityUser);
+            //set user role if required
+            customers.add(tempDTOCustomer);
+        }        
+        /*Session session = HibernateUtil.getSession();
         try {
             //set limit, offset and other params in named query
             Query<EntityCustomer> query = session.getNamedQuery("getCustomers");
@@ -134,7 +221,7 @@ public class Customer {
             }
         } finally {
             session.close();
-        }
+        }*/
         return customers;
     }
 }

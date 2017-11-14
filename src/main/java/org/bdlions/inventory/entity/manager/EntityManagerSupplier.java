@@ -5,7 +5,6 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.inventory.entity.EntitySupplier;
-import org.bdlions.inventory.entity.EntityUser;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
@@ -102,7 +101,7 @@ public class EntityManagerSupplier {
         Session session = HibernateUtil.getSession();
         try 
         {            
-            if(entitySupplier != null && entitySupplier.getId() > 0)
+            if(entitySupplier != null && entitySupplier.getUserId() > 0)
             {
                 Query<EntitySupplier> query = session.getNamedQuery("getSupplierByUserId");
                 query.setParameter("userId", entitySupplier.getUserId());

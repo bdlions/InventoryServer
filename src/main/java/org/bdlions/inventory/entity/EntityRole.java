@@ -23,7 +23,7 @@ import javax.persistence.Table;
 )
 @NamedQueries(
     {
-        @NamedQuery(name = "getRoleById", query =  "from EntityRole role where role.id = :roleId"),
+        @NamedQuery(name = "getRoleByRoleId", query =  "from EntityRole role where role.id = :roleId"),
         
     }
 )

@@ -5,13 +5,13 @@
  */
 package org.bdlions.inventory.manager;
 
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityRole;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
+import org.hibernate.query.Query;*/
 
 /**
  *
@@ -19,7 +19,7 @@ import org.hibernate.query.Query;
  */
 public class UserRole {
 
-    public ArrayList<EntityRole> getUserRolesByUserId(int userId) {
+    /*public ArrayList<EntityRole> getUserRolesByUserId(int userId) {
         Session session = HibernateUtil.getSession();
         try {
             Query<Integer> query = session.getNamedQuery("getUserRolesByUserId");
@@ -37,9 +37,9 @@ public class UserRole {
         } finally {
             session.close();
         }
-    }
+    }*/
 
-    public boolean assignUserRole(int userId, int roleId) {
+    /*public boolean assignUserRole(int userId, int roleId) {
         Session session = HibernateUtil.getSession();
         try {
 
@@ -53,5 +53,5 @@ public class UserRole {
         } finally {
             session.close();
         }
-    }
+    }*/
 }
