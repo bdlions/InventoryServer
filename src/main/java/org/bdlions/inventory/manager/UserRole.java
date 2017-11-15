@@ -39,19 +39,4 @@ public class UserRole {
         }
     }*/
 
-    /*public boolean assignUserRole(int userId, int roleId) {
-        Session session = HibernateUtil.getSession();
-        try {
-
-            EntityUserRole entityUserRole = new EntityUserRole();
-            entityUserRole.setRoleId(roleId);
-            entityUserRole.setUserId(userId);
-
-            session.save(entityUserRole);
-            return true;
-
-        } finally {
-            session.close();
-        }
-    }*/
 }

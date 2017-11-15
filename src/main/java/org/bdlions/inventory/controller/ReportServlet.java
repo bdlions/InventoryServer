@@ -18,7 +18,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import org.bdlions.inventory.entity.EntityUser;
-import org.bdlions.inventory.manager.User;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,8 +37,8 @@ public class ReportServlet {
         response.setContentType("application/pdf");
 
         String sourceFileName = getClass().getClassLoader().getResource("reports/customers.jasper").getFile();
-        User user = new User();
-        List<EntityUser> dataList = user.getUsers(1, 10);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        List<EntityUser> dataList = entityManagerUser.getUsers(1, 10);
 
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
 

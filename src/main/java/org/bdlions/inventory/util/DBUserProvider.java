@@ -3,7 +3,6 @@ package org.bdlions.inventory.util;
 import com.bdlions.dto.Credential;
 import com.bdlions.util.ACTION;
 import org.bdlions.inventory.entity.EntityUser;
-import org.bdlions.inventory.manager.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.roles.USER_ROLE;
 import org.bdlions.session.db.IDBUserProvider;
 import org.bdlions.util.StringUtils;
@@ -38,8 +38,8 @@ public class DBUserProvider implements IDBUserProvider {
         if (!StringUtils.isNullOrEmpty(credential.getUserName()) && !StringUtils.isNullOrEmpty(credential.getPassword())) {
             String userName = credential.getUserName();
             String password = credential.getPassword();
-            User userManager = new User();
-            EntityUser user = userManager.getUserByCredential(userName, password);
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityUser user = entityManagerUser.getUserByCredential(userName, password);
             if (user != null) {
                 credential.setAppType(100);
                 credential.setFirstName(user.getFirstName());

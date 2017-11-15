@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
  */
 public class EntityManagerRole 
 {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerRole.class);
     public EntityRole getRoleByRoleId(int roleId)
     {
         Session session = HibernateUtil.getSession();

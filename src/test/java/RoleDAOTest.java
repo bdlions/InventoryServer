@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-import org.bdlions.inventory.manager.Role;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +41,7 @@ public class RoleDAOTest {
     //
      //@Test
      public void getRoleByRoleId() {
-         Role r = new Role();
-         r.getRoleByRoleId(1);
+         //Role r = new Role();
+         //r.getRoleByRoleId(1);
      }
 }

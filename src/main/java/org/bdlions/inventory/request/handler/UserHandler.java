@@ -7,7 +7,8 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.entity.EntityUser;
-import org.bdlions.inventory.manager.User;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
+
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -27,8 +28,8 @@ public class UserHandler {
     public ClientResponse getProfileInfo(ISession session, IPacket packet) throws Exception 
     {
         int userId = (int)session.getUserId();
-        User user = new User();
-        EntityUser entiryUser = user.getUserById(userId);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser entiryUser = entityManagerUser.getUserByUserId(userId);
         entiryUser.setMessage("User Info.");
         entiryUser.setSuccess(true);
         return entiryUser;

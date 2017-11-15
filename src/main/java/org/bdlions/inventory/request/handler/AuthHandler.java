@@ -11,7 +11,6 @@ import com.bdlions.dto.response.SignInResponse;
 import org.bdlions.util.StringUtils;
 import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
-import org.bdlions.inventory.manager.User;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -30,8 +29,6 @@ public class AuthHandler {
     @ClientRequest(action = ACTION.SIGN_UP)
     public ClientResponse signUp(ISession session, IPacket packet) throws Exception 
     {
-        Gson gson = new Gson();
-        User userManager = new User();
         SignInResponse response = new SignInResponse();
         return response;
     }

@@ -11,8 +11,12 @@ import java.util.List;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListSupplier;
-import org.bdlions.inventory.library.SupplierLibrary;
+import org.bdlions.inventory.entity.EntitySupplier;
+import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.manager.Supplier;
+import org.bdlions.inventory.util.Constants;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -49,8 +53,28 @@ public class SupplierHandler {
         }
         else
         {
-            SupplierLibrary supplierLibrary = new SupplierLibrary();
-            responseDTOSupplier = supplierLibrary.createSupplier(dtoSupplier);
+            EntityUserRole entityUserRole = new EntityUserRole();
+            entityUserRole.setRoleId(Constants.ROLE_ID_SUPPLIER);
+            dtoSupplier.setEntityUserRole(entityUserRole);
+            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+            EntitySupplier resultEntitySupplier = entityManagerSupplier.createSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), dtoSupplier.getEntityUserRole());
+            if(resultEntitySupplier != null && resultEntitySupplier.getId() > 0)
+            {
+                //setting EntitySupplier
+                responseDTOSupplier.setEntitySupplier(resultEntitySupplier);
+                //setting EntityUser
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                responseDTOSupplier.setEntityUser(entityManagerUser.getUserByUserId(resultEntitySupplier.getUserId()));
+                
+                responseDTOSupplier.setSuccess(true);
+                responseDTOSupplier.setMessage("Supplier is added successfully.");
+            }
+            else
+            {
+                responseDTOSupplier = new DTOSupplier();            
+                responseDTOSupplier.setSuccess(false);
+                responseDTOSupplier.setMessage("Unable to create a supplier. Please try again later.");
+            }
         }        
         return responseDTOSupplier;
     }
@@ -78,8 +102,17 @@ public class SupplierHandler {
         }
         else
         {
-            SupplierLibrary supplierLibrary = new SupplierLibrary();
-            response = supplierLibrary.updateSupplier(dtoSupplier);
+            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+            if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser()))
+            {
+                response.setSuccess(true);
+                response.setMessage("Supplier is updated successfully.");
+            }
+            else
+            {
+                response.setSuccess(false);
+                response.setMessage("Unable to update supplier. Please try again later.");
+            }
         }        
         return response;
     }
@@ -88,18 +121,29 @@ public class SupplierHandler {
     public ClientResponse getSupplierInfo(ISession session, IPacket packet) throws Exception 
     {
         Gson gson = new Gson();
-        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);      
-        Supplier supplier = new Supplier();
-        DTOSupplier response = supplier.getSupplierInfo(dtoSupplier.getEntitySupplier());
-        if(response == null)
+        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);   
+        if(dtoSupplier == null || (dtoSupplier.getEntitySupplier().getId() <= 0 && dtoSupplier.getEntitySupplier().getUserId() <= 0))
         {
             GeneralResponse generalResponse = new GeneralResponse();
             generalResponse.setSuccess(false);
             generalResponse.setMessage("Invalid supplier. Please try again later");
             return generalResponse;
         }
-        response.setSuccess(true);
-        return response;
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        EntitySupplier entitySupplier = entityManagerSupplier.getSupplierBySupplierId(dtoSupplier.getEntitySupplier().getId());
+        if(entitySupplier == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid supplier. Please try again later");
+            return generalResponse;
+        }
+        dtoSupplier.setEntitySupplier(entitySupplier);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        dtoSupplier.setEntityUser(entityManagerUser.getUserByUserId(dtoSupplier.getEntitySupplier().getUserId()));
+
+        dtoSupplier.setSuccess(true);
+        return dtoSupplier;
     }
     
     @ClientRequest(action = ACTION.FETCH_SUPPLIERS)
@@ -108,7 +152,7 @@ public class SupplierHandler {
         Gson gson = new Gson();
         DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);      
         Supplier supplier = new Supplier();
-        List<DTOSupplier> suppliers = supplier.getSuppliers(dtoSupplier);
+        List<DTOSupplier> suppliers = supplier.getSuppliers(dtoSupplier.getOffset(), dtoSupplier.getLimit());
         ListSupplier response = new ListSupplier();
         response.setSuppliers(suppliers);
         response.setSuccess(true);

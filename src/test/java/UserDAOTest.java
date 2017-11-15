@@ -7,7 +7,7 @@
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityUser;
-import org.bdlions.inventory.manager.User;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.junit.After;
@@ -48,26 +48,12 @@ public class UserDAOTest {
     // public void hello() {}
     
     //@Test
-    public void getUserByUserName(){
-        User user = new User();
-        EntityUser u = user.getUserByIdentity("alamgir@yopmail.com");
-        System.out.println("Email: " + u.getEmail());
-    }
     
     
     //@Test
     public void getUserByCredential(){
-        User user = new User();
-        EntityUser u = user.getUserByCredential("alamgir@yopmail.com", "password");
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser u = entityManagerUser.getUserByCredential("alamgir@yopmail.com", "password");
         System.out.println("Email: " + u.getEmail());
     }
-
-    //@Test
-    public void getUserById(){
-        User user = new User();
-        EntityUser u = user.getUserById(1);
-        System.out.println("Email: " + u.getEmail());
-    }
-    
-    
 }

@@ -3,125 +3,207 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
-import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.inventory.entity.EntitySupplier;
+import org.bdlions.inventory.entity.EntityUser;
+import org.bdlions.inventory.entity.EntityUserRole;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerSupplier {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerSupplier.class);
-    
-    public EntitySupplier createSupplier(EntitySupplier entitySupplier)
+public class EntityManagerSupplier 
+{
+    /**
+     * This method will return entity supplier by supplier id
+     * @param supplierId supplier id
+     * @return EntitySupplier EntitySupplier
+     */
+    public EntitySupplier getSupplierBySupplierId(int supplierId)
     {
-        EntitySupplier resultEntitySupplier = null;
         Session session = HibernateUtil.getSession();
         try 
-        {
-            resultEntitySupplier = this.createSupplier(entitySupplier, session);
+        {            
+            Query<EntitySupplier> query = session.getNamedQuery("getSupplierBySupplierId");
+            query.setParameter("supplierId", supplierId);
+            List<EntitySupplier> supplierList = query.getResultList();
+            if(supplierList == null || supplierList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return supplierList.get(0);
+            }
         } 
         finally 
         {
             session.close();
         }
-        return resultEntitySupplier;
     }
     
+    /**
+     * This method will return entity supplier by user id
+     * @param userId user id
+     * @return EntitySupplier EntitySupplier
+     */
+    public EntitySupplier getSupplierByUserId(int userId)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            Query<EntitySupplier> query = session.getNamedQuery("getSupplierByUserId");
+            query.setParameter("userId", userId);
+            List<EntitySupplier> supplierList = query.getResultList();
+            if(supplierList == null || supplierList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return supplierList.get(0);
+            }                
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will create new entity supplier using session
+     * @param entitySupplier entity supplier
+     * @param session session
+     * @return EntitySupplier EntitySupplier
+     */
     public EntitySupplier createSupplier(EntitySupplier entitySupplier, Session session)
     {
-        try
-        {
-            session.save(entitySupplier);
-            return entitySupplier;
-        }
-        catch(Exception ex)
-        {
-            logger.error(ex.toString());
-        }
-        return null;
+        session.save(entitySupplier);
+        return entitySupplier;
     }
     
-    public boolean updateSupplier(EntitySupplier entitySupplier)
+    /**
+     * This method will create new entity supplier
+     * @param entitySupplier entity supplier
+     * @return EntitySupplier EntitySupplier
+     */
+    public EntitySupplier createSupplier(EntitySupplier entitySupplier)
     {
-        boolean status = false;
         Session session = HibernateUtil.getSession();
         try 
         {
-            status = this.updateSupplier(entitySupplier, session);
+            return createSupplier(entitySupplier, session);
         } 
         finally 
         {
             session.close();
         }
-        return status;
     }
     
+    /**
+     * This method will create new entity supplier and/or entity user and/or entity user role
+     * @param entitySupplier entity supplier
+     * @param entityUser entity user
+     * @param entityUserRole entity user role
+     * @return EntitySupplier EntitySupplier
+     */
+    public EntitySupplier createSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityUserRole entityUserRole)
+    {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        tx.begin();
+        if(entityUser != null)
+        {
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityUser resultEntityUser = entityManagerUser.createUser(entityUser, entityUserRole, session);
+            entitySupplier.setUserId(resultEntityUser.getId());
+        }
+        try 
+        {
+            EntitySupplier resultEntitySupplier = createSupplier(entitySupplier, session);
+            tx.commit();
+            return resultEntitySupplier;
+        } 
+        finally 
+        {
+            session.close();
+        }        
+    }
+    
+    /**
+     * This method will update entity supplier using session
+     * @param entitySupplier entity supplier
+     * @param session session
+     * @return boolean true
+     */
     public boolean updateSupplier(EntitySupplier entitySupplier, Session session)
     {
-        try
+        session.update(entitySupplier);
+        return true;
+    }
+    
+    /**
+     * This method will update entity supplier
+     * @param entitySupplier entity supplier
+     * @return boolean true
+     */
+    public boolean updateSupplier(EntitySupplier entitySupplier)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
         {
-            session.update(entitySupplier);
+            return updateSupplier(entitySupplier, session);
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will update entity supplier and/or entity user
+     * @param entitySupplier entity supplier
+     * @param entityUser entity user
+     * @return boolean true
+     */
+    public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser)
+    {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        tx.begin();
+        if(entityUser != null)
+        {
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            entityManagerUser.updateUser(entityUser, session);
+        }
+        try 
+        {
+            updateSupplier(entitySupplier, session);
+            tx.commit();
             return true;
-        }
-        catch(Exception ex)
-        {
-            logger.error(ex.toString());
-        }
-        return false;
-    }
-    
-    public EntitySupplier getSupplierBySupplierId(EntitySupplier entitySupplier)
-    {
-        EntitySupplier resultEntitySupplier = new EntitySupplier();
-        Session session = HibernateUtil.getSession();
-        try 
-        {            
-            if(entitySupplier != null && entitySupplier.getId() > 0)
-            {
-                Query<EntitySupplier> query = session.getNamedQuery("getSupplierBySupplierId");
-                query.setParameter("supplierId", entitySupplier.getId());
-                resultEntitySupplier = query.getSingleResult();
-            }                     
         } 
         finally 
         {
             session.close();
         }
-        return resultEntitySupplier;
     }
     
-    public EntitySupplier getSupplierByUserId(EntitySupplier entitySupplier)
-    {
-        EntitySupplier resultEntitySupplier = new EntitySupplier();
-        Session session = HibernateUtil.getSession();
-        try 
-        {            
-            if(entitySupplier != null && entitySupplier.getUserId() > 0)
-            {
-                Query<EntitySupplier> query = session.getNamedQuery("getSupplierByUserId");
-                query.setParameter("userId", entitySupplier.getUserId());
-                resultEntitySupplier = query.getSingleResult();
-            }                     
-        } 
-        finally 
-        {
-            session.close();
-        }
-        return resultEntitySupplier;
-    }
-    
-    public List<EntitySupplier> getSuppliers(DTOSupplier dtoSupplier) {
+    /**
+     * This method will return entity supplier list
+     * @param offset offset
+     * @param limit limit
+     * @return List entity supplier list
+     */
+    public List<EntitySupplier> getSuppliers(int offset, int limit) {
         List<EntitySupplier> entitySuppliers = new ArrayList<>();
         Session session = HibernateUtil.getSession();
         try 
         {
-            //set limit, offset and other params in named query
             Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
             entitySuppliers = query.getResultList();            
         } 
         finally 

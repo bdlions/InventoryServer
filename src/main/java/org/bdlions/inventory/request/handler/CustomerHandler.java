@@ -11,8 +11,12 @@ import java.util.List;
 import org.bdlions.inventory.dto.DTOCustomer;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListCustomer;
-import org.bdlions.inventory.library.CustomerLibrary;
+import org.bdlions.inventory.entity.EntityCustomer;
+import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.manager.Customer;
+import org.bdlions.inventory.util.Constants;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -49,8 +53,28 @@ public class CustomerHandler {
         }
         else
         {
-            CustomerLibrary customerLibrary = new CustomerLibrary();
-            responseDTOCustomer = customerLibrary.createCustomer(dtoCustomer);
+            EntityUserRole entityUserRole = new EntityUserRole();
+            entityUserRole.setRoleId(Constants.ROLE_ID_CUSTOMER);
+            dtoCustomer.setEntityUserRole(entityUserRole);
+            EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+            EntityCustomer resultEntityCustomer = entityManagerCustomer.createCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser(), entityUserRole);
+            if(resultEntityCustomer != null && resultEntityCustomer.getId() > 0)
+            {
+                //setting EntitySupplier
+                responseDTOCustomer.setEntityCustomer(resultEntityCustomer);
+                //setting EntityUser
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                responseDTOCustomer.setEntityUser(entityManagerUser.getUserByUserId(resultEntityCustomer.getUserId()));
+                
+                responseDTOCustomer.setSuccess(true);
+                responseDTOCustomer.setMessage("Customer is added successfully.");
+            }
+            else
+            {
+                responseDTOCustomer = new DTOCustomer();
+                responseDTOCustomer.setSuccess(false);
+                responseDTOCustomer.setMessage("Unable to create a customer. Please try again later.");
+            }
         }        
         return responseDTOCustomer;
     }
@@ -78,8 +102,17 @@ public class CustomerHandler {
         }
         else
         {
-            CustomerLibrary customerLibrary = new CustomerLibrary();
-            response = customerLibrary.updateCustomer(dtoCustomer);
+            EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+            if(entityManagerCustomer.updateCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser()))
+            {
+                response.setSuccess(true);
+                response.setMessage("Customer is updated successfully.");
+            }
+            else
+            {
+                response.setSuccess(false);
+                response.setMessage("Unable to update customer. Please try again later.");
+            }
         }        
         return response;
     }
@@ -88,18 +121,28 @@ public class CustomerHandler {
     public ClientResponse getCustomerInfo(ISession session, IPacket packet) throws Exception 
     {
         Gson gson = new Gson();
-        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);      
-        Customer customer = new Customer();
-        DTOCustomer response = customer.getCustomerInfo(dtoCustomer.getEntityCustomer());
-        if(response == null)
+        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);    
+        if( dtoCustomer == null || (dtoCustomer.getEntityCustomer().getId() <= 0 && dtoCustomer.getEntityCustomer().getUserId() <= 0) )
         {
             GeneralResponse generalResponse = new GeneralResponse();
             generalResponse.setSuccess(false);
             generalResponse.setMessage("Invalid customer. Please try again later");
             return generalResponse;
         }
-        response.setSuccess(true);
-        return response;
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByCustomerId(dtoCustomer.getEntityCustomer().getId());
+        if(entityCustomer == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid customer info. Please try again later");
+            return generalResponse;
+        }
+        dtoCustomer.setEntityCustomer(entityCustomer);
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        dtoCustomer.setEntityUser(entityManagerUser.getUserByUserId(entityCustomer.getUserId()));
+        dtoCustomer.setSuccess(true);
+        return dtoCustomer;
     }
     
     @ClientRequest(action = ACTION.FETCH_CUSTOMERS)
@@ -108,7 +151,7 @@ public class CustomerHandler {
         Gson gson = new Gson();
         DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);      
         Customer customer = new Customer();
-        List<DTOCustomer> customers = customer.getCustomers(dtoCustomer);
+        List<DTOCustomer> customers = customer.getCustomers(dtoCustomer.offset, dtoCustomer.limit);
         ListCustomer response = new ListCustomer();
         response.setCustomers(customers);
         response.setSuccess(true);
