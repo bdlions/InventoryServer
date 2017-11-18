@@ -210,9 +210,18 @@ public class ProductHandler {
     public ClientResponse getProducts(ISession session, IPacket packet) throws Exception 
     {
         Gson gson = new Gson();
-        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);     
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);   
+        
+        if( dtoProduct == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get product list. Please try again later");
+            return generalResponse;
+        }
+        
         EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
-        List<EntityProduct> products = entityManagerProduct.getProducts(0, 3);
+        List<EntityProduct> products = entityManagerProduct.getProducts(dtoProduct.getOffset(), dtoProduct.getLimit());
         ListProduct response = new ListProduct();
         response.setProducts(products);
         response.setSuccess(true);

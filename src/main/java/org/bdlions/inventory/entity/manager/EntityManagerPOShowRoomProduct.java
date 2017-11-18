@@ -14,12 +14,23 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerPOShowRoomProduct 
 {
+    /**
+     * This method will add purchase order show room product using session
+     * @param entityPOShowRoomProduct entity purchase order show room product
+     * @param session session
+     * @return EntityPOShowRoomProduct EntityPOShowRoomProduct
+     */
     public EntityPOShowRoomProduct addPurchaseOrderShowRoomProduct(EntityPOShowRoomProduct entityPOShowRoomProduct, Session session)
     {
         session.save(entityPOShowRoomProduct);
         return entityPOShowRoomProduct;
     }
     
+    /**
+     * This method will add purchase order show room product
+     * @param entityPOShowRoomProduct entity purchase order show room product
+     * @return EntityPOShowRoomProduct EntityPOShowRoomProduct
+     */
     public EntityPOShowRoomProduct addPurchaseOrderShowRoomProduct(EntityPOShowRoomProduct entityPOShowRoomProduct)
     {
         Session session = HibernateUtil.getSession();
@@ -33,6 +44,12 @@ public class EntityManagerPOShowRoomProduct
         }
     }
     
+    /**
+     * This method will add purchase order show room products using session
+     * @param entityPOShowRoomProductList entity purchase order show room product list
+     * @param session session
+     * @return List entity purchase order show room product list
+     */
     public List<EntityPOShowRoomProduct> addPurchaseOrderShowRoomProducts(List<EntityPOShowRoomProduct> entityPOShowRoomProductList, Session session)
     {
         List<EntityPOShowRoomProduct> entityPOShowRoomProducts = new ArrayList<>();
@@ -48,6 +65,28 @@ public class EntityManagerPOShowRoomProduct
         return entityPOShowRoomProducts;
     }
     
+    /**
+     * This method will delete purchase order show room products using session
+     * @param orderNo purchase order no
+     * @param session session
+     * @return int
+     */
+    public int deletePOShowRoomProductsByOrderNo(String orderNo, Session session)
+    {
+        if(!StringUtils.isNullOrEmpty(orderNo))
+        {
+            Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("deletePOShowRoomProductsByOrderNo");
+            queryShowRoomProducts.setParameter("orderNo", orderNo);
+            return queryShowRoomProducts.executeUpdate();
+        }
+        return 0;
+    }
+    
+    /**
+     * This method will delete purchase order show room products
+     * @param orderNo purchase order no
+     * @return int
+     */
     public int deletePOShowRoomProductsByOrderNo(String orderNo)
     {
         Session session = HibernateUtil.getSession();
@@ -60,19 +99,12 @@ public class EntityManagerPOShowRoomProduct
             session.close();
         }
     }
-    
-    public int deletePOShowRoomProductsByOrderNo(String orderNo, Session session)
-    {
-        int responseCode = 0;
-        if(!StringUtils.isNullOrEmpty(orderNo))
-        {
-            Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("deletePOShowRoomProductsByOrderNo");
-            queryShowRoomProducts.setParameter("orderNo", orderNo);
-            responseCode =  queryShowRoomProducts.executeUpdate();
-        }
-        return responseCode;
-    }
-    
+        
+    /**
+     * This method will return purchase order show room products by order no
+     * @param orderNo purchase order no
+     * @return List entity purchase order show room product list
+     */
     public List<EntityPOShowRoomProduct> getPOShowRoomProductsByOrderNo(String orderNo)
     {
         if(StringUtils.isNullOrEmpty(orderNo))

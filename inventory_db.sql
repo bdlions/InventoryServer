@@ -223,22 +223,22 @@ INSERT INTO `product_categories` (`id`, `created_on`, `modified_on`, `title`) VA
 --
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `category_id` int(11) DEFAULT '1',
-  `category_title` varchar(200) DEFAULT NULL,
-  `code` varchar(200) DEFAULT NULL,
-  `created_on` int(11) UNSIGNED DEFAULT '0',
+  `category_id` int(11) DEFAULT 1,
+  `category_title` varchar(200) DEFAULT '',
+  `code` varchar(200) DEFAULT '',
+  `created_on` int(11) UNSIGNED DEFAULT 0,
   `height` varchar(200) DEFAULT NULL,
   `length` varchar(200) DEFAULT NULL,
-  `modified_on` int(11) UNSIGNED DEFAULT '0',
-  `name` varchar(200) DEFAULT NULL,
-  `purchase_uom_id` int(11) UNSIGNED DEFAULT '1',
-  `sale_uom_id` int(11) UNSIGNED DEFAULT '1',
-  `standard_uom_id` int(11) UNSIGNED DEFAULT '1',
-  `type_id` int(11) DEFAULT '1',
-  `type_title` varchar(200) DEFAULT NULL,
-  `unit_price` double DEFAULT NULL,
-  `weight` varchar(200) DEFAULT NULL,
-  `width` varchar(200) DEFAULT NULL
+  `modified_on` int(11) UNSIGNED DEFAULT 0,
+  `name` varchar(200) DEFAULT '',
+  `purchase_uom_id` int(11) UNSIGNED DEFAULT 1,
+  `sale_uom_id` int(11) UNSIGNED DEFAULT 1,
+  `standard_uom_id` int(11) UNSIGNED DEFAULT 1,
+  `type_id` int(11) DEFAULT 1,
+  `type_title` varchar(200) DEFAULT '',
+  `unit_price` double DEFAULT 0,
+  `weight` varchar(200) DEFAULT '',
+  `width` varchar(200) DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
@@ -283,7 +283,8 @@ CREATE TABLE `purchase_orders` (
   `requested_ship_date` int(11) UNSIGNED DEFAULT 0,
   `subtotal` int(11) UNSIGNED DEFAULT 0,
   `supplier_user_id` int(11) NOT NULL,
-  `total` int(11) UNSIGNED DEFAULT 0
+  `total` int(11) UNSIGNED DEFAULT 0,
+  `remarks` varchar(1000) DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `purchase_orders`
   ADD PRIMARY KEY (`id`);
@@ -334,7 +335,8 @@ CREATE TABLE `sale_orders` (
   `id` int(11) NOT NULL,
   `created_on` int(11) UNSIGNED DEFAULT 0,
   `customer_user_id` int(11) NOT NULL,
-  `discount` double DEFAULT NULL,
+  `discount` double DEFAULT 0,
+  `total` double DEFAULT 0,
   `modified_on` int(11) UNSIGNED DEFAULT 0,
   `order_no` varchar(200) DEFAULT NULL,
   `remarks` varchar(500) DEFAULT NULL,

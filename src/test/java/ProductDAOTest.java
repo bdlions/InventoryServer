@@ -48,12 +48,4 @@ public class ProductDAOTest {
     {
         
     }
-    
-    @Test
-    public void getEntityProductByNameTest() 
-    {
-        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
-        EntityProduct resultEntityProduct = entityManagerProduct.getProductByName("tshirt");
-        System.out.println(resultEntityProduct.getName());
-    }
 }

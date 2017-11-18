@@ -6,11 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -29,7 +27,7 @@ import javax.persistence.Transient;
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.purchaseOrderNo = :purchaseOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
     @NamedQuery(
-            name = "getSaleOrderProductByOrderNoAndCategoryId",
+            name = "getShowRoomProductBySaleOrderNoAndTransactionCategoryId",
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
     @NamedQuery(
@@ -37,11 +35,11 @@ import javax.persistence.Transient;
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock group by productId"
     ),
     @NamedQuery(
-            name = "deletePurchaseOrderShowRoomProductsByOrderNo",
+            name = "deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId",
             query = " delete from EntityShowRoomStock product where product.purchaseOrderNo = :purchaseOrderNo AND product.transactionCategoryId = :transactionCategoryId"
     ),
     @NamedQuery(
-            name = "deleteSaleOrderShowRoomProductsByOrderNo",
+            name = "deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId",
             query = " delete from EntityShowRoomStock product where product.saleOrderNo = :saleOrderNo AND product.transactionCategoryId = :transactionCategoryId"
     )
 })

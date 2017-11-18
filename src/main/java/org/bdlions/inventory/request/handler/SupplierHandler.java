@@ -7,15 +7,16 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
+import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListSupplier;
 import org.bdlions.inventory.entity.EntitySupplier;
+import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
-import org.bdlions.inventory.manager.Supplier;
 import org.bdlions.inventory.util.Constants;
 
 //import org.apache.shiro.authc.UnknownAccountException;
@@ -130,7 +131,16 @@ public class SupplierHandler {
             return generalResponse;
         }
         EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
-        EntitySupplier entitySupplier = entityManagerSupplier.getSupplierBySupplierId(dtoSupplier.getEntitySupplier().getId());
+        EntitySupplier entitySupplier = null;
+        if(dtoSupplier.getEntitySupplier().getId() > 0)
+        {
+            entitySupplier = entityManagerSupplier.getSupplierBySupplierId(dtoSupplier.getEntitySupplier().getId());
+        }
+        else if(dtoSupplier.getEntitySupplier().getUserId() > 0)
+        {
+            entitySupplier = entityManagerSupplier.getSupplierByUserId(dtoSupplier.getEntitySupplier().getUserId());
+        }
+        
         if(entitySupplier == null)
         {
             GeneralResponse generalResponse = new GeneralResponse();
@@ -150,9 +160,31 @@ public class SupplierHandler {
     public ClientResponse getSuppliers(ISession session, IPacket packet) throws Exception 
     {
         Gson gson = new Gson();
-        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);      
-        Supplier supplier = new Supplier();
-        List<DTOSupplier> suppliers = supplier.getSuppliers(dtoSupplier.getOffset(), dtoSupplier.getLimit());
+        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);  
+        if(dtoSupplier == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get supplier list. Please try again later");
+            return generalResponse;
+        }
+        
+        List<DTOSupplier> suppliers = new ArrayList<>();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        List<EntitySupplier> entitySuppliers = entityManagerSupplier.getSuppliers(dtoSupplier.getOffset(), dtoSupplier.getLimit());
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntitySupplier entitySupplier : entitySuppliers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entitySupplier.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
+
+            DTOSupplier tempDTOSupplier = new DTOSupplier();
+            tempDTOSupplier.setEntitySupplier(entitySupplier);
+            tempDTOSupplier.setEntityUser(entityUser);
+            //set user role if required
+            suppliers.add(tempDTOSupplier);
+        }        
         ListSupplier response = new ListSupplier();
         response.setSuppliers(suppliers);
         response.setSuccess(true);

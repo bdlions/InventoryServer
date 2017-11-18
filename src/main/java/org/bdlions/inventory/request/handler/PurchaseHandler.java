@@ -182,13 +182,16 @@ public class PurchaseHandler {
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
         EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
         List<EntityPurchaseOrder> entityPurchaseOrders = entityManagerPurchaseOrder.getPurchaseOrders(dtoPurchaseOrder.getOffset(), dtoPurchaseOrder.getLimit());
-        for(int counter = 0; counter < entityPurchaseOrders.size(); counter++)
+        if(entityPurchaseOrders != null)
         {
-            EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
-            DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
-            dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
-            purchaseOrders.add(dtoPO);
-        }        
+            for(int counter = 0; counter < entityPurchaseOrders.size(); counter++)
+            {
+                EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
+                DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
+                dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
+                purchaseOrders.add(dtoPO);
+            } 
+        }               
         ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
         listPurchaseOrder.setSuccess(true);
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.bdlions.inventory.manager;
 
 import java.util.ArrayList;
@@ -10,6 +5,7 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.entity.EntityProduct;
+import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -19,22 +15,23 @@ import org.hibernate.query.Query;
  */
 public class Stock 
 {
-    public List<DTOProduct> getCurrentStock()
+    public List<DTOProduct> getCurrentStock(int offset, int limit)
     {
         List<DTOProduct> products = new ArrayList<>();
         Session session = HibernateUtil.getSession();
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStock");
+            queryStockProducts.setFirstResult(offset);
+            queryStockProducts.setMaxResults(limit);
             List<Object[]> showRoomProducts = queryStockProducts.getResultList();
             for(Object[] entityShowRoomStock : showRoomProducts)
             {
                 int productId = (int)entityShowRoomStock[0];
                 double quantity = (double)entityShowRoomStock[1];
                 
-                Query<EntityProduct> queryEntityEntityProduct = session.getNamedQuery("getProductByProductId");
-                queryEntityEntityProduct.setParameter("productId", productId);
-                EntityProduct entityProduct =  queryEntityEntityProduct.getSingleResult();
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityProduct entityProduct = entityManagerProduct.getProductByProductId(productId);
                 DTOProduct dtoProduct = new DTOProduct();
                 dtoProduct.setQuantity(quantity);
                 dtoProduct.setEntityProduct(entityProduct);

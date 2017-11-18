@@ -7,15 +7,16 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
+import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOCustomer;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListCustomer;
 import org.bdlions.inventory.entity.EntityCustomer;
+import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
-import org.bdlions.inventory.manager.Customer;
 import org.bdlions.inventory.util.Constants;
 
 //import org.apache.shiro.authc.UnknownAccountException;
@@ -130,7 +131,16 @@ public class CustomerHandler {
             return generalResponse;
         }
         EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
-        EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByCustomerId(dtoCustomer.getEntityCustomer().getId());
+        EntityCustomer entityCustomer = null;
+        if(dtoCustomer.getEntityCustomer().getId() > 0)
+        {
+            entityCustomer = entityManagerCustomer.getCustomerByCustomerId(dtoCustomer.getEntityCustomer().getId());
+        }
+        else if(dtoCustomer.getEntityCustomer().getUserId() > 0)
+        {
+            entityCustomer = entityManagerCustomer.getCustomerByUserId(dtoCustomer.getEntityCustomer().getUserId());
+        }
+        
         if(entityCustomer == null)
         {
             GeneralResponse generalResponse = new GeneralResponse();
@@ -149,9 +159,30 @@ public class CustomerHandler {
     public ClientResponse getCustomers(ISession session, IPacket packet) throws Exception 
     {
         Gson gson = new Gson();
-        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);      
-        Customer customer = new Customer();
-        List<DTOCustomer> customers = customer.getCustomers(dtoCustomer.offset, dtoCustomer.limit);
+        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);
+        if( dtoCustomer == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get customer list. Please try again later");
+            return generalResponse;
+        }
+        
+        List<DTOCustomer> customers = new ArrayList<>();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        List<EntityCustomer> entityCustomers = entityManagerCustomer.getCustomers(dtoCustomer.getOffset(), dtoCustomer.getLimit());
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntityCustomer entityCustomer : entityCustomers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entityCustomer.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
+
+            DTOCustomer tempDTOCustomer = new DTOCustomer();
+            tempDTOCustomer.setEntityCustomer(entityCustomer);
+            tempDTOCustomer.setEntityUser(entityUser);
+            customers.add(tempDTOCustomer);
+        }
         ListCustomer response = new ListCustomer();
         response.setCustomers(customers);
         response.setSuccess(true);

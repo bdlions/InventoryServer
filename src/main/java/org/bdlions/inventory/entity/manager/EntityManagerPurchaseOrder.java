@@ -18,12 +18,23 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerPurchaseOrder 
 {
+    /**
+     * This method will create new purchase order using session
+     * @param entityPurchaseOrder entity purchase order
+     * @param session session
+     * @return EntityPurchaseOrder EntityPurchaseOrder
+     */
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, Session session)
     {
         session.save(entityPurchaseOrder);
         return entityPurchaseOrder;
     }
     
+    /**
+     * This method will create new purchase order
+     * @param entityPurchaseOrder entity purchase order
+     * @return EntityPurchaseOrder EntityPurchaseOrder
+     */
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder)
     {
         Session session = HibernateUtil.getSession();
@@ -37,6 +48,13 @@ public class EntityManagerPurchaseOrder
         }
     }
     
+    /**
+     * This method will create new purchase order with product list
+     * @param entityPurchaseOrder entity purchase order
+     * @param entityPOShowRoomProductList entity purchase order show room product list
+     * @param entityShowRoomStockList entity show room stock list
+     * @return EntityPurchaseOrder EntityPurchaseOrder
+     */
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
@@ -105,12 +123,23 @@ public class EntityManagerPurchaseOrder
         }
     }
     
+    /**
+     * This method will update purchase order using session
+     * @param entityPurchaseOrder entity purchase order
+     * @param session session
+     * @return boolean true
+     */
     public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, Session session)
     {
         session.update(entityPurchaseOrder);
         return true;
     }
     
+    /**
+     * This method will update purchase order
+     * @param entityPurchaseOrder entity purchase order
+     * @return boolean true
+     */
     public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder)
     {
         Session session = HibernateUtil.getSession();
@@ -124,6 +153,13 @@ public class EntityManagerPurchaseOrder
         }
     }
     
+    /**
+     * This method will update purchase order
+     * @param entityPurchaseOrder entity purchase order
+     * @param entityPOShowRoomProductList entity purchase order show room product list
+     * @param entityShowRoomStockList entity show room stock list
+     * @return boolean true
+     */
     public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
@@ -197,6 +233,11 @@ public class EntityManagerPurchaseOrder
         }
     }
     
+    /**
+     * This method will return purchase order by order no
+     * @param orderNo purchase order no
+     * @return EntityPurchaseOrder EntityPurchaseOrder
+     */
     public EntityPurchaseOrder getPurchaseOrderByOrderNo(String orderNo)
     {
         if(StringUtils.isNullOrEmpty(orderNo))
@@ -224,6 +265,11 @@ public class EntityManagerPurchaseOrder
         }
     }
     
+    /**
+     * This method will return purchase order by id
+     * @param id id
+     * @return EntityPurchaseOrder EntityPurchaseOrder
+     */
     public EntityPurchaseOrder getPurchaseOrderById(int id)
     {
         if(id <= 0)
@@ -251,22 +297,26 @@ public class EntityManagerPurchaseOrder
         }
     }    
     
+    /**
+     * This method will return purchase order list
+     * @param offset offset
+     * @param limit limit
+     * @return List entity purchase order list
+     */
     public List<EntityPurchaseOrder> getPurchaseOrders(int offset, int limit)
     {
-        List<EntityPurchaseOrder> purchaseOrders = new ArrayList<>();
         Session session = HibernateUtil.getSession();
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
             query.setFirstResult(offset);
             query.setMaxResults(limit);
-            purchaseOrders =  query.getResultList();            
+            return query.getResultList();            
         } 
         finally 
         {
             session.close();
         }
-        return purchaseOrders;
     }
     
 }
