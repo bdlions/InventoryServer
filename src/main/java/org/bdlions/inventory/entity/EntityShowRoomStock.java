@@ -25,7 +25,7 @@ import javax.persistence.Transient;
 )
 @NamedQueries({
     @NamedQuery(
-            name = "getPurchaseOrderProductByOrderNoAndCategoryId",
+            name = "getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId",
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.purchaseOrderNo = :purchaseOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
     @NamedQuery(

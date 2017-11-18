@@ -4,98 +4,91 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
+import org.bdlions.inventory.util.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerPOShowRoomProduct {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerPOShowRoomProduct.class);
+public class EntityManagerPOShowRoomProduct 
+{
+    public EntityPOShowRoomProduct addPurchaseOrderShowRoomProduct(EntityPOShowRoomProduct entityPOShowRoomProduct, Session session)
+    {
+        session.save(entityPOShowRoomProduct);
+        return entityPOShowRoomProduct;
+    }
     
     public EntityPOShowRoomProduct addPurchaseOrderShowRoomProduct(EntityPOShowRoomProduct entityPOShowRoomProduct)
     {
-        EntityPOShowRoomProduct resultEntityPOShowRoomProduct = null;
         Session session = HibernateUtil.getSession();
         try 
         {
-            resultEntityPOShowRoomProduct = this.addPurchaseOrderShowRoomProduct(entityPOShowRoomProduct, session);
+            return addPurchaseOrderShowRoomProduct(entityPOShowRoomProduct, session);
         } 
         finally 
         {
             session.close();
         }
-        return resultEntityPOShowRoomProduct;
     }
     
-    public EntityPOShowRoomProduct addPurchaseOrderShowRoomProduct(EntityPOShowRoomProduct entityPOShowRoomProduct, Session session)
+    public List<EntityPOShowRoomProduct> addPurchaseOrderShowRoomProducts(List<EntityPOShowRoomProduct> entityPOShowRoomProductList, Session session)
     {
-        try
+        List<EntityPOShowRoomProduct> entityPOShowRoomProducts = new ArrayList<>();
+        if(entityPOShowRoomProductList != null && !entityPOShowRoomProductList.isEmpty())
         {
-            session.save(entityPOShowRoomProduct);
-            return entityPOShowRoomProduct;
+            for(int counter = 0; counter < entityPOShowRoomProductList.size(); counter++)
+            {
+                EntityPOShowRoomProduct entityPOShowRoomProduct = entityPOShowRoomProductList.get(counter);
+                entityPOShowRoomProduct = addPurchaseOrderShowRoomProduct(entityPOShowRoomProduct, session);
+                entityPOShowRoomProducts.add(entityPOShowRoomProduct);
+            }
         }
-        catch(Exception ex)
-        {
-            logger.error(ex.toString());
-        }
-        return null;
+        return entityPOShowRoomProducts;
     }
     
-    public List<EntityPOShowRoomProduct> getPurchaseOrderProductsByOrderNo(String orderNo)
+    public int deletePOShowRoomProductsByOrderNo(String orderNo)
     {
-        List<EntityPOShowRoomProduct> purchaseOrderProducts =  new ArrayList<>();
         Session session = HibernateUtil.getSession();
         try 
         {            
-            if(orderNo != null && !orderNo.equals(""))
-            {
-                Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("getPurchaseOrderProductsByOrderNo");
-                queryShowRoomProducts.setParameter("orderNo", orderNo);
-                purchaseOrderProducts =  queryShowRoomProducts.getResultList();
-            }                     
+            return deletePOShowRoomProductsByOrderNo(orderNo, session);
         } 
         finally 
         {
             session.close();
         }
-        return purchaseOrderProducts;
     }
     
-    public int deletePurchaseOrderProductsByOrderNo(String orderNo)
+    public int deletePOShowRoomProductsByOrderNo(String orderNo, Session session)
     {
         int responseCode = 0;
-        Session session = HibernateUtil.getSession();
-        try 
-        {            
-            responseCode = deletePurchaseOrderProductsByOrderNo(orderNo, session);
-        } 
-        finally 
+        if(!StringUtils.isNullOrEmpty(orderNo))
         {
-            session.close();
+            Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("deletePOShowRoomProductsByOrderNo");
+            queryShowRoomProducts.setParameter("orderNo", orderNo);
+            responseCode =  queryShowRoomProducts.executeUpdate();
         }
         return responseCode;
     }
     
-    public int deletePurchaseOrderProductsByOrderNo(String orderNo, Session session)
+    public List<EntityPOShowRoomProduct> getPOShowRoomProductsByOrderNo(String orderNo)
     {
-        int responseCode = 0;
+        if(StringUtils.isNullOrEmpty(orderNo))
+        {
+            return null;
+        }
+        Session session = HibernateUtil.getSession();
         try 
         {            
-            if(orderNo != null && !orderNo.equals(""))
-            {
-                Query<EntityPOShowRoomProduct> queryShowRoomProducts = session.getNamedQuery("deletePurchaseOrderProductsByOrderNo");
-                queryShowRoomProducts.setParameter("orderNo", orderNo);
-                responseCode =  queryShowRoomProducts.executeUpdate();
-            }                     
-        }
-        catch(Exception ex)
+            Query<EntityPOShowRoomProduct> query = session.getNamedQuery("getPOShowRoomProductsByOrderNo");
+            query.setParameter("orderNo", orderNo);
+            return query.getResultList();                       
+        } 
+        finally 
         {
-            logger.error(ex.toString());
+            session.close();
         }
-        return responseCode;
     }
 }

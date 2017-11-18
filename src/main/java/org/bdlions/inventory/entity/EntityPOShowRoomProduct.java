@@ -23,11 +23,11 @@ import javax.persistence.Table;
 )
 @NamedQueries({
     @NamedQuery(
-            name = "getPurchaseOrderProductsByOrderNo",
+            name = "getPOShowRoomProductsByOrderNo",
             query = "from EntityPOShowRoomProduct product where product.orderNo = :orderNo"
     ),
     @NamedQuery(
-            name = "deletePurchaseOrderProductsByOrderNo",
+            name = "deletePOShowRoomProductsByOrderNo",
             query = " delete from EntityPOShowRoomProduct product where product.orderNo = :orderNo"
     )
 })

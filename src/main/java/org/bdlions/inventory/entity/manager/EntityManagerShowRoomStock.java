@@ -3,20 +3,22 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
-import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
-import org.bdlions.inventory.util.Constants;
+import org.bdlions.inventory.util.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerShowRoomStock {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerShowRoomStock.class);
+public class EntityManagerShowRoomStock 
+{
+    public EntityShowRoomStock addShowRoomStock(EntityShowRoomStock entityShowRoomStock, Session session)
+    {
+        session.save(entityShowRoomStock);
+        return entityShowRoomStock;
+    }
     
     public EntityShowRoomStock addShowRoomStock(EntityShowRoomStock entityShowRoomStock)
     {
@@ -31,65 +33,73 @@ public class EntityManagerShowRoomStock {
         }
     }
     
-    public EntityShowRoomStock addShowRoomStock(EntityShowRoomStock entityShowRoomStock, Session session)
+    public List<EntityShowRoomStock> addShowRoomStocks(List<EntityShowRoomStock> entityShowRoomStockList, Session session)
     {
-        session.save(entityShowRoomStock);
-        return entityShowRoomStock;
-    }
-    
-    public EntityShowRoomStock getPurchaseOrderProductByOrderNoAndCategoryId(EntityShowRoomStock entityShowRoomStock)
-    {
-        EntityShowRoomStock resultEntityShowRoomStock = new EntityShowRoomStock();
-        Session session = HibernateUtil.getSession();
-        try 
-        {            
-            Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getPurchaseOrderProductByOrderNoAndCategoryId");
-            queryStockProducts.setParameter("purchaseOrderNo", entityShowRoomStock.getPurchaseOrderNo());
-            queryStockProducts.setParameter("transactionCategoryId", entityShowRoomStock.getTransactionCategoryId());
-            queryStockProducts.setParameter("productId", entityShowRoomStock.getProductId());
-            resultEntityShowRoomStock =  queryStockProducts.getSingleResult();                    
-        } 
-        finally 
+        List<EntityShowRoomStock> entityShowRoomStocks = new ArrayList<>();
+        if(entityShowRoomStockList != null && !entityShowRoomStockList.isEmpty())
         {
-            session.close();
-        }
-        return resultEntityShowRoomStock;
-    }
-    
-    public int deletePurchaseOrderShowRoomProductsByOrderNo(EntityShowRoomStock entityShowRoomStock)
-    {
-        int responseCode = 0;
-        Session session = HibernateUtil.getSession();
-        try 
-        {            
-            responseCode = deletePurchaseOrderShowRoomProductsByOrderNo(entityShowRoomStock, session);
-        } 
-        finally 
-        {
-            session.close();
-        }
-        return responseCode;
-    }
-    
-    public int deletePurchaseOrderShowRoomProductsByOrderNo(EntityShowRoomStock entityShowRoomStock, Session session)
-    {
-        int responseCode = 0;
-        try 
-        {            
-            if(entityShowRoomStock != null)
+            for(int counter = 0; counter < entityShowRoomStockList.size(); counter++)
             {
-                Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deletePurchaseOrderShowRoomProductsByOrderNo");
-                queryStockProducts.setParameter("purchaseOrderNo", entityShowRoomStock.getPurchaseOrderNo());
-                queryStockProducts.setParameter("transactionCategoryId", entityShowRoomStock.getTransactionCategoryId());
-                responseCode =  queryStockProducts.executeUpdate();
-            }                     
+                EntityShowRoomStock entityShowRoomStock = entityShowRoomStockList.get(counter);
+                entityShowRoomStock = addShowRoomStock(entityShowRoomStock, session);
+                entityShowRoomStocks.add(entityShowRoomStock);
+            }
+        }
+        return entityShowRoomStocks;
+    }
+    
+    public int deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(String purchaseOrderNo, int transactionCategoryId)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            return deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(purchaseOrderNo, transactionCategoryId, session);
         } 
-        catch(Exception ex)
+        finally 
         {
-            logger.error(ex.toString());
+            session.close();
+        }
+    }
+    
+    public int deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(String purchaseOrderNo, int transactionCategoryId, Session session)
+    {
+        int responseCode = 0;
+        if(!StringUtils.isNullOrEmpty(purchaseOrderNo) && transactionCategoryId > 0)
+        {
+            Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deletePurchaseOrderShowRoomProductsByOrderNo");
+            queryStockProducts.setParameter("purchaseOrderNo", purchaseOrderNo);
+            queryStockProducts.setParameter("transactionCategoryId", transactionCategoryId);
+            responseCode =  queryStockProducts.executeUpdate();
         }
         return responseCode;
     }
+    
+    public EntityShowRoomStock getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(int productId, String purchaseOrderNo, int transactionCategoryId)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId");
+            query.setParameter("purchaseOrderNo", purchaseOrderNo);
+            query.setParameter("transactionCategoryId", transactionCategoryId);
+            query.setParameter("productId", productId);
+            List<EntityShowRoomStock> productList = query.getResultList();
+            if(productList == null || productList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return productList.get(0);
+            }              
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    
     
     public EntityShowRoomStock getSaleOrderProductByOrderNoAndCategoryId(int productId, String saleOrderNo, int transactionCategoryId)
     {
