@@ -147,7 +147,7 @@ public class SaleHandler {
                     EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
 
                     DTOProduct dtoProduct = new DTOProduct();
-                    dtoProduct.setQuantity(stockProduct.getStockIn());
+                    dtoProduct.setQuantity(stockProduct.getStockOut());
                     dtoProduct.setEntityProduct(entityProduct);
                     dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
                     dtoSaleOrder.getProducts().add(dtoProduct);
