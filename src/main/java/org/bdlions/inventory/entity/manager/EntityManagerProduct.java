@@ -4,6 +4,7 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 /**
@@ -97,9 +98,12 @@ public class EntityManagerProduct
     public boolean updateProduct(EntityProduct entityProduct) 
     {
         Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        tx.begin();
         try 
         {
             session.update(entityProduct);
+            tx.commit();
             return true;
         }
         finally 
