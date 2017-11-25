@@ -17,12 +17,12 @@ INSERT INTO `address_types` (`id`, `title`) VALUES
 (2, 'Residential');
 
 INSERT INTO `users` (`id`, `account_status_id`, `cell`, `created_on`, `email`, `first_name`, `img`, `last_name`, `modified_on`, `password`, `user_name`) VALUES
-(1, 1, '01711123456', 0, 'admin@gmail.com', 'Admin', 'img1', '1', 0, 'pass', 'admin'),
-(2, 1, '01722123456', 0, 'staff@gmail.com', 'Staff', 'img2', '1', 0, 'pass', 'staff'),
-(3, 0, '01733123456', 0, 'supplier1@gmail.com', 'Supplier', 'img3', '1', 0, 'pass', 'supplier1'),
-(4, 0, '01744123456', 0, 'supplier2@gmail.com', 'Supplier', 'img3', '2', 0, 'pass', 'supplier2'),
-(5, 0, '01755123456', 0, 'customer1@gmail.com', 'Customer', 'img4', '1', 0, 'pass', 'customer1'),
-(6, 0, '01766123456', 0, 'customer2@gmail.com', 'Customer', 'img4', '2', 0, 'pass', 'customer2');
+(1, 1, '01711123456', 0, 'admin@gmail.com', 'Signature', 'img1', 'Technology', 0, 'pass', 'admin'),
+(2, 1, '01722123456', 0, 'staff@gmail.com', 'Redoy', 'img2', 'Rahman', 0, 'pass', 'staff'),
+(3, 0, '01733123456', 0, 'nazmul@gmail.com', 'Nazmul', 'img3', 'Hasan', 0, 'pass', 'nazmul'),
+(4, 0, '01744123456', 0, 'alamgir@gmail.com', 'Alamgir', 'img3', 'Kabir', 0, 'pass', 'alamgir'),
+(5, 0, '01755123456', 0, 'zobaer@gmail.com', 'Zobaer', 'img4', 'Badal', 0, 'pass', 'zobaer'),
+(6, 0, '01766123456', 0, 'alamin@gmail.com', 'Alamin', 'img4', 'Kazi', 0, 'pass', 'alamin');
 
 INSERT INTO `users_roles` (`id`, `role_id`, `user_id`) VALUES
 (1, 1, 1),
@@ -53,14 +53,14 @@ INSERT INTO `product_types` (`id`, `created_on`, `modified_on`, `title`) VALUES
 (4, 0, 0, 'Service');
 
 INSERT INTO `product_categories` (`id`, `created_on`, `modified_on`, `title`) VALUES
-(1, 0, 0, 'Default Category');
+(1, 0, 0, 'Cloth');
 
 INSERT INTO `products` (`id`, `category_id`, `category_title`, `code`, `created_on`, `height`, `length`, `modified_on`, `name`, `purchase_uom_id`, `sale_uom_id`, `standard_uom_id`, `type_id`, `type_title`, `unit_price`, `weight`, `width`) VALUES
-(1, 1, 'Default Category', 'jeans', 0, NULL, NULL, 0, 'jeans', 4, 4, 4, 1, 'Stocked Product', 100, NULL, NULL),
-(2, 1, 'Default Category', 'tshirt', 0, NULL, NULL, 0, 'tshirt', 4, 4, 4, 1, 'Stocked Product', 200, NULL, NULL),
-(3, 1, 'Default Category', 'belt', 0, NULL, NULL, 0, 'belt', 4, 4, 4, 1, 'Stocked Product', 300, NULL, NULL),
-(4, 1, 'Default Category', 'trouser', 0, NULL, NULL, 0, 'trouser', 4, 4, 4, 1, 'Stocked Product', 400, NULL, NULL),
-(5, 1, 'Default Category', 'shirt', 0, NULL, NULL, 0, 'shirt', 4, 4, 4, 1, 'Stocked Product', 500, NULL, NULL);
+(1, 1, 'Cloth', 'jeans', 0, NULL, NULL, 0, 'jeans', 4, 4, 4, 1, 'Stocked Product', 100, NULL, NULL),
+(2, 1, 'Cloth', 'tshirt', 0, NULL, NULL, 0, 'tshirt', 4, 4, 4, 1, 'Stocked Product', 200, NULL, NULL),
+(3, 1, 'Cloth', 'pant', 0, NULL, NULL, 0, 'pant', 4, 4, 4, 1, 'Stocked Product', 300, NULL, NULL),
+(4, 1, 'Cloth', 'trouser', 0, NULL, NULL, 0, 'trouser', 4, 4, 4, 1, 'Stocked Product', 400, NULL, NULL),
+(5, 1, 'Cloth', 'shirt', 0, NULL, NULL, 0, 'shirt', 4, 4, 4, 1, 'Stocked Product', 500, NULL, NULL);
 
 INSERT INTO `purchase_order_statuses` (`id`, `title`) VALUES
 (1, 'Open'),
