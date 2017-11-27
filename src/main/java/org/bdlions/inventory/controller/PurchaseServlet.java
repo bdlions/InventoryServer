@@ -5,8 +5,10 @@
  */
 package org.bdlions.inventory.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,9 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.inventory.dto.DTOSupplier;
@@ -31,6 +35,8 @@ import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
+import org.bdlions.inventory.report.ReportPayment;
+import org.bdlions.inventory.report.ReportProduct;
 import org.bdlions.inventory.util.Constants;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,11 +105,46 @@ public class PurchaseServlet {
         parameters.put("Email", dtoSupplier.getEntityUser().getEmail());
         parameters.put("Phone", dtoSupplier.getEntityUser().getCell());
         
+//        ReportPayment reportPayment = new ReportPayment();
+//        reportPayment.setId(1);
+//        reportPayment.setType("Cash");
+//        reportPayment.setAmount(1000);
+//        
+//        List<ReportPayment> payments = new ArrayList<>();
+//        payments.add(reportPayment);
+//        parameters.put("payments", payments);
+//        try
+//        {
+//            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("payments.jasper"));
+//            parameters.put("subReport", subReport);
+//        }
+//        catch(Exception ex)
+//        {
+//        
+//        }
+        
+
+        
         //EntityManagerUser entityManagerUser = new EntityManagerUser();
         List<EntityUser> dataList = entityManagerUser.getUsers(1, 10);
+        List<DTOProduct> productList = dtoPurchaseOrder.getProducts();
+        List<ReportProduct> products = new ArrayList<>();
+        for(int counter = 0; counter < productList.size(); counter++)
+        {
+            DTOProduct dtoProduct = productList.get(counter);
+            ReportProduct reportProduct = new ReportProduct();
+            reportProduct.setId(counter+1);
+            reportProduct.setName(dtoProduct.getEntityProduct().getName());
+            reportProduct.setQuantity(dtoProduct.getQuantity());
+            reportProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
+            reportProduct.setDiscount(0);
+            reportProduct.setSubTotal(dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice());
+            products.add(reportProduct);
+        }
+        
 
-        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
-        //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dtoPurchaseOrder.getProducts());
+        //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(products);
 
         
         try {

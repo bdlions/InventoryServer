@@ -7,6 +7,7 @@ package org.bdlions.inventory.controller;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
+import org.bdlions.inventory.report.ReportProduct;
 import org.bdlions.inventory.util.Constants;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -109,9 +111,25 @@ public class SaleServlet {
         parameters.put("Phone", dtoCustomer.getEntityUser().getCell());
         
         List<EntityUser> dataList = entityManagerUser.getUsers(1, 10);
+        
+        List<DTOProduct> productList = dtoSaleOrder.getProducts();
+        List<ReportProduct> products = new ArrayList<>();
+        for(int counter = 0; counter < productList.size(); counter++)
+        {
+            DTOProduct dtoProduct = productList.get(counter);
+            ReportProduct reportProduct = new ReportProduct();
+            reportProduct.setId(counter+1);
+            reportProduct.setName(dtoProduct.getEntityProduct().getName());
+            reportProduct.setQuantity(dtoProduct.getQuantity());
+            reportProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
+            reportProduct.setDiscount(0);
+            reportProduct.setSubTotal(dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice());
+            products.add(reportProduct);
+        }
+        
 
-        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
-        //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dtoPurchaseOrder.getProducts());
+        //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(products);
 
         
         try {

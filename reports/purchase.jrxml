@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="Date" class="java.lang.String"/>
 	<parameter name="OrderNo" class="java.lang.String"/>
 	<parameter name="SupplierName" class="java.lang.String"/>
@@ -10,22 +11,19 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="firstName" class="java.lang.String">
-		<fieldDescription><![CDATA[firstName]]></fieldDescription>
-	</field>
-	<field name="lastName" class="java.lang.String">
-		<fieldDescription><![CDATA[lastName]]></fieldDescription>
-	</field>
-	<field name="cell" class="java.lang.String">
-		<fieldDescription><![CDATA[cell]]></fieldDescription>
-	</field>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.Double"/>
+	<field name="unitPrice" class="java.lang.Double"/>
+	<field name="discount" class="java.lang.Double"/>
+	<field name="subTotal" class="java.lang.Double"/>
 	<title>
 		<band height="170" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="595" height="23" uuid="f012af49-e8b3-459b-8173-d4e6522675e1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Inventory Management System]]></text>
@@ -189,42 +187,42 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="40" y="0" width="250" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{firstName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="290" y="0" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="340" y="-1" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="390" y="-1" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="440" y="0" width="105" height="15" uuid="28773627-4177-4f92-8a93-3b51badce811"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cell}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{subTotal}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
