@@ -8,6 +8,8 @@
 	<parameter name="Address" class="java.lang.String"/>
 	<parameter name="Email" class="java.lang.String"/>
 	<parameter name="Phone" class="java.lang.String"/>
+	<parameter name="subreportFile" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="payments" class="java.util.List"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -226,4 +228,18 @@
 			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="80" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement positionType="Float" x="1" y="20" width="175" height="20" isRemoveLineWhenBlank="true" backcolor="#99CCFF" uuid="1c803186-03f2-45b4-86bc-b25393d36bc3">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
+                  ($P{payments})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subreportFile}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
 </jasperReport>

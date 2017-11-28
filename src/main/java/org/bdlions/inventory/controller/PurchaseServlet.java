@@ -105,23 +105,23 @@ public class PurchaseServlet {
         parameters.put("Email", dtoSupplier.getEntityUser().getEmail());
         parameters.put("Phone", dtoSupplier.getEntityUser().getCell());
         
-//        ReportPayment reportPayment = new ReportPayment();
-//        reportPayment.setId(1);
-//        reportPayment.setType("Cash");
-//        reportPayment.setAmount(1000);
-//        
-//        List<ReportPayment> payments = new ArrayList<>();
-//        payments.add(reportPayment);
-//        parameters.put("payments", payments);
-//        try
-//        {
-//            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("payments.jasper"));
-//            parameters.put("subReport", subReport);
-//        }
-//        catch(Exception ex)
-//        {
-//        
-//        }
+        ReportPayment reportPayment = new ReportPayment();
+        reportPayment.setId(1);
+        reportPayment.setType("Cash");
+        reportPayment.setAmount(1000);
+        
+        List<ReportPayment> payments = new ArrayList<>();
+        payments.add(reportPayment);
+        parameters.put("payments", payments);
+        try
+        {
+            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("reports/payments.jasper"));
+            parameters.put("subreportFile", subReport);
+        }
+        catch(Exception ex)
+        {
+        
+        }
         
 
         
@@ -144,8 +144,9 @@ public class PurchaseServlet {
         
 
         //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
-        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(products);
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(products, true);
 
+        
         
         try {
             JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, parameters, beanColDataSource);
