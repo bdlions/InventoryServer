@@ -278,14 +278,14 @@
 				<subreportExpression><![CDATA[$P{subreportFile}]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement x="423" y="136" width="90" height="22" uuid="d87c7156-b170-4344-8e7e-4628f87b4ef9"/>
+				<reportElement x="423" y="160" width="90" height="22" uuid="d87c7156-b170-4344-8e7e-4628f87b4ef9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Supplier Signature]]></text>
 			</staticText>
 			<line>
-				<reportElement x="400" y="130" width="135" height="1" uuid="6e05ceed-d6a6-49d2-888e-b73a805e2bb1"/>
+				<reportElement x="400" y="156" width="135" height="1" uuid="6e05ceed-d6a6-49d2-888e-b73a805e2bb1"/>
 			</line>
 			<staticText>
 				<reportElement x="15" y="10" width="60" height="16" uuid="468e67f6-3956-454c-99fa-5448d24ac8eb"/>
