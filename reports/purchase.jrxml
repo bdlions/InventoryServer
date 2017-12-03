@@ -266,10 +266,10 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="162" splitType="Stretch">
+		<band height="187" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<subreport>
-				<reportElement positionType="Float" x="-4" y="61" width="189" height="20" isRemoveLineWhenBlank="true" backcolor="#99CCFF" uuid="1c803186-03f2-45b4-86bc-b25393d36bc3">
+				<reportElement positionType="Float" x="-4" y="61" width="359" height="20" isRemoveLineWhenBlank="true" backcolor="#99CCFF" uuid="1c803186-03f2-45b4-86bc-b25393d36bc3">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
@@ -320,6 +320,28 @@
 				</textElement>
 				<text><![CDATA[Payment Information]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="179" y="135" width="120" height="19" uuid="b3a37e56-ec51-40d0-9623-0a874960e2b4"/>
+				<textElement>
+					<font fontName="Times New Roman" size="11" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Total Payment Amount]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="309" y="135" width="59" height="21" uuid="d13f1b43-a170-48ec-a909-d710387c80a3"/>
+				<textFieldExpression><![CDATA["650"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="179" y="158" width="102" height="16" uuid="251e4b50-7d2f-4f73-a190-3b4c120ef730"/>
+				<textElement>
+					<font fontName="Times New Roman" size="11" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Return Payment]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="309" y="158" width="59" height="19" uuid="9b4ebd04-e165-4427-95d8-35d69a374163"/>
+				<textFieldExpression><![CDATA["350"]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
