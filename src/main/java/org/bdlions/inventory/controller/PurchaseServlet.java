@@ -99,6 +99,9 @@ public class PurchaseServlet {
         
         Map parameters = new HashMap();
         parameters.put("Date", "2017-11-20");
+        parameters.put("CompanyName", "SignTechBD");
+        parameters.put("CompanyAddress", "Mohakhali, Dhaka, Bangladesh.");
+        parameters.put("CompanyCell", "01712341234");
         parameters.put("OrderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
         parameters.put("SupplierName", dtoSupplier.getEntityUser().getFirstName()+" "+dtoSupplier.getEntityUser().getLastName());
         parameters.put("Address", "Dhaka, Bangladesh");

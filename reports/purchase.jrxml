@@ -4,8 +4,8 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="CompanyName" class="java.lang.String"/>
 	<parameter name="CompanyAddress" class="java.lang.String"/>
-	<parameter name="CompanyLogo" class="java.lang.String"/>
 	<parameter name="CompanyCell" class="java.lang.String"/>
+	<parameter name="CompanyLogo" class="java.io.InputStream"/>
 	<parameter name="Date" class="java.lang.String"/>
 	<parameter name="OrderNo" class="java.lang.String"/>
 	<parameter name="SupplierName" class="java.lang.String"/>
@@ -26,30 +26,39 @@
 	<title>
 		<band height="216" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<image>
+			<image onErrorType="Blank">
 				<reportElement x="429" y="10" width="50" height="50" uuid="e20bae1a-402c-4421-9529-88b421241907"/>
 				<imageExpression><![CDATA[$P{CompanyLogo}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="16" y="10" width="100" height="17" uuid="d9c7e60c-0611-456b-a1d6-baa600aabd9f">
+				<reportElement x="16" y="10" width="250" height="17" uuid="d9c7e60c-0611-456b-a1d6-baa600aabd9f">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<textFieldExpression><![CDATA["CompanyName"]]></textFieldExpression>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="16" y="27" width="100" height="21" uuid="c7994c4d-a3c7-4701-b423-5ba6d021e8bf">
+				<reportElement x="16" y="27" width="250" height="21" uuid="c7994c4d-a3c7-4701-b423-5ba6d021e8bf">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<textFieldExpression><![CDATA["CompanyAddress"]]></textFieldExpression>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyAddress}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="16" y="43" width="100" height="22" uuid="597c3771-1fad-42a4-af5f-b9ec6be5ec08">
+				<reportElement x="16" y="43" width="250" height="22" uuid="597c3771-1fad-42a4-af5f-b9ec6be5ec08">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<textFieldExpression><![CDATA["CompanyCell"]]></textFieldExpression>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CompanyCell}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="220" y="75" width="140" height="20" uuid="a4461566-4f5c-44b3-b3cc-01fbc736a3af"/>
@@ -257,10 +266,10 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="147" splitType="Stretch">
+		<band height="162" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<subreport>
-				<reportElement positionType="Float" x="-4" y="41" width="189" height="20" isRemoveLineWhenBlank="true" backcolor="#99CCFF" uuid="1c803186-03f2-45b4-86bc-b25393d36bc3">
+				<reportElement positionType="Float" x="-4" y="61" width="189" height="20" isRemoveLineWhenBlank="true" backcolor="#99CCFF" uuid="1c803186-03f2-45b4-86bc-b25393d36bc3">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
@@ -269,14 +278,14 @@
 				<subreportExpression><![CDATA[$P{subreportFile}]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement x="423" y="116" width="90" height="22" uuid="d87c7156-b170-4344-8e7e-4628f87b4ef9"/>
+				<reportElement x="423" y="136" width="90" height="22" uuid="d87c7156-b170-4344-8e7e-4628f87b4ef9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Supplier Signature]]></text>
 			</staticText>
 			<line>
-				<reportElement x="400" y="110" width="135" height="1" uuid="6e05ceed-d6a6-49d2-888e-b73a805e2bb1"/>
+				<reportElement x="400" y="130" width="135" height="1" uuid="6e05ceed-d6a6-49d2-888e-b73a805e2bb1"/>
 			</line>
 			<staticText>
 				<reportElement x="15" y="10" width="60" height="16" uuid="468e67f6-3956-454c-99fa-5448d24ac8eb"/>
@@ -286,7 +295,7 @@
 				<text><![CDATA[Remark:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="70" y="10" width="302" height="31" uuid="8519f8fd-101d-4100-bca2-29c14d1738da"/>
+				<reportElement x="69" y="10" width="302" height="31" uuid="8519f8fd-101d-4100-bca2-29c14d1738da"/>
 				<textFieldExpression><![CDATA["Have a nice day"]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -301,6 +310,16 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None"/>
 				<textFieldExpression><![CDATA["100000000"]]></textFieldExpression>
 			</textField>
+			<rectangle>
+				<reportElement x="15" y="52" width="341" height="21" uuid="249bf9d9-a2fd-4f18-9db2-aa91ada712ad"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="130" y="56" width="110" height="16" uuid="b9ade7b4-2f9f-4887-a860-3a175ecd72bc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="11" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Payment Information]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
