@@ -96,6 +96,7 @@ public class PurchaseServlet {
             dtoSupplier.setEntityUser(entityManagerUser.getUserByUserId(dtoSupplier.getEntitySupplier().getUserId()));
         } 
         
+        String reportDirectory = "F:\\projects\\bdlions\\inventory\\InventoryServer\\web\\resources\\report\\";
         
         Map parameters = new HashMap();
         parameters.put("Date", "2017-11-20");
@@ -107,6 +108,7 @@ public class PurchaseServlet {
         parameters.put("Address", "Dhaka, Bangladesh");
         parameters.put("Email", dtoSupplier.getEntityUser().getEmail());
         parameters.put("Phone", dtoSupplier.getEntityUser().getCell());
+        parameters.put("logoURL", reportDirectory +"logo.png");
         
         ReportPayment reportPayment = new ReportPayment();
         reportPayment.setId(1);

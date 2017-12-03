@@ -5,7 +5,7 @@
 	<parameter name="CompanyName" class="java.lang.String"/>
 	<parameter name="CompanyAddress" class="java.lang.String"/>
 	<parameter name="CompanyCell" class="java.lang.String"/>
-	<parameter name="CompanyLogo" class="java.io.InputStream"/>
+	<parameter name="logoURL" class="java.lang.String"/>
 	<parameter name="Date" class="java.lang.String"/>
 	<parameter name="OrderNo" class="java.lang.String"/>
 	<parameter name="SupplierName" class="java.lang.String"/>
@@ -28,7 +28,7 @@
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<image onErrorType="Blank">
 				<reportElement x="429" y="10" width="50" height="50" uuid="e20bae1a-402c-4421-9529-88b421241907"/>
-				<imageExpression><![CDATA[$P{CompanyLogo}]]></imageExpression>
+				<imageExpression><![CDATA[$P{logoURL}]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="16" y="10" width="250" height="17" uuid="d9c7e60c-0611-456b-a1d6-baa600aabd9f">
