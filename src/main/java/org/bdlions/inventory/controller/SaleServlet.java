@@ -5,6 +5,7 @@
  */
 package org.bdlions.inventory.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -16,30 +17,25 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.bdlions.inventory.dto.DTOCustomer;
 import org.bdlions.inventory.dto.DTOProduct;
-import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.inventory.dto.DTOSaleOrder;
-import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.inventory.entity.EntityCustomer;
-import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityProduct;
-import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
-import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
-import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
-import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
-import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
+import org.bdlions.inventory.report.ReportPayment;
 import org.bdlions.inventory.report.ReportProduct;
 import org.bdlions.inventory.util.Constants;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -109,6 +105,24 @@ public class SaleServlet {
         parameters.put("Address", "Dhaka, Bangladesh");
         parameters.put("Email", dtoCustomer.getEntityUser().getEmail());
         parameters.put("Phone", dtoCustomer.getEntityUser().getCell());
+        
+        ReportPayment reportPayment = new ReportPayment();
+        reportPayment.setId(1);
+        reportPayment.setType("Cash");
+        reportPayment.setAmount(1000);
+        
+        List<ReportPayment> payments = new ArrayList<>();
+        payments.add(reportPayment);
+        parameters.put("payments", payments);
+        try
+        {
+            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("reports/payments.jasper"));
+            parameters.put("subreportFile", subReport);
+        }
+        catch(Exception ex)
+        {
+        
+        }
         
         List<EntityUser> dataList = entityManagerUser.getUsers(1, 10);
         
