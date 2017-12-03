@@ -9,24 +9,24 @@
 			<staticText>
 				<reportElement x="0" y="3" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Sl]]></text>
+				<text><![CDATA[Sl.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="40" y="3" width="250" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Type]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="290" y="4" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Quantity]]></text>
-			</staticText>			
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -51,7 +51,7 @@
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
-			</textField>			
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
