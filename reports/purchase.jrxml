@@ -70,6 +70,9 @@
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{Date}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -84,6 +87,9 @@
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$P{OrderNo}]]></textFieldExpression>
 			</textField>
 			<line>
