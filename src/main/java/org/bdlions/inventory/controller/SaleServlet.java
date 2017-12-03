@@ -56,30 +56,27 @@ public class SaleServlet {
         response.setContentType("application/pdf");
 
         String sourceFileName = getClass().getClassLoader().getResource("reports/sale.jasper").getFile();
-        
+
         EntityManagerUser entityManagerUser = new EntityManagerUser();
-        
+
         DTOSaleOrder dtoSaleOrder = new DTOSaleOrder();
         dtoSaleOrder.setEntitySaleOrder(new EntitySaleOrder());
         dtoSaleOrder.getEntitySaleOrder().setOrderNo("order1");
-        
+
         DTOCustomer dtoCustomer = new DTOCustomer();
         dtoCustomer.setEntityCustomer(new EntityCustomer());
         dtoCustomer.setEntityUser(new EntityUser());
-        
+
         EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
         EntitySaleOrder entitySaleOrder = entityManagerSaleOrder.getSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-        if(entitySaleOrder != null)
-        {
+        if (entitySaleOrder != null) {
             dtoSaleOrder.setEntitySaleOrder(entitySaleOrder);
             EntityManagerSaleOrderProduct entityManagerSaleOrderProduct = new EntityManagerSaleOrderProduct();
             List<EntitySaleOrderProduct> entitySaleOrderProducts = entityManagerSaleOrderProduct.getSaleOrderProductsByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-            if(entitySaleOrderProducts != null && !entitySaleOrderProducts.isEmpty())
-            {
+            if (entitySaleOrderProducts != null && !entitySaleOrderProducts.isEmpty()) {
                 EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
                 EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
-                for(int counter = 0; counter < entitySaleOrderProducts.size(); counter++)
-                {
+                for (int counter = 0; counter < entitySaleOrderProducts.size(); counter++) {
                     EntitySaleOrderProduct entitySaleOrderProduct = entitySaleOrderProducts.get(counter);
                     EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
                     EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
@@ -90,62 +87,62 @@ public class SaleServlet {
                     dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
                     dtoSaleOrder.getProducts().add(dtoProduct);
                 }
-            }            
+            }
             EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
             EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
             dtoCustomer.setEntityCustomer(entityCustomer);
-            
+
             dtoCustomer.setEntityUser(entityManagerUser.getUserByUserId(dtoCustomer.getEntityCustomer().getUserId()));
         }
-        
+
+        String reportDirectory = "E:\\projects\\InventoryServer\\web\\resources\\report\\";
+
         Map parameters = new HashMap();
         parameters.put("Date", "2017-11-20");
+        parameters.put("CompanyName", "SignTechBD");
+        parameters.put("CompanyAddress", "Rampura, Dhaka, Bangladesh.");
+        parameters.put("CompanyCell", "01912341234");
         parameters.put("OrderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-        parameters.put("CustomerName", dtoCustomer.getEntityUser().getFirstName()+" "+dtoCustomer.getEntityUser().getLastName());
+        parameters.put("CustomerName", dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
         parameters.put("Address", "Dhaka, Bangladesh");
         parameters.put("Email", dtoCustomer.getEntityUser().getEmail());
         parameters.put("Phone", dtoCustomer.getEntityUser().getCell());
-        
+        parameters.put("logoURL", reportDirectory + "logo.png");
+
         ReportPayment reportPayment = new ReportPayment();
         reportPayment.setId(1);
         reportPayment.setType("Cash");
         reportPayment.setAmount(1000);
-        
+
         List<ReportPayment> payments = new ArrayList<>();
         payments.add(reportPayment);
         parameters.put("payments", payments);
-        try
-        {
+        try {
             JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("reports/payments.jasper"));
             parameters.put("subreportFile", subReport);
+        } catch (Exception ex) {
+
         }
-        catch(Exception ex)
-        {
-        
-        }
-        
+
         List<EntityUser> dataList = entityManagerUser.getUsers(1, 10);
-        
+
         List<DTOProduct> productList = dtoSaleOrder.getProducts();
         List<ReportProduct> products = new ArrayList<>();
-        for(int counter = 0; counter < productList.size(); counter++)
-        {
+        for (int counter = 0; counter < productList.size(); counter++) {
             DTOProduct dtoProduct = productList.get(counter);
             ReportProduct reportProduct = new ReportProduct();
-            reportProduct.setId(counter+1);
+            reportProduct.setId(counter + 1);
             reportProduct.setName(dtoProduct.getEntityProduct().getName());
             reportProduct.setQuantity(dtoProduct.getQuantity());
             reportProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
             reportProduct.setDiscount(0);
-            reportProduct.setSubTotal(dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice());
+            reportProduct.setSubTotal(dtoProduct.getQuantity() * dtoProduct.getEntityProduct().getUnitPrice());
             products.add(reportProduct);
         }
-        
 
         //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(products);
 
-        
         try {
             JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, parameters, beanColDataSource);
             OutputStream os = response.getOutputStream();
