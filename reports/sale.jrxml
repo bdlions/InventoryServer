@@ -12,8 +12,12 @@
 	<parameter name="Address" class="java.lang.String"/>
 	<parameter name="Email" class="java.lang.String"/>
 	<parameter name="Phone" class="java.lang.String"/>
+	<parameter name="Remarks" class="java.lang.String"/>
+	<parameter name="TotalSalePrice" class="java.lang.Double"/>
 	<parameter name="subreportFile" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="payments" class="java.util.List"/>
+	<parameter name="TotalPaymentAmount" class="java.lang.Double"/>
+	<parameter name="TotalReturnAmount" class="java.lang.Double"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -296,7 +300,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="69" y="10" width="302" height="31" uuid="8519f8fd-101d-4100-bca2-29c14d1738da"/>
-				<textFieldExpression><![CDATA["Have a nice day"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{Remarks}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="415" y="10" width="40" height="14" uuid="3ccc1b8a-9eba-4ae7-88d4-16766b696a3b"/>
@@ -308,7 +312,7 @@
 			<textField>
 				<reportElement x="454" y="10" width="100" height="17" uuid="3bec4e24-19d4-4955-923a-fe32b50c7fe3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None"/>
-				<textFieldExpression><![CDATA["100000000"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{TotalSalePrice}]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement x="15" y="52" width="341" height="21" uuid="249bf9d9-a2fd-4f18-9db2-aa91ada712ad"/>
@@ -329,7 +333,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="309" y="135" width="59" height="21" uuid="d13f1b43-a170-48ec-a909-d710387c80a3"/>
-				<textFieldExpression><![CDATA["650"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{TotalPaymentAmount}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="179" y="158" width="102" height="16" uuid="251e4b50-7d2f-4f73-a190-3b4c120ef730"/>
@@ -340,7 +344,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="309" y="158" width="59" height="19" uuid="9b4ebd04-e165-4427-95d8-35d69a374163"/>
-				<textFieldExpression><![CDATA["350"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{TotalReturnAmount}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

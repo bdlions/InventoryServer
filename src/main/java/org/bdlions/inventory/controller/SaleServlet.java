@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -38,6 +39,8 @@ import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.report.ReportPayment;
 import org.bdlions.inventory.report.ReportProduct;
 import org.bdlions.inventory.util.Constants;
+import org.bdlions.inventory.util.ServerConfig;
+import org.bdlions.inventory.util.TimeUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,9 +54,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class SaleServlet {
 
     @RequestMapping("/salereport")
-    public void getReport(HttpServletResponse response) {
+    public void getReport(HttpServletRequest request, HttpServletResponse response) {
 
         response.setContentType("application/pdf");
+        String orderNo = "";
+        try
+        {   
+            orderNo = request.getParameter("order_no");
+        }
+        catch(Exception ex)
+        {
+            //handle logic if invalid param of orderNo
+        }    
 
         String sourceFileName = getClass().getClassLoader().getResource("reports/sale.jasper").getFile();
 
@@ -61,7 +73,7 @@ public class SaleServlet {
 
         DTOSaleOrder dtoSaleOrder = new DTOSaleOrder();
         dtoSaleOrder.setEntitySaleOrder(new EntitySaleOrder());
-        dtoSaleOrder.getEntitySaleOrder().setOrderNo("order1");
+        dtoSaleOrder.getEntitySaleOrder().setOrderNo(orderNo);
 
         DTOCustomer dtoCustomer = new DTOCustomer();
         dtoCustomer.setEntityCustomer(new EntityCustomer());
@@ -94,38 +106,13 @@ public class SaleServlet {
 
             dtoCustomer.setEntityUser(entityManagerUser.getUserByUserId(dtoCustomer.getEntityCustomer().getUserId()));
         }
-
-        String reportDirectory = "E:\\projects\\InventoryServer\\web\\resources\\report\\";
-
-        Map parameters = new HashMap();
-        parameters.put("Date", "2017-11-20");
-        parameters.put("CompanyName", "SignTechBD");
-        parameters.put("CompanyAddress", "Rampura, Dhaka, Bangladesh.");
-        parameters.put("CompanyCell", "01912341234");
-        parameters.put("OrderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-        parameters.put("CustomerName", dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
-        parameters.put("Address", "Dhaka, Bangladesh");
-        parameters.put("Email", dtoCustomer.getEntityUser().getEmail());
-        parameters.put("Phone", dtoCustomer.getEntityUser().getCell());
-        parameters.put("logoURL", reportDirectory + "logo.png");
-
-        ReportPayment reportPayment = new ReportPayment();
-        reportPayment.setId(1);
-        reportPayment.setType("Cash");
-        reportPayment.setAmount(1000);
-
-        List<ReportPayment> payments = new ArrayList<>();
-        payments.add(reportPayment);
-        parameters.put("payments", payments);
-        try {
-            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("reports/payments.jasper"));
-            parameters.put("subreportFile", subReport);
-        } catch (Exception ex) {
-
+        else
+        {
+            //invalid purchase. return from here.
+            return;
         }
 
-        List<EntityUser> dataList = entityManagerUser.getUsers(1, 10);
-
+        double totalSalePrice = 0;
         List<DTOProduct> productList = dtoSaleOrder.getProducts();
         List<ReportProduct> products = new ArrayList<>();
         for (int counter = 0; counter < productList.size(); counter++) {
@@ -138,7 +125,45 @@ public class SaleServlet {
             reportProduct.setDiscount(0);
             reportProduct.setSubTotal(dtoProduct.getQuantity() * dtoProduct.getEntityProduct().getUnitPrice());
             products.add(reportProduct);
+            totalSalePrice += reportProduct.getSubTotal();
         }
+        
+        TimeUtils timeUtils = new TimeUtils();
+        String currentDate = timeUtils.convertUnixToHuman(timeUtils.getCurrentTime(), "", "+6");
+        
+        String reportDirectory = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.REPORT_PATH);
+        Map parameters = new HashMap();
+        parameters.put("Date", currentDate);
+        parameters.put("CompanyName", ServerConfig.getInstance().get(ServerConfig.COMPANY_NAME));
+        parameters.put("CompanyAddress", ServerConfig.getInstance().get(ServerConfig.COMPANY_ADDRESS));
+        parameters.put("CompanyCell", ServerConfig.getInstance().get(ServerConfig.COMPANY_CELL));
+        parameters.put("OrderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+        parameters.put("CustomerName", dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
+        parameters.put("Address", "Dhaka, Bangladesh");
+        parameters.put("Email", dtoCustomer.getEntityUser().getEmail());
+        parameters.put("Phone", dtoCustomer.getEntityUser().getCell());
+        parameters.put("logoURL", reportDirectory + "logo.png");
+        parameters.put("TotalSalePrice", totalSalePrice);
+        parameters.put("Remarks", dtoSaleOrder.getEntitySaleOrder().getRemarks() == null ? "" : dtoSaleOrder.getEntitySaleOrder().getRemarks());
+
+        ReportPayment reportPayment = new ReportPayment();
+        reportPayment.setId(1);
+        reportPayment.setType("Cash");
+        reportPayment.setAmount(totalSalePrice);
+
+        List<ReportPayment> payments = new ArrayList<>();
+        payments.add(reportPayment);
+        parameters.put("payments", payments);
+        parameters.put("TotalPaymentAmount", totalSalePrice);
+        parameters.put("TotalReturnAmount", 0.0);
+        try {
+            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("reports/payments.jasper"));
+            parameters.put("subreportFile", subReport);
+        } catch (Exception ex) {
+
+        }
+
+        
 
         //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(products);
