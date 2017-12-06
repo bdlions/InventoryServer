@@ -286,4 +286,36 @@ public class PurchaseHandler {
         }        
         return response;
     }
+    
+    @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDERS_BY_ORDER_NO)
+    public ClientResponse getPurchaseOrdersByOrderNo(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);  
+        if(dtoPurchaseOrder == null)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid request to get purchase orders.");
+            return response;
+        }
+        List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        List<EntityPurchaseOrder> entityPurchaseOrders = entityManagerPurchaseOrder.searchPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), dtoPurchaseOrder.getOffset(), dtoPurchaseOrder.getLimit());
+        if(entityPurchaseOrders != null)
+        {
+            for(int counter = 0; counter < entityPurchaseOrders.size(); counter++)
+            {
+                EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
+                DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
+                dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
+                purchaseOrders.add(dtoPO);
+            } 
+        }               
+        ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
+        listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.searchTotalPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo()));
+        listPurchaseOrder.setSuccess(true);
+        listPurchaseOrder.setPurchaseOrders(purchaseOrders);
+        return listPurchaseOrder;
+    }
 }

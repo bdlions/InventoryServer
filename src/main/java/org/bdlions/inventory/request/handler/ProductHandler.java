@@ -229,4 +229,28 @@ public class ProductHandler {
         response.setSuccess(true);
         return response;
     }
+    
+    @ClientRequest(action = ACTION.FETCH_PRODUCTS_BY_NAME)
+    public ClientResponse getProductsByName(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);   
+        
+        if( dtoProduct == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get product list. Please try again later");
+            return generalResponse;
+        }
+        
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        List<EntityProduct> products = entityManagerProduct.searchProductByName(dtoProduct.getEntityProduct().getName(), dtoProduct.getOffset(), dtoProduct.getLimit());
+        int totalProducts = entityManagerProduct.searchTotalProductByName(dtoProduct.getEntityProduct().getName());
+        ListProduct response = new ListProduct();
+        response.setProducts(products);
+        response.setTotalProducts(totalProducts);
+        response.setSuccess(true);
+        return response;
+    }
 }

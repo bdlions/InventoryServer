@@ -35,6 +35,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getAllSaleOrders",
             query = "from EntitySaleOrder saleOrder order by saleOrder.modifiedOn desc"
+    ),
+    @NamedQuery(
+            name = "searchSaleOrderByOrderNo",
+            query = "from EntitySaleOrder saleOrder where lower(saleOrder.orderNo) like :orderNo"
     )
 })
 public class EntitySaleOrder extends ClientResponse implements java.io.Serializable{

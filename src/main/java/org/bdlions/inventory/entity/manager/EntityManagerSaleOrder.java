@@ -342,4 +342,48 @@ public class EntityManagerSaleOrder
             session.close();
         }
     }
+    
+    /**
+     * This method will return sale order list search by order no, case insensitive
+     * @param orderNo sale order no
+     * @param offset offset
+     * @param limit limit
+     * @return List entity sale order list
+     */
+    public List<EntitySaleOrder> searchSaleOrderByOrderNo(String orderNo, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByOrderNo");
+            query.setParameter("orderNo", "%" + orderNo + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total number of sale order list search by order no, case insensitive
+     * @param orderNo sale order no
+     * @return Integer total number of sale orders
+     */
+    public int searchTotalSaleOrderByOrderNo(String orderNo)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByOrderNo");
+            query.setParameter("orderNo", "%" + orderNo + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

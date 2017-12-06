@@ -33,6 +33,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getAllPurchaseOrders",
             query = "from EntityPurchaseOrder purchaseOrder order by purchaseOrder.modifiedOn desc"
+    ),
+    @NamedQuery(
+            name = "searchPurchaseOrderByOrderNo",
+            query = "from EntityPurchaseOrder purchaseOrder where lower(purchaseOrder.orderNo) like :orderNo"
     )
 })
 public class EntityPurchaseOrder extends ClientResponse implements java.io.Serializable{

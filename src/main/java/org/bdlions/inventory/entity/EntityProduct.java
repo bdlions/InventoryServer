@@ -35,6 +35,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getProducts",
             query = "from EntityProduct product order by name asc"
+    ),
+    @NamedQuery(
+            name = "searchProductByName",
+            query = "from EntityProduct product where lower(product.name) like :name"
     )
 })
 public class EntityProduct extends ClientResponse implements java.io.Serializable{

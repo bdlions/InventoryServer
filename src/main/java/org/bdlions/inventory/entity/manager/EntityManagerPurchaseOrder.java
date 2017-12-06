@@ -343,4 +343,47 @@ public class EntityManagerPurchaseOrder
         }
     }
     
+    /**
+     * This method will return purchase order list search by order no, case insensitive
+     * @param orderNo purchase order no
+     * @param offset offset
+     * @param limit limit
+     * @return List entity purchase order list
+     */
+    public List<EntityPurchaseOrder> searchPurchaseOrderByOrderNo(String orderNo, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
+            query.setParameter("orderNo", "%" + orderNo + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total number of purchase orders search by order no, case insensitive
+     * @param orderNo purchase order no
+     * @return Integer total number of purchase orders
+     */
+    public int searchTotalPurchaseOrderByOrderNo(String orderNo)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
+            query.setParameter("orderNo", "%" + orderNo + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

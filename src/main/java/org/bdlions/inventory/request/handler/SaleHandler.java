@@ -286,4 +286,38 @@ public class SaleHandler {
         }
         return response;
     }
+    
+    @ClientRequest(action = ACTION.FETCH_SALE_ORDERS_BY_ORDER_NO)
+    public ClientResponse getSaleOrdersByOrderNo(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOSaleOrder dtoSaleOrder = gson.fromJson(packet.getPacketBody(), DTOSaleOrder.class);   
+        if(dtoSaleOrder == null)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid request to get sale orders.");
+            return response;
+        }
+        
+        List<DTOSaleOrder> saleOrders = new ArrayList<>();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.searchSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo(), dtoSaleOrder.getOffset(), dtoSaleOrder.getLimit());
+        if(entitySaleOrders != null)
+        {
+            
+            for (int counter = 0; counter < entitySaleOrders.size(); counter++) 
+            {
+                EntitySaleOrder entitySaleOrder = entitySaleOrders.get(counter);
+                DTOSaleOrder dtoSO = new DTOSaleOrder();
+                dtoSO.setEntitySaleOrder(entitySaleOrder);
+                saleOrders.add(dtoSO);
+            }
+        }        
+        ListSaleOrder listSaleOrder = new ListSaleOrder();
+        listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.searchTotalSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo()));
+        listSaleOrder.setSaleOrders(saleOrders);
+        listSaleOrder.setSuccess(true);
+        return listSaleOrder;
+    }
 }

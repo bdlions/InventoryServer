@@ -152,4 +152,49 @@ public class EntityManagerProduct
             session.close();
         }
     }
+    
+    /**
+     * This method will return product list search by name, case insensitive
+     * @param name product name
+     * @param offset, offset
+     * @param limit, limit
+     * @return List, product info list
+     */
+    public List<EntityProduct> searchProductByName(String name, int offset, int limit) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
+            query.setParameter("name", "%" + name + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total number of products searched by name
+     * @param name product name
+     * @return Integer total number products
+     */
+    public int searchTotalProductByName(String name) 
+    {
+        // use count agreegate method here
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
+            query.setParameter("name", "%" + name + "%");
+            return query.getResultList().size();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }
