@@ -10,6 +10,7 @@ public class ServerConfig extends PropertyProvider{
     private static ServerConfig instance;
     public static final String SERVER_BASE_ABS_PATH      = "SERVER_BASE_ABS_PATH";
     public static final String REPORT_PATH               = "REPORT_PATH";
+    public static final String JASPER_FILE_PATH          = "JASPER_FILE_PATH";
     public static final String COMPANY_NAME              = "COMPANY_NAME";
     public static final String COMPANY_ADDRESS           = "COMPANY_ADDRESS";
     public static final String COMPANY_CELL              = "COMPANY_CELL";

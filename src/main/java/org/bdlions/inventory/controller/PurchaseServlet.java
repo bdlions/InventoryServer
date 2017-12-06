@@ -158,7 +158,7 @@ public class PurchaseServlet {
         parameters.put("TotalReturnAmount", 0.0);
         try
         {
-            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File("reports/payments.jasper"));
+            JasperReport subReport = (JasperReport) JRLoader.loadObject(new File(ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.JASPER_FILE_PATH) + "payments.jasper"));
             parameters.put("subreportFile", subReport);
         }
         catch(Exception ex)
