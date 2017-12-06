@@ -133,4 +133,23 @@ public class EntityManagerProduct
             session.close();
         }
     }
+    
+    /**
+     * This method will return total number of products
+     * @return Integer total number products
+     */
+    public int getTotalProducts() 
+    {
+        // use count agreegate method here
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("getProducts");
+            return query.getResultList().size();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

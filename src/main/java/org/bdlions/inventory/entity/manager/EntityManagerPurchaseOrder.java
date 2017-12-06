@@ -8,6 +8,7 @@ import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -26,6 +27,9 @@ public class EntityManagerPurchaseOrder
      */
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entityPurchaseOrder.setCreatedOn(timeUtils.getCurrentTime());
+        entityPurchaseOrder.setModifiedOn(timeUtils.getCurrentTime());
         session.save(entityPurchaseOrder);
         return entityPurchaseOrder;
     }
@@ -131,6 +135,8 @@ public class EntityManagerPurchaseOrder
      */
     public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entityPurchaseOrder.setModifiedOn(timeUtils.getCurrentTime());
         session.update(entityPurchaseOrder);
         return true;
     }
@@ -312,6 +318,24 @@ public class EntityManagerPurchaseOrder
             query.setFirstResult(offset);
             query.setMaxResults(limit);
             return query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total number of purchase orders
+     * @return Integer total number of purchase orders
+     */
+    public int getTotalPurchaseOrders()
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
+            return query.getResultList().size();            
         } 
         finally 
         {

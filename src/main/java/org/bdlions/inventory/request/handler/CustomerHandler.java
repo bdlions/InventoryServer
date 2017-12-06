@@ -184,6 +184,7 @@ public class CustomerHandler {
             customers.add(tempDTOCustomer);
         }
         ListCustomer response = new ListCustomer();
+        response.setTotalCustomers(entityManagerCustomer.getTotalCustomers());
         response.setCustomers(customers);
         response.setSuccess(true);
         return response;

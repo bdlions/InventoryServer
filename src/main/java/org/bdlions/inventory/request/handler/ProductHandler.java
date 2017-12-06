@@ -222,8 +222,10 @@ public class ProductHandler {
         
         EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
         List<EntityProduct> products = entityManagerProduct.getProducts(dtoProduct.getOffset(), dtoProduct.getLimit());
+        int totalProducts = entityManagerProduct.getTotalProducts();
         ListProduct response = new ListProduct();
         response.setProducts(products);
+        response.setTotalProducts(totalProducts);
         response.setSuccess(true);
         return response;
     }

@@ -212,4 +212,21 @@ public class EntityManagerCustomer
         }
         return entityCustomers;
     }
+    
+    /**
+     * This method will return total number of customers
+     * @return Integer total number of customers
+     */
+    public int getTotalCustomers() {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("getCustomers");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

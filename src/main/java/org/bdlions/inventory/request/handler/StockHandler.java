@@ -45,6 +45,7 @@ public class StockHandler {
         Stock stock = new Stock();
         List<DTOProduct> products = stock.getCurrentStock(dtoProduct.getOffset(), dtoProduct.getLimit());
         listDTOProduct.setProducts(products);
+        listDTOProduct.setTotalProducts(stock.getTotalCurrentStock());
         listDTOProduct.setSuccess(true);
         return listDTOProduct;
     }

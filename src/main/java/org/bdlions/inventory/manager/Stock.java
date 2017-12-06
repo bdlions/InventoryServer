@@ -15,6 +15,12 @@ import org.hibernate.query.Query;
  */
 public class Stock 
 {
+    /**
+     * This method will return current stock of product
+     * @param offset offset
+     * @param limit limit
+     * @return List product list with current stock
+     */
     public List<DTOProduct> getCurrentStock(int offset, int limit)
     {
         List<DTOProduct> products = new ArrayList<>();
@@ -43,5 +49,23 @@ public class Stock
             session.close();
         }
         return products;
+    }
+    
+    /**
+     * This method will return total number of products in stock
+     * @return Integer total number of products
+     */
+    public int getTotalCurrentStock()
+    {
+        Session session = HibernateUtil.getSession();
+        try
+        {
+            Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStock");
+            return queryStockProducts.getResultList().size();            
+        }
+        finally 
+        {
+            session.close();
+        }
     }
 }

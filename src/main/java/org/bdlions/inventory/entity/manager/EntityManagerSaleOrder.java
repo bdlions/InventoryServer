@@ -8,6 +8,7 @@ import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -26,6 +27,9 @@ public class EntityManagerSaleOrder
      */
     public EntitySaleOrder createSaleOrder(EntitySaleOrder entitySaleOrder, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entitySaleOrder.setCreatedOn(timeUtils.getCurrentTime());
+        entitySaleOrder.setModifiedOn(timeUtils.getCurrentTime());
         session.save(entitySaleOrder);
         return entitySaleOrder;
     }
@@ -131,6 +135,8 @@ public class EntityManagerSaleOrder
      */
     public boolean updateSaleOrder(EntitySaleOrder entitySaleOrder, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entitySaleOrder.setModifiedOn(timeUtils.getCurrentTime());
         session.update(entitySaleOrder);
         return true;
     }
@@ -312,6 +318,24 @@ public class EntityManagerSaleOrder
             query.setFirstResult(offset);
             query.setMaxResults(limit);
             return query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total number of sale orders
+     * @return Integer total number of sale orders
+     */
+    public int getTotalSaleOrders()
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySaleOrder> query = session.getNamedQuery("getAllSaleOrders");
+            return query.getResultList().size();            
         } 
         finally 
         {

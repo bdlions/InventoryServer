@@ -186,6 +186,7 @@ public class SupplierHandler {
             suppliers.add(tempDTOSupplier);
         }        
         ListSupplier response = new ListSupplier();
+        response.setTotalSuppliers(entityManagerSupplier.getTotalSuppliers());
         response.setSuppliers(suppliers);
         response.setSuccess(true);
         return response;

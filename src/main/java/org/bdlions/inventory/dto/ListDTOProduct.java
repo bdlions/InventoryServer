@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class ListDTOProduct extends ClientResponse{
     private List<DTOProduct> products = new ArrayList<>();
+    //this is for totalProducts under pagination
+    private int totalProducts;
 
     public List<DTOProduct> getProducts() {
         return products;
@@ -18,4 +20,13 @@ public class ListDTOProduct extends ClientResponse{
     public void setProducts(List<DTOProduct> products) {
         this.products = products;
     }
+
+    public int getTotalProducts() {
+        return totalProducts;
+    }
+
+    public void setTotalProducts(int totalProducts) {
+        this.totalProducts = totalProducts;
+    }
+    
 }

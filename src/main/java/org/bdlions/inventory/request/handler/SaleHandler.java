@@ -193,6 +193,7 @@ public class SaleHandler {
             }
         }        
         ListSaleOrder listSaleOrder = new ListSaleOrder();
+        listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.getTotalSaleOrders());
         listSaleOrder.setSaleOrders(saleOrders);
         listSaleOrder.setSuccess(true);
         return listSaleOrder;

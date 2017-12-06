@@ -9,7 +9,9 @@ import java.util.List;
  * @author Nazmul Hasan
  */
 public class ListPurchaseOrder extends ClientResponse{
-    private List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
+    private List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();    
+    //this is for totalPurchaseOrders under pagination
+    private int totalPurchaseOrders;
 
     public List<DTOPurchaseOrder> getPurchaseOrders() {
         return purchaseOrders;
@@ -17,6 +19,14 @@ public class ListPurchaseOrder extends ClientResponse{
 
     public void setPurchaseOrders(List<DTOPurchaseOrder> purchaseOrders) {
         this.purchaseOrders = purchaseOrders;
+    }
+
+    public int getTotalPurchaseOrders() {
+        return totalPurchaseOrders;
+    }
+
+    public void setTotalPurchaseOrders(int totalPurchaseOrders) {
+        this.totalPurchaseOrders = totalPurchaseOrders;
     }
     
 }

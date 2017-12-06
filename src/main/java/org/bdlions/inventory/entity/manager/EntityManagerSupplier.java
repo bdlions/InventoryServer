@@ -212,4 +212,21 @@ public class EntityManagerSupplier
         }
         return entitySuppliers;
     }
+    
+    /**
+     * This method will return total number of suppliers
+     * @return Integer total number of suppliers
+     */
+    public int getTotalSuppliers() {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

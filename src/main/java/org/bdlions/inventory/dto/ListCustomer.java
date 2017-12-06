@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class ListCustomer extends ClientResponse{
     private List<DTOCustomer> customers = new ArrayList<>();
+    //this is for totalCustomers under pagination
+    private int totalCustomers;
 
     public List<DTOCustomer> getCustomers() {
         return customers;
@@ -19,5 +21,11 @@ public class ListCustomer extends ClientResponse{
         this.customers = customers;
     }
 
-    
+    public int getTotalCustomers() {
+        return totalCustomers;
+    }
+
+    public void setTotalCustomers(int totalCustomers) {
+        this.totalCustomers = totalCustomers;
+    }
 }

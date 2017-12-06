@@ -193,6 +193,7 @@ public class PurchaseHandler {
             } 
         }               
         ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
+        listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.getTotalPurchaseOrders());
         listPurchaseOrder.setSuccess(true);
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
         return listPurchaseOrder;

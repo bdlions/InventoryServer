@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class ListProduct extends ClientResponse{
     private List<EntityProduct> products = new ArrayList<>();
+    //this is for totalProducts under pagination
+    private int totalProducts;
 
     public List<EntityProduct> getProducts() {
         return products;
@@ -18,5 +20,13 @@ public class ListProduct extends ClientResponse{
 
     public void setProducts(List<EntityProduct> products) {
         this.products = products;
+    }
+
+    public int getTotalProducts() {
+        return totalProducts;
+    }
+
+    public void setTotalProducts(int totalProducts) {
+        this.totalProducts = totalProducts;
     }
 }
