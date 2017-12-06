@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Table(
         name = "showroom_stocks",
         indexes = {
-            
+            @Index(name = "idx_showroom_stock_product_name", columnList = "product_name")
         }
 )
 @NamedQueries({
@@ -33,6 +34,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getCurrentStock",
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock group by productId"
+    ),
+    @NamedQuery(
+            name = "searchCurrentStockByProductName",
+            query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where lower(showRoomStock.productName) like :productName group by productId"
     ),
     @NamedQuery(
             name = "deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId",
@@ -58,6 +63,9 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
     
     @Column(name = "product_id")
     private int productId;
+    
+    @Column(name = "product_name")
+    private String productName;
     
     @Column(name = "stock_in")
     private double stockIn;
@@ -146,7 +154,11 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
         this.modifiedOn = modifiedOn;
     }
 
-    
-    
-    
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 }

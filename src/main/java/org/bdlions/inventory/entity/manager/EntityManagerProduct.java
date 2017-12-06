@@ -166,7 +166,7 @@ public class EntityManagerProduct
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
-            query.setParameter("name", "%" + name + "%");
+            query.setParameter("name", "%" + name.toLowerCase() + "%");
             query.setFirstResult(offset);
             query.setMaxResults(limit);
             return query.getResultList();
@@ -189,7 +189,7 @@ public class EntityManagerProduct
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
-            query.setParameter("name", "%" + name + "%");
+            query.setParameter("name", "%" + name.toLowerCase() + "%");
             return query.getResultList().size();
         } 
         finally 

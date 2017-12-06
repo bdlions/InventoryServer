@@ -229,4 +229,48 @@ public class EntityManagerCustomer
             session.close();
         }
     }
+    
+    /**
+     * This method will return entity customer list - search by name, case insensitive
+     * @param customerName customer name
+     * @param offset offset
+     * @param limit limit
+     * @return List entity customer list
+     */
+    public List<EntityCustomer> searchCustomersByName(String customerName, int offset, int limit) {
+        List<EntityCustomer> entityCustomers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByName");
+            query.setParameter("customerName", "%" + customerName.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            entityCustomers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entityCustomers;
+    }
+    
+    /**
+     * This method will return total number of customers - search by name, case insensitive
+     * @param customerName customer name
+     * @return Integer total number of customers
+     */
+    public int searchTotalCustomersByName(String customerName) {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByName");
+            query.setParameter("customerName", "%" + customerName.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

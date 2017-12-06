@@ -229,4 +229,48 @@ public class EntityManagerSupplier
             session.close();
         }
     }
+    
+    /**
+     * This method will return entity supplier list - search by name, case insensitive
+     * @param supplierName supplier name
+     * @param offset offset
+     * @param limit limit
+     * @return List entity supplier list
+     */
+    public List<EntitySupplier> searchSuppliersByName(String supplierName, int offset, int limit) {
+        List<EntitySupplier> entitySuppliers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByName");
+            query.setParameter("supplierName", "%" + supplierName.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            entitySuppliers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entitySuppliers;
+    }
+    
+    /**
+     * This method will return total number of supplier list - search by name, case insensitive
+     * @param supplierName supplier name
+     * @return Integer total number of suppliers
+     */
+    public int searchTotalSuppliersByName(String supplierName) {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByName");
+            query.setParameter("supplierName", "%" + supplierName.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

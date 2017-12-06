@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 @Table(
         name = "products",
         indexes = {
-            
+            @Index(name = "idx_product_name", columnList = "name")
         }
 )
 @NamedQueries({

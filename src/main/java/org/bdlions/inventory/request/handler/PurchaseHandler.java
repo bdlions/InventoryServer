@@ -95,6 +95,7 @@ public class PurchaseHandler {
             EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
             entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+            entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
             entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
             entityShowRoomStock.setStockOut(0);
             entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
@@ -263,6 +264,7 @@ public class PurchaseHandler {
                 EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
                 entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                 entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+                entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                 entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
                 entityShowRoomStock.setStockOut(0);
                 entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -18,7 +19,9 @@ import javax.persistence.Table;
 @Table(
         name = "suppliers",
         indexes = {
-            
+            @Index(name = "idx_supplier_name", columnList = "supplier_name"),
+            @Index(name = "idx_supplier_cell", columnList = "cell"),
+            @Index(name = "idx_supplier_email", columnList = "email")
         }
 )
 @NamedQueries({
@@ -33,6 +36,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getSuppliers",
             query = "from EntitySupplier supplier"
+    ),
+    @NamedQuery(
+            name = "searchSupplierByName",
+            query = "from EntitySupplier supplier where lower(supplier.supplierName) like :supplierName"
     )
 })
 public class EntitySupplier extends ClientResponse implements java.io.Serializable{
@@ -44,6 +51,15 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
     
     @Column(name = "user_id", columnDefinition = "int(11) NOT NULL")
     private int userId;
+    
+    @Column(name = "supplier_name")
+    private String supplierName;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "cell")
+    private String cell;
     
     @Column(name = "remarks", length = 1000)
     private String remarks;
@@ -82,5 +98,28 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
     public void setBalance(double balance) {
         this.balance = balance;
     }
-    
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }    
 }

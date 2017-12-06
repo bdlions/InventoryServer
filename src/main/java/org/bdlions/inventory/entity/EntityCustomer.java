@@ -20,7 +20,9 @@ import javax.persistence.Transient;
 @Table(
         name = "customers",
         indexes = {
-            
+            @Index(name = "idx_customer_name", columnList = "customer_name"),
+            @Index(name = "idx_customer_cell", columnList = "cell"),
+            @Index(name = "idx_customer_email", columnList = "email")
         }
 )
 @NamedQueries({
@@ -35,6 +37,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getCustomers",
             query = "from EntityCustomer customer"
+    ),
+    @NamedQuery(
+            name = "searchCustomerByName",
+            query = "from EntityCustomer customer where lower(customer.customerName) like :customerName"
     )
 })
 public class EntityCustomer extends ClientResponse implements java.io.Serializable{
@@ -46,6 +52,15 @@ public class EntityCustomer extends ClientResponse implements java.io.Serializab
     
     @Column(name = "user_id", columnDefinition = "int(11) NOT NULL")
     private int userId;
+    
+    @Column(name = "customer_name")
+    private String customerName;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "cell")
+    private String cell;
     
     @Column(name = "balance")
     private double balance;
@@ -73,5 +88,29 @@ public class EntityCustomer extends ClientResponse implements java.io.Serializab
     public void setBalance(double balance) {
         this.balance = balance;
     }    
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }
     
 }

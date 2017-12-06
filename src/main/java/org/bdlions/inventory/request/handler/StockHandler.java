@@ -9,7 +9,6 @@ import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOProduct;
-import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListDTOProduct;
 import org.bdlions.inventory.manager.Stock;
@@ -46,6 +45,28 @@ public class StockHandler {
         List<DTOProduct> products = stock.getCurrentStock(dtoProduct.getOffset(), dtoProduct.getLimit());
         listDTOProduct.setProducts(products);
         listDTOProduct.setTotalProducts(stock.getTotalCurrentStock());
+        listDTOProduct.setSuccess(true);
+        return listDTOProduct;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_CURRENT_STOCK_BY_PRODUCT_NAME)
+    public ClientResponse getCurrentStockByProductName(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);  
+        if(dtoProduct == null || dtoProduct.getEntityProduct() == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get stock list. Please try again later");
+            return generalResponse;
+        }
+        
+        ListDTOProduct listDTOProduct = new ListDTOProduct();
+        Stock stock = new Stock();
+        List<DTOProduct> products = stock.searchCurrentStockByProductName(dtoProduct.getEntityProduct().getName(), dtoProduct.getOffset(), dtoProduct.getLimit());
+        listDTOProduct.setProducts(products);
+        listDTOProduct.setTotalProducts(stock.searchTotalCurrentStockByProductName(dtoProduct.getEntityProduct().getName()));
         listDTOProduct.setSuccess(true);
         return listDTOProduct;
     }

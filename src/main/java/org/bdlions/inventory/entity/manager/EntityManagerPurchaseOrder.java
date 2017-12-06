@@ -356,7 +356,7 @@ public class EntityManagerPurchaseOrder
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
-            query.setParameter("orderNo", "%" + orderNo + "%");
+            query.setParameter("orderNo", "%" + orderNo.toLowerCase() + "%");
             query.setFirstResult(offset);
             query.setMaxResults(limit);
             return query.getResultList();            
@@ -378,7 +378,7 @@ public class EntityManagerPurchaseOrder
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
-            query.setParameter("orderNo", "%" + orderNo + "%");
+            query.setParameter("orderNo", "%" + orderNo.toLowerCase() + "%");
             return query.getResultList().size();            
         } 
         finally 
