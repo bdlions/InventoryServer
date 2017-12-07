@@ -239,4 +239,76 @@ public class SupplierHandler {
         response.setSuccess(true);
         return response;
     }
+    
+    @ClientRequest(action = ACTION.FETCH_SUPPLIERS_BY_CELL)
+    public ClientResponse getSuppliersByCell(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);  
+        if(dtoSupplier == null || dtoSupplier.getEntitySupplier() == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get supplier list. Please try again later");
+            return generalResponse;
+        }
+        
+        List<DTOSupplier> suppliers = new ArrayList<>();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        List<EntitySupplier> entitySuppliers = entityManagerSupplier.searchSuppliersByCell(dtoSupplier.getEntitySupplier().getCell(), dtoSupplier.getOffset(), dtoSupplier.getLimit());
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntitySupplier entitySupplier : entitySuppliers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entitySupplier.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
+
+            DTOSupplier tempDTOSupplier = new DTOSupplier();
+            tempDTOSupplier.setEntitySupplier(entitySupplier);
+            tempDTOSupplier.setEntityUser(entityUser);
+            //set user role if required
+            suppliers.add(tempDTOSupplier);
+        }        
+        ListSupplier response = new ListSupplier();
+        response.setTotalSuppliers(entityManagerSupplier.searchTotalSuppliersByCell(dtoSupplier.getEntitySupplier().getCell()));
+        response.setSuppliers(suppliers);
+        response.setSuccess(true);
+        return response;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_SUPPLIERS_BY_EMAIL)
+    public ClientResponse getSuppliersByEmail(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);  
+        if(dtoSupplier == null || dtoSupplier.getEntitySupplier() == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get supplier list. Please try again later");
+            return generalResponse;
+        }
+        
+        List<DTOSupplier> suppliers = new ArrayList<>();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        List<EntitySupplier> entitySuppliers = entityManagerSupplier.searchSuppliersByEmail(dtoSupplier.getEntitySupplier().getEmail(), dtoSupplier.getOffset(), dtoSupplier.getLimit());
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntitySupplier entitySupplier : entitySuppliers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entitySupplier.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
+
+            DTOSupplier tempDTOSupplier = new DTOSupplier();
+            tempDTOSupplier.setEntitySupplier(entitySupplier);
+            tempDTOSupplier.setEntityUser(entityUser);
+            //set user role if required
+            suppliers.add(tempDTOSupplier);
+        }        
+        ListSupplier response = new ListSupplier();
+        response.setTotalSuppliers(entityManagerSupplier.searchTotalSuppliersByEmail(dtoSupplier.getEntitySupplier().getEmail()));
+        response.setSuppliers(suppliers);
+        response.setSuccess(true);
+        return response;
+    }
 }

@@ -273,4 +273,92 @@ public class EntityManagerSupplier
             session.close();
         }
     }
+    
+    /**
+     * This method will return entity supplier list - search by cell, case insensitive
+     * @param cell supplier cell number
+     * @param offset offset
+     * @param limit limit
+     * @return List entity supplier list
+     */
+    public List<EntitySupplier> searchSuppliersByCell(String cell, int offset, int limit) {
+        List<EntitySupplier> entitySuppliers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            entitySuppliers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entitySuppliers;
+    }
+    
+    /**
+     * This method will return total number of supplier list - search by name, case insensitive
+     * @param cell supplier cell number
+     * @return Integer total number of suppliers
+     */
+    public int searchTotalSuppliersByCell(String cell) {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return entity supplier list - search by email, case insensitive
+     * @param email supplier email address
+     * @param offset offset
+     * @param limit limit
+     * @return List entity supplier list
+     */
+    public List<EntitySupplier> searchSuppliersByEmail(String email, int offset, int limit) {
+        List<EntitySupplier> entitySuppliers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByEmail");
+            query.setParameter("email", "%" + email.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            entitySuppliers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entitySuppliers;
+    }
+    
+    /**
+     * This method will return total number of supplier list - search by email, case insensitive
+     * @param email supplier email address
+     * @return Integer total number of suppliers
+     */
+    public int searchTotalSuppliersByEmail(String email) {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByEmail");
+            query.setParameter("email", "%" + email.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

@@ -40,7 +40,15 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "searchSupplierByName",
             query = "from EntitySupplier supplier where lower(supplier.supplierName) like :supplierName"
-    )
+    ),
+    @NamedQuery(
+            name = "searchSupplierByCell",
+            query = "from EntitySupplier supplier where lower(supplier.cell) like :cell"
+    ),
+    @NamedQuery(
+            name = "searchSupplierByEmail",
+            query = "from EntitySupplier supplier where lower(supplier.email) like :email"
+    )        
 })
 public class EntitySupplier extends ClientResponse implements java.io.Serializable{
 

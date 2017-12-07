@@ -273,4 +273,92 @@ public class EntityManagerCustomer
             session.close();
         }
     }
+    
+    /**
+     * This method will return entity customer list - search by cell, case insensitive
+     * @param cell customer cell number
+     * @param offset offset
+     * @param limit limit
+     * @return List entity customer list
+     */
+    public List<EntityCustomer> searchCustomersByCell(String cell, int offset, int limit) {
+        List<EntityCustomer> entityCustomers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            entityCustomers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entityCustomers;
+    }
+    
+    /**
+     * This method will return total number of customers - search by cell, case insensitive
+     * @param cell customer cell number
+     * @return Integer total number of customers
+     */
+    public int searchTotalCustomersByCell(String cell) {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return entity customer list - search by email, case insensitive
+     * @param email customer email address
+     * @param offset offset
+     * @param limit limit
+     * @return List entity customer list
+     */
+    public List<EntityCustomer> searchCustomersByEmail(String email, int offset, int limit) {
+        List<EntityCustomer> entityCustomers = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByEmail");
+            query.setParameter("email", "%" + email.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            entityCustomers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entityCustomers;
+    }
+    
+    /**
+     * This method will return total number of customers - search by email, case insensitive
+     * @param email customer email address
+     * @return Integer total number of customers
+     */
+    public int searchTotalCustomersByEmail(String email) {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByEmail");
+            query.setParameter("email", "%" + email.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

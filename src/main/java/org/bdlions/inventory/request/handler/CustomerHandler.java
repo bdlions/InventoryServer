@@ -236,4 +236,74 @@ public class CustomerHandler {
         response.setSuccess(true);
         return response;
     }
+    
+    @ClientRequest(action = ACTION.FETCH_CUSTOMERS_BY_CELL)
+    public ClientResponse getCustomersByCell(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);
+        if( dtoCustomer == null || dtoCustomer.getEntityCustomer() == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get customer list. Please try again later");
+            return generalResponse;
+        }
+        
+        List<DTOCustomer> customers = new ArrayList<>();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        List<EntityCustomer> entityCustomers = entityManagerCustomer.searchCustomersByCell(dtoCustomer.getEntityCustomer().getCell(), dtoCustomer.getOffset(), dtoCustomer.getLimit());
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntityCustomer entityCustomer : entityCustomers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entityCustomer.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
+
+            DTOCustomer tempDTOCustomer = new DTOCustomer();
+            tempDTOCustomer.setEntityCustomer(entityCustomer);
+            tempDTOCustomer.setEntityUser(entityUser);
+            customers.add(tempDTOCustomer);
+        }
+        ListCustomer response = new ListCustomer();
+        response.setTotalCustomers(entityManagerCustomer.searchTotalCustomersByCell(dtoCustomer.getEntityCustomer().getCell()));
+        response.setCustomers(customers);
+        response.setSuccess(true);
+        return response;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_CUSTOMERS_BY_EMAIL)
+    public ClientResponse getCustomersByEmail(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class);
+        if( dtoCustomer == null || dtoCustomer.getEntityCustomer() == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get customer list. Please try again later");
+            return generalResponse;
+        }
+        
+        List<DTOCustomer> customers = new ArrayList<>();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        List<EntityCustomer> entityCustomers = entityManagerCustomer.searchCustomersByEmail(dtoCustomer.getEntityCustomer().getEmail(), dtoCustomer.getOffset(), dtoCustomer.getLimit());
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        for(EntityCustomer entityCustomer : entityCustomers)
+        {
+            EntityUser reqEntityUser = new EntityUser();
+            reqEntityUser.setId(entityCustomer.getUserId());
+            EntityUser entityUser =  entityManagerUser.getUserByUserId(reqEntityUser.getId());
+
+            DTOCustomer tempDTOCustomer = new DTOCustomer();
+            tempDTOCustomer.setEntityCustomer(entityCustomer);
+            tempDTOCustomer.setEntityUser(entityUser);
+            customers.add(tempDTOCustomer);
+        }
+        ListCustomer response = new ListCustomer();
+        response.setTotalCustomers(entityManagerCustomer.searchTotalCustomersByEmail(dtoCustomer.getEntityCustomer().getEmail()));
+        response.setCustomers(customers);
+        response.setSuccess(true);
+        return response;
+    }
 }

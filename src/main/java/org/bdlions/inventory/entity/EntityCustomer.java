@@ -41,6 +41,14 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "searchCustomerByName",
             query = "from EntityCustomer customer where lower(customer.customerName) like :customerName"
+    ),
+    @NamedQuery(
+            name = "searchCustomerByCell",
+            query = "from EntityCustomer customer where lower(customer.cell) like :cell"
+    ),
+    @NamedQuery(
+            name = "searchCustomerByEmail",
+            query = "from EntityCustomer customer where lower(customer.email) like :email"
     )
 })
 public class EntityCustomer extends ClientResponse implements java.io.Serializable{
