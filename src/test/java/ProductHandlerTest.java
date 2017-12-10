@@ -149,6 +149,23 @@ public class ProductHandlerTest extends HTTPRequestHelper{
     }
     
     //@Test
+    public void getProductInfoByCodeTest() {
+        PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
+        mockPacketHeader.setAction(ACTION.FETCH_PRODUCT_BY_CODE);
+        mockPacketHeader.setRequestType(REQUEST_TYPE.REQUEST);
+        mockPacketHeader.setSessionId(getSessionId());
+
+        String packetHeader = new GsonBuilder().create().toJson(mockPacketHeader);
+        System.out.println(packetHeader);
+
+        String packetBody = "{\"code\":\"pant\"}";
+        System.out.println(packetBody);
+
+        String result = getResult(packetHeader, packetBody);
+        System.out.println("Result : " + result);
+    }
+    
+    //@Test
     public void getAllProductsTest() {
         PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
         mockPacketHeader.setAction(ACTION.FETCH_PRODUCTS);
@@ -165,7 +182,7 @@ public class ProductHandlerTest extends HTTPRequestHelper{
         System.out.println("Result : " + result);
     }
     
-    @Test
+    //@Test
     public void getProductsByNameTest() {
         PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
         mockPacketHeader.setAction(ACTION.FETCH_PRODUCTS_BY_NAME);

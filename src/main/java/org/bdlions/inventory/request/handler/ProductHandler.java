@@ -131,7 +131,13 @@ public class ProductHandler {
     {
         Gson gson = new Gson();
         EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
-        
+        if( entityProduct == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get product info. Please try again later");
+            return generalResponse;
+        } 
         EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
         EntityProduct response = entityManagerProduct.getProductByProductId(entityProduct.getId());
         if(response != null && response.getId() > 0)
@@ -251,6 +257,33 @@ public class ProductHandler {
         response.setProducts(products);
         response.setTotalProducts(totalProducts);
         response.setSuccess(true);
+        return response;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_PRODUCT_BY_CODE)
+    public ClientResponse getProductByCode(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);
+        if( entityProduct == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get product info by code. Please try again later");
+            return generalResponse;
+        }        
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityProduct response = entityManagerProduct.getProductByCode(entityProduct.getCode());
+        if(response != null && response.getId() > 0)
+        {
+            response.setSuccess(true);
+        }
+        else
+        {
+            response = new EntityProduct();
+            response.setSuccess(false);
+            response.setMessage("Invalid product.");
+        }
         return response;
     }
 }

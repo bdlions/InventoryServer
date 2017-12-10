@@ -20,7 +20,8 @@ import javax.persistence.Transient;
 @Table(
         name = "products",
         indexes = {
-            @Index(name = "idx_product_name", columnList = "name")
+            @Index(name = "idx_product_name", columnList = "name", unique = true),
+            @Index(name = "idx_product_code", columnList = "code", unique = true)
         }
 )
 @NamedQueries({
@@ -31,6 +32,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "getProductByName",
             query = "from EntityProduct product where product.name = :name"
+    ),
+    @NamedQuery(
+            name = "getProductByCode",
+            query = "from EntityProduct product where product.code = :code"
     ),
     @NamedQuery(
             name = "getProducts",

@@ -44,6 +44,34 @@ public class EntityManagerProduct
     }
     
     /**
+     * This method will return product info by code
+     * @param code, product code
+     * @return EntityProduct, product info
+     */
+    public EntityProduct getProductByCode(String code)
+    {
+        Session session = HibernateUtil.getSession();
+        try {
+            
+            Query<EntityProduct> query = session.getNamedQuery("getProductByCode");
+            query.setParameter("code", code);            
+            List<EntityProduct> productList = query.getResultList();
+            if(productList == null || productList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return productList.get(0);
+            }           
+        }
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
      * This method will return product info by product id
      * @param productId, product id
      * @return EntityProduct, product info
