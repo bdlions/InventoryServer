@@ -1,6 +1,7 @@
 package org.bdlions.inventory.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.dto.DTOProduct;
@@ -125,5 +126,56 @@ public class Stock
         {
             session.close();
         }
+    }
+    
+    /**
+     * This method will return current stock of product - based on product id list
+     * @param productIds product id list
+     * @return List product list with current stock
+     */
+    public List<DTOProduct> getCurrentStockByProductIds(List<Integer> productIds)
+    {
+        List<DTOProduct> products = new ArrayList<>();
+        Session session = HibernateUtil.getSession();
+        try
+        {
+            Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStockByProductIds");
+            queryStockProducts.setParameter("productIds", productIds);
+            List<Object[]> showRoomProducts = queryStockProducts.getResultList();
+            HashMap<Integer, EntityProduct> productIdEntityProductMap = new HashMap<>();
+            List<Integer> reqProductIds = new ArrayList<>();
+            for(Object[] entityShowRoomStock : showRoomProducts)
+            {
+                int productId = (int)entityShowRoomStock[0];
+                reqProductIds.add(productId);
+            }
+            if(!reqProductIds.isEmpty())
+            {
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                List<EntityProduct> productList = entityManagerProduct.getProductsByProductIds(reqProductIds);
+                for(EntityProduct entityProduct : productList)
+                {
+                    productIdEntityProductMap.put(entityProduct.getId(), entityProduct);
+                }
+            }
+            for(Object[] entityShowRoomStock : showRoomProducts)
+            {
+                int productId = (int)entityShowRoomStock[0];
+                double quantity = (double)entityShowRoomStock[1];
+                if(productIdEntityProductMap.containsKey(productId))
+                {
+                    EntityProduct entityProduct = productIdEntityProductMap.get(productId);
+                    DTOProduct dtoProduct = new DTOProduct();
+                    dtoProduct.setQuantity(quantity);
+                    dtoProduct.setEntityProduct(entityProduct);
+                    products.add(dtoProduct);
+                }
+            }
+        }
+        finally 
+        {
+            session.close();
+        }
+        return products;
     }
 }

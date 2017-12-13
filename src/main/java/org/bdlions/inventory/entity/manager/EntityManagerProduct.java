@@ -100,6 +100,27 @@ public class EntityManagerProduct
     }
     
     /**
+     * This method will return product list based on product id list
+     * @param productIds, product id list
+     * @return List, product list
+     */
+    public List<EntityProduct> getProductsByProductIds(List<Integer> productIds) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("getProductsByProductIds");
+            query.setParameter("productIds", productIds);
+            return query.getResultList();
+
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
      * This method will create a new product
      * @param entityProduct, product info
      * @return EntityProduct, product info assigning id

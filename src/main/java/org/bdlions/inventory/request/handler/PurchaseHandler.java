@@ -8,6 +8,7 @@ import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.dto.DTOPurchaseOrder;
@@ -20,6 +21,7 @@ import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
+import org.bdlions.inventory.manager.Stock;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
@@ -118,6 +120,127 @@ public class PurchaseHandler {
         return responseDTOPurchaseOrder;
     }
     
+    @ClientRequest(action = ACTION.UPDATE_PURCHASE_ORDER_INFO)
+    public ClientResponse updatePurchaseOrderInfo(ISession session, IPacket packet) throws Exception 
+    {
+        GeneralResponse response = new GeneralResponse();
+        Gson gson = new Gson();
+        DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);     
+        if(dtoPurchaseOrder == null || dtoPurchaseOrder.getEntityPurchaseOrder() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Purchase Order Info. Please try again later.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Purchase Order Info. Please try again later..");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo() == null || dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo().equals(""))
+        {
+            response.setSuccess(false);
+            response.setMessage("Order no is required.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Supplier. Please select a supplier.");
+            return response;
+        }
+        else if(dtoPurchaseOrder.getProducts() == null || dtoPurchaseOrder.getProducts().size() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Please select product for the purchase.");
+            return response;
+        }
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        //check whether order no exists or not
+        EntityPurchaseOrder resultEntityPurchaseOrder = entityManagerPurchaseOrder.getPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+        if(resultEntityPurchaseOrder != null && resultEntityPurchaseOrder.getId() != dtoPurchaseOrder.getEntityPurchaseOrder().getId())
+        {
+            response.setSuccess(false);
+            response.setMessage("Order No already exists or invalid.");
+            return response;
+        }
+        
+        if(dtoPurchaseOrder.getEntityPurchaseOrder().getId() > 0)
+        {            
+            List<Integer> productIds = new ArrayList<>();
+            HashMap<Integer, Double> productIdQuantityMap = new HashMap<>();
+            
+            List<DTOProduct> products = dtoPurchaseOrder.getProducts();
+            int totalProducts = products.size();
+            List<EntityPOShowRoomProduct> entityPOShowRoomProducts = new ArrayList<>();
+            List<EntityShowRoomStock> entityShowRoomStocks = new ArrayList<>();
+            for(int counter = 0; counter < totalProducts; counter++)
+            {
+                DTOProduct dtoProduct = products.get(counter);
+                
+                if(dtoProduct != null && dtoProduct.getEntityProduct() != null && dtoProduct.getEntityProduct().getId() > 0)
+                {
+                    productIds.add(dtoProduct.getEntityProduct().getId());
+                    if(!productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
+                    {
+                        productIdQuantityMap.put(dtoProduct.getEntityProduct().getId(), dtoProduct.getQuantity());
+                    }
+                }
+                
+                EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
+                entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
+                entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                entityPOShowRoomProducts.add(entityPOShowRoomProduct);
+
+                EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
+                entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+                entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
+                entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
+                entityShowRoomStock.setStockOut(0);
+                entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                entityShowRoomStocks.add(entityShowRoomStock);
+            }  
+            
+            //checking whether stock is available or not
+            Stock stock = new Stock();
+            List<DTOProduct> stockProducts = stock.getCurrentStockByProductIds(productIds);
+            for(int productCounter = 0; productCounter < stockProducts.size(); productCounter++)
+            {
+                DTOProduct stockProduct = stockProducts.get(productCounter);
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
+                EntityShowRoomStock showRoomStockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(stockProduct.getEntityProduct().getId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                
+                if(productIdQuantityMap.containsKey(stockProduct.getEntityProduct().getId()) && (productIdQuantityMap.get(stockProduct.getEntityProduct().getId()) < showRoomStockProduct.getStockIn()) && (showRoomStockProduct.getStockIn() - productIdQuantityMap.get(stockProduct.getEntityProduct().getId()) > stockProduct.getQuantity()) )
+                {
+                    //insufficient stock for the product
+                    response.setSuccess(false);
+                    response.setMessage("You cannot reduce quantity which is already sold. For the product " + stockProduct.getEntityProduct().getName() + " you can reduce maximum of " + (showRoomStockProduct.getStockIn() - stockProduct.getQuantity()) );
+                    return response;
+                }
+            }
+            
+            if(entityManagerPurchaseOrder.updatePurchaseOrder(dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityShowRoomStocks))
+            {
+                response.setSuccess(true);
+                response.setMessage("Purchase order is updated successfully.");
+            }
+            else
+            {
+                response.setSuccess(false);
+                response.setMessage("Invalid Purchase Order Info. Please try again later...");
+            }
+        }
+        else
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Purchase Order Info. Please try again later....");
+        }        
+        return response;
+    }
+    
     @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDER_INFO)
     public ClientResponse getPurchaseOrderInfo(ISession session, IPacket packet) throws Exception 
     {
@@ -198,95 +321,6 @@ public class PurchaseHandler {
         listPurchaseOrder.setSuccess(true);
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
         return listPurchaseOrder;
-    }
-    
-    @ClientRequest(action = ACTION.UPDATE_PURCHASE_ORDER_INFO)
-    public ClientResponse updatePurchaseOrderInfo(ISession session, IPacket packet) throws Exception 
-    {
-        GeneralResponse response = new GeneralResponse();
-        Gson gson = new Gson();
-        DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);     
-        if(dtoPurchaseOrder == null || dtoPurchaseOrder.getEntityPurchaseOrder() == null)
-        {
-            response.setSuccess(false);
-            response.setMessage("Invalid Purchase Order Info. Please try again later.");
-            return response;
-        }
-        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getId() <= 0)
-        {
-            response.setSuccess(false);
-            response.setMessage("Invalid Purchase Order Info. Please try again later..");
-            return response;
-        }
-        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo() == null || dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo().equals(""))
-        {
-            response.setSuccess(false);
-            response.setMessage("Order no is required.");
-            return response;
-        }
-        else if(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId() <= 0)
-        {
-            response.setSuccess(false);
-            response.setMessage("Invalid Supplier. Please select a supplier.");
-            return response;
-        }
-        else if(dtoPurchaseOrder.getProducts() == null || dtoPurchaseOrder.getProducts().size() <= 0)
-        {
-            response.setSuccess(false);
-            response.setMessage("Please select product for the purchase.");
-            return response;
-        }
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
-        //check whether order no exists or not
-        EntityPurchaseOrder resultEntityPurchaseOrder = entityManagerPurchaseOrder.getPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
-        if(resultEntityPurchaseOrder != null && resultEntityPurchaseOrder.getId() != dtoPurchaseOrder.getEntityPurchaseOrder().getId())
-        {
-            response.setSuccess(false);
-            response.setMessage("Order No already exists or invalid.");
-            return response;
-        }
-        
-        if(dtoPurchaseOrder.getEntityPurchaseOrder().getId() > 0)
-        {            
-            List<DTOProduct> products = dtoPurchaseOrder.getProducts();
-            int totalProducts = products.size();
-            List<EntityPOShowRoomProduct> entityPOShowRoomProducts = new ArrayList<>();
-            List<EntityShowRoomStock> entityShowRoomStocks = new ArrayList<>();
-            for(int counter = 0; counter < totalProducts; counter++)
-            {
-                DTOProduct dtoProduct = products.get(counter);
-                EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
-                entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
-                entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
-                entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
-                entityPOShowRoomProducts.add(entityPOShowRoomProduct);
-
-                EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
-                entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
-                entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
-                entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
-                entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
-                entityShowRoomStock.setStockOut(0);
-                entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
-                entityShowRoomStocks.add(entityShowRoomStock);
-            }           
-            if(entityManagerPurchaseOrder.updatePurchaseOrder(dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityShowRoomStocks))
-            {
-                response.setSuccess(true);
-                response.setMessage("Purchase order is updated successfully.");
-            }
-            else
-            {
-                response.setSuccess(false);
-                response.setMessage("Invalid Purchase Order Info. Please try again later...");
-            }
-        }
-        else
-        {
-            response.setSuccess(false);
-            response.setMessage("Invalid Purchase Order Info. Please try again later....");
-        }        
-        return response;
     }
     
     @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDERS_BY_ORDER_NO)
