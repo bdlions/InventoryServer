@@ -6,6 +6,7 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -80,6 +81,9 @@ public class EntityManagerSupplier
      */
     public EntitySupplier createSupplier(EntitySupplier entitySupplier, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entitySupplier.setCreatedOn(timeUtils.getCurrentTime());
+        entitySupplier.setModifiedOn(timeUtils.getCurrentTime());
         session.save(entitySupplier);
         return entitySupplier;
     }
@@ -140,6 +144,8 @@ public class EntityManagerSupplier
      */
     public boolean updateSupplier(EntitySupplier entitySupplier, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entitySupplier.setModifiedOn(timeUtils.getCurrentTime());
         session.update(entitySupplier);
         return true;
     }

@@ -73,6 +73,12 @@ public class EntityCustomer extends ClientResponse implements java.io.Serializab
     @Column(name = "balance")
     private double balance;
     
+    @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private long createdOn;
+
+    @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private long modifiedOn;
+    
     public int getId() {
         return id;
     }
@@ -119,6 +125,22 @@ public class EntityCustomer extends ClientResponse implements java.io.Serializab
 
     public void setCell(String cell) {
         this.cell = cell;
+    }
+
+    public long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(long createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public long getModifiedOn() {
+        return modifiedOn;
+    }
+
+    public void setModifiedOn(long modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
     
 }

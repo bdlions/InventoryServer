@@ -19,7 +19,8 @@ import javax.persistence.Table;
 @Table(
         name = "users",
         indexes = {
-            @Index(name = "idx_name", columnList = "cell", unique = true)
+            @Index(name = "idx_name", columnList = "cell", unique = true),
+            @Index(name = "idx_email", columnList = "email", unique = true)
         }
 )
 @NamedQueries({
@@ -69,10 +70,10 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
     private int accountStatusId;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int createdOn;
+    private long createdOn;
 
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int modifiedOn;
+    private long modifiedOn;
 
     public int getAccountStatusId() {
         return accountStatusId;
@@ -146,19 +147,19 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
         this.cell = cell;
     }
 
-    public int getCreatedOn() {
+    public long getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(int createdOn) {
+    public void setCreatedOn(long createdOn) {
         this.createdOn = createdOn;
     }
 
-    public int getModifiedOn() {
+    public long getModifiedOn() {
         return modifiedOn;
     }
 
-    public void setModifiedOn(int modifiedOn) {
+    public void setModifiedOn(long modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
 }

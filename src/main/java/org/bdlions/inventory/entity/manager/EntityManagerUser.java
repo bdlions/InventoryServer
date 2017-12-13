@@ -5,6 +5,7 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -100,6 +101,9 @@ public class EntityManagerUser
      */
     public EntityUser createUser(EntityUser entityUser, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entityUser.setCreatedOn(timeUtils.getCurrentTime());
+        entityUser.setModifiedOn(timeUtils.getCurrentTime());
         session.save(entityUser);
         return entityUser;
     }
@@ -168,6 +172,8 @@ public class EntityManagerUser
      */
     public boolean updateUser(EntityUser entityUser, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entityUser.setModifiedOn(timeUtils.getCurrentTime());
         session.update(entityUser);
         return true;
     }

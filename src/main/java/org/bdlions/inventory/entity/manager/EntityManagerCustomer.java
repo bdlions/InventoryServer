@@ -6,6 +6,7 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityCustomer;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -80,6 +81,9 @@ public class EntityManagerCustomer
      */
     public EntityCustomer createCustomer(EntityCustomer entityCustomer, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entityCustomer.setCreatedOn(timeUtils.getCurrentTime());
+        entityCustomer.setModifiedOn(timeUtils.getCurrentTime());
         session.save(entityCustomer);
         return entityCustomer;
     }
@@ -140,6 +144,8 @@ public class EntityManagerCustomer
      */
     public boolean updateCustomer(EntityCustomer entityCustomer, Session session)
     {
+        TimeUtils timeUtils = new TimeUtils();
+        entityCustomer.setModifiedOn(timeUtils.getCurrentTime());
         session.update(entityCustomer);
         return true;
     }
