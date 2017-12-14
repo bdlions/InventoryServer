@@ -20,7 +20,10 @@ import javax.persistence.Transient;
 @Table(
         name = "sale_orders",
         indexes = {
-            @Index(name = "idx_sale_order_no", columnList = "order_no")
+            @Index(name = "idx_sale_order_no", columnList = "order_no"),
+            @Index(name = "idx_customer_name", columnList = "customer_name"),
+            @Index(name = "idx_customer_cell", columnList = "cell"),
+            @Index(name = "idx_customer_email", columnList = "email")
         }
 )
 @NamedQueries({
@@ -39,6 +42,14 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "searchSaleOrderByOrderNo",
             query = "from EntitySaleOrder saleOrder where lower(saleOrder.orderNo) like :orderNo"
+    ),
+    @NamedQuery(
+            name = "searchSaleOrderByCell",
+            query = "from EntitySaleOrder saleOrder where lower(saleOrder.cell) like :cell"
+    ),
+    @NamedQuery(
+            name = "updateSaleOrderCustomerInfo",
+            query = "update EntitySaleOrder set customerName = :customerName, cell = :cell, email = :email where customerUserId = :customerUserId"
     )
 })
 public class EntitySaleOrder extends ClientResponse implements java.io.Serializable{
@@ -53,6 +64,15 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     
     @Column(name = "customer_user_id", columnDefinition = "int(11) NOT NULL")
     private int customerUserId;
+    
+    @Column(name = "customer_name")
+    private String customerName;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "cell")
+    private String cell;
     
     @Column(name = "status_id", columnDefinition = "int(11) NOT NULL")
     private int statusId;
@@ -165,4 +185,29 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }
+    
 }

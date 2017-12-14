@@ -19,7 +19,10 @@ import javax.persistence.Table;
 @Table(
         name = "purchase_orders",
         indexes = {
-            @Index(name = "idx_purchase_order_no", columnList = "order_no")
+            @Index(name = "idx_purchase_order_no", columnList = "order_no"),
+            @Index(name = "idx_supplier_name", columnList = "supplier_name"),
+            @Index(name = "idx_supplier_cell", columnList = "cell"),
+            @Index(name = "idx_supplier_email", columnList = "email")
         }
 )
 @NamedQueries({
@@ -38,6 +41,14 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "searchPurchaseOrderByOrderNo",
             query = "from EntityPurchaseOrder purchaseOrder where lower(purchaseOrder.orderNo) like :orderNo"
+    ),
+    @NamedQuery(
+            name = "searchPurchaseOrderByCell",
+            query = "from EntityPurchaseOrder purchaseOrder where lower(purchaseOrder.cell) like :cell"
+    ),
+    @NamedQuery(
+            name = "updatePurchaseOrderSupplierInfo",
+            query = "update EntityPurchaseOrder set supplierName = :supplierName, cell = :cell, email = :email where supplierUserId = :supplierUserId"
     )
 })
 public class EntityPurchaseOrder extends ClientResponse implements java.io.Serializable{
@@ -52,6 +63,15 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     
     @Column(name = "supplier_user_id", columnDefinition = "int(11) NOT NULL")
     private int supplierUserId;
+    
+    @Column(name = "supplier_name")
+    private String supplierName;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "cell")
+    private String cell;
     
     @Column(name = "order_date", columnDefinition = "int(11) unsigned DEFAULT 0")
     private int orderDate;
@@ -175,6 +195,28 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
-    
-    
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }    
 }

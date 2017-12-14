@@ -17,14 +17,17 @@ import org.bdlions.inventory.dto.ListSaleOrder;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
+import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.manager.Stock;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -127,6 +130,17 @@ public class SaleHandler {
                 return responseDTOSaleOrder;
             }
         }
+        
+        //setting user profile info into sale order info
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser entityUser = entityManagerUser.getUserByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
+        if(entityUser != null)
+        {
+            dtoSaleOrder.getEntitySaleOrder().setCustomerName(entityUser.getFirstName()+" "+entityUser.getLastName());
+            dtoSaleOrder.getEntitySaleOrder().setEmail(entityUser.getEmail());
+            dtoSaleOrder.getEntitySaleOrder().setCell(entityUser.getCell());
+        }
+            
         
         EntitySaleOrder entitySaleOrder = entityManagerSaleOrder.createSaleOrder(dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks);
         responseDTOSaleOrder.setEntitySaleOrder(entitySaleOrder);
@@ -244,6 +258,15 @@ public class SaleHandler {
                     return response;
                 }
             }
+            //setting user profile info into sale order info
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityUser entityUser = entityManagerUser.getUserByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
+            if(entityUser != null)
+            {
+                dtoSaleOrder.getEntitySaleOrder().setCustomerName(entityUser.getFirstName()+" "+entityUser.getLastName());
+                dtoSaleOrder.getEntitySaleOrder().setEmail(entityUser.getEmail());
+                dtoSaleOrder.getEntitySaleOrder().setCell(entityUser.getCell());
+            }
             
             if(entityManagerSaleOrder.updateSaleOrder(dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks))
             {
@@ -338,6 +361,7 @@ public class SaleHandler {
                 EntitySaleOrder entitySaleOrder = entitySaleOrders.get(counter);
                 DTOSaleOrder dtoSO = new DTOSaleOrder();
                 dtoSO.setEntitySaleOrder(entitySaleOrder);
+                dtoSO.setOrderDate(TimeUtils.convertUnixToHuman(entitySaleOrder.getCreatedOn(), "", ""));
                 saleOrders.add(dtoSO);
             }
         }        
@@ -372,11 +396,47 @@ public class SaleHandler {
                 EntitySaleOrder entitySaleOrder = entitySaleOrders.get(counter);
                 DTOSaleOrder dtoSO = new DTOSaleOrder();
                 dtoSO.setEntitySaleOrder(entitySaleOrder);
+                dtoSO.setOrderDate(TimeUtils.convertUnixToHuman(entitySaleOrder.getCreatedOn(), "", ""));
                 saleOrders.add(dtoSO);
             }
         }        
         ListSaleOrder listSaleOrder = new ListSaleOrder();
         listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.searchTotalSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo()));
+        listSaleOrder.setSaleOrders(saleOrders);
+        listSaleOrder.setSuccess(true);
+        return listSaleOrder;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_SALE_ORDERS_BY_CELL)
+    public ClientResponse getSaleOrdersByCell(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOSaleOrder dtoSaleOrder = gson.fromJson(packet.getPacketBody(), DTOSaleOrder.class);   
+        if(dtoSaleOrder == null)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid request to get sale orders.");
+            return response;
+        }
+        
+        List<DTOSaleOrder> saleOrders = new ArrayList<>();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.searchSaleOrderByCell(dtoSaleOrder.getEntitySaleOrder().getCell(), dtoSaleOrder.getOffset(), dtoSaleOrder.getLimit());
+        if(entitySaleOrders != null)
+        {
+            
+            for (int counter = 0; counter < entitySaleOrders.size(); counter++) 
+            {
+                EntitySaleOrder entitySaleOrder = entitySaleOrders.get(counter);
+                DTOSaleOrder dtoSO = new DTOSaleOrder();
+                dtoSO.setEntitySaleOrder(entitySaleOrder);
+                dtoSO.setOrderDate(TimeUtils.convertUnixToHuman(entitySaleOrder.getCreatedOn(), "", ""));
+                saleOrders.add(dtoSO);
+            }
+        }        
+        ListSaleOrder listSaleOrder = new ListSaleOrder();
+        listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.searchTotalSaleOrderByCell(dtoSaleOrder.getEntitySaleOrder().getCell()));
         listSaleOrder.setSaleOrders(saleOrders);
         listSaleOrder.setSuccess(true);
         return listSaleOrder;

@@ -12,6 +12,7 @@ import java.util.List;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListSupplier;
+import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
@@ -116,7 +117,14 @@ public class SupplierHandler {
             dtoSupplier.getEntitySupplier().setEmail(dtoSupplier.getEntityUser().getEmail());
             dtoSupplier.getEntitySupplier().setCell(dtoSupplier.getEntityUser().getCell());
             
-            if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser()))
+            //setting purchase order info to be updated if supplier info is updated
+            EntityPurchaseOrder entityPurchaseOrder = new EntityPurchaseOrder();
+            entityPurchaseOrder.setSupplierName(dtoSupplier.getEntityUser().getFirstName() + " " + dtoSupplier.getEntityUser().getLastName());
+            entityPurchaseOrder.setEmail(dtoSupplier.getEntityUser().getEmail());
+            entityPurchaseOrder.setCell(dtoSupplier.getEntityUser().getCell());
+            entityPurchaseOrder.setSupplierUserId(dtoSupplier.getEntitySupplier().getUserId());
+            
+            if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), entityPurchaseOrder))
             {
                 response.setSuccess(true);
                 response.setMessage("Supplier is updated successfully.");

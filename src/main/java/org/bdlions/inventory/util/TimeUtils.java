@@ -15,10 +15,14 @@ public class TimeUtils {
         return currentTime;
     }
     
-    public String convertUnixToHuman(long unixSeconds, String dateFormat, String reference) {
+    public static String convertUnixToHuman(long unixSeconds, String dateFormat, String reference) {
         if(StringUtils.isNullOrEmpty(dateFormat))
         {
             dateFormat = "yyyy-MM-dd h:mm a";
+        }
+        if(StringUtils.isNullOrEmpty(reference))
+        {
+            reference = "+6";
         }
         Date date = new Date(unixSeconds * 1000L); // *1000 is to convert seconds to milliseconds
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat); // the format of your date

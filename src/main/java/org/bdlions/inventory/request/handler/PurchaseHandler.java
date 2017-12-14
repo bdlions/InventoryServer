@@ -17,14 +17,18 @@ import org.bdlions.inventory.dto.ListPurchaseOrder;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
+import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
+import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
+import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.manager.Stock;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -102,7 +106,18 @@ public class PurchaseHandler {
             entityShowRoomStock.setStockOut(0);
             entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
             entityShowRoomStocks.add(entityShowRoomStock);
-        }        
+        }    
+        
+        //setting user profile info into purchase order info
+        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
+        if(entityUser != null)
+        {
+            dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName()+" "+entityUser.getLastName());
+            dtoPurchaseOrder.getEntityPurchaseOrder().setEmail(entityUser.getEmail());
+            dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());
+        }
+        
         EntityPurchaseOrder entityPurchaseOrder = entityManagerPurchaseOrder.createPurchaseOrder(dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityShowRoomStocks);
         responseDTOPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
         
@@ -222,6 +237,16 @@ public class PurchaseHandler {
                 }
             }
             
+            //setting user profile info into purchase order info
+            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
+            if(entityUser != null)
+            {
+                dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName()+" "+entityUser.getLastName());
+                dtoPurchaseOrder.getEntityPurchaseOrder().setEmail(entityUser.getEmail());
+                dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());
+            }
+            
             if(entityManagerPurchaseOrder.updatePurchaseOrder(dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityShowRoomStocks))
             {
                 response.setSuccess(true);
@@ -313,6 +338,7 @@ public class PurchaseHandler {
                 EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
                 DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
                 dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
+                dtoPO.setOrderDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getCreatedOn(), "", ""));
                 purchaseOrders.add(dtoPO);
             } 
         }               
@@ -345,11 +371,45 @@ public class PurchaseHandler {
                 EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
                 DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
                 dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
+                dtoPO.setOrderDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getCreatedOn(), "", ""));
                 purchaseOrders.add(dtoPO);
             } 
         }               
         ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
         listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.searchTotalPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo()));
+        listPurchaseOrder.setSuccess(true);
+        listPurchaseOrder.setPurchaseOrders(purchaseOrders);
+        return listPurchaseOrder;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDERS_BY_CELL)
+    public ClientResponse getPurchaseOrdersByCell(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOPurchaseOrder dtoPurchaseOrder = gson.fromJson(packet.getPacketBody(), DTOPurchaseOrder.class);  
+        if(dtoPurchaseOrder == null)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid request to get purchase orders.");
+            return response;
+        }
+        List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        List<EntityPurchaseOrder> entityPurchaseOrders = entityManagerPurchaseOrder.searchPurchaseOrderByCell(dtoPurchaseOrder.getEntityPurchaseOrder().getCell(), dtoPurchaseOrder.getOffset(), dtoPurchaseOrder.getLimit());
+        if(entityPurchaseOrders != null)
+        {
+            for(int counter = 0; counter < entityPurchaseOrders.size(); counter++)
+            {
+                EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
+                DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
+                dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
+                dtoPO.setOrderDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getCreatedOn(), "", ""));
+                purchaseOrders.add(dtoPO);
+            } 
+        }               
+        ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
+        listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.searchTotalPurchaseOrderByCell(dtoPurchaseOrder.getEntityPurchaseOrder().getCell()));
         listPurchaseOrder.setSuccess(true);
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
         return listPurchaseOrder;

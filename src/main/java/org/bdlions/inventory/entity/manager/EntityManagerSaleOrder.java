@@ -3,6 +3,7 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
+import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
@@ -385,5 +386,65 @@ public class EntityManagerSaleOrder
         {
             session.close();
         }
+    }
+    
+    /**
+     * This method will return sale order list search by cell, case insensitive
+     * @param cell cell no
+     * @param offset offset
+     * @param limit limit
+     * @return List entity sale order list
+     */
+    public List<EntitySaleOrder> searchSaleOrderByCell(String cell, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total number of sale order list search by cell, case insensitive
+     * @param cell cell no
+     * @return Integer total number of sale orders
+     */
+    public int searchTotalSaleOrderByCell(String cell)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will update sale order customer info using session
+     * @param entitySaleOrder entity sale order
+     * @param session session
+     * @return boolean true
+     */
+    public int updateSaleOrderCustomerInfo(EntitySaleOrder entitySaleOrder, Session session)
+    {
+        Query<EntitySaleOrder> query = session.getNamedQuery("updateSaleOrderCustomerInfo");
+        query.setParameter("customerName", entitySaleOrder.getCustomerName());
+        query.setParameter("cell", entitySaleOrder.getCell());
+        query.setParameter("email", entitySaleOrder.getEmail());
+        query.setParameter("customerUserId", entitySaleOrder.getCustomerUserId());
+        return query.executeUpdate();
     }
 }

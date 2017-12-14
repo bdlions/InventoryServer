@@ -15,6 +15,7 @@ public class DTOPurchaseOrder extends ClientResponse implements java.io.Serializ
     public EntityPurchaseOrder entityPurchaseOrder;
     public DTOSupplier dtoSupplier;
     public List<DTOProduct> products;
+    public String orderDate;
     public DTOPurchaseOrder()
     {
         entityPurchaseOrder = new EntityPurchaseOrder();
@@ -61,5 +62,12 @@ public class DTOPurchaseOrder extends ClientResponse implements java.io.Serializ
     public void setProducts(List<DTOProduct> products) {
         this.products = products;
     }
-    
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }    
 }

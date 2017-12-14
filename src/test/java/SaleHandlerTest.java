@@ -130,4 +130,21 @@ public class SaleHandlerTest extends HTTPRequestHelper{
         String result = getResult(packetHeader, packetBody);
         System.out.println("Result : " + result);
     }
+    
+    //@Test
+    public void getSaleOrdersByCellTest() {
+        PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
+        mockPacketHeader.setAction(ACTION.FETCH_SALE_ORDERS_BY_CELL);
+        mockPacketHeader.setRequestType(REQUEST_TYPE.REQUEST);
+        mockPacketHeader.setSessionId(getSessionId());
+
+        String packetHeader = new GsonBuilder().create().toJson(mockPacketHeader);
+        System.out.println(packetHeader);
+
+        String packetBody = "{\"limit\":10, \"offset\":0, \"entitySaleOrder\":{\"cell\":\"01\"}}";
+        System.out.println(packetBody);
+
+        String result = getResult(packetHeader, packetBody);
+        System.out.println("Result : " + result);
+    }
 }

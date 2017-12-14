@@ -386,4 +386,64 @@ public class EntityManagerPurchaseOrder
             session.close();
         }
     }
+    
+    /**
+     * This method will return purchase order list search by cell, case insensitive
+     * @param cell cell no
+     * @param offset offset
+     * @param limit limit
+     * @return List entity purchase order list
+     */
+    public List<EntityPurchaseOrder> searchPurchaseOrderByCell(String cell, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total number of purchase orders search by cell, case insensitive
+     * @param cell cell no
+     * @return Integer total number of purchase orders
+     */
+    public int searchTotalPurchaseOrderByCell(String cell)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will update purchase order supplier info using session
+     * @param entityPurchaseOrder entity purchase order
+     * @param session session
+     * @return boolean true
+     */
+    public int updatePurchaseOrderSupplierInfo(EntityPurchaseOrder entityPurchaseOrder, Session session)
+    {
+        Query<EntityPurchaseOrder> query = session.getNamedQuery("updatePurchaseOrderSupplierInfo");
+        query.setParameter("supplierName", entityPurchaseOrder.getSupplierName());
+        query.setParameter("cell", entityPurchaseOrder.getCell());
+        query.setParameter("email", entityPurchaseOrder.getEmail());
+        query.setParameter("supplierUserId", entityPurchaseOrder.getSupplierUserId());
+        return query.executeUpdate();
+    }
 }

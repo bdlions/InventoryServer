@@ -3,6 +3,7 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
+import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
@@ -169,12 +170,13 @@ public class EntityManagerSupplier
     }
     
     /**
-     * This method will update entity supplier and/or entity user
+     * This method will update entity supplier and/or entity user and/or entity purchase order
      * @param entitySupplier entity supplier
      * @param entityUser entity user
+     * @param entityPurchaseOrder entity purchase order
      * @return boolean true
      */
-    public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser)
+    public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityPurchaseOrder entityPurchaseOrder)
     {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
@@ -184,6 +186,11 @@ public class EntityManagerSupplier
             EntityManagerUser entityManagerUser = new EntityManagerUser();
             entityManagerUser.updateUser(entityUser, session);
         }
+        if(entityPurchaseOrder != null)
+        {
+            EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+            entityManagerPurchaseOrder.updatePurchaseOrderSupplierInfo(entityPurchaseOrder, session);
+        }   
         try 
         {
             updateSupplier(entitySupplier, session);

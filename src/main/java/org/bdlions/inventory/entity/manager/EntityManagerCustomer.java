@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityCustomer;
+import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.util.TimeUtils;
@@ -169,12 +170,13 @@ public class EntityManagerCustomer
     }
     
     /**
-     * This method will update entity customer and/or entity user
+     * This method will update entity customer and/or entity user and/or entity sale order
      * @param entityCustomer entity customer
      * @param entityUser entity user
+     * @param entitySaleOrder entity sale order
      * @return boolean true
      */
-    public boolean updateCustomer(EntityCustomer entityCustomer, EntityUser entityUser)
+    public boolean updateCustomer(EntityCustomer entityCustomer, EntityUser entityUser, EntitySaleOrder entitySaleOrder)
     {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
@@ -183,6 +185,11 @@ public class EntityManagerCustomer
         {
             EntityManagerUser entityManagerUser = new EntityManagerUser();
             entityManagerUser.updateUser(entityUser, session);
+        }
+        if(entitySaleOrder != null)
+        {
+            EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+            entityManagerSaleOrder.updateSaleOrderCustomerInfo(entitySaleOrder, session);
         }
         try 
         {

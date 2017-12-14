@@ -13,6 +13,7 @@ import org.bdlions.inventory.dto.DTOCustomer;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListCustomer;
 import org.bdlions.inventory.entity.EntityCustomer;
+import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
@@ -109,6 +110,8 @@ public class CustomerHandler {
         }
         else
         {
+            //--------------------if customer first name, last name, cell, email are updated then update EntitySaleOrder for these fields
+            
             EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
             
             //setting entity customer name, email and cell from entity user
@@ -116,7 +119,13 @@ public class CustomerHandler {
             dtoCustomer.getEntityCustomer().setEmail(dtoCustomer.getEntityUser().getEmail());
             dtoCustomer.getEntityCustomer().setCell(dtoCustomer.getEntityUser().getCell());
             
-            if(entityManagerCustomer.updateCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser()))
+            EntitySaleOrder entitySaleOrder = new EntitySaleOrder();
+            entitySaleOrder.setCustomerName(dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
+            entitySaleOrder.setEmail(dtoCustomer.getEntityUser().getEmail());
+            entitySaleOrder.setCell(dtoCustomer.getEntityUser().getCell());
+            entitySaleOrder.setCustomerUserId(dtoCustomer.getEntityCustomer().getUserId());
+            
+            if(entityManagerCustomer.updateCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser(), entitySaleOrder))
             {
                 response.setSuccess(true);
                 response.setMessage("Customer is updated successfully.");

@@ -73,7 +73,7 @@ public class SupplierHandlerTest extends HTTPRequestHelper{
         String packetHeader = new GsonBuilder().create().toJson(mockPacketHeader);
         System.out.println(packetHeader);
 
-        String packetBody = "{\"entitySupplier\":{\"id\":3, \"userId\":7}, \"entityUser\":{\"firstName\":\"Supplier\", \"lastName\":\"1001\",\"id\":7, \"email\":\"supplier1001@gmail.com\", \"password\":\"pass\", \"cell\":\"01711121001\"}}";
+        String packetBody = "{\"entitySupplier\":{\"id\":1, \"userId\":3}, \"entityUser\":{\"firstName\":\"Supplier\", \"lastName\":\"1\",\"id\":3, \"email\":\"supplier1@gmail.com\", \"password\":\"pass\", \"cell\":\"01711123101\"}}";
         System.out.println(packetBody);
 
         String result = getResult(packetHeader, packetBody);
@@ -148,7 +148,7 @@ public class SupplierHandlerTest extends HTTPRequestHelper{
         System.out.println("Result : " + result);
     }
     
-    @Test
+    //@Test
     public void getSuppliersByEmailTest() {
         PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
         mockPacketHeader.setAction(ACTION.FETCH_SUPPLIERS_BY_EMAIL);

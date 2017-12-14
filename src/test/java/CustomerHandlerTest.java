@@ -73,7 +73,7 @@ public class CustomerHandlerTest extends HTTPRequestHelper{
         String packetHeader = new GsonBuilder().create().toJson(mockPacketHeader);
         System.out.println(packetHeader);
 
-        String packetBody = "{\"entityCustomer\":{\"id\":3, \"userId\":8}, \"entityUser\":{\"firstName\":\"Customer\", \"lastName\":\"1001\", \"id\":8, \"email\":\"customer1001@gmail.com\", \"password\":\"pass\", \"cell\":\"01811121001\"}}";
+        String packetBody = "{\"entityCustomer\":{\"id\":1, \"userId\":5}, \"entityUser\":{\"firstName\":\"Zobaer\", \"lastName\":\"Badal\", \"id\":5, \"email\":\"badal@gmail.com\", \"password\":\"pass\", \"cell\":\"01733123456\"}}";
         System.out.println(packetBody);
 
         String result = getResult(packetHeader, packetBody);
@@ -148,7 +148,7 @@ public class CustomerHandlerTest extends HTTPRequestHelper{
         System.out.println("Result : " + result);
     }
     
-    @Test
+    //@Test
     public void getCustomersByEmailTest() {
         PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
         mockPacketHeader.setAction(ACTION.FETCH_CUSTOMERS_BY_EMAIL);
