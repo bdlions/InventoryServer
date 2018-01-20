@@ -284,7 +284,7 @@ CREATE TABLE `purchase_orders` (
   `subtotal` int(11) UNSIGNED DEFAULT 0,
   `supplier_user_id` int(11) NOT NULL,
   `total` int(11) UNSIGNED DEFAULT 0,
-  `remarks` varchar(1000) DEFAULT NULL,
+  `remarks` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `purchase_orders`
   ADD PRIMARY KEY (`id`);

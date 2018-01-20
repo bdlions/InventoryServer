@@ -104,6 +104,7 @@ public class SaleHandler {
                 entitySaleOrderProduct.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                 entitySaleOrderProduct.setProductId(dtoProduct.getEntityProduct().getId());
                 entitySaleOrderProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                entitySaleOrderProduct.setDiscount(dtoProduct.getDiscount());
                 entitySaleOrderProducts.add(entitySaleOrderProduct);
 
                 EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
@@ -136,7 +137,11 @@ public class SaleHandler {
         EntityUser entityUser = entityManagerUser.getUserByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
         if(entityUser != null)
         {
-            dtoSaleOrder.getEntitySaleOrder().setCustomerName(entityUser.getFirstName()+" "+entityUser.getLastName());
+            dtoSaleOrder.getEntitySaleOrder().setCustomerName(entityUser.getFirstName());
+            if(!StringUtils.isNullOrEmpty(entityUser.getLastName()))
+            {
+                dtoSaleOrder.getEntitySaleOrder().setCustomerName(dtoSaleOrder.getEntitySaleOrder().getCustomerName() + " " + entityUser.getLastName());
+            }
             dtoSaleOrder.getEntitySaleOrder().setEmail(entityUser.getEmail());
             dtoSaleOrder.getEntitySaleOrder().setCell(entityUser.getCell());
         }
@@ -229,6 +234,7 @@ public class SaleHandler {
                     entitySaleOrderProduct.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                     entitySaleOrderProduct.setProductId(dtoProduct.getEntityProduct().getId());
                     entitySaleOrderProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                    entitySaleOrderProduct.setDiscount(dtoProduct.getDiscount());
                     entitySaleOrderProducts.add(entitySaleOrderProduct);
 
                     EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
@@ -263,7 +269,11 @@ public class SaleHandler {
             EntityUser entityUser = entityManagerUser.getUserByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
             if(entityUser != null)
             {
-                dtoSaleOrder.getEntitySaleOrder().setCustomerName(entityUser.getFirstName()+" "+entityUser.getLastName());
+                dtoSaleOrder.getEntitySaleOrder().setCustomerName(entityUser.getFirstName());
+                if(!StringUtils.isNullOrEmpty(entityUser.getLastName()))
+                {
+                    dtoSaleOrder.getEntitySaleOrder().setCustomerName(dtoSaleOrder.getEntitySaleOrder().getCustomerName() + " " + entityUser.getLastName());
+                }
                 dtoSaleOrder.getEntitySaleOrder().setEmail(entityUser.getEmail());
                 dtoSaleOrder.getEntitySaleOrder().setCell(entityUser.getCell());
             }
@@ -322,6 +332,7 @@ public class SaleHandler {
                     dtoProduct.setQuantity(stockProduct.getStockOut());
                     dtoProduct.setEntityProduct(entityProduct);
                     dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
                     dtoSaleOrder.getProducts().add(dtoProduct);
                 }
             }

@@ -95,7 +95,8 @@ public class PurchaseHandler {
             EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
             entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
-            entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+            entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());  
+            entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());
             entityPOShowRoomProducts.add(entityPOShowRoomProduct);
             
             EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
@@ -113,7 +114,11 @@ public class PurchaseHandler {
         EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
         if(entityUser != null)
         {
-            dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName()+" "+entityUser.getLastName());
+            dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName());
+            if(!StringUtils.isNullOrEmpty(entityUser.getLastName()))
+            {
+                dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierName() + " " + entityUser.getLastName());
+            }
             dtoPurchaseOrder.getEntityPurchaseOrder().setEmail(entityUser.getEmail());
             dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());
         }
@@ -206,7 +211,8 @@ public class PurchaseHandler {
                 EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
                 entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                 entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
-                entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
+                entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());
                 entityPOShowRoomProducts.add(entityPOShowRoomProduct);
 
                 EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
@@ -242,7 +248,11 @@ public class PurchaseHandler {
             EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
             if(entityUser != null)
             {
-                dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName()+" "+entityUser.getLastName());
+                dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName());
+                if(!StringUtils.isNullOrEmpty(entityUser.getLastName()))
+                {
+                    dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierName() + " " + entityUser.getLastName());
+                }
                 dtoPurchaseOrder.getEntityPurchaseOrder().setEmail(entityUser.getEmail());
                 dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());
             }
@@ -301,6 +311,7 @@ public class PurchaseHandler {
                     dtoProduct.setQuantity(stockProduct.getStockIn());
                     dtoProduct.setEntityProduct(entityProduct);
                     dtoProduct.getEntityProduct().setUnitPrice(entityPOShowRoomProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
                     dtoPurchaseOrder.getProducts().add(dtoProduct);
                 }
             }
