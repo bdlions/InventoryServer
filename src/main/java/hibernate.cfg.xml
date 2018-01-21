@@ -48,5 +48,6 @@
 	<mapping class="org.bdlions.inventory.entity.EntitySaleOrderProduct" />
         <mapping class="org.bdlions.inventory.entity.EntitySSTransactionCategory" />
         <mapping class="org.bdlions.inventory.entity.EntityShowRoomStock" />
+        <mapping class="org.bdlions.inventory.entity.EntityProductSupplier" />
     </session-factory>
 </hibernate-configuration>

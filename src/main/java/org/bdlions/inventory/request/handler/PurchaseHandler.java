@@ -114,10 +114,9 @@ public class PurchaseHandler {
         EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
         if(entityUser != null)
         {
-            dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName());
-            if(!StringUtils.isNullOrEmpty(entityUser.getLastName()))
+            if(!StringUtils.isNullOrEmpty(entityUser.getUserName()))
             {
-                dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierName() + " " + entityUser.getLastName());
+                dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getUserName());
             }
             dtoPurchaseOrder.getEntityPurchaseOrder().setEmail(entityUser.getEmail());
             dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());
@@ -248,10 +247,9 @@ public class PurchaseHandler {
             EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
             if(entityUser != null)
             {
-                dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getFirstName());
-                if(!StringUtils.isNullOrEmpty(entityUser.getLastName()))
+                if(!StringUtils.isNullOrEmpty(entityUser.getUserName()))
                 {
-                    dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierName() + " " + entityUser.getLastName());
+                    dtoPurchaseOrder.getEntityPurchaseOrder().setSupplierName(entityUser.getUserName());
                 }
                 dtoPurchaseOrder.getEntityPurchaseOrder().setEmail(entityUser.getEmail());
                 dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());

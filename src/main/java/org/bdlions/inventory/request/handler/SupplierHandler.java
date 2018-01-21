@@ -19,6 +19,7 @@ import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.util.Constants;
+import org.bdlions.inventory.util.StringUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -61,7 +62,7 @@ public class SupplierHandler {
             EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
             
             //setting entity supplier name, email and cell from entity user
-            dtoSupplier.getEntitySupplier().setSupplierName(dtoSupplier.getEntityUser().getFirstName() + " " + dtoSupplier.getEntityUser().getLastName());
+            dtoSupplier.getEntitySupplier().setSupplierName(dtoSupplier.getEntityUser().getUserName());            
             dtoSupplier.getEntitySupplier().setEmail(dtoSupplier.getEntityUser().getEmail());
             dtoSupplier.getEntitySupplier().setCell(dtoSupplier.getEntityUser().getCell());
             
@@ -113,7 +114,7 @@ public class SupplierHandler {
             EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
             
             //setting entity supplier name, email and cell from entity user
-            dtoSupplier.getEntitySupplier().setSupplierName(dtoSupplier.getEntityUser().getFirstName() + " " + dtoSupplier.getEntityUser().getLastName());
+            dtoSupplier.getEntitySupplier().setSupplierName(dtoSupplier.getEntityUser().getUserName());
             dtoSupplier.getEntitySupplier().setEmail(dtoSupplier.getEntityUser().getEmail());
             dtoSupplier.getEntitySupplier().setCell(dtoSupplier.getEntityUser().getCell());
             

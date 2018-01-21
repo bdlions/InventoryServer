@@ -61,7 +61,7 @@ public class CustomerHandler {
             EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
             
             //setting entity customer name, email and cell from entity user
-            dtoCustomer.getEntityCustomer().setCustomerName(dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
+            dtoCustomer.getEntityCustomer().setCustomerName(dtoCustomer.getEntityUser().getUserName());
             dtoCustomer.getEntityCustomer().setEmail(dtoCustomer.getEntityUser().getEmail());
             dtoCustomer.getEntityCustomer().setCell(dtoCustomer.getEntityUser().getCell());
             
@@ -115,7 +115,7 @@ public class CustomerHandler {
             EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
             
             //setting entity customer name, email and cell from entity user
-            dtoCustomer.getEntityCustomer().setCustomerName(dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
+            dtoCustomer.getEntityCustomer().setCustomerName(dtoCustomer.getEntityUser().getUserName());
             dtoCustomer.getEntityCustomer().setEmail(dtoCustomer.getEntityUser().getEmail());
             dtoCustomer.getEntityCustomer().setCell(dtoCustomer.getEntityUser().getCell());
             
