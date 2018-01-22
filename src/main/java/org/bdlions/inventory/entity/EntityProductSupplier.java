@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -20,6 +22,16 @@ import javax.persistence.Table;
             @Index(name = "idx_supplier_user_id", columnList = "supplier_user_id")
         }
 )
+@NamedQueries({
+    @NamedQuery(
+            name = "getProductSuppliersByProductId",
+            query = "from EntityProductSupplier product where product.productId = :productId"
+    ),
+    @NamedQuery(
+            name = "deleteProductSuppliers",
+            query = " delete from EntityProductSupplier product where product.productId = :productId"
+    )
+})
 public class EntityProductSupplier {
 
     @Id

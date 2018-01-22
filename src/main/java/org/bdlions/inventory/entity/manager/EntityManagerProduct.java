@@ -3,6 +3,7 @@ package org.bdlions.inventory.entity.manager;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityProduct;
+import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -139,6 +140,33 @@ public class EntityManagerProduct
         }
     }
     
+    public EntityProduct createProduct(EntityProduct entityProduct, List<EntityProductSupplier> productSuppliers) 
+    {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        tx.begin();
+        try 
+        {
+            session.save(entityProduct);
+            if(entityProduct.getId() > 0 && productSuppliers != null && !productSuppliers.isEmpty())
+            {
+                EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+                for(EntityProductSupplier entityProductSupplier: productSuppliers)
+                {
+                    entityProductSupplier.setProductId(entityProduct.getId());
+                    entityProductSupplier.setProductName(entityProduct.getName());
+                    entityManagerProductSupplier.addProductSupplier(entityProductSupplier, session);
+                }
+            } 
+            tx.commit();
+            return entityProduct;
+        }
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     /**
      * This method will update product info
      * @param entityProduct, product info
@@ -146,12 +174,48 @@ public class EntityManagerProduct
      */
     public boolean updateProduct(EntityProduct entityProduct) 
     {
+        if(entityProduct == null || entityProduct.getId() <= 0)
+        {
+            return false;
+        }
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
         {
             session.update(entityProduct);
+            tx.commit();
+            return true;
+        }
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public boolean updateProduct(EntityProduct entityProduct, List<EntityProductSupplier> productSuppliers) 
+    {
+        if(entityProduct == null || entityProduct.getId() <= 0)
+        {
+            return false;
+        }
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        tx.begin();
+        try 
+        {
+            session.update(entityProduct);
+            if(productSuppliers != null && !productSuppliers.isEmpty())
+            {
+                EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+                entityManagerProductSupplier.deleteProductSuppliersByProductId(entityProduct.getId(), session);
+                for(EntityProductSupplier entityProductSupplier: productSuppliers)
+                {
+                    entityProductSupplier.setProductId(entityProduct.getId());
+                    entityProductSupplier.setProductName(entityProduct.getName());
+                    entityManagerProductSupplier.addProductSupplier(entityProductSupplier, session);
+                }
+            }            
             tx.commit();
             return true;
         }

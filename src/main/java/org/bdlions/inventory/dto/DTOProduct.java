@@ -1,8 +1,10 @@
 package org.bdlions.inventory.dto;
 
+import java.util.List;
 import org.bdlions.inventory.entity.EntityProductCategory;
 import org.bdlions.inventory.entity.EntityProductType;
 import org.bdlions.inventory.entity.EntityProduct;
+import org.bdlions.inventory.entity.EntityProductSupplier;
 
 /**
  *
@@ -17,6 +19,7 @@ public class DTOProduct {
     public EntityProductType entityProductType;
     public EntityProductCategory entityProductCategory;
     public EntityProduct entityProduct;
+    public List<EntityProductSupplier> entityProductSupplierList;
     public DTOProduct()
     {
         entityProductType = new EntityProductType();
@@ -86,5 +89,13 @@ public class DTOProduct {
 
     public void setEntityProductCategory(EntityProductCategory entityProductCategory) {
         this.entityProductCategory = entityProductCategory;
+    }  
+
+    public List<EntityProductSupplier> getEntityProductSupplierList() {
+        return entityProductSupplierList;
+    }
+
+    public void setEntityProductSupplierList(List<EntityProductSupplier> entityProductSupplierList) {
+        this.entityProductSupplierList = entityProductSupplierList;
     }    
 }

@@ -1,5 +1,6 @@
 package org.bdlions.inventory.request.handler;
 
+import com.bdlions.dto.response.ClientListResponse;
 import org.bdlions.transport.packet.IPacket;
 import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
@@ -17,8 +18,10 @@ import org.bdlions.inventory.dto.ListProduct;
 import org.bdlions.inventory.dto.ListProductCategory;
 import org.bdlions.inventory.dto.ListProductType;
 import org.bdlions.inventory.dto.ListUOM;
+import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerProductCategory;
+import org.bdlions.inventory.entity.manager.EntityManagerProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerProductType;
 import org.bdlions.inventory.entity.manager.EntityManagerUOM;
 import org.bdlions.util.annotation.ClientRequest;
@@ -75,7 +78,14 @@ public class ProductHandler {
     {
         EntityProduct responseEntityProduct = new EntityProduct();
         Gson gson = new Gson();
-        EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);    
+        if(dtoProduct == null || dtoProduct.getEntityProduct() == null)
+        {
+            responseEntityProduct.setSuccess(false);
+            responseEntityProduct.setMessage("Invalid Porduct Info. Please try again later.");
+            return responseEntityProduct;
+        }
+        EntityProduct entityProduct = dtoProduct.getEntityProduct();
         if(entityProduct == null)
         {
             responseEntityProduct.setSuccess(false);
@@ -110,7 +120,8 @@ public class ProductHandler {
             return responseEntityProduct;
         }
         
-        responseEntityProduct = entityManagerProduct.createProduct(entityProduct);
+        List<EntityProductSupplier> entityProductSupplierList = dtoProduct.getEntityProductSupplierList();        
+        responseEntityProduct = entityManagerProduct.createProduct(entityProduct, entityProductSupplierList);
         if(responseEntityProduct != null && responseEntityProduct.getId() > 0)
         {
             responseEntityProduct.setSuccess(true);
@@ -153,12 +164,38 @@ public class ProductHandler {
         return response;
     }
     
+    @ClientRequest(action = ACTION.FETCH_PRODUCT_SUPPLIER_LIST)
+    public ClientResponse getProductSupplierList(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        ClientListResponse response = new ClientListResponse();
+        EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
+        if( entityProduct == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid request to get product supplier list. Please try again later");
+            return response;
+        } 
+        EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+        List<EntityProductSupplier> supplierList = entityManagerProductSupplier.getProductSuppliersByProductId(entityProduct.getId());
+        response.setList(supplierList);
+        response.setSuccess(true);        
+        return response;
+    }
+    
     @ClientRequest(action = ACTION.UPDATE_PRODUCT_INFO)
     public ClientResponse updateProductInfo(ISession session, IPacket packet) throws Exception 
     {
         GeneralResponse response = new GeneralResponse();
         Gson gson = new Gson();
-        EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);    
+        if(dtoProduct == null || dtoProduct.getEntityProduct() == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid Porduct Info. Please try again later.");
+            return response;
+        }
+        EntityProduct entityProduct = dtoProduct.getEntityProduct();
         if(entityProduct == null)
         {
             response.setSuccess(false);
@@ -198,8 +235,8 @@ public class ProductHandler {
             response.setMessage("Product Name is already exists or invalid.");
             return response;
         }
-        
-        if(entityManagerProduct.updateProduct(entityProduct))
+        List<EntityProductSupplier> entityProductSupplierList = dtoProduct.getEntityProductSupplierList();  
+        if(entityManagerProduct.updateProduct(entityProduct, entityProductSupplierList))
         {
             response.setSuccess(true);
             response.setMessage("Product is updated successfully.");
