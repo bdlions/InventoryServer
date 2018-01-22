@@ -1,5 +1,6 @@
 package org.bdlions.inventory.request.handler;
 
+import com.bdlions.dto.response.ClientListResponse;
 import org.bdlions.transport.packet.IPacket;
 import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
@@ -12,10 +13,13 @@ import java.util.List;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListSupplier;
+import org.bdlions.inventory.entity.EntityProduct;
+import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.entity.manager.EntityManagerProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.util.Constants;
@@ -175,6 +179,25 @@ public class SupplierHandler {
 
         dtoSupplier.setSuccess(true);
         return dtoSupplier;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_SUPPLIER_PRODUCT_LIST)
+    public ClientResponse getSupplierProductList(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        ClientListResponse response = new ClientListResponse();
+        EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);     
+        if( entityUser == null)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid request to get product supplier list. Please try again later");
+            return response;
+        } 
+        EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+        List<EntityProductSupplier> entityProductSupplierList = entityManagerProductSupplier.getProductSuppliersBySupplierUserId(entityUser.getId());
+        response.setList(entityProductSupplierList);
+        response.setSuccess(true);        
+        return response;
     }
     
     @ClientRequest(action = ACTION.FETCH_SUPPLIERS)

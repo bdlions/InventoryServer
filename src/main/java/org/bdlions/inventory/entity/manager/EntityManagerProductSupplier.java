@@ -27,6 +27,22 @@ public class EntityManagerProductSupplier {
         }
     }
     
+    public List<EntityProductSupplier> getProductSuppliersBySupplierUserId(int supplierUserId)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");
+            query.setParameter("supplierUserId", supplierUserId);
+            return query.getResultList();
+
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     public int deleteProductSuppliersByProductId(int productId, Session session)
     {
         if(productId > 0)
