@@ -80,16 +80,19 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     @Column(name = "sale_date", columnDefinition = "int(11) NOT NULL")
     private int saleDate;
     
-    @Column(name = "discount")
-    private double discount;
-    
-    @Column(name = "remarks", length = 500)
+    @Column(name = "remarks", length = 1000)
     private String remarks;
     
-    @Column(name = "total", columnDefinition = "int(11) unsigned DEFAULT 0")
+    @Column(name = "subtotal", columnDefinition = "double DEFAULT 0")
+    private double subtotal;
+    
+    @Column(name = "discount", columnDefinition = "double DEFAULT 0")
+    private double discount;
+    
+    @Column(name = "total", columnDefinition = "double DEFAULT 0")
     private double total;
     
-    @Column(name = "paid", columnDefinition = "int(11) unsigned DEFAULT 0")
+    @Column(name = "paid", columnDefinition = "double DEFAULT 0")
     private double paid;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
@@ -208,6 +211,14 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
 
     public void setCell(String cell) {
         this.cell = cell;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
     
 }

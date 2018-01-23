@@ -84,7 +84,10 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     @Column(name = "weight", length = 200)
     private String weight;
 
-    @Column(name = "unit_price", length = 200)
+    @Column(name = "cost_price", columnDefinition = "double DEFAULT 0")
+    private double costPrice;
+    
+    @Column(name = "unit_price", columnDefinition = "double DEFAULT 0")
     private double unitPrice;
 
     @Column(name = "length", length = 200)
@@ -154,6 +157,14 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
         this.height = height;
     }
 
+    public double getCostPrice() {
+        return costPrice;
+    }
+
+    public void setCostPrice(double costPrice) {
+        this.costPrice = costPrice;
+    }
+    
     public double getUnitPrice() {
         return unitPrice;
     }

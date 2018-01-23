@@ -95,7 +95,7 @@ public class PurchaseHandler {
             EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
             entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
-            entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());  
+            entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());  
             entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());
             entityPOShowRoomProducts.add(entityPOShowRoomProduct);
             
@@ -210,7 +210,7 @@ public class PurchaseHandler {
                 EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
                 entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                 entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
-                entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
+                entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());
                 entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());
                 entityPOShowRoomProducts.add(entityPOShowRoomProduct);
 
@@ -308,7 +308,7 @@ public class PurchaseHandler {
                     DTOProduct dtoProduct = new DTOProduct();
                     dtoProduct.setQuantity(stockProduct.getStockIn());
                     dtoProduct.setEntityProduct(entityProduct);
-                    dtoProduct.getEntityProduct().setUnitPrice(entityPOShowRoomProduct.getUnitPrice());
+                    dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomProduct.getUnitPrice());
                     dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
                     dtoPurchaseOrder.getProducts().add(dtoProduct);
                 }

@@ -79,16 +79,16 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     @Column(name = "requested_ship_date", columnDefinition = "int(11) unsigned DEFAULT 0")
     private int requestedShipDate;
     
-    @Column(name = "subtotal", columnDefinition = "int(11) unsigned DEFAULT 0")
+    @Column(name = "subtotal", columnDefinition = "double DEFAULT 0")
     private double subtotal;
     
-    @Column(name = "discount", columnDefinition = "int(11) unsigned DEFAULT 0")
+    @Column(name = "discount", columnDefinition = "double DEFAULT 0")
     private double discount;
     
-    @Column(name = "total", columnDefinition = "int(11) unsigned DEFAULT 0")
+    @Column(name = "total", columnDefinition = "double DEFAULT 0")
     private double total;
     
-    @Column(name = "paid", columnDefinition = "int(11) unsigned DEFAULT 0")
+    @Column(name = "paid", columnDefinition = "double DEFAULT 0")
     private double paid;
     
     @Column(name = "remarks", length = 1000)
