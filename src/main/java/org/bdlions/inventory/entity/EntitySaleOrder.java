@@ -36,6 +36,10 @@ import javax.persistence.Transient;
             query = "from EntitySaleOrder saleOrder where saleOrder.orderNo = :orderNo"
     ),
     @NamedQuery(
+            name = "getLastSaleOrder",
+            query = "from EntitySaleOrder saleOrder order by saleOrder.id desc"
+    ),
+    @NamedQuery(
             name = "getAllSaleOrders",
             query = "from EntitySaleOrder saleOrder order by saleOrder.modifiedOn desc"
     ),
@@ -61,6 +65,9 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
    
     @Column(name = "order_no", length = 200)
     private String orderNo;
+    
+    @Column(name = "next_order_no", columnDefinition = "int(11) DEFAULT 1")
+    private int nextOrderNo;
     
     @Column(name = "customer_user_id", columnDefinition = "int(11) NOT NULL")
     private int customerUserId;
@@ -117,6 +124,14 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
         this.orderNo = orderNo;
     }
 
+    public int getNextOrderNo() {
+        return nextOrderNo;
+    }
+
+    public void setNextOrderNo(int nextOrderNo) {
+        this.nextOrderNo = nextOrderNo;
+    }
+    
     public int getCustomerUserId() {
         return customerUserId;
     }

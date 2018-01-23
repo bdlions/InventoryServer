@@ -35,6 +35,10 @@ import javax.persistence.Table;
             query = "from EntityPurchaseOrder purchaseOrder where purchaseOrder.orderNo = :orderNo"
     ),
     @NamedQuery(
+            name = "getLastPurchaseOrder",
+            query = "from EntityPurchaseOrder purchaseOrder order by purchaseOrder.id desc"
+    ),
+    @NamedQuery(
             name = "getAllPurchaseOrders",
             query = "from EntityPurchaseOrder purchaseOrder order by purchaseOrder.modifiedOn desc"
     ),
@@ -60,6 +64,9 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
   
     @Column(name = "order_no", length = 200)
     private String orderNo;
+    
+    @Column(name = "next_order_no", columnDefinition = "int(11) DEFAULT 1")
+    private int nextOrderNo;
     
     @Column(name = "supplier_user_id", columnDefinition = "int(11) NOT NULL")
     private int supplierUserId;
@@ -116,6 +123,14 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
         this.orderNo = orderNo;
     }
 
+    public int getNextOrderNo() {
+        return nextOrderNo;
+    }
+
+    public void setNextOrderNo(int nextOrderNo) {
+        this.nextOrderNo = nextOrderNo;
+    }
+    
     public int getSupplierUserId() {
         return supplierUserId;
     }

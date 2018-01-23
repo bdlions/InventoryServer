@@ -162,12 +162,13 @@ public class EntityManagerSaleOrder
     
     /**
      * This method will update sale order
+     * @param currentEntitySaleOrder current entity sale order
      * @param entitySaleOrder entity sale order
      * @param entitySaleOrderProductList entity sale order product list
      * @param entityShowRoomStockList entity show room stock list
      * @return boolean true
      */
-    public boolean updateSaleOrder(EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntityShowRoomStock> entityShowRoomStockList)
+    public boolean updateSaleOrder(EntitySaleOrder currentEntitySaleOrder, EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
         Session session = HibernateUtil.getSession();
@@ -182,8 +183,8 @@ public class EntityManagerSaleOrder
                 //deleting existing products
                 if(!StringUtils.isNullOrEmpty(entitySaleOrder.getOrderNo()))
                 {
-                    entityManagerSaleOrderProduct.deleteSaleOrderProductsByOrderNo(entitySaleOrder.getOrderNo(), session);
-                    entityManagerShowRoomStock.deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId(entitySaleOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT, session);
+                    entityManagerSaleOrderProduct.deleteSaleOrderProductsByOrderNo(currentEntitySaleOrder.getOrderNo(), session);
+                    entityManagerShowRoomStock.deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId(currentEntitySaleOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT, session);
                 }
                 if(entitySaleOrderProductList != null && !entitySaleOrderProductList.isEmpty())
                 {
@@ -297,6 +298,29 @@ public class EntityManagerSaleOrder
             {
                 return saleOrderList.get(0);
             }            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public EntitySaleOrder getLastSaleOrder()
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            Query<EntitySaleOrder> query = session.getNamedQuery("getLastSaleOrder");
+            query.setMaxResults(1);
+            List<EntitySaleOrder> saleOrderList = query.getResultList();
+            if(saleOrderList == null || saleOrderList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return saleOrderList.get(0);
+            } 
         } 
         finally 
         {

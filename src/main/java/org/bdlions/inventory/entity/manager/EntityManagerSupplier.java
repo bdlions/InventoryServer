@@ -180,19 +180,22 @@ public class EntityManagerSupplier
     {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
-        tx.begin();
-        if(entityUser != null)
-        {
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
-            entityManagerUser.updateUser(entityUser, session);
-        }
-        if(entityPurchaseOrder != null)
-        {
-            EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
-            entityManagerPurchaseOrder.updatePurchaseOrderSupplierInfo(entityPurchaseOrder, session);
-        }   
+        tx.begin();           
         try 
         {
+            if(entityUser != null)
+            {
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                entityManagerUser.updateUser(entityUser, session);
+                
+                EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+                entityManagerProductSupplier.updateProductSupplierSupplierUserName(entityUser.getId(), entityUser.getUserName(), session);
+            }
+            if(entityPurchaseOrder != null)
+            {
+                EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+                entityManagerPurchaseOrder.updatePurchaseOrderSupplierInfo(entityPurchaseOrder, session);
+            }
             updateSupplier(entitySupplier, session);
             tx.commit();
             return true;

@@ -32,6 +32,10 @@ import javax.persistence.Table;
             query = "from EntityProductSupplier product where product.supplierUserId = :supplierUserId order by product.productName asc"
     ),
     @NamedQuery(
+            name = "updateProductSupplierSupplierUserName",
+            query = "update EntityProductSupplier product set product.supplierUserName = :supplierUserName where product.supplierUserId = :supplierUserId"
+    ),
+    @NamedQuery(
             name = "deleteProductSuppliers",
             query = " delete from EntityProductSupplier product where product.productId = :productId order by product.supplierUserName asc"
     )

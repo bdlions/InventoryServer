@@ -161,12 +161,13 @@ public class EntityManagerPurchaseOrder
     
     /**
      * This method will update purchase order
+     * @param currentEntityPurchaseOrder current entity purchase order
      * @param entityPurchaseOrder entity purchase order
      * @param entityPOShowRoomProductList entity purchase order show room product list
      * @param entityShowRoomStockList entity show room stock list
      * @return boolean true
      */
-    public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
+    public boolean updatePurchaseOrder(EntityPurchaseOrder currentEntityPurchaseOrder, EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
         Session session = HibernateUtil.getSession();
@@ -181,8 +182,8 @@ public class EntityManagerPurchaseOrder
                 //deleting existing products
                 if(!StringUtils.isNullOrEmpty(entityPurchaseOrder.getOrderNo()))
                 {
-                    entityManagerPOShowRoomProduct.deletePOShowRoomProductsByOrderNo(entityPurchaseOrder.getOrderNo(), session);
-                    entityManagerShowRoomStock.deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(entityPurchaseOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN, session);
+                    entityManagerPOShowRoomProduct.deletePOShowRoomProductsByOrderNo(currentEntityPurchaseOrder.getOrderNo(), session);
+                    entityManagerShowRoomStock.deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(currentEntityPurchaseOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN, session);
                 }
                 if(entityPOShowRoomProductList != null && !entityPOShowRoomProductList.isEmpty())
                 {
@@ -302,6 +303,29 @@ public class EntityManagerPurchaseOrder
             session.close();
         }
     }    
+    
+    public EntityPurchaseOrder getLastPurchaseOrder()
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            Query<EntityPurchaseOrder> query = session.getNamedQuery("getLastPurchaseOrder");
+            query.setMaxResults(1);
+            List<EntityPurchaseOrder> purchaseOrderList = query.getResultList();
+            if(purchaseOrderList == null || purchaseOrderList.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return purchaseOrderList.get(0);
+            } 
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
     
     /**
      * This method will return purchase order list

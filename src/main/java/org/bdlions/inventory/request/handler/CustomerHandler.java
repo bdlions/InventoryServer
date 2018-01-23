@@ -47,10 +47,10 @@ public class CustomerHandler {
             responseDTOCustomer.setMessage("Invalid Customer Info. Please try again later.");
             return responseDTOCustomer;
         }
-        else if(dtoCustomer.getEntityUser().getFirstName() == null || dtoCustomer.getEntityUser().getFirstName().equals(""))
+        else if(dtoCustomer.getEntityUser().getUserName() == null || dtoCustomer.getEntityUser().getUserName().equals(""))
         {
             responseDTOCustomer.setSuccess(false);
-            responseDTOCustomer.setMessage("Customer First Name is required.");
+            responseDTOCustomer.setMessage("Name is required.");
             return responseDTOCustomer;
         }
         else
@@ -103,10 +103,10 @@ public class CustomerHandler {
             response.setSuccess(false);
             response.setMessage("Invalid Customer Info. Please try again later..");
         }
-        else if(dtoCustomer.getEntityUser().getFirstName() == null || dtoCustomer.getEntityUser().getFirstName().equals(""))
+        else if(dtoCustomer.getEntityUser().getUserName() == null || dtoCustomer.getEntityUser().getUserName().equals(""))
         {
             response.setSuccess(false);
-            response.setMessage("Customer First Name is required.");
+            response.setMessage("Name is required.");
         }
         else
         {
@@ -120,7 +120,7 @@ public class CustomerHandler {
             dtoCustomer.getEntityCustomer().setCell(dtoCustomer.getEntityUser().getCell());
             
             EntitySaleOrder entitySaleOrder = new EntitySaleOrder();
-            entitySaleOrder.setCustomerName(dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
+            entitySaleOrder.setCustomerName(dtoCustomer.getEntityUser().getUserName());
             entitySaleOrder.setEmail(dtoCustomer.getEntityUser().getEmail());
             entitySaleOrder.setCell(dtoCustomer.getEntityUser().getCell());
             entitySaleOrder.setCustomerUserId(dtoCustomer.getEntityCustomer().getUserId());

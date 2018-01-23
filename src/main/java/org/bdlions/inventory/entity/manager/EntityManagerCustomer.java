@@ -180,19 +180,19 @@ public class EntityManagerCustomer
     {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
-        tx.begin();
-        if(entityUser != null)
-        {
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
-            entityManagerUser.updateUser(entityUser, session);
-        }
-        if(entitySaleOrder != null)
-        {
-            EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
-            entityManagerSaleOrder.updateSaleOrderCustomerInfo(entitySaleOrder, session);
-        }
+        tx.begin();        
         try 
         {
+            if(entityUser != null)
+            {
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                entityManagerUser.updateUser(entityUser, session);
+            }
+            if(entitySaleOrder != null)
+            {
+                EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+                entityManagerSaleOrder.updateSaleOrderCustomerInfo(entitySaleOrder, session);
+            }
             updateCustomer(entityCustomer, session);
             tx.commit();
             return true;

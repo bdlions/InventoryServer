@@ -12,6 +12,10 @@ public class ServerConfig extends PropertyProvider{
     public static final String REPORT_PATH               = "REPORT_PATH";
     public static final String JASPER_FILE_PATH          = "JASPER_FILE_PATH";
     public static final String COMPANY_NAME              = "COMPANY_NAME";
+    public static final String PURCHASE_ORDER_PREFIX     = "PURCHASE_ORDER_PREFIX";
+    public static final String PURCHASE_ORDER_TEMPLATE   = "PURCHASE_ORDER_TEMPLATE";
+    public static final String SALE_ORDER_PREFIX         = "SALE_ORDER_PREFIX";
+    public static final String SALE_ORDER_TEMPLATE       = "SALE_ORDER_TEMPLATE";
     public static final String COMPANY_ADDRESS           = "COMPANY_ADDRESS";
     public static final String COMPANY_CELL              = "COMPANY_CELL";
     

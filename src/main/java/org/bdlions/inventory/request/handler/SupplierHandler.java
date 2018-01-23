@@ -52,10 +52,10 @@ public class SupplierHandler {
             responseDTOSupplier.setMessage("Invalid Supplier Info. Please try again later.");
             return responseDTOSupplier;
         }
-        else if(dtoSupplier.getEntityUser().getFirstName() == null || dtoSupplier.getEntityUser().getFirstName().equals(""))
+        else if(dtoSupplier.getEntityUser().getUserName() == null || dtoSupplier.getEntityUser().getUserName().equals(""))
         {
             responseDTOSupplier.setSuccess(false);
-            responseDTOSupplier.setMessage("Supplier First Name is required.");
+            responseDTOSupplier.setMessage("Name is required.");
             return responseDTOSupplier;
         }
         else
@@ -108,10 +108,10 @@ public class SupplierHandler {
             response.setSuccess(false);
             response.setMessage("Invalid Supplier Info. Please try again later..");
         }
-        else if(dtoSupplier.getEntityUser().getFirstName() == null || dtoSupplier.getEntityUser().getFirstName().equals(""))
+        else if(dtoSupplier.getEntityUser().getUserName() == null || dtoSupplier.getEntityUser().getUserName().equals(""))
         {
             response.setSuccess(false);
-            response.setMessage("Supplier First Name is required.");
+            response.setMessage("Name is required.");
         }
         else
         {
@@ -124,7 +124,7 @@ public class SupplierHandler {
             
             //setting purchase order info to be updated if supplier info is updated
             EntityPurchaseOrder entityPurchaseOrder = new EntityPurchaseOrder();
-            entityPurchaseOrder.setSupplierName(dtoSupplier.getEntityUser().getFirstName() + " " + dtoSupplier.getEntityUser().getLastName());
+            entityPurchaseOrder.setSupplierName(dtoSupplier.getEntityUser().getUserName());
             entityPurchaseOrder.setEmail(dtoSupplier.getEntityUser().getEmail());
             entityPurchaseOrder.setCell(dtoSupplier.getEntityUser().getCell());
             entityPurchaseOrder.setSupplierUserId(dtoSupplier.getEntitySupplier().getUserId());

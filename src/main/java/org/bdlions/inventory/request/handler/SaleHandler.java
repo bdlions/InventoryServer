@@ -15,6 +15,7 @@ import org.bdlions.inventory.dto.DTOSaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.dto.ListSaleOrder;
 import org.bdlions.inventory.entity.EntityProduct;
+import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntityUser;
@@ -56,12 +57,6 @@ public class SaleHandler {
             responseDTOSaleOrder.setMessage("Invalid Sale Order Info. Please try again later.");
             return responseDTOSaleOrder;
         }
-        else if(dtoSaleOrder.getEntitySaleOrder().getOrderNo() == null || dtoSaleOrder.getEntitySaleOrder().getOrderNo().equals(""))
-        {
-            responseDTOSaleOrder.setSuccess(false);
-            responseDTOSaleOrder.setMessage("Order no is required.");
-            return responseDTOSaleOrder;
-        }
         else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
         {
             responseDTOSaleOrder.setSuccess(false);
@@ -75,13 +70,61 @@ public class SaleHandler {
             return responseDTOSaleOrder;
         }        
         EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
-        EntitySaleOrder resultEntitySaleOrder = entityManagerSaleOrder.getSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-        if(resultEntitySaleOrder != null)
+        int autoOrderNo = 1;
+        EntitySaleOrder tempEntitySaleOrder = entityManagerSaleOrder.getLastSaleOrder();        
+        if(tempEntitySaleOrder != null)
         {
-            responseDTOSaleOrder.setSuccess(false);
-            responseDTOSaleOrder.setMessage("Order No already exists or invalid.");
-            return responseDTOSaleOrder;
+            autoOrderNo = tempEntitySaleOrder.getNextOrderNo();
+            if(autoOrderNo < 2)
+            {
+                autoOrderNo = 1;
+            }
+        }        
+        if(!StringUtils.isNullOrEmpty(dtoSaleOrder.getEntitySaleOrder().getOrderNo()))
+        {
+            EntitySaleOrder resultEntitySaleOrder = entityManagerSaleOrder.getSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+            if(resultEntitySaleOrder != null)
+            {
+                responseDTOSaleOrder.setSuccess(false);
+                responseDTOSaleOrder.setMessage("Order No already exists or invalid.");
+                return responseDTOSaleOrder;
+            }
+            if(dtoSaleOrder.getEntitySaleOrder().getOrderNo().equals(StringUtils.generateSaleOrderNo(autoOrderNo)))
+            {
+                autoOrderNo = autoOrderNo + 1;
+            }
         }
+        else
+        {            
+            String orderNo = StringUtils.generateSaleOrderNo(autoOrderNo);
+            //check whether this order number already exists or not
+            //this checking is required bacause someone may update order no manually which will match auto generated order no
+            int maxCounter = 50;
+            int counter = 0;
+            boolean isValid = false;
+            while(++counter <= maxCounter)
+            {
+                EntitySaleOrder resultEntitySaleOrder = entityManagerSaleOrder.getSaleOrderByOrderNo(orderNo);
+                if(resultEntitySaleOrder != null)
+                {
+                    autoOrderNo = autoOrderNo + 1;
+                    orderNo = StringUtils.generateSaleOrderNo(autoOrderNo);
+                }
+                else
+                {
+                    isValid = true;
+                }
+            }
+            if(!isValid)
+            {
+                responseDTOSaleOrder.setSuccess(false);
+                responseDTOSaleOrder.setMessage("Unable to generate order no. Please contact with system admin.");
+                return responseDTOSaleOrder;
+            }
+            dtoSaleOrder.getEntitySaleOrder().setOrderNo(orderNo); 
+            autoOrderNo = autoOrderNo + 1;
+        }
+        dtoSaleOrder.getEntitySaleOrder().setNextOrderNo(autoOrderNo);     
         
         List<DTOProduct> products = dtoSaleOrder.getProducts();
         int totalProducts = products.size();
@@ -207,8 +250,8 @@ public class SaleHandler {
             response.setMessage("Order No already exists or invalid.");
             return response;
         }
-        
-        if(dtoSaleOrder.getEntitySaleOrder().getId() > 0)
+        EntitySaleOrder currentEntitySaleOrder = entityManagerSaleOrder.getSaleOrderById(dtoSaleOrder.getEntitySaleOrder().getId());
+        if(currentEntitySaleOrder != null && dtoSaleOrder.getEntitySaleOrder().getId() > 0)
         {
             List<Integer> productIds = new ArrayList<>();
             HashMap<Integer, Double> productIdQuantityMap = new HashMap<>();
@@ -254,7 +297,13 @@ public class SaleHandler {
                 DTOProduct stockProduct = stockProducts.get(productCounter);
                 
                 EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
-                EntityShowRoomStock showRoomStockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(stockProduct.getEntityProduct().getId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                EntityShowRoomStock showRoomStockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(stockProduct.getEntityProduct().getId(), currentEntitySaleOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                if(showRoomStockProduct == null)
+                {
+                    response.setSuccess(false);
+                    response.setMessage("Unable to update purchase order. Please contact with system admin.");
+                    return response;
+                }
                 if(productIdQuantityMap.containsKey(stockProduct.getEntityProduct().getId()) && productIdQuantityMap.get(stockProduct.getEntityProduct().getId()) > (stockProduct.getQuantity() + showRoomStockProduct.getStockOut()) )
                 {
                     //insufficient stock for the product
@@ -276,7 +325,7 @@ public class SaleHandler {
                 dtoSaleOrder.getEntitySaleOrder().setCell(entityUser.getCell());
             }
             
-            if(entityManagerSaleOrder.updateSaleOrder(dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks))
+            if(entityManagerSaleOrder.updateSaleOrder(currentEntitySaleOrder, dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks))
             {
                 response.setSuccess(true);
                 response.setMessage("Sale order is updated successfully.");
