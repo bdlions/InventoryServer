@@ -57,12 +57,12 @@ public class SaleHandler {
             responseDTOSaleOrder.setMessage("Invalid Sale Order Info. Please try again later.");
             return responseDTOSaleOrder;
         }
-        else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
+        /*else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
         {
             responseDTOSaleOrder.setSuccess(false);
             responseDTOSaleOrder.setMessage("Invalid Customer. Please select a customer.");
             return responseDTOSaleOrder;
-        }
+        }*/
         else if(dtoSaleOrder.getProducts() == null || dtoSaleOrder.getProducts().isEmpty())
         {
             responseDTOSaleOrder.setSuccess(false);
@@ -153,6 +153,7 @@ public class SaleHandler {
                 EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
                 entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                 entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+                entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                 entityShowRoomStock.setStockIn(0);
                 entityShowRoomStock.setStockOut(dtoProduct.getQuantity());
                 entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
@@ -282,6 +283,7 @@ public class SaleHandler {
                     EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
                     entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                     entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+                    entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                     entityShowRoomStock.setStockIn(0);
                     entityShowRoomStock.setStockOut(dtoProduct.getQuantity());
                     entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
