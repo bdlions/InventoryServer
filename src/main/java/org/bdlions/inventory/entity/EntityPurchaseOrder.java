@@ -53,6 +53,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "updatePurchaseOrderSupplierInfo",
             query = "update EntityPurchaseOrder set supplierName = :supplierName, cell = :cell, email = :email where supplierUserId = :supplierUserId"
+    ),
+    @NamedQuery(
+            name = "getSupplierCurrentDue",
+            query = " select sum(total - paid), supplierUserId from EntityPurchaseOrder purchaseOrder where purchaseOrder.supplierUserId = :supplierUserId group by supplierUserId"
     )
 })
 public class EntityPurchaseOrder extends ClientResponse implements java.io.Serializable{

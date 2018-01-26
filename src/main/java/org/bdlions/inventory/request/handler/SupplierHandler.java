@@ -13,7 +13,6 @@ import java.util.List;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListSupplier;
-import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySupplier;
@@ -23,7 +22,6 @@ import org.bdlions.inventory.entity.manager.EntityManagerProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.util.Constants;
-import org.bdlions.inventory.util.StringUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 

@@ -6,12 +6,15 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
+import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -19,6 +22,7 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerPurchaseOrder 
 {
+    private final Logger logger = LoggerFactory.getLogger(EntityManagerPurchaseOrder.class);
     /**
      * This method will create new purchase order using session
      * @param entityPurchaseOrder entity purchase order
@@ -103,9 +107,13 @@ public class EntityManagerPurchaseOrder
                     {
                         status = false;
                     }
-                }
+                }                
                 if(status)
                 {
+                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                    entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
+                    entityManagerSupplier.updateSupplier(entitySupplier, session);
                     tx.commit();
                     return entityPurchaseOrder;
                 }
@@ -216,9 +224,13 @@ public class EntityManagerPurchaseOrder
                     {
                         status = false;
                     }
-                }
+                }                
                 if(status)
                 {
+                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                    entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
+                    entityManagerSupplier.updateSupplier(entitySupplier, session);
                     tx.commit();
                     return true;
                 }
@@ -469,5 +481,51 @@ public class EntityManagerPurchaseOrder
         query.setParameter("email", entityPurchaseOrder.getEmail());
         query.setParameter("supplierUserId", entityPurchaseOrder.getSupplierUserId());
         return query.executeUpdate();
+    }
+    
+    public double getSupplierCurrentDue(int supplierUserId, Session session)
+    {
+        if(supplierUserId <= 0)
+        {
+            return 0;
+        }
+        double currentDue = 0;
+        Query<Object[]> query = session.getNamedQuery("getSupplierCurrentDue");
+        query.setParameter("supplierUserId", supplierUserId);
+        List<Object[]> purchaseOrderList = query.getResultList();
+        if(purchaseOrderList == null || purchaseOrderList.isEmpty())
+        {
+            return 0;
+        }
+        else
+        {
+            try
+            {
+                currentDue = (double)purchaseOrderList.get(0)[0];
+            }
+            catch(Exception ex)
+            {
+                logger.error(ex.toString());
+                currentDue = 0;
+            }
+        } 
+        return currentDue;
+    }
+    
+    public double getSupplierCurrentDue(int supplierUserId)
+    {
+        if(supplierUserId <= 0)
+        {
+            return 0;
+        }
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            return this.getSupplierCurrentDue(supplierUserId, session);
+        } 
+        finally 
+        {
+            session.close();
+        }
     }
 }

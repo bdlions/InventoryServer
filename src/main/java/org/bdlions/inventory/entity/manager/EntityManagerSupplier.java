@@ -56,22 +56,27 @@ public class EntityManagerSupplier
         Session session = HibernateUtil.getSession();
         try 
         {            
-            Query<EntitySupplier> query = session.getNamedQuery("getSupplierByUserId");
-            query.setParameter("userId", userId);
-            List<EntitySupplier> supplierList = query.getResultList();
-            if(supplierList == null || supplierList.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return supplierList.get(0);
-            }                
+            return this.getSupplierByUserId(userId, session);
         } 
         finally 
         {
             session.close();
         }
+    }
+    
+    public EntitySupplier getSupplierByUserId(int userId, Session session)
+    {
+        Query<EntitySupplier> query = session.getNamedQuery("getSupplierByUserId");
+        query.setParameter("userId", userId);
+        List<EntitySupplier> supplierList = query.getResultList();
+        if(supplierList == null || supplierList.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return supplierList.get(0);
+        } 
     }
     
     /**

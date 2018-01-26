@@ -3,7 +3,7 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
-import org.bdlions.inventory.entity.EntityPurchaseOrder;
+import org.bdlions.inventory.entity.EntityCustomer;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
@@ -13,6 +13,8 @@ import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,6 +22,7 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerSaleOrder 
 {
+    private final Logger logger = LoggerFactory.getLogger(EntityManagerSaleOrder.class);
     /**
      * This method will create new sale order using session
      * @param entitySaleOrder entity sale order
@@ -104,9 +107,13 @@ public class EntityManagerSaleOrder
                     {
                         status = false;
                     }
-                }
+                }                
                 if(status)
                 {
+                    EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                    EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
+                    entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
+                    entityManagerCustomer.updateCustomer(entityCustomer, session);
                     tx.commit();
                     return entitySaleOrder;
                 }
@@ -217,9 +224,13 @@ public class EntityManagerSaleOrder
                     {
                         status = false;
                     }
-                }
+                }                
                 if(status)
                 {
+                    EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                    EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
+                    entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
+                    entityManagerCustomer.updateCustomer(entityCustomer, session);
                     tx.commit();
                     return true;
                 }
@@ -470,5 +481,51 @@ public class EntityManagerSaleOrder
         query.setParameter("email", entitySaleOrder.getEmail());
         query.setParameter("customerUserId", entitySaleOrder.getCustomerUserId());
         return query.executeUpdate();
+    }
+    
+    public double getCustomerrCurrentDue(int customerUserId, Session session)
+    {
+        if(customerUserId <= 0)
+        {
+            return 0;
+        }
+        double currentDue = 0;
+        Query<Object[]> query = session.getNamedQuery("getCustomerCurrentDue");
+        query.setParameter("customerUserId", customerUserId);
+        List<Object[]> saleOrderList = query.getResultList();
+        if(saleOrderList == null || saleOrderList.isEmpty())
+        {
+            return 0;
+        }
+        else
+        {
+            try
+            {
+                currentDue = (double)saleOrderList.get(0)[0];
+            }
+            catch(Exception ex)
+            {
+                logger.error(ex.toString());
+                currentDue = 0;
+            }
+        } 
+        return currentDue;
+    }
+    
+    public double getCustomerrCurrentDue(int customerUserId)
+    {
+        if(customerUserId <= 0)
+        {
+            return 0;
+        }
+        Session session = HibernateUtil.getSession();
+        try 
+        {            
+            return this.getCustomerrCurrentDue(customerUserId, session);
+        } 
+        finally 
+        {
+            session.close();
+        }
     }
 }

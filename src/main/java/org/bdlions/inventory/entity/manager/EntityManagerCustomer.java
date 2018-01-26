@@ -56,22 +56,27 @@ public class EntityManagerCustomer
         Session session = HibernateUtil.getSession();
         try 
         {            
-            Query<EntityCustomer> query = session.getNamedQuery("getCustomerByUserId");
-            query.setParameter("userId", userId);
-            List<EntityCustomer> customerList = query.getResultList();
-            if(customerList == null || customerList.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return customerList.get(0);
-            }                    
+            return this.getCustomerByUserId(userId, session);
         } 
         finally 
         {
             session.close();
         }
+    }
+    
+    public EntityCustomer getCustomerByUserId(int userId, Session session)
+    {
+        Query<EntityCustomer> query = session.getNamedQuery("getCustomerByUserId");
+        query.setParameter("userId", userId);
+        List<EntityCustomer> customerList = query.getResultList();
+        if(customerList == null || customerList.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return customerList.get(0);
+        } 
     }
     
     /**

@@ -72,7 +72,7 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
     @Column(name = "remarks", length = 1000)
     private String remarks;
 
-    @Column(name = "balance")
+    @Column(name = "balance", columnDefinition = "double DEFAULT 0")
     private double balance;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")

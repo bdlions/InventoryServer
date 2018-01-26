@@ -54,6 +54,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "updateSaleOrderCustomerInfo",
             query = "update EntitySaleOrder set customerName = :customerName, cell = :cell, email = :email where customerUserId = :customerUserId"
+    ),
+    @NamedQuery(
+            name = "getCustomerCurrentDue",
+            query = " select sum(paid - total), customerUserId from EntitySaleOrder saleOrder where saleOrder.customerUserId = :customerUserId group by customerUserId"
     )
 })
 public class EntitySaleOrder extends ClientResponse implements java.io.Serializable{

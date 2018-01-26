@@ -70,7 +70,7 @@ public class EntityCustomer extends ClientResponse implements java.io.Serializab
     @Column(name = "cell")
     private String cell;
     
-    @Column(name = "balance")
+    @Column(name = "balance", columnDefinition = "double DEFAULT 0")
     private double balance;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
