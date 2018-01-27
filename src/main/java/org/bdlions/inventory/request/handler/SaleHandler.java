@@ -57,7 +57,7 @@ public class SaleHandler {
             responseDTOSaleOrder.setMessage("Invalid Sale Order Info. Please try again later.");
             return responseDTOSaleOrder;
         }
-        else if(dtoSaleOrder.getEntitySaleOrder().getPaid() != dtoSaleOrder.getEntitySaleOrder().getTotal())
+        else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() == 0 && dtoSaleOrder.getEntitySaleOrder().getPaid() != dtoSaleOrder.getEntitySaleOrder().getTotal())
         {
             responseDTOSaleOrder.setSuccess(false);
             responseDTOSaleOrder.setMessage("Paid amount should be equal to total amount.");
@@ -230,7 +230,7 @@ public class SaleHandler {
             response.setMessage("Order no is required.");
             return response;
         }
-        else if(dtoSaleOrder.getEntitySaleOrder().getPaid() != dtoSaleOrder.getEntitySaleOrder().getTotal())
+        else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() == 0 && dtoSaleOrder.getEntitySaleOrder().getPaid() != dtoSaleOrder.getEntitySaleOrder().getTotal())
         {
             response.setSuccess(false);
             response.setMessage("Paid amount should be equal to total amount.");

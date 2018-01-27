@@ -116,7 +116,8 @@ public class EntityManagerSaleOrder
                         EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
                         if(entityCustomer != null && entityCustomer.getUserId() > 0)
                         {
-                            entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
+                            double currentDue = this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session);
+                            entityCustomer.setBalance(currentDue);
                             entityManagerCustomer.updateCustomer(entityCustomer, session);
                         }                        
                     }                    
@@ -239,7 +240,11 @@ public class EntityManagerSaleOrder
                         EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
                         if(entityCustomer != null && entityCustomer.getUserId() > 0)
                         {
-                            entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
+                            double currentDue = this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session);
+                            entityCustomer.setBalance(currentDue);
+                            //double currentDueOfOrder = entitySaleOrder.getPaid() - entitySaleOrder.getTotal();
+                            //double newDueOfOrder = entitySaleOrder.getPaid() - entitySaleOrder.getTotal();
+                            //entityCustomer.setBalance(this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session) - currentDueOfOrder + newDueOfOrder);
                             entityManagerCustomer.updateCustomer(entityCustomer, session);
                         }                        
                     }
@@ -495,7 +500,7 @@ public class EntityManagerSaleOrder
         return query.executeUpdate();
     }
     
-    public double getCustomerrCurrentDue(int customerUserId, Session session)
+    public double getCustomerCurrentDue(int customerUserId, Session session)
     {
         if(customerUserId <= 0)
         {
@@ -524,7 +529,7 @@ public class EntityManagerSaleOrder
         return currentDue;
     }
     
-    public double getCustomerrCurrentDue(int customerUserId)
+    public double getCustomerCurrentDue(int customerUserId)
     {
         if(customerUserId <= 0)
         {
@@ -533,7 +538,7 @@ public class EntityManagerSaleOrder
         Session session = HibernateUtil.getSession();
         try 
         {            
-            return this.getCustomerrCurrentDue(customerUserId, session);
+            return this.getCustomerCurrentDue(customerUserId, session);
         } 
         finally 
         {

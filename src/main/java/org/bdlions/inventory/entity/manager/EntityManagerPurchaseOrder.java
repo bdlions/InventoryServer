@@ -3,7 +3,6 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
-import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
@@ -117,7 +116,8 @@ public class EntityManagerPurchaseOrder
                         EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
                         if(entitySupplier != null && entitySupplier.getId() > 0)
                         {
-                            entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
+                            double currentDue = this.getSupplierCurrentDue( entityPurchaseOrder.getSupplierUserId(), session);
+                            entitySupplier.setBalance(currentDue);
                             entityManagerSupplier.updateSupplier(entitySupplier, session);
                         }                        
                     }                    
@@ -240,7 +240,11 @@ public class EntityManagerPurchaseOrder
                         EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
                         if(entitySupplier != null && entitySupplier.getId() > 0)
                         {
-                            entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
+                            double currentDue = this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId(), session);
+                            //double currentDueOfOrder = currentEntityPurchaseOrder.getTotal() - currentEntityPurchaseOrder.getPaid();
+                            //double newDueOfOrder = entityPurchaseOrder.getTotal() - entityPurchaseOrder.getPaid();
+                            //entitySupplier.setBalance( - currentDueOfOrder + newDueOfOrder);
+                            entitySupplier.setBalance(currentDue);
                             entityManagerSupplier.updateSupplier(entitySupplier, session);
                         }                        
                     }
