@@ -110,10 +110,16 @@ public class EntityManagerSaleOrder
                 }                
                 if(status)
                 {
-                    EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
-                    EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
-                    entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
-                    entityManagerCustomer.updateCustomer(entityCustomer, session);
+                    if(entitySaleOrder.getCustomerUserId() > 0)
+                    {
+                        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                        EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
+                        if(entityCustomer != null && entityCustomer.getUserId() > 0)
+                        {
+                            entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
+                            entityManagerCustomer.updateCustomer(entityCustomer, session);
+                        }                        
+                    }                    
                     tx.commit();
                     return entitySaleOrder;
                 }
@@ -227,10 +233,16 @@ public class EntityManagerSaleOrder
                 }                
                 if(status)
                 {
-                    EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
-                    EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
-                    entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
-                    entityManagerCustomer.updateCustomer(entityCustomer, session);
+                    if(entitySaleOrder.getCustomerUserId() > 0)
+                    {
+                        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                        EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
+                        if(entityCustomer != null && entityCustomer.getUserId() > 0)
+                        {
+                            entityCustomer.setBalance(this.getCustomerrCurrentDue(entitySaleOrder.getCustomerUserId(), session));
+                            entityManagerCustomer.updateCustomer(entityCustomer, session);
+                        }                        
+                    }
                     tx.commit();
                     return true;
                 }

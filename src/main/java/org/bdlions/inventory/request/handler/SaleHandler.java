@@ -57,12 +57,12 @@ public class SaleHandler {
             responseDTOSaleOrder.setMessage("Invalid Sale Order Info. Please try again later.");
             return responseDTOSaleOrder;
         }
-        /*else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
+        else if(dtoSaleOrder.getEntitySaleOrder().getPaid() != dtoSaleOrder.getEntitySaleOrder().getTotal())
         {
             responseDTOSaleOrder.setSuccess(false);
-            responseDTOSaleOrder.setMessage("Invalid Customer. Please select a customer.");
+            responseDTOSaleOrder.setMessage("Paid amount should be equal to total amount.");
             return responseDTOSaleOrder;
-        }*/
+        }
         else if(dtoSaleOrder.getProducts() == null || dtoSaleOrder.getProducts().isEmpty())
         {
             responseDTOSaleOrder.setSuccess(false);
@@ -230,10 +230,10 @@ public class SaleHandler {
             response.setMessage("Order no is required.");
             return response;
         }
-        else if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() <= 0)
+        else if(dtoSaleOrder.getEntitySaleOrder().getPaid() != dtoSaleOrder.getEntitySaleOrder().getTotal())
         {
             response.setSuccess(false);
-            response.setMessage("Invalid Customer. Please select a customer.");
+            response.setMessage("Paid amount should be equal to total amount.");
             return response;
         }
         else if(dtoSaleOrder.getProducts() == null || dtoSaleOrder.getProducts().isEmpty())

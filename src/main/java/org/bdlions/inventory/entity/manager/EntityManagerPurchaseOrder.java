@@ -3,6 +3,7 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
+import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
@@ -110,10 +111,16 @@ public class EntityManagerPurchaseOrder
                 }                
                 if(status)
                 {
-                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
-                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
-                    entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
-                    entityManagerSupplier.updateSupplier(entitySupplier, session);
+                    if(entityPurchaseOrder.getSupplierUserId() > 0)
+                    {
+                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                        EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                        if(entitySupplier != null && entitySupplier.getId() > 0)
+                        {
+                            entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
+                            entityManagerSupplier.updateSupplier(entitySupplier, session);
+                        }                        
+                    }                    
                     tx.commit();
                     return entityPurchaseOrder;
                 }
@@ -227,10 +234,16 @@ public class EntityManagerPurchaseOrder
                 }                
                 if(status)
                 {
-                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
-                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
-                    entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
-                    entityManagerSupplier.updateSupplier(entitySupplier, session);
+                    if(entityPurchaseOrder.getSupplierUserId() > 0)
+                    {
+                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                        EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                        if(entitySupplier != null && entitySupplier.getId() > 0)
+                        {
+                            entitySupplier.setBalance(this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId()));
+                            entityManagerSupplier.updateSupplier(entitySupplier, session);
+                        }                        
+                    }
                     tx.commit();
                     return true;
                 }
