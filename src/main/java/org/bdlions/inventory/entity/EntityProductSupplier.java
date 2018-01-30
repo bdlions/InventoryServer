@@ -38,6 +38,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "deleteProductSuppliers",
             query = " delete from EntityProductSupplier product where product.productId = :productId order by product.supplierUserName asc"
+    ),
+    @NamedQuery(
+            name = "deleteProductSuppliersBySupplierUserIds",
+            query = " delete from EntityProductSupplier product where product.supplierUserId IN (:supplierUserIds)"
     )
 })
 public class EntityProductSupplier {

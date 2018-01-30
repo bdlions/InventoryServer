@@ -8,6 +8,7 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
+import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.entity.EntityProduct;
@@ -169,15 +170,17 @@ public class ProductHandler {
     {
         Gson gson = new Gson();
         ClientListResponse response = new ClientListResponse();
-        EntityProduct entityProduct = gson.fromJson(packet.getPacketBody(), EntityProduct.class);     
-        if( entityProduct == null)
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);     
+        if( dtoProduct == null || dtoProduct.getEntityProduct() == null)
         {
             response.setSuccess(false);
             response.setMessage("Invalid request to get product supplier list. Please try again later");
             return response;
         } 
         EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
-        List<EntityProductSupplier> supplierList = entityManagerProductSupplier.getProductSuppliersByProductId(entityProduct.getId());
+        List<EntityProductSupplier> supplierList = entityManagerProductSupplier.getProductSuppliersByProductId(dtoProduct.getEntityProduct().getId(), dtoProduct.getOffset(), dtoProduct.getLimit());
+        int counter = entityManagerProductSupplier.getTotalProductSuppliersByProductId(dtoProduct.getEntityProduct().getId());
+        response.setCounter(counter);
         response.setList(supplierList);
         response.setSuccess(true);        
         return response;
@@ -236,7 +239,29 @@ public class ProductHandler {
             return response;
         }
         List<EntityProductSupplier> entityProductSupplierList = dtoProduct.getEntityProductSupplierList();  
-        if(entityManagerProduct.updateProduct(entityProduct, entityProductSupplierList))
+        List<Integer> supplierUserIds = new ArrayList<>();
+        if(entityProductSupplierList != null && !entityProductSupplierList.isEmpty())
+        {
+            for(EntityProductSupplier entityProductSupplier: entityProductSupplierList)
+            {
+                if(!supplierUserIds.contains(entityProductSupplier.getSupplierUserId()))
+                {
+                    supplierUserIds.add(entityProductSupplier.getSupplierUserId());
+                }
+            }
+        }
+        List<EntityProductSupplier> epsList = dtoProduct.getEpsListToBeDeleted(); 
+        if(epsList != null && !epsList.isEmpty())
+        {
+            for(EntityProductSupplier entityProductSupplier: epsList)
+            {
+                if(!supplierUserIds.contains(entityProductSupplier.getSupplierUserId()))
+                {
+                    supplierUserIds.add(entityProductSupplier.getSupplierUserId());
+                }
+            }
+        }        
+        if(entityManagerProduct.updateProduct(entityProduct, entityProductSupplierList, supplierUserIds))
         {
             response.setSuccess(true);
             response.setMessage("Product is updated successfully.");

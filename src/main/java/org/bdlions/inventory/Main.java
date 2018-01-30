@@ -1,4 +1,5 @@
 package org.bdlions.inventory;
+import org.bdlions.inventory.db.DatabaseLoader;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.session.ISessionManager;
 import org.bdlions.transport.channel.provider.ChannelProviderImpl;
@@ -26,7 +27,8 @@ public class Main extends SpringBootServletInitializer {
         ISessionManager sessionManager = ClientRequestHandler.getInstance().getSessionManager();
         channelProviderImpl = new ChannelProviderImpl(requestHandler, sessionManager);
         channelProviderImpl.start();
-        HibernateUtil.getSession();
+        DatabaseLoader.getInstance().getSession();
+        HibernateUtil.getInstance().getSession();
     }
 
 }

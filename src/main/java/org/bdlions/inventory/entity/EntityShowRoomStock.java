@@ -71,10 +71,10 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
     @Column(name = "product_name")
     private String productName;
     
-    @Column(name = "stock_in")
+    @Column(name = "stock_in", columnDefinition = "double DEFAULT 0")
     private double stockIn;
     
-    @Column(name = "stock_out")
+    @Column(name = "stock_out", columnDefinition = "double DEFAULT 0")
     private double stockOut;
     
     @Column(name = "transaction_category_id")

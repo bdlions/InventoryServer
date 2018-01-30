@@ -20,6 +20,7 @@ public class DTOProduct {
     public EntityProductCategory entityProductCategory;
     public EntityProduct entityProduct;
     public List<EntityProductSupplier> entityProductSupplierList;
+    public List<EntityProductSupplier> epsListToBeDeleted;
     public DTOProduct()
     {
         entityProductType = new EntityProductType();
@@ -97,5 +98,13 @@ public class DTOProduct {
 
     public void setEntityProductSupplierList(List<EntityProductSupplier> entityProductSupplierList) {
         this.entityProductSupplierList = entityProductSupplierList;
+    }  
+
+    public List<EntityProductSupplier> getEpsListToBeDeleted() {
+        return epsListToBeDeleted;
+    }
+
+    public void setEpsListToBeDeleted(List<EntityProductSupplier> epsListToBeDeleted) {
+        this.epsListToBeDeleted = epsListToBeDeleted;
     }    
 }

@@ -12,15 +12,32 @@ import org.hibernate.query.Query;
  * @author Nazmul Hasan
  */
 public class EntityManagerProductSupplier {
-    public List<EntityProductSupplier> getProductSuppliersByProductId(int productId)
+    public List<EntityProductSupplier> getProductSuppliersByProductId(int productId, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersByProductId");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            query.setParameter("productId", productId);
+            return query.getResultList();
+
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public int getTotalProductSuppliersByProductId(int productId)
     {
         Session session = HibernateUtil.getSession();
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersByProductId");
             query.setParameter("productId", productId);
-            return query.getResultList();
-
+            return query.getResultList().size();
         } 
         finally 
         {
@@ -71,5 +88,16 @@ public class EntityManagerProductSupplier {
     {
         session.save(entityProductSupplier);
         return entityProductSupplier;
+    }
+    
+    public int deleteProductSuppliersBySupplierUserIds(List<Integer> supplierUserIds, Session session)
+    {
+        if(supplierUserIds != null && !supplierUserIds.isEmpty())
+        {
+            Query<EntityProductSupplier> query = session.getNamedQuery("deleteProductSuppliersBySupplierUserIds");
+            query.setParameter("supplierUserIds", supplierUserIds);
+            return query.executeUpdate();
+        }
+        return 0;
     }
 }

@@ -193,7 +193,7 @@ public class EntityManagerProduct
         }
     }
     
-    public boolean updateProduct(EntityProduct entityProduct, List<EntityProductSupplier> productSuppliers) 
+    public boolean updateProduct(EntityProduct entityProduct, List<EntityProductSupplier> productSuppliers, List<Integer> supplierUserIds) 
     {
         if(entityProduct == null || entityProduct.getId() <= 0)
         {
@@ -208,7 +208,10 @@ public class EntityManagerProduct
             if(productSuppliers != null && !productSuppliers.isEmpty())
             {
                 EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
-                entityManagerProductSupplier.deleteProductSuppliersByProductId(entityProduct.getId(), session);
+                if(supplierUserIds != null && !supplierUserIds.isEmpty())
+                {
+                    entityManagerProductSupplier.deleteProductSuppliersBySupplierUserIds(supplierUserIds, session);
+                }                
                 for(EntityProductSupplier entityProductSupplier: productSuppliers)
                 {
                     entityProductSupplier.setProductId(entityProduct.getId());
