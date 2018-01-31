@@ -23,7 +23,16 @@ task processConfig(type: Copy) {
     from 'conf', {
         include '**/*.xml'
         include '**/*.properties'
+        include '**/*.sql'
         //        into 'conf'
+    }
+    from 'resources', {
+        include '**/*'
+        into 'resources'
+    }
+    from 'mail-templates', {
+        include '**/*'
+        into 'mail-templates'
     }
     from('src/main/java') {
         include '**/*.properties'
@@ -114,3 +123,32 @@ dependencies {
     
     
 }
+
+// copy dependency jars to build/libs/dependency-jars
+task copyJarsToLib (type: Copy) {
+    def toDir = "build/libs/lib"
+
+    // create directories, if not already done:
+    file(toDir).mkdirs()
+
+    // copy jars to lib folder:
+    from configurations.compile
+    into toDir
+}
+
+jar {
+    // exclude log properties (recommended)
+    exclude ("log4j.properties")
+
+    // make jar executable: see http://stackoverflow.com/questions/21721119/creating-runnable-jar-with-gradle
+    manifest {
+        attributes (
+            'Main-Class': 'org.bdlions.inventory.JarRunner',
+            // add classpath to Manifest; see http://stackoverflow.com/questions/30087427/add-classpath-in-manifest-file-of-jar-in-gradle
+            "Class-Path": '. lib/' + configurations.compile.collect { it.getName() }.join(' lib/')
+        )
+    }
+}
+
+// always call copyJarsToLib when building jars:
+jar.dependsOn copyJarsToLib
