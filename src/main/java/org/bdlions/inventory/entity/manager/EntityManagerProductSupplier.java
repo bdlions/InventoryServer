@@ -45,14 +45,31 @@ public class EntityManagerProductSupplier {
         }
     }
     
-    public List<EntityProductSupplier> getProductSuppliersBySupplierUserId(int supplierUserId)
+    public List<EntityProductSupplier> getProductSuppliersBySupplierUserId(int supplierUserId, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            query.setParameter("supplierUserId", supplierUserId);
+            return query.getResultList();
+
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    public int getTotalProductSuppliersBySupplierUserId(int supplierUserId)
     {
         Session session = HibernateUtil.getSession();
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");
             query.setParameter("supplierUserId", supplierUserId);
-            return query.getResultList();
+            return query.getResultList().size();
 
         } 
         finally 
@@ -90,12 +107,25 @@ public class EntityManagerProductSupplier {
         return entityProductSupplier;
     }
     
-    public int deleteProductSuppliersBySupplierUserIds(List<Integer> supplierUserIds, Session session)
+    public int deleteProductSuppliersBySupplierUserIds(int productId, List<Integer> supplierUserIds, Session session)
     {
         if(supplierUserIds != null && !supplierUserIds.isEmpty())
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("deleteProductSuppliersBySupplierUserIds");
+            query.setParameter("productId", productId);
             query.setParameter("supplierUserIds", supplierUserIds);
+            return query.executeUpdate();
+        }
+        return 0;
+    }
+    
+    public int deleteSupplierProductsByProductIds(int supplierUserId, List<Integer> productIds, Session session)
+    {
+        if(productIds != null && !productIds.isEmpty())
+        {
+            Query<EntityProductSupplier> query = session.getNamedQuery("deleteSupplierProductsByProductIds");
+            query.setParameter("supplierUserId", supplierUserId);
+            query.setParameter("productIds", productIds);
             return query.executeUpdate();
         }
         return 0;

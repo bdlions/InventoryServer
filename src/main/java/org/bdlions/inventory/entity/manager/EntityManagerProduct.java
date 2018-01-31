@@ -210,7 +210,7 @@ public class EntityManagerProduct
                 EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
                 if(supplierUserIds != null && !supplierUserIds.isEmpty())
                 {
-                    entityManagerProductSupplier.deleteProductSuppliersBySupplierUserIds(supplierUserIds, session);
+                    entityManagerProductSupplier.deleteProductSuppliersBySupplierUserIds(entityProduct.getId(), supplierUserIds, session);
                 }                
                 for(EntityProductSupplier entityProductSupplier: productSuppliers)
                 {

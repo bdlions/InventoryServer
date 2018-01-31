@@ -3,6 +3,7 @@ package org.bdlions.inventory.entity.manager;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
+import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
@@ -117,21 +118,33 @@ public class EntityManagerSupplier
      * @param entitySupplier entity supplier
      * @param entityUser entity user
      * @param entityUserRole entity user role
+     * @param suplierProducts supplier product list
      * @return EntitySupplier EntitySupplier
      */
-    public EntitySupplier createSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityUserRole entityUserRole)
+    public EntitySupplier createSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityUserRole entityUserRole, List<EntityProductSupplier> suplierProducts)
     {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
-        tx.begin();
-        if(entityUser != null)
-        {
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
-            EntityUser resultEntityUser = entityManagerUser.createUser(entityUser, entityUserRole, session);
-            entitySupplier.setUserId(resultEntityUser.getId());
-        }
+        tx.begin();        
         try 
         {
+            if(entityUser != null)
+            {
+                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                EntityUser resultEntityUser = entityManagerUser.createUser(entityUser, entityUserRole, session);
+                entitySupplier.setUserId(resultEntityUser.getId());
+                
+                if(suplierProducts != null && !suplierProducts.isEmpty())
+                {
+                    EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+                    for(EntityProductSupplier entityProductSupplier: suplierProducts)
+                    {
+                        entityProductSupplier.setSupplierUserId(resultEntityUser.getId());
+                        entityProductSupplier.setSupplierUserName(resultEntityUser.getUserName());
+                        entityManagerProductSupplier.addProductSupplier(entityProductSupplier, session);
+                    }
+                }
+            }
             EntitySupplier resultEntitySupplier = createSupplier(entitySupplier, session);
             tx.commit();
             return resultEntitySupplier;
@@ -181,7 +194,7 @@ public class EntityManagerSupplier
      * @param entityPurchaseOrder entity purchase order
      * @return boolean true
      */
-    public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityPurchaseOrder entityPurchaseOrder)
+    public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityPurchaseOrder entityPurchaseOrder, List<EntityProductSupplier> supplierProducts, List<Integer> productIds)
     {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.getTransaction(); 
@@ -195,12 +208,26 @@ public class EntityManagerSupplier
                 
                 EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
                 entityManagerProductSupplier.updateProductSupplierSupplierUserName(entityUser.getId(), entityUser.getUserName(), session);
+                
+                if(supplierProducts != null && !supplierProducts.isEmpty())
+                {
+                    if(productIds != null && !productIds.isEmpty())
+                    {
+                        entityManagerProductSupplier.deleteSupplierProductsByProductIds(entityUser.getId(), productIds, session);
+                    }                
+                    for(EntityProductSupplier entityProductSupplier: supplierProducts)
+                    {
+                        entityProductSupplier.setSupplierUserId(entityUser.getId());
+                        entityProductSupplier.setSupplierUserName(entityUser.getUserName());
+                        entityManagerProductSupplier.addProductSupplier(entityProductSupplier, session);
+                    }
+                }
             }
             if(entityPurchaseOrder != null)
             {
                 EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
                 entityManagerPurchaseOrder.updatePurchaseOrderSupplierInfo(entityPurchaseOrder, session);
-            }
+            }            
             updateSupplier(entitySupplier, session);
             tx.commit();
             return true;

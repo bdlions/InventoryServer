@@ -68,7 +68,7 @@ public class SupplierHandler {
             dtoSupplier.getEntitySupplier().setEmail(dtoSupplier.getEntityUser().getEmail());
             dtoSupplier.getEntitySupplier().setCell(dtoSupplier.getEntityUser().getCell());
             
-            EntitySupplier resultEntitySupplier = entityManagerSupplier.createSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), dtoSupplier.getEntityUserRole());
+            EntitySupplier resultEntitySupplier = entityManagerSupplier.createSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), dtoSupplier.getEntityUserRole(), dtoSupplier.getEntityProductSupplierList());
             if(resultEntitySupplier != null && resultEntitySupplier.getId() > 0)
             {
                 //setting EntitySupplier
@@ -127,7 +127,30 @@ public class SupplierHandler {
             entityPurchaseOrder.setCell(dtoSupplier.getEntityUser().getCell());
             entityPurchaseOrder.setSupplierUserId(dtoSupplier.getEntitySupplier().getUserId());
             
-            if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), entityPurchaseOrder))
+            List<EntityProductSupplier> entityProductSupplierList = dtoSupplier.getEntityProductSupplierList();  
+            List<Integer> productIds = new ArrayList<>();
+            if(entityProductSupplierList != null && !entityProductSupplierList.isEmpty())
+            {
+                for(EntityProductSupplier entityProductSupplier: entityProductSupplierList)
+                {
+                    if(!productIds.contains(entityProductSupplier.getProductId()))
+                    {
+                        productIds.add(entityProductSupplier.getProductId());
+                    }
+                }
+            }
+            List<EntityProductSupplier> epsList = dtoSupplier.getEpsListToBeDeleted(); 
+            if(epsList != null && !epsList.isEmpty())
+            {
+                for(EntityProductSupplier entityProductSupplier: epsList)
+                {
+                    if(!productIds.contains(entityProductSupplier.getProductId()))
+                    {
+                        productIds.add(entityProductSupplier.getProductId());
+                    }
+                }
+            }
+            if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), entityPurchaseOrder, entityProductSupplierList, productIds))
             {
                 response.setSuccess(true);
                 response.setMessage("Supplier is updated successfully.");
@@ -184,16 +207,18 @@ public class SupplierHandler {
     {
         Gson gson = new Gson();
         ClientListResponse response = new ClientListResponse();
-        EntityUser entityUser = gson.fromJson(packet.getPacketBody(), EntityUser.class);     
-        if( entityUser == null)
+        DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);     
+        if( dtoSupplier == null || dtoSupplier.getEntityUser() == null)
         {
             response.setSuccess(false);
             response.setMessage("Invalid request to get product supplier list. Please try again later");
             return response;
         } 
         EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
-        List<EntityProductSupplier> entityProductSupplierList = entityManagerProductSupplier.getProductSuppliersBySupplierUserId(entityUser.getId());
+        List<EntityProductSupplier> entityProductSupplierList = entityManagerProductSupplier.getProductSuppliersBySupplierUserId(dtoSupplier.getEntityUser().getId(), dtoSupplier.getOffset(), dtoSupplier.getLimit());
+        int counter = entityManagerProductSupplier.getTotalProductSuppliersBySupplierUserId(dtoSupplier.getEntityUser().getId());
         response.setList(entityProductSupplierList);
+        response.setCounter(counter);
         response.setSuccess(true);        
         return response;
     }

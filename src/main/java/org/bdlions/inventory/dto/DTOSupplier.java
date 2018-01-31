@@ -5,6 +5,8 @@ import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.EntitySupplier;
 import com.bdlions.dto.response.ClientResponse;
+import java.util.List;
+import org.bdlions.inventory.entity.EntityProductSupplier;
 
 /**
  *
@@ -16,6 +18,8 @@ public class DTOSupplier extends ClientResponse implements java.io.Serializable{
     public EntitySupplier entitySupplier;
     public EntityUser entityUser;
     public EntityUserRole entityUserRole;
+    public List<EntityProductSupplier> entityProductSupplierList;
+    public List<EntityProductSupplier> epsListToBeDeleted;
     public DTOSupplier()
     {
         entitySupplier = new EntitySupplier();
@@ -61,6 +65,22 @@ public class DTOSupplier extends ClientResponse implements java.io.Serializable{
 
     public void setEntityUserRole(EntityUserRole entityUserRole) {
         this.entityUserRole = entityUserRole;
+    }
+
+    public List<EntityProductSupplier> getEntityProductSupplierList() {
+        return entityProductSupplierList;
+    }
+
+    public void setEntityProductSupplierList(List<EntityProductSupplier> entityProductSupplierList) {
+        this.entityProductSupplierList = entityProductSupplierList;
+    }
+
+    public List<EntityProductSupplier> getEpsListToBeDeleted() {
+        return epsListToBeDeleted;
+    }
+
+    public void setEpsListToBeDeleted(List<EntityProductSupplier> epsListToBeDeleted) {
+        this.epsListToBeDeleted = epsListToBeDeleted;
     }
     
 }
