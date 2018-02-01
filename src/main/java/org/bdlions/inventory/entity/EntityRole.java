@@ -22,17 +22,22 @@ import javax.persistence.Table;
         }
 )
 @NamedQueries(
-    {
-        @NamedQuery(name = "getRoleByRoleId", query =  "from EntityRole role where role.id = :roleId"),
-        
-    }
+{
+    @NamedQuery(
+            name = "getRoleByRoleId", 
+            query =  "from EntityRole role where role.id = :roleId"
+    ),
+    @NamedQuery(
+            name = "getRoles",
+            query = "from EntityRole role"
+    )        
+}
 )
 public class EntityRole {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    
+    @Column(name = "id")    
     private int id;
 
     @Column(name = "title", length = 200)
@@ -68,6 +73,5 @@ public class EntityRole {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-    
+    }    
 }

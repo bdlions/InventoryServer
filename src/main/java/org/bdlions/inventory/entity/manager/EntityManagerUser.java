@@ -7,6 +7,7 @@ import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 /**
@@ -145,6 +146,33 @@ public class EntityManagerUser
         return entityUser;
     }
     
+    public EntityUser createUser(EntityUser entityUser, List<EntityUserRole> entityUserRoles)
+    {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        tx.begin();
+        try
+        {
+            entityUser = createUser(entityUser, session);
+            if(entityUser != null && entityUserRoles != null && !entityUserRoles.isEmpty())
+            {
+                for(EntityUserRole entityUserRole: entityUserRoles)
+                {
+                    entityUserRole.setUserId(entityUser.getId());
+                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+                    entityManagerUserRole.createUserRole(entityUserRole, session);
+                }            
+            }
+            tx.commit();
+            return entityUser;
+        }
+        finally
+        {
+            session.close();
+        }
+        
+    }
+    
     /**
      * This method will create entity user and/or entity user role
      * @param entityUser entity user
@@ -196,6 +224,36 @@ public class EntityManagerUser
         }
     }
     
+    public boolean updateUser(EntityUser entityUser, List<EntityUserRole> entityUserRoles)
+    {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.getTransaction(); 
+        tx.begin();
+        try
+        {
+            if(entityUser != null && entityUser.getId() > 0)
+            {
+                updateUser(entityUser, session);
+                if(entityUserRoles != null && !entityUserRoles.isEmpty())
+                {
+                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+                    entityManagerUserRole.deleteUserRoles(entityUser.getId(), session);
+                    for(EntityUserRole entityUserRole: entityUserRoles)
+                    {
+                        entityUserRole.setUserId(entityUser.getId());                        
+                        entityManagerUserRole.createUserRole(entityUserRole, session);
+                    }            
+                }
+            }
+            tx.commit();
+            return true;
+        }
+        finally
+        {
+            session.close();
+        }
+    }
+    
     /**
      * This method will return user list
      * @param offset offset
@@ -210,7 +268,21 @@ public class EntityManagerUser
             Query<EntityUser> query = session.getNamedQuery("getUsers");
             query.setFirstResult(offset);
             query.setMaxResults(limit);
-
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public List<EntityUser> getUsersByUserIds(List<Integer> userIds) 
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            Query<EntityUser> query = session.getNamedQuery("getUsersByUserIds");
+            query.setParameter("userIds", userIds);
             return query.getResultList();
         } 
         finally 

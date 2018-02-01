@@ -7,8 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
@@ -22,7 +22,18 @@ import org.hibernate.annotations.NamedQuery;
         }
 )
 @NamedQueries({
-    @NamedQuery(name = "getUserRolesByUserId", query = "select userRole.id from EntityUserRole userRole where userRole.userId = :userId")
+    @NamedQuery(
+            name = "getUserRolesByUserId", 
+            query = "from EntityUserRole userRole where userRole.userId = :userId"
+    ),
+    @NamedQuery(
+            name = "getUserRolesByRoleIds", 
+            query = "from EntityUserRole userRole where userRole.roleId IN (:roleIds)"
+    ),
+    @NamedQuery(
+            name = "deleteUserRoles",
+            query = "delete from EntityUserRole role where role.userId = :userId"
+    )
 })
 public class EntityUserRole {
 

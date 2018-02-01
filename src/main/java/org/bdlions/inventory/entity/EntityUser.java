@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(
         name = "users",
         indexes = {
-            @Index(name = "idx_name", columnList = "cell", unique = true),
+            //@Index(name = "idx_name", columnList = "cell", unique = true),
             @Index(name = "idx_email", columnList = "email", unique = true)
         }
 )
@@ -27,11 +27,14 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getUserByEmail",
             query = "from EntityUser user where user.email = :email"
-    )
-    ,
+    ),
     @NamedQuery(
             name = "getUserByUserId",
             query = "from EntityUser user where user.id = :userId"
+    ),
+    @NamedQuery(
+            name = "getUsersByUserIds",
+            query = "from EntityUser user where user.id IN (:userIds)"
     ),
     @NamedQuery(
             name = "getUsers",
