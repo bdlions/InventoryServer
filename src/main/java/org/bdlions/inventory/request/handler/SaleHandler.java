@@ -15,7 +15,6 @@ import org.bdlions.inventory.dto.DTOSaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.dto.ListSaleOrder;
 import org.bdlions.inventory.entity.EntityProduct;
-import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntityUser;
