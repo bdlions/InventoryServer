@@ -45,6 +45,18 @@ public class UserHandler {
         return entiryUser;
     }
     
+    @ClientRequest(action = ACTION.FETCH_ROLES_BY_USER)
+    public ClientResponse getRolesByUser(ISession session, IPacket packet) throws Exception 
+    {
+        int userId = (int)session.getUserId();
+        EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+        List<EntityUserRole> entityUserRoles = entityManagerUserRole.getUserRolesByUserId(userId);
+        ClientListResponse response = new ClientListResponse();
+        response.setList(entityUserRoles);
+        response.setSuccess(true);
+        return response;
+    }
+    
     @ClientRequest(action = ACTION.FETCH_USER_WITH_ROLES)
     public ClientResponse getUserWithRoles(ISession session, IPacket packet) throws Exception 
     {
