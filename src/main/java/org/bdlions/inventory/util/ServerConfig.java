@@ -18,6 +18,7 @@ public class ServerConfig extends PropertyProvider{
     public static final String SALE_ORDER_TEMPLATE       = "SALE_ORDER_TEMPLATE";
     public static final String COMPANY_ADDRESS           = "COMPANY_ADDRESS";
     public static final String COMPANY_CELL              = "COMPANY_CELL";
+    public static final String COMPANY_LOGO              = "COMPANY_LOGO";
     
     private ServerConfig(String fileName) throws IOException {
         super(fileName);

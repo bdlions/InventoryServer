@@ -24,6 +24,7 @@
         <property name="hibernate.c3p0.max_statements">50</property>
         <property name="hibernate.c3p0.idle_test_period">3000</property>
         
+        <mapping class="org.bdlions.inventory.entity.EntityCompany" />
         <mapping class="org.bdlions.inventory.entity.EntityAccountStatus" />
         <mapping class="org.bdlions.inventory.entity.EntityRole" />
         <mapping class="org.bdlions.inventory.entity.EntityUser" />

@@ -24,12 +24,14 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import org.bdlions.inventory.dto.DTOCustomer;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.dto.DTOSaleOrder;
+import org.bdlions.inventory.entity.EntityCompany;
 import org.bdlions.inventory.entity.EntityCustomer;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntityUser;
+import org.bdlions.inventory.entity.manager.EntityManagerCompany;
 import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
@@ -129,20 +131,41 @@ public class SaleServlet {
         }
         
         TimeUtils timeUtils = new TimeUtils();
-        String currentDate = timeUtils.convertUnixToHuman(timeUtils.getCurrentTime(), "", "+6");
+        String currentDate = timeUtils.convertUnixToHuman(timeUtils.getCurrentTime(), "", "");
+        
+        String companyName = "";
+        String companyAddress = "";
+        String companyCell = "";
+        String companyLogo = "";
+        EntityManagerCompany entityManagerCompany = new EntityManagerCompany();
+        EntityCompany entityCompany = entityManagerCompany.getCompanyInfo();
+        if(entityCompany != null)
+        {
+            companyName = entityCompany.getName();
+            companyAddress = entityCompany.getAddress();
+            companyCell = entityCompany.getCell();
+            companyLogo = entityCompany.getLogo();
+        }
+        else
+        {
+            companyName = ServerConfig.getInstance().get(ServerConfig.COMPANY_NAME);
+            companyAddress = ServerConfig.getInstance().get(ServerConfig.COMPANY_ADDRESS);
+            companyCell = ServerConfig.getInstance().get(ServerConfig.COMPANY_CELL);
+            companyLogo = ServerConfig.getInstance().get(ServerConfig.COMPANY_LOGO);
+        }
         
         String reportDirectory = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.REPORT_PATH);
         Map parameters = new HashMap();
         parameters.put("Date", currentDate);
-        parameters.put("CompanyName", ServerConfig.getInstance().get(ServerConfig.COMPANY_NAME));
-        parameters.put("CompanyAddress", ServerConfig.getInstance().get(ServerConfig.COMPANY_ADDRESS));
-        parameters.put("CompanyCell", ServerConfig.getInstance().get(ServerConfig.COMPANY_CELL));
+        parameters.put("CompanyName", companyName);
+        parameters.put("CompanyAddress", companyAddress);
+        parameters.put("CompanyCell", companyCell);
         parameters.put("OrderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
         parameters.put("CustomerName", dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
         parameters.put("Address", "Dhaka, Bangladesh");
         parameters.put("Email", dtoCustomer.getEntityUser().getEmail());
         parameters.put("Phone", dtoCustomer.getEntityUser().getCell());
-        parameters.put("logoURL", reportDirectory + "logo.png");
+        parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("TotalSalePrice", totalSalePrice);
         parameters.put("Remarks", dtoSaleOrder.getEntitySaleOrder().getRemarks() == null ? "" : dtoSaleOrder.getEntitySaleOrder().getRemarks());
 

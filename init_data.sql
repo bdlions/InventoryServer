@@ -1,3 +1,6 @@
+INSERT INTO `company_info` (`id`, `name`, `address`, `cell`, `logo`) VALUES
+(1, 'Signature Technologies Bangladesh.', 'Dhaka, Bangladesh.', '01722123456', 'logo.png');
+
 INSERT INTO `account_status` (`id`, `title`) VALUES
 (1, 'Active'),
 (2, 'Inactive');
