@@ -187,7 +187,17 @@ public class SaleHandler {
             dtoSaleOrder.getEntitySaleOrder().setEmail(entityUser.getEmail());
             dtoSaleOrder.getEntitySaleOrder().setCell(entityUser.getCell());
         }
-            
+           
+        //setting created by and modified by user
+        int userId = (int)session.getUserId();
+        dtoSaleOrder.getEntitySaleOrder().setCreatedByUserId(userId);
+        dtoSaleOrder.getEntitySaleOrder().setModifiedByUserId(userId);
+        EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+        if(tempEntityUser != null && tempEntityUser.getId() > 0)
+        {
+            dtoSaleOrder.getEntitySaleOrder().setCreatedByUserName(tempEntityUser.getUserName());
+            dtoSaleOrder.getEntitySaleOrder().setModifiedByUserName(tempEntityUser.getUserName());
+        }  
         
         EntitySaleOrder entitySaleOrder = entityManagerSaleOrder.createSaleOrder(dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks);
         responseDTOSaleOrder.setEntitySaleOrder(entitySaleOrder);
@@ -325,6 +335,15 @@ public class SaleHandler {
                 dtoSaleOrder.getEntitySaleOrder().setEmail(entityUser.getEmail());
                 dtoSaleOrder.getEntitySaleOrder().setCell(entityUser.getCell());
             }
+            
+            //setting created by and modified by user
+            int userId = (int)session.getUserId();
+            dtoSaleOrder.getEntitySaleOrder().setModifiedByUserId(userId);
+            EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+            if(tempEntityUser != null && tempEntityUser.getId() > 0)
+            {
+                dtoSaleOrder.getEntitySaleOrder().setModifiedByUserName(tempEntityUser.getUserName());
+            }  
             
             if(entityManagerSaleOrder.updateSaleOrder(currentEntitySaleOrder, dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks))
             {

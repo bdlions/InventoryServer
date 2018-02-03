@@ -112,6 +112,18 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long modifiedOn;
     
+    @Column(name = "created_by_user_id", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private long createdByUserId;
+
+    @Column(name = "created_by_user_name")
+    private String createdByUserName;
+    
+    @Column(name = "modified_by_user_id", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
+    private long modifiedByUserId;
+
+    @Column(name = "modified_by_user_name")
+    private String modifiedByUserName;
+    
     public int getId() {
         return id;
     }
@@ -239,5 +251,38 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
+
+    public long getCreatedByUserId() {
+        return createdByUserId;
+    }
+
+    public void setCreatedByUserId(long createdByUserId) {
+        this.createdByUserId = createdByUserId;
+    }
+
+    public String getCreatedByUserName() {
+        return createdByUserName;
+    }
+
+    public void setCreatedByUserName(String createdByUserName) {
+        this.createdByUserName = createdByUserName;
+    }
+
+    public long getModifiedByUserId() {
+        return modifiedByUserId;
+    }
+
+    public void setModifiedByUserId(long modifiedByUserId) {
+        this.modifiedByUserId = modifiedByUserId;
+    }
+
+    public String getModifiedByUserName() {
+        return modifiedByUserName;
+    }
+
+    public void setModifiedByUserName(String modifiedByUserName) {
+        this.modifiedByUserName = modifiedByUserName;
+    }
+    
     
 }

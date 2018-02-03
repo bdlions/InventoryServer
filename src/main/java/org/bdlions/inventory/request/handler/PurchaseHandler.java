@@ -164,6 +164,17 @@ public class PurchaseHandler {
             dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());
         }
         
+        //setting created by and modified by user
+        int userId = (int)session.getUserId();
+        dtoPurchaseOrder.getEntityPurchaseOrder().setCreatedByUserId(userId);
+        dtoPurchaseOrder.getEntityPurchaseOrder().setModifiedByUserId(userId);
+        EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+        if(tempEntityUser != null && tempEntityUser.getId() > 0)
+        {
+            dtoPurchaseOrder.getEntityPurchaseOrder().setCreatedByUserName(tempEntityUser.getUserName());
+            dtoPurchaseOrder.getEntityPurchaseOrder().setModifiedByUserName(tempEntityUser.getUserName());
+        }       
+        
         EntityPurchaseOrder entityPurchaseOrder = entityManagerPurchaseOrder.createPurchaseOrder(dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityShowRoomStocks);
         responseDTOPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
         
@@ -301,6 +312,15 @@ public class PurchaseHandler {
                 dtoPurchaseOrder.getEntityPurchaseOrder().setEmail(entityUser.getEmail());
                 dtoPurchaseOrder.getEntityPurchaseOrder().setCell(entityUser.getCell());
             }
+            
+            //setting modified by user
+            int userId = (int)session.getUserId();
+            dtoPurchaseOrder.getEntityPurchaseOrder().setModifiedByUserId(userId);
+            EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+            if(tempEntityUser != null && tempEntityUser.getId() > 0)
+            {
+                dtoPurchaseOrder.getEntityPurchaseOrder().setModifiedByUserName(tempEntityUser.getUserName());
+            } 
             
             if(entityManagerPurchaseOrder.updatePurchaseOrder(currentEntityPurchaseOrder, dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityShowRoomStocks))
             {
