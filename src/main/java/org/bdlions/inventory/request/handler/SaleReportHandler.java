@@ -20,6 +20,7 @@ import org.bdlions.inventory.dto.ListSaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
 import org.bdlions.inventory.manager.Stock;
+import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
@@ -41,8 +42,21 @@ public class SaleReportHandler {
     {
         ClientListResponse response = new ClientListResponse();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);        
-        //String startDate = jsonObject.get("startDate").getAsString();
-        //String endDate = jsonObject.get("endDate").getAsString();
+        String startDate = jsonObject.get("startDate").getAsString();
+        String endDate = jsonObject.get("endDate").getAsString();
+        if(StringUtils.isNullOrEmpty(startDate))
+        {
+            startDate = TimeUtils.getCurrentDate("", "");
+        }
+        if(StringUtils.isNullOrEmpty(endDate))
+        {
+            endDate = TimeUtils.getCurrentDate("", "");
+        }
+        long startTime = 0;
+        long endTime = 0;
+        startTime = TimeUtils.convertHumanToUnix(startDate);
+        endTime = TimeUtils.convertHumanToUnix(endDate) + 86400;
+        
         String offsetString = jsonObject.get("offset").getAsString();
         String limitString = jsonObject.get("limit").getAsString();
         int offset = 0;
@@ -61,7 +75,7 @@ public class SaleReportHandler {
         
         List<DTOSaleOrder> saleOrders = new ArrayList<>();
         EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
-        List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.getSaleOrders(offset, limit);
+        List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.getSaleOrdersDQ(startTime, endTime, offset, limit);
         if(entitySaleOrders != null)
         {
             
@@ -75,7 +89,7 @@ public class SaleReportHandler {
             }
         }        
         response.setList(saleOrders);
-        response.setCounter(entityManagerSaleOrder.getTotalSaleOrders());
+        response.setCounter(entityManagerSaleOrder.getTotalSaleOrdersDQ(startTime, endTime));
         response.setSuccess(true);
         return response;
     }

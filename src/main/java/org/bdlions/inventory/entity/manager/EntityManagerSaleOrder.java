@@ -545,4 +545,40 @@ public class EntityManagerSaleOrder
             session.close();
         }
     }
+    
+    // --------------------------- Dynamic Query Section Starts ----------------------------------//
+    public List<EntitySaleOrder> getSaleOrdersDQ(long startTime, long endTime, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            Query query = session.createSQLQuery("select {eso.*} from sale_orders eso " + where + " limit :limit offset :offset")
+                    .addEntity("eso",EntitySaleOrder.class)
+                    .setInteger("limit", limit)
+                    .setInteger("offset", offset);
+            return query.list();           
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public int getTotalSaleOrdersDQ(long startTime, long endTime)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            Query query = session.createSQLQuery("select {eso.*} from sale_orders eso " + where)
+                    .addEntity("eso",EntitySaleOrder.class);
+            return query.list().size();           
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
 }
