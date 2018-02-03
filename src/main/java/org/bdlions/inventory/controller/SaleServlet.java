@@ -172,12 +172,12 @@ public class SaleServlet {
         ReportPayment reportPayment = new ReportPayment();
         reportPayment.setId(1);
         reportPayment.setType("Cash");
-        reportPayment.setAmount(totalSalePrice);
+        reportPayment.setAmount(dtoSaleOrder.getEntitySaleOrder().getPaid());
 
         List<ReportPayment> payments = new ArrayList<>();
         payments.add(reportPayment);
         parameters.put("payments", payments);
-        parameters.put("TotalPaymentAmount", totalSalePrice);
+        parameters.put("TotalPaymentAmount", dtoSaleOrder.getEntitySaleOrder().getPaid());
         parameters.put("TotalReturnAmount", 0.0);
         try {
             JasperReport subReport = (JasperReport) JRLoader.loadObject(new File(ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.JASPER_FILE_PATH) + "payments.jasper"));

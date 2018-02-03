@@ -172,12 +172,12 @@ public class PurchaseServlet {
         ReportPayment reportPayment = new ReportPayment();
         reportPayment.setId(1);
         reportPayment.setType("Cash");
-        reportPayment.setAmount(totalPurchasePrice);
+        reportPayment.setAmount(dtoPurchaseOrder.getEntityPurchaseOrder().getPaid());
         
         List<ReportPayment> payments = new ArrayList<>();
         payments.add(reportPayment);
         parameters.put("payments", payments);
-        parameters.put("TotalPaymentAmount", totalPurchasePrice);
+        parameters.put("TotalPaymentAmount", dtoPurchaseOrder.getEntityPurchaseOrder().getPaid());
         parameters.put("TotalReturnAmount", 0.0);
         try
         {
