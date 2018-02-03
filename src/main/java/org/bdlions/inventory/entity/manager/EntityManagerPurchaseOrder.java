@@ -5,6 +5,7 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
+import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.util.Constants;
@@ -539,6 +540,41 @@ public class EntityManagerPurchaseOrder
         try 
         {            
             return this.getSupplierCurrentDue(supplierUserId, session);
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    // --------------------------- Dynamic Query Section Starts ----------------------------------//
+    public List<EntityPurchaseOrder> getPurchaseOrdersDQ(long startTime, long endTime, int offset, int limit)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            Query query = session.createSQLQuery("select {epo.*} from purchase_orders epo " + where + " limit :limit offset :offset")
+                    .addEntity("epo",EntityPurchaseOrder.class)
+                    .setInteger("limit", limit)
+                    .setInteger("offset", offset);
+            return query.list();           
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public int getTotalPurchaseOrdersDQ(long startTime, long endTime)
+    {
+        Session session = HibernateUtil.getSession();
+        try 
+        {
+            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            Query query = session.createSQLQuery("select {epo.*} from purchase_orders epo " + where)
+                    .addEntity("epo",EntityPurchaseOrder.class);
+            return query.list().size();           
         } 
         finally 
         {

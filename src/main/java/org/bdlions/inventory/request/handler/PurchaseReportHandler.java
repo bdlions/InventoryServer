@@ -10,10 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
-import org.bdlions.inventory.dto.DTOSaleOrder;
+import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.util.annotation.ClientRequest;
-import org.bdlions.inventory.entity.EntitySaleOrder;
-import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
+import org.bdlions.inventory.entity.EntityPurchaseOrder;
+import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 
@@ -23,16 +23,16 @@ import org.bdlions.inventory.util.TimeUtils;
  *
  * @author nazmul hasan
  */
-public class SaleReportHandler {
+public class PurchaseReportHandler {
 
     private final ISessionManager sessionManager;
 
-    public SaleReportHandler(ISessionManager sessionManager) {
+    public PurchaseReportHandler(ISessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
 
-    @ClientRequest(action = ACTION.FETCH_SALE_ORDER_SUMMARY)
-    public ClientResponse getSaleOrderSummary(ISession session, IPacket packet) throws Exception 
+    @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDER_SUMMARY)
+    public ClientResponse getPurchaseOrderSummary(ISession session, IPacket packet) throws Exception 
     {
         ClientListResponse response = new ClientListResponse();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);        
@@ -67,23 +67,23 @@ public class SaleReportHandler {
             return response;
         }
         
-        List<DTOSaleOrder> saleOrders = new ArrayList<>();
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
-        List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.getSaleOrdersDQ(startTime, endTime, offset, limit);
-        if(entitySaleOrders != null)
+        List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        List<EntityPurchaseOrder> entityPurchaseOrders =  entityManagerPurchaseOrder.getPurchaseOrdersDQ(startTime, endTime, offset, limit);
+        if(entityPurchaseOrders != null)
         {
             
-            for (int counter = 0; counter < entitySaleOrders.size(); counter++) 
+            for (int counter = 0; counter < entityPurchaseOrders.size(); counter++) 
             {
-                EntitySaleOrder entitySaleOrder = entitySaleOrders.get(counter);
-                DTOSaleOrder dtoSO = new DTOSaleOrder();
-                dtoSO.setEntitySaleOrder(entitySaleOrder);
-                dtoSO.setOrderDate(TimeUtils.convertUnixToHuman(entitySaleOrder.getCreatedOn(), "", ""));
-                saleOrders.add(dtoSO);
+                EntityPurchaseOrder entityPurchaseOrder = entityPurchaseOrders.get(counter);
+                DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
+                dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
+                dtoPO.setOrderDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getCreatedOn(), "", ""));
+                purchaseOrders.add(dtoPO);
             }
         }        
-        response.setList(saleOrders);
-        response.setCounter(entityManagerSaleOrder.getTotalSaleOrdersDQ(startTime, endTime));
+        response.setList(purchaseOrders);
+        response.setCounter(entityManagerPurchaseOrder.getTotalPurchaseOrdersDQ(startTime, endTime));
         response.setSuccess(true);
         return response;
     }

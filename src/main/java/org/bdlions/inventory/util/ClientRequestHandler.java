@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import org.bdlions.inventory.request.handler.CustomerHandler;
 import org.bdlions.inventory.request.handler.ProductHandler;
 import org.bdlions.inventory.request.handler.PurchaseHandler;
+import org.bdlions.inventory.request.handler.PurchaseReportHandler;
 import org.bdlions.inventory.request.handler.SaleHandler;
 import org.bdlions.inventory.request.handler.SaleReportHandler;
 import org.bdlions.inventory.request.handler.StockHandler;
@@ -131,7 +132,7 @@ public class ClientRequestHandler implements IClientRequestHandler{
     }
 
     private Class[] getDelegators() {
-        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class, CustomerHandler.class, SupplierHandler.class, PurchaseHandler.class, SaleHandler.class, StockHandler.class, SaleReportHandler.class};
+        Class[] delegators = new Class[]{AuthHandler.class, UserHandler.class, ProductHandler.class, CustomerHandler.class, SupplierHandler.class, PurchaseHandler.class, SaleHandler.class, StockHandler.class, SaleReportHandler.class, PurchaseReportHandler.class};
         return delegators;
     }
 
