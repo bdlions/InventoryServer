@@ -105,6 +105,9 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     @Column(name = "remarks", length = 1000)
     private String remarks;
     
+    @Column(name = "address", length = 1000)
+    private String address;
+    
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long createdOn;
 
@@ -282,6 +285,12 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     public void setModifiedByUserName(String modifiedByUserName) {
         this.modifiedByUserName = modifiedByUserName;
     }
-    
-    
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

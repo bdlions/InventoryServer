@@ -18,7 +18,7 @@ public class EntityManagerUOM
      */
     public List<EntityUOM> getAllUOMs()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityUOM> query = session.getNamedQuery("getAllUOMs");

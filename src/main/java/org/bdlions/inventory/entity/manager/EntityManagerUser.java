@@ -23,7 +23,7 @@ public class EntityManagerUser
      */
     public EntityUser getUserByEmail(String email)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityUser> query = session.getNamedQuery("getUserByEmail");
@@ -51,7 +51,7 @@ public class EntityManagerUser
      */
     public EntityUser getUserByUserId(int userId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityUser> query = session.getNamedQuery("getUserByUserId");
@@ -116,7 +116,7 @@ public class EntityManagerUser
      */
     public EntityUser createUser(EntityUser entityUser)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return createUser(entityUser, session);
@@ -148,7 +148,7 @@ public class EntityManagerUser
     
     public EntityUser createUser(EntityUser entityUser, List<EntityUserRole> entityUserRoles)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try
@@ -181,7 +181,7 @@ public class EntityManagerUser
      */
     public EntityUser createUser(EntityUser entityUser, EntityUserRole entityUserRole)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return createUser(entityUser, entityUserRole, session);
@@ -213,7 +213,7 @@ public class EntityManagerUser
      */
     public boolean updateUser(EntityUser entityUser)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return updateUser(entityUser, session);
@@ -226,7 +226,7 @@ public class EntityManagerUser
     
     public boolean updateUser(EntityUser entityUser, List<EntityUserRole> entityUserRoles)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try
@@ -262,7 +262,7 @@ public class EntityManagerUser
      */
     public List<EntityUser> getUsers(int offset, int limit) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityUser> query = session.getNamedQuery("getUsers");
@@ -278,7 +278,7 @@ public class EntityManagerUser
     
     public List<EntityUser> getUsersByUserIds(List<Integer> userIds) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityUser> query = session.getNamedQuery("getUsersByUserIds");

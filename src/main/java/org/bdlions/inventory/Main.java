@@ -5,6 +5,7 @@ import org.bdlions.session.ISessionManager;
 import org.bdlions.transport.channel.provider.ChannelProviderImpl;
 import org.bdlions.inventory.util.ClientRequestHandler;
 import org.bdlions.util.handler.request.IClientRequestHandler;
+import org.hibernate.Session;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -27,8 +28,16 @@ public class Main extends SpringBootServletInitializer {
         ISessionManager sessionManager = ClientRequestHandler.getInstance().getSessionManager();
         channelProviderImpl = new ChannelProviderImpl(requestHandler, sessionManager);
         channelProviderImpl.start();
-        DatabaseLoader.getInstance().getSession();
-        HibernateUtil.getInstance().getSession();
+        try
+        {
+            Session session1 = DatabaseLoader.getInstance().getSession();
+            session1.close();
+            Session session2 = HibernateUtil.getInstance().getSession();
+            session2.close();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.toString());
+        }        
     }
-
 }

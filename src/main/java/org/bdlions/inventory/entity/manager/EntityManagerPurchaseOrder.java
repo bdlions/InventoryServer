@@ -5,7 +5,6 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
-import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.util.Constants;
@@ -46,7 +45,7 @@ public class EntityManagerPurchaseOrder
      */
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return createPurchaseOrder(entityPurchaseOrder, session);
@@ -67,7 +66,7 @@ public class EntityManagerPurchaseOrder
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -164,7 +163,7 @@ public class EntityManagerPurchaseOrder
      */
     public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return updatePurchaseOrder(entityPurchaseOrder, session);
@@ -186,7 +185,7 @@ public class EntityManagerPurchaseOrder
     public boolean updatePurchaseOrder(EntityPurchaseOrder currentEntityPurchaseOrder, EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -281,7 +280,7 @@ public class EntityManagerPurchaseOrder
         {
             return null;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderByOrderNo");
@@ -313,7 +312,7 @@ public class EntityManagerPurchaseOrder
         {
             return null;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderById");
@@ -336,7 +335,7 @@ public class EntityManagerPurchaseOrder
     
     public EntityPurchaseOrder getLastPurchaseOrder()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getLastPurchaseOrder");
@@ -365,7 +364,7 @@ public class EntityManagerPurchaseOrder
      */
     public List<EntityPurchaseOrder> getPurchaseOrders(int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
@@ -385,7 +384,7 @@ public class EntityManagerPurchaseOrder
      */
     public int getTotalPurchaseOrders()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
@@ -406,7 +405,7 @@ public class EntityManagerPurchaseOrder
      */
     public List<EntityPurchaseOrder> searchPurchaseOrderByOrderNo(String orderNo, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
@@ -428,7 +427,7 @@ public class EntityManagerPurchaseOrder
      */
     public int searchTotalPurchaseOrderByOrderNo(String orderNo)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
@@ -450,7 +449,7 @@ public class EntityManagerPurchaseOrder
      */
     public List<EntityPurchaseOrder> searchPurchaseOrderByCell(String cell, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByCell");
@@ -472,7 +471,7 @@ public class EntityManagerPurchaseOrder
      */
     public int searchTotalPurchaseOrderByCell(String cell)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByCell");
@@ -536,7 +535,7 @@ public class EntityManagerPurchaseOrder
         {
             return 0;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             return this.getSupplierCurrentDue(supplierUserId, session);
@@ -550,7 +549,7 @@ public class EntityManagerPurchaseOrder
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
     public List<EntityPurchaseOrder> getPurchaseOrdersDQ(long startTime, long endTime, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
@@ -568,7 +567,7 @@ public class EntityManagerPurchaseOrder
     
     public int getTotalPurchaseOrdersDQ(long startTime, long endTime)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";

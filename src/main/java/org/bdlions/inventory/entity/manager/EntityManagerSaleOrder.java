@@ -45,7 +45,7 @@ public class EntityManagerSaleOrder
      */
     public EntitySaleOrder createSaleOrder(EntitySaleOrder entitySaleOrder)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return createSaleOrder(entitySaleOrder, session);
@@ -66,7 +66,7 @@ public class EntityManagerSaleOrder
     public EntitySaleOrder createSaleOrder(EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -163,7 +163,7 @@ public class EntityManagerSaleOrder
      */
     public boolean updateSaleOrder(EntitySaleOrder entitySaleOrder)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return updateSaleOrder(entitySaleOrder, session);
@@ -185,7 +185,7 @@ public class EntityManagerSaleOrder
     public boolean updateSaleOrder(EntitySaleOrder currentEntitySaleOrder, EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -280,7 +280,7 @@ public class EntityManagerSaleOrder
         {
             return null;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntitySaleOrder> query = session.getNamedQuery("getSaleOrderByOrderNo");
@@ -312,7 +312,7 @@ public class EntityManagerSaleOrder
         {
             return null;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntitySaleOrder> query = session.getNamedQuery("getSaleOrderById");
@@ -335,7 +335,7 @@ public class EntityManagerSaleOrder
     
     public EntitySaleOrder getLastSaleOrder()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntitySaleOrder> query = session.getNamedQuery("getLastSaleOrder");
@@ -364,7 +364,7 @@ public class EntityManagerSaleOrder
      */
     public List<EntitySaleOrder> getSaleOrders(int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySaleOrder> query = session.getNamedQuery("getAllSaleOrders");
@@ -384,7 +384,7 @@ public class EntityManagerSaleOrder
      */
     public int getTotalSaleOrders()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySaleOrder> query = session.getNamedQuery("getAllSaleOrders");
@@ -405,7 +405,7 @@ public class EntityManagerSaleOrder
      */
     public List<EntitySaleOrder> searchSaleOrderByOrderNo(String orderNo, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByOrderNo");
@@ -427,7 +427,7 @@ public class EntityManagerSaleOrder
      */
     public int searchTotalSaleOrderByOrderNo(String orderNo)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByOrderNo");
@@ -449,7 +449,7 @@ public class EntityManagerSaleOrder
      */
     public List<EntitySaleOrder> searchSaleOrderByCell(String cell, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByCell");
@@ -471,7 +471,7 @@ public class EntityManagerSaleOrder
      */
     public int searchTotalSaleOrderByCell(String cell)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySaleOrder> query = session.getNamedQuery("searchSaleOrderByCell");
@@ -535,7 +535,7 @@ public class EntityManagerSaleOrder
         {
             return 0;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             return this.getCustomerCurrentDue(customerUserId, session);
@@ -549,7 +549,7 @@ public class EntityManagerSaleOrder
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
     public List<EntitySaleOrder> getSaleOrdersDQ(long startTime, long endTime, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
@@ -567,7 +567,7 @@ public class EntityManagerSaleOrder
     
     public int getTotalSaleOrdersDQ(long startTime, long endTime)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";

@@ -26,7 +26,7 @@ public class EntityManagerSupplier
      */
     public EntitySupplier getSupplierBySupplierId(int supplierId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntitySupplier> query = session.getNamedQuery("getSupplierBySupplierId");
@@ -54,7 +54,7 @@ public class EntityManagerSupplier
      */
     public EntitySupplier getSupplierByUserId(int userId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             return this.getSupplierByUserId(userId, session);
@@ -102,7 +102,7 @@ public class EntityManagerSupplier
      */
     public EntitySupplier createSupplier(EntitySupplier entitySupplier)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return createSupplier(entitySupplier, session);
@@ -123,7 +123,7 @@ public class EntityManagerSupplier
      */
     public EntitySupplier createSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityUserRole entityUserRole, List<EntityProductSupplier> suplierProducts)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();        
         try 
@@ -176,7 +176,7 @@ public class EntityManagerSupplier
      */
     public boolean updateSupplier(EntitySupplier entitySupplier)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return updateSupplier(entitySupplier, session);
@@ -196,7 +196,7 @@ public class EntityManagerSupplier
      */
     public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityPurchaseOrder entityPurchaseOrder, List<EntityProductSupplier> supplierProducts, List<Integer> productIds)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();           
         try 
@@ -246,7 +246,7 @@ public class EntityManagerSupplier
      */
     public List<EntitySupplier> getSuppliers(int offset, int limit) {
         List<EntitySupplier> entitySuppliers = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
@@ -266,7 +266,7 @@ public class EntityManagerSupplier
      * @return Integer total number of suppliers
      */
     public int getTotalSuppliers() {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
@@ -287,7 +287,7 @@ public class EntityManagerSupplier
      */
     public List<EntitySupplier> searchSuppliersByName(String supplierName, int offset, int limit) {
         List<EntitySupplier> entitySuppliers = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByName");
@@ -309,7 +309,7 @@ public class EntityManagerSupplier
      * @return Integer total number of suppliers
      */
     public int searchTotalSuppliersByName(String supplierName) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByName");
@@ -331,7 +331,7 @@ public class EntityManagerSupplier
      */
     public List<EntitySupplier> searchSuppliersByCell(String cell, int offset, int limit) {
         List<EntitySupplier> entitySuppliers = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByCell");
@@ -353,7 +353,7 @@ public class EntityManagerSupplier
      * @return Integer total number of suppliers
      */
     public int searchTotalSuppliersByCell(String cell) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByCell");
@@ -375,7 +375,7 @@ public class EntityManagerSupplier
      */
     public List<EntitySupplier> searchSuppliersByEmail(String email, int offset, int limit) {
         List<EntitySupplier> entitySuppliers = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByEmail");
@@ -397,7 +397,7 @@ public class EntityManagerSupplier
      * @return Integer total number of suppliers
      */
     public int searchTotalSuppliersByEmail(String email) {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByEmail");

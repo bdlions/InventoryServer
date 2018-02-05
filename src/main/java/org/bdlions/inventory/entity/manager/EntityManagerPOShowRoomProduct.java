@@ -33,7 +33,7 @@ public class EntityManagerPOShowRoomProduct
      */
     public EntityPOShowRoomProduct addPurchaseOrderShowRoomProduct(EntityPOShowRoomProduct entityPOShowRoomProduct)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return addPurchaseOrderShowRoomProduct(entityPOShowRoomProduct, session);
@@ -89,7 +89,7 @@ public class EntityManagerPOShowRoomProduct
      */
     public int deletePOShowRoomProductsByOrderNo(String orderNo)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             return deletePOShowRoomProductsByOrderNo(orderNo, session);
@@ -111,7 +111,7 @@ public class EntityManagerPOShowRoomProduct
         {
             return null;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityPOShowRoomProduct> query = session.getNamedQuery("getPOShowRoomProductsByOrderNo");

@@ -42,6 +42,7 @@ import org.bdlions.inventory.report.ReportPayment;
 import org.bdlions.inventory.report.ReportProduct;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.ServerConfig;
+import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -154,16 +155,29 @@ public class PurchaseServlet {
         }
         
         String reportDirectory = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.REPORT_PATH);
+        
+        String supplierName= "";
+        if(dtoSupplier.getEntityUser() != null && !StringUtils.isNullOrEmpty(dtoSupplier.getEntityUser().getUserName()))
+        {
+            supplierName = dtoSupplier.getEntityUser().getUserName();
+        }
+        String address = "";
+        if(dtoPurchaseOrder.getEntityPurchaseOrder() != null && !StringUtils.isNullOrEmpty(dtoPurchaseOrder.getEntityPurchaseOrder().getAddress()))
+        {
+            address = dtoPurchaseOrder.getEntityPurchaseOrder().getAddress();
+        }
+        
+        
         Map parameters = new HashMap();
         parameters.put("Date", currentDate);
         parameters.put("CompanyName", companyName);
         parameters.put("CompanyAddress", companyAddress);
         parameters.put("CompanyCell", companyCell);
-        parameters.put("OrderNo", dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
-        parameters.put("SupplierName", dtoSupplier.getEntityUser().getFirstName()+" "+dtoSupplier.getEntityUser().getLastName());
-        parameters.put("Address", "Dhaka, Bangladesh");
-        parameters.put("Email", dtoSupplier.getEntityUser().getEmail());
-        parameters.put("Phone", dtoSupplier.getEntityUser().getCell());
+        parameters.put("OrderNo", orderNo);
+        parameters.put("SupplierName", supplierName);
+        parameters.put("Address", address);
+        parameters.put("Email", dtoSupplier.getEntityUser().getEmail() == null ? "" : dtoSupplier.getEntityUser().getEmail());
+        parameters.put("Phone", dtoSupplier.getEntityUser().getCell() == null ? "" : dtoSupplier.getEntityUser().getCell());
         parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("TotalPurchasePrice", totalPurchasePrice);
         parameters.put("Remarks", dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks() == null ? "" : dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks());

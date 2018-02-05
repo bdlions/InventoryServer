@@ -25,7 +25,7 @@ public class Stock
     public List<DTOProduct> getCurrentStock(int offset, int limit)
     {
         List<DTOProduct> products = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStock");
@@ -58,7 +58,7 @@ public class Stock
      */
     public int getTotalCurrentStock()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStock");
@@ -80,7 +80,7 @@ public class Stock
     public List<DTOProduct> searchCurrentStockByProductName(String productName, int offset, int limit)
     {
         List<DTOProduct> products = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("searchCurrentStockByProductName");
@@ -115,7 +115,7 @@ public class Stock
      */
     public int searchTotalCurrentStockByProductName(String productName)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("searchCurrentStockByProductName");
@@ -136,7 +136,7 @@ public class Stock
     public List<DTOProduct> getCurrentStockByProductIds(List<Integer> productIds)
     {
         List<DTOProduct> products = new ArrayList<>();
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStockByProductIds");

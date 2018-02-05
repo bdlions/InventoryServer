@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ControllerIndex {
     @RequestMapping("/testhome")
     String home() {
-        HibernateUtil.getSession();
+        //HibernateUtil.getInstance().getSession();
         return "Inventory Server service.";
     }
 }

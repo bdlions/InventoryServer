@@ -13,7 +13,7 @@ import org.hibernate.query.Query;
 public class EntityManagerCompany {
     public EntityCompany getCompanyInfo()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try {
             
             Query<EntityCompany> query = session.getNamedQuery("getCompanyInfo");

@@ -94,6 +94,9 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     @Column(name = "remarks", length = 1000)
     private String remarks;
     
+    @Column(name = "address", length = 1000)
+    private String address;
+    
     @Column(name = "subtotal", columnDefinition = "double DEFAULT 0")
     private double subtotal;
     
@@ -283,6 +286,12 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     public void setModifiedByUserName(String modifiedByUserName) {
         this.modifiedByUserName = modifiedByUserName;
     }
-    
-    
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

@@ -36,6 +36,7 @@ public final class HibernateUtil {
             // Create the SessionFactory from hibernate.cfg.xml
             for (EntityOrganization organization : organizations) {
                 if(!sessionFactoryMap.containsKey(organization.getDatabaseName())){
+                    System.out.println("##############################-----------databasename:"+ organization.getDatabaseName());
                     Configuration config = getConfigByAppID(organization.getDatabaseName());
                     SessionFactory factory = config.buildSessionFactory();
                     sessionFactoryMap.put(organization.getDatabaseName(), factory);
@@ -78,8 +79,10 @@ public final class HibernateUtil {
         return session;
     }
     
-    public static Session getSession() 
+    public Session getSession() 
     {
-        return getSession(10001);
+        Session session = getSession(10001);
+        return session;
+        //return getSession(10001);
     }
 }

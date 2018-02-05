@@ -17,7 +17,7 @@ public class EntityManagerRole
 {
     public EntityRole getRoleByRoleId(int roleId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try
         {
             return getRoleByRoleId(session, roleId);
@@ -36,7 +36,7 @@ public class EntityManagerRole
     
     public List<EntityRole> getRoles() 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityRole> query = session.getNamedQuery("getRoles");

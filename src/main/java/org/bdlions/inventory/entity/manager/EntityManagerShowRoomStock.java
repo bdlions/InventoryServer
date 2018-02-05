@@ -33,7 +33,7 @@ public class EntityManagerShowRoomStock
      */
     public EntityShowRoomStock addShowRoomStock(EntityShowRoomStock entityShowRoomStock)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return addShowRoomStock(entityShowRoomStock, session);
@@ -92,7 +92,7 @@ public class EntityManagerShowRoomStock
      */
     public int deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(String purchaseOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             return deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(purchaseOrderNo, transactionCategoryId, session);
@@ -112,7 +112,7 @@ public class EntityManagerShowRoomStock
      */
     public EntityShowRoomStock getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(int productId, String purchaseOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId");
@@ -144,7 +144,7 @@ public class EntityManagerShowRoomStock
      */
     public EntityShowRoomStock getShowRoomProductBySaleOrderNoAndTransactionCategoryId(int productId, String saleOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getShowRoomProductBySaleOrderNoAndTransactionCategoryId");
@@ -194,7 +194,7 @@ public class EntityManagerShowRoomStock
      */
     public int deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId(String saleOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             return deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId(saleOrderNo, transactionCategoryId, session);

@@ -14,7 +14,7 @@ import org.hibernate.query.Query;
 public class EntityManagerProductSupplier {
     public List<EntityProductSupplier> getProductSuppliersByProductId(int productId, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersByProductId");
@@ -32,7 +32,7 @@ public class EntityManagerProductSupplier {
     
     public int getTotalProductSuppliersByProductId(int productId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersByProductId");
@@ -47,7 +47,7 @@ public class EntityManagerProductSupplier {
     
     public List<EntityProductSupplier> getProductSuppliersBySupplierUserId(int supplierUserId, int offset, int limit)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");
@@ -64,7 +64,7 @@ public class EntityManagerProductSupplier {
     }
     public int getTotalProductSuppliersBySupplierUserId(int supplierUserId)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");

@@ -42,6 +42,7 @@ import org.bdlions.inventory.report.ReportPayment;
 import org.bdlions.inventory.report.ReportProduct;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.ServerConfig;
+import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -102,11 +103,13 @@ public class SaleServlet {
                     dtoSaleOrder.getProducts().add(dtoProduct);
                 }
             }
-            EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
-            EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
-            dtoCustomer.setEntityCustomer(entityCustomer);
-
-            dtoCustomer.setEntityUser(entityManagerUser.getUserByUserId(dtoCustomer.getEntityCustomer().getUserId()));
+            if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() > 0)
+            {
+                EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
+                dtoCustomer.setEntityCustomer(entityCustomer);
+                dtoCustomer.setEntityUser(entityManagerUser.getUserByUserId(dtoCustomer.getEntityCustomer().getUserId()));
+            }            
         }
         else
         {
@@ -155,16 +158,28 @@ public class SaleServlet {
         }
         
         String reportDirectory = ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.REPORT_PATH);
+        
+        String customerName = "";
+        if(dtoCustomer.getEntityUser() != null && !StringUtils.isNullOrEmpty(dtoCustomer.getEntityUser().getUserName()))
+        {
+            customerName = dtoCustomer.getEntityUser().getUserName();
+        }
+        String address = "";
+        if(dtoSaleOrder.getEntitySaleOrder() != null && !StringUtils.isNullOrEmpty(dtoSaleOrder.getEntitySaleOrder().getAddress()))
+        {
+            address = dtoSaleOrder.getEntitySaleOrder().getAddress();
+        }
+        
         Map parameters = new HashMap();
         parameters.put("Date", currentDate);
         parameters.put("CompanyName", companyName);
         parameters.put("CompanyAddress", companyAddress);
         parameters.put("CompanyCell", companyCell);
-        parameters.put("OrderNo", dtoSaleOrder.getEntitySaleOrder().getOrderNo());
-        parameters.put("CustomerName", dtoCustomer.getEntityUser().getFirstName() + " " + dtoCustomer.getEntityUser().getLastName());
-        parameters.put("Address", "Dhaka, Bangladesh");
-        parameters.put("Email", dtoCustomer.getEntityUser().getEmail());
-        parameters.put("Phone", dtoCustomer.getEntityUser().getCell());
+        parameters.put("OrderNo", orderNo);
+        parameters.put("CustomerName", customerName);
+        parameters.put("Address", address);
+        parameters.put("Email", dtoCustomer.getEntityUser().getEmail() == null ? "" : dtoCustomer.getEntityUser().getEmail());
+        parameters.put("Phone", dtoCustomer.getEntityUser().getCell() == null ? "" : dtoCustomer.getEntityUser().getCell());
         parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("TotalSalePrice", totalSalePrice);
         parameters.put("Remarks", dtoSaleOrder.getEntitySaleOrder().getRemarks() == null ? "" : dtoSaleOrder.getEntitySaleOrder().getRemarks());

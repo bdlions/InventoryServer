@@ -33,7 +33,7 @@ public class EntityManagerSaleOrderProduct
      */
     public EntitySaleOrderProduct addSaleOrderProduct(EntitySaleOrderProduct entitySaleOrderProduct)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return addSaleOrderProduct(entitySaleOrderProduct, session);
@@ -89,7 +89,7 @@ public class EntityManagerSaleOrderProduct
      */
     public int deleteSaleOrderProductsByOrderNo(String saleOrderNo)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             return deleteSaleOrderProductsByOrderNo(saleOrderNo, session);
@@ -111,7 +111,7 @@ public class EntityManagerSaleOrderProduct
         {
             return null;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {            
             Query<EntitySaleOrderProduct> queryShowRoomProducts = session.getNamedQuery("getSaleOrderProductsByOrderNo");

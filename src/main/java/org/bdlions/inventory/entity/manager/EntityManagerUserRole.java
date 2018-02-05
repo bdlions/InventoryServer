@@ -20,7 +20,7 @@ public class EntityManagerUserRole
     
     public EntityUserRole createUserRole(EntityUserRole entityUserRole)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             return createUserRole(entityUserRole, session);
@@ -33,7 +33,7 @@ public class EntityManagerUserRole
     
     public List<EntityUserRole> getUserRolesByUserId(int userId) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityUserRole> query = session.getNamedQuery("getUserRolesByUserId");
@@ -48,7 +48,7 @@ public class EntityManagerUserRole
     
     public List<EntityUserRole> getUserRolesByRoleIds(List<Integer> roleIds) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityUserRole> query = session.getNamedQuery("getUserRolesByRoleIds");

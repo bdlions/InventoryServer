@@ -18,7 +18,7 @@ public class EntityManagerProductCategory
      */
     public List<EntityProductCategory> getAllProductCategories()
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProductCategory> query = session.getNamedQuery("getAllProductCategories");

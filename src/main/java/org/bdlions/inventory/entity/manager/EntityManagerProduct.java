@@ -21,7 +21,7 @@ public class EntityManagerProduct
      */
     public EntityProduct getProductByName(String name)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try {
             
             Query<EntityProduct> query = session.getNamedQuery("getProductByName");
@@ -51,7 +51,7 @@ public class EntityManagerProduct
      */
     public EntityProduct getProductByCode(String code)
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try {
             
             Query<EntityProduct> query = session.getNamedQuery("getProductByCode");
@@ -79,7 +79,7 @@ public class EntityManagerProduct
      */
     public EntityProduct getProductByProductId(int productId) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProductByProductId");
@@ -107,7 +107,7 @@ public class EntityManagerProduct
      */
     public List<EntityProduct> getProductsByProductIds(List<Integer> productIds) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProductsByProductIds");
@@ -128,7 +128,7 @@ public class EntityManagerProduct
      */
     public EntityProduct createProduct(EntityProduct entityProduct) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             session.save(entityProduct);
@@ -142,7 +142,7 @@ public class EntityManagerProduct
     
     public EntityProduct createProduct(EntityProduct entityProduct, List<EntityProductSupplier> productSuppliers) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -178,7 +178,7 @@ public class EntityManagerProduct
         {
             return false;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -199,7 +199,7 @@ public class EntityManagerProduct
         {
             return false;
         }
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -236,7 +236,7 @@ public class EntityManagerProduct
      */
     public List<EntityProduct> getProducts(int offset, int limit) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProducts");
@@ -257,7 +257,7 @@ public class EntityManagerProduct
     public int getTotalProducts() 
     {
         // use count agreegate method here
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProducts");
@@ -278,7 +278,7 @@ public class EntityManagerProduct
      */
     public List<EntityProduct> searchProductByName(String name, int offset, int limit) 
     {
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
@@ -301,7 +301,7 @@ public class EntityManagerProduct
     public int searchTotalProductByName(String name) 
     {
         // use count agreegate method here
-        Session session = HibernateUtil.getSession();
+        Session session = HibernateUtil.getInstance().getSession();
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
