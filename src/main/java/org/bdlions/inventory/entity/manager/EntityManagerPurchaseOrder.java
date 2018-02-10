@@ -22,6 +22,12 @@ import org.slf4j.LoggerFactory;
  */
 public class EntityManagerPurchaseOrder 
 {
+    private int appId;
+    public EntityManagerPurchaseOrder(int appId)
+    {
+        this.appId = appId;
+    }
+    
     private final Logger logger = LoggerFactory.getLogger(EntityManagerPurchaseOrder.class);
     /**
      * This method will create new purchase order using session
@@ -45,7 +51,7 @@ public class EntityManagerPurchaseOrder
      */
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return createPurchaseOrder(entityPurchaseOrder, session);
@@ -66,7 +72,7 @@ public class EntityManagerPurchaseOrder
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -84,7 +90,7 @@ public class EntityManagerPurchaseOrder
                         entityPOShowRoomProduct.setOrderNo(entityPurchaseOrder.getOrderNo());
                         entityPOShowRoomProducts.add(entityPOShowRoomProduct);
                     }
-                    EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct();
+                    EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(this.appId);
                     List<EntityPOShowRoomProduct> resultEntityPOShowRoomProducts = entityManagerPOShowRoomProduct.addPurchaseOrderShowRoomProducts(entityPOShowRoomProducts, session);
                     if(resultEntityPOShowRoomProducts == null || resultEntityPOShowRoomProducts.isEmpty())
                     {
@@ -101,7 +107,7 @@ public class EntityManagerPurchaseOrder
                         entityShowRoomStock.setPurchaseOrderNo(entityPurchaseOrder.getOrderNo());
                         entityShowRoomStocks.add(entityShowRoomStock);
                     }
-                    EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
+                    EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
                     List<EntityShowRoomStock> resultEntityShowRoomStocks = entityManagerShowRoomStock.addShowRoomStocks(entityShowRoomStocks, session);                    
                     if(resultEntityShowRoomStocks == null || resultEntityShowRoomStocks.isEmpty())
                     {
@@ -112,7 +118,7 @@ public class EntityManagerPurchaseOrder
                 {
                     if(entityPurchaseOrder.getSupplierUserId() > 0)
                     {
-                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
                         EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
                         if(entitySupplier != null && entitySupplier.getId() > 0)
                         {
@@ -163,7 +169,7 @@ public class EntityManagerPurchaseOrder
      */
     public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return updatePurchaseOrder(entityPurchaseOrder, session);
@@ -185,15 +191,15 @@ public class EntityManagerPurchaseOrder
     public boolean updatePurchaseOrder(EntityPurchaseOrder currentEntityPurchaseOrder, EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
         boolean status = true;
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
         {
             if(entityPurchaseOrder != null && entityPurchaseOrder.getId() > 0 && updatePurchaseOrder(entityPurchaseOrder, session))
             {
-                EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct();
-                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
+                EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(this.appId);
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
                 //deleting existing products
                 if(!StringUtils.isNullOrEmpty(entityPurchaseOrder.getOrderNo()))
                 {
@@ -236,7 +242,7 @@ public class EntityManagerPurchaseOrder
                 {
                     if(entityPurchaseOrder.getSupplierUserId() > 0)
                     {
-                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
                         EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
                         if(entitySupplier != null && entitySupplier.getId() > 0)
                         {
@@ -280,7 +286,7 @@ public class EntityManagerPurchaseOrder
         {
             return null;
         }
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderByOrderNo");
@@ -312,7 +318,7 @@ public class EntityManagerPurchaseOrder
         {
             return null;
         }
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getPurchaseOrderById");
@@ -335,7 +341,7 @@ public class EntityManagerPurchaseOrder
     
     public EntityPurchaseOrder getLastPurchaseOrder()
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getLastPurchaseOrder");
@@ -364,7 +370,7 @@ public class EntityManagerPurchaseOrder
      */
     public List<EntityPurchaseOrder> getPurchaseOrders(int offset, int limit)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
@@ -384,7 +390,7 @@ public class EntityManagerPurchaseOrder
      */
     public int getTotalPurchaseOrders()
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("getAllPurchaseOrders");
@@ -405,7 +411,7 @@ public class EntityManagerPurchaseOrder
      */
     public List<EntityPurchaseOrder> searchPurchaseOrderByOrderNo(String orderNo, int offset, int limit)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
@@ -427,7 +433,7 @@ public class EntityManagerPurchaseOrder
      */
     public int searchTotalPurchaseOrderByOrderNo(String orderNo)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByOrderNo");
@@ -449,7 +455,7 @@ public class EntityManagerPurchaseOrder
      */
     public List<EntityPurchaseOrder> searchPurchaseOrderByCell(String cell, int offset, int limit)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByCell");
@@ -471,7 +477,7 @@ public class EntityManagerPurchaseOrder
      */
     public int searchTotalPurchaseOrderByCell(String cell)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityPurchaseOrder> query = session.getNamedQuery("searchPurchaseOrderByCell");
@@ -535,7 +541,7 @@ public class EntityManagerPurchaseOrder
         {
             return 0;
         }
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             return this.getSupplierCurrentDue(supplierUserId, session);
@@ -549,7 +555,7 @@ public class EntityManagerPurchaseOrder
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
     public List<EntityPurchaseOrder> getPurchaseOrdersDQ(long startTime, long endTime, int offset, int limit)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
@@ -567,7 +573,7 @@ public class EntityManagerPurchaseOrder
     
     public int getTotalPurchaseOrdersDQ(long startTime, long endTime)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";

@@ -79,10 +79,10 @@ public final class HibernateUtil {
         return session;
     }
     
-    public Session getSession() 
+    /*public Session getSession() 
     {
         Session session = getSession(10001);
         return session;
         //return getSession(10001);
-    }
+    }*/
 }

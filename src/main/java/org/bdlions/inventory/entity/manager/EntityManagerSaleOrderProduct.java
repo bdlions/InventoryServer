@@ -14,6 +14,12 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerSaleOrderProduct 
 {
+    private int appId;
+    public EntityManagerSaleOrderProduct(int appId)
+    {
+        this.appId = appId;
+    }
+    
     /**
      * This method will add sale order product using session
      * @param entitySaleOrderProduct entity sale order product
@@ -33,7 +39,7 @@ public class EntityManagerSaleOrderProduct
      */
     public EntitySaleOrderProduct addSaleOrderProduct(EntitySaleOrderProduct entitySaleOrderProduct)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return addSaleOrderProduct(entitySaleOrderProduct, session);
@@ -89,7 +95,7 @@ public class EntityManagerSaleOrderProduct
      */
     public int deleteSaleOrderProductsByOrderNo(String saleOrderNo)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             return deleteSaleOrderProductsByOrderNo(saleOrderNo, session);
@@ -111,7 +117,7 @@ public class EntityManagerSaleOrderProduct
         {
             return null;
         }
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntitySaleOrderProduct> queryShowRoomProducts = session.getNamedQuery("getSaleOrderProductsByOrderNo");

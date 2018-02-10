@@ -18,6 +18,12 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerCustomer 
 {
+    private int appId;
+    public EntityManagerCustomer(int appId)
+    {
+        this.appId = appId;
+    }
+    
     /**
      * This method will return entity customer by customer id
      * @param customerId customer id
@@ -25,7 +31,7 @@ public class EntityManagerCustomer
      */
     public EntityCustomer getCustomerByCustomerId(int customerId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityCustomer> query = session.getNamedQuery("getCustomerByCustomerId");
@@ -53,7 +59,7 @@ public class EntityManagerCustomer
      */
     public EntityCustomer getCustomerByUserId(int userId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             return this.getCustomerByUserId(userId, session);
@@ -101,7 +107,7 @@ public class EntityManagerCustomer
      */
     public EntityCustomer createCustomer(EntityCustomer entityCustomer)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return createCustomer(entityCustomer, session);
@@ -121,12 +127,12 @@ public class EntityManagerCustomer
      */
     public EntityCustomer createCustomer(EntityCustomer entityCustomer, EntityUser entityUser, EntityUserRole entityUserRole)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         if(entityUser != null)
         {
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityManagerUser entityManagerUser = new EntityManagerUser(this.appId);
             EntityUser resultEntityUser = entityManagerUser.createUser(entityUser, entityUserRole, session);
             entityCustomer.setUserId(resultEntityUser.getId());
         }
@@ -163,7 +169,7 @@ public class EntityManagerCustomer
      */
     public boolean updateCustomer(EntityCustomer entityCustomer)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return updateCustomer(entityCustomer, session);
@@ -183,19 +189,19 @@ public class EntityManagerCustomer
      */
     public boolean updateCustomer(EntityCustomer entityCustomer, EntityUser entityUser, EntitySaleOrder entitySaleOrder)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();        
         try 
         {
             if(entityUser != null)
             {
-                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                EntityManagerUser entityManagerUser = new EntityManagerUser(this.appId);
                 entityManagerUser.updateUser(entityUser, session);
             }
             if(entitySaleOrder != null)
             {
-                EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+                EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(this.appId);
                 entityManagerSaleOrder.updateSaleOrderCustomerInfo(entitySaleOrder, session);
             }
             updateCustomer(entityCustomer, session);
@@ -216,7 +222,7 @@ public class EntityManagerCustomer
      */
     public List<EntityCustomer> getCustomers(int offset, int limit) {
         List<EntityCustomer> entityCustomers = new ArrayList<>();
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("getCustomers");
@@ -236,7 +242,7 @@ public class EntityManagerCustomer
      * @return Integer total number of customers
      */
     public int getTotalCustomers() {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("getCustomers");
@@ -257,7 +263,7 @@ public class EntityManagerCustomer
      */
     public List<EntityCustomer> searchCustomersByName(String customerName, int offset, int limit) {
         List<EntityCustomer> entityCustomers = new ArrayList<>();
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByName");
@@ -279,7 +285,7 @@ public class EntityManagerCustomer
      * @return Integer total number of customers
      */
     public int searchTotalCustomersByName(String customerName) {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByName");
@@ -301,7 +307,7 @@ public class EntityManagerCustomer
      */
     public List<EntityCustomer> searchCustomersByCell(String cell, int offset, int limit) {
         List<EntityCustomer> entityCustomers = new ArrayList<>();
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByCell");
@@ -323,7 +329,7 @@ public class EntityManagerCustomer
      * @return Integer total number of customers
      */
     public int searchTotalCustomersByCell(String cell) {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByCell");
@@ -345,7 +351,7 @@ public class EntityManagerCustomer
      */
     public List<EntityCustomer> searchCustomersByEmail(String email, int offset, int limit) {
         List<EntityCustomer> entityCustomers = new ArrayList<>();
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByEmail");
@@ -367,7 +373,7 @@ public class EntityManagerCustomer
      * @return Integer total number of customers
      */
     public int searchTotalCustomersByEmail(String email) {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByEmail");

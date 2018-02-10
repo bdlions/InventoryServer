@@ -35,9 +35,13 @@ public class ReportServlet {
     public void getReport(HttpServletResponse response) {
 
         response.setContentType("application/pdf");
+        
+        //-------------------------------------------------------------------//
+        //right now app is hardcoded
+        int appId = 10001;
 
         String sourceFileName = getClass().getClassLoader().getResource("reports/customers.jasper").getFile();
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(appId);
         List<EntityUser> dataList = entityManagerUser.getUsers(1, 10);
 
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);

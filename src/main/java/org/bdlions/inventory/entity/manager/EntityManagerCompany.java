@@ -11,9 +11,15 @@ import org.hibernate.query.Query;
  * @author Nazmul Hasan
  */
 public class EntityManagerCompany {
+    private int appId;
+    public EntityManagerCompany(int appId)
+    {
+        this.appId = appId;
+    }
+    
     public EntityCompany getCompanyInfo()
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try {
             
             Query<EntityCompany> query = session.getNamedQuery("getCompanyInfo");

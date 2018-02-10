@@ -12,13 +12,19 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerProductType 
 {
+    private int appId;
+    public EntityManagerProductType(int appId)
+    {
+        this.appId = appId;
+    }
+    
     /**
      * This method will return all product types
      * @return List, product type list
      */
     public List<EntityProductType> getAllProductTypes()
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProductType> query = session.getNamedQuery("getAllProductTypes");

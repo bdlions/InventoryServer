@@ -70,9 +70,13 @@ public class SaleServlet {
             //handle logic if invalid param of orderNo
         }    
 
+        //-------------------------------------------------------------------//
+        //right now app is hardcoded
+        int appId = 10001;
+        
         String sourceFileName = getClass().getClassLoader().getResource("reports/sale.jasper").getFile();
 
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(appId);
 
         DTOSaleOrder dtoSaleOrder = new DTOSaleOrder();
         dtoSaleOrder.setEntitySaleOrder(new EntitySaleOrder());
@@ -82,15 +86,15 @@ public class SaleServlet {
         dtoCustomer.setEntityCustomer(new EntityCustomer());
         dtoCustomer.setEntityUser(new EntityUser());
 
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(appId);
         EntitySaleOrder entitySaleOrder = entityManagerSaleOrder.getSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
         if (entitySaleOrder != null) {
             dtoSaleOrder.setEntitySaleOrder(entitySaleOrder);
-            EntityManagerSaleOrderProduct entityManagerSaleOrderProduct = new EntityManagerSaleOrderProduct();
+            EntityManagerSaleOrderProduct entityManagerSaleOrderProduct = new EntityManagerSaleOrderProduct(appId);
             List<EntitySaleOrderProduct> entitySaleOrderProducts = entityManagerSaleOrderProduct.getSaleOrderProductsByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
             if (entitySaleOrderProducts != null && !entitySaleOrderProducts.isEmpty()) {
-                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
-                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(appId);
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(appId);
                 for (int counter = 0; counter < entitySaleOrderProducts.size(); counter++) {
                     EntitySaleOrderProduct entitySaleOrderProduct = entitySaleOrderProducts.get(counter);
                     EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
@@ -105,7 +109,7 @@ public class SaleServlet {
             }
             if(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId() > 0)
             {
-                EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+                EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(appId);
                 EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
                 dtoCustomer.setEntityCustomer(entityCustomer);
                 dtoCustomer.setEntityUser(entityManagerUser.getUserByUserId(dtoCustomer.getEntityCustomer().getUserId()));
@@ -140,7 +144,7 @@ public class SaleServlet {
         String companyAddress = "";
         String companyCell = "";
         String companyLogo = "";
-        EntityManagerCompany entityManagerCompany = new EntityManagerCompany();
+        EntityManagerCompany entityManagerCompany = new EntityManagerCompany(appId);
         EntityCompany entityCompany = entityManagerCompany.getCompanyInfo();
         if(entityCompany != null)
         {

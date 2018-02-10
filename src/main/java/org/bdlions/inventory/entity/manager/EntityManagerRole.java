@@ -3,11 +3,8 @@ package org.bdlions.inventory.entity.manager;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityRole;
-import org.bdlions.inventory.entity.EntityUser;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -15,9 +12,15 @@ import org.slf4j.LoggerFactory;
  */
 public class EntityManagerRole 
 {
+    private int appId;
+    public EntityManagerRole(int appId)
+    {
+        this.appId = appId;
+    }
+    
     public EntityRole getRoleByRoleId(int roleId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try
         {
             return getRoleByRoleId(session, roleId);
@@ -36,7 +39,7 @@ public class EntityManagerRole
     
     public List<EntityRole> getRoles() 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityRole> query = session.getNamedQuery("getRoles");

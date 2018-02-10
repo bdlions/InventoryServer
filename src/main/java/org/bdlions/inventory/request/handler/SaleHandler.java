@@ -68,7 +68,7 @@ public class SaleHandler {
             responseDTOSaleOrder.setMessage("Please select product for the sale.");
             return responseDTOSaleOrder;
         }        
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
         int autoOrderNo = 1;
         EntitySaleOrder tempEntitySaleOrder = entityManagerSaleOrder.getLastSaleOrder();        
         if(tempEntitySaleOrder != null)
@@ -161,7 +161,7 @@ public class SaleHandler {
             
         }      
         //checking whether stock is available or not
-        Stock stock = new Stock();
+        Stock stock = new Stock(packet.getPacketHeader().getAppId());
         List<DTOProduct> stockProducts = stock.getCurrentStockByProductIds(productIds);
         for(int productCounter = 0; productCounter < stockProducts.size(); productCounter++)
         {
@@ -176,7 +176,7 @@ public class SaleHandler {
         }
         
         //setting user profile info into sale order info
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         EntityUser entityUser = entityManagerUser.getUserByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
         if(entityUser != null)
         {
@@ -252,7 +252,7 @@ public class SaleHandler {
             return response;
         }
         
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
         EntitySaleOrder resultEntitySaleOrder = entityManagerSaleOrder.getSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
         if(resultEntitySaleOrder != null && resultEntitySaleOrder.getId() != dtoSaleOrder.getEntitySaleOrder().getId())
         {
@@ -301,13 +301,13 @@ public class SaleHandler {
             }
             
             //checking whether stock is available or not
-            Stock stock = new Stock();
+            Stock stock = new Stock(packet.getPacketHeader().getAppId());
             List<DTOProduct> stockProducts = stock.getCurrentStockByProductIds(productIds);
             for(int productCounter = 0; productCounter < stockProducts.size(); productCounter++)
             {
                 DTOProduct stockProduct = stockProducts.get(productCounter);
                 
-                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(packet.getPacketHeader().getAppId());
                 EntityShowRoomStock showRoomStockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(stockProduct.getEntityProduct().getId(), currentEntitySaleOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
                 if(showRoomStockProduct == null)
                 {
@@ -324,7 +324,7 @@ public class SaleHandler {
                 }
             }
             //setting user profile info into sale order info
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
             EntityUser entityUser = entityManagerUser.getUserByUserId(dtoSaleOrder.getEntitySaleOrder().getCustomerUserId());
             if(entityUser != null)
             {
@@ -378,17 +378,17 @@ public class SaleHandler {
             return response;
         }
         
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
         EntitySaleOrder entitySaleOrder = entityManagerSaleOrder.getSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
         if(entitySaleOrder != null)
         {
             dtoSaleOrder.setEntitySaleOrder(entitySaleOrder);
-            EntityManagerSaleOrderProduct entityManagerSaleOrderProduct = new EntityManagerSaleOrderProduct();
+            EntityManagerSaleOrderProduct entityManagerSaleOrderProduct = new EntityManagerSaleOrderProduct(packet.getPacketHeader().getAppId());
             List<EntitySaleOrderProduct> entitySaleOrderProducts = entityManagerSaleOrderProduct.getSaleOrderProductsByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
             if(entitySaleOrderProducts != null && !entitySaleOrderProducts.isEmpty())
             {
-                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
-                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(packet.getPacketHeader().getAppId());
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
                 for(int counter = 0; counter < entitySaleOrderProducts.size(); counter++)
                 {
                     EntitySaleOrderProduct entitySaleOrderProduct = entitySaleOrderProducts.get(counter);
@@ -429,7 +429,7 @@ public class SaleHandler {
         }
         
         List<DTOSaleOrder> saleOrders = new ArrayList<>();
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
         List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.getSaleOrders(dtoSaleOrder.getOffset(), dtoSaleOrder.getLimit());
         if(entitySaleOrders != null)
         {
@@ -464,7 +464,7 @@ public class SaleHandler {
         }
         
         List<DTOSaleOrder> saleOrders = new ArrayList<>();
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
         List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.searchSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo(), dtoSaleOrder.getOffset(), dtoSaleOrder.getLimit());
         if(entitySaleOrders != null)
         {
@@ -499,7 +499,7 @@ public class SaleHandler {
         }
         
         List<DTOSaleOrder> saleOrders = new ArrayList<>();
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
         List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.searchSaleOrderByCell(dtoSaleOrder.getEntitySaleOrder().getCell(), dtoSaleOrder.getOffset(), dtoSaleOrder.getLimit());
         if(entitySaleOrders != null)
         {

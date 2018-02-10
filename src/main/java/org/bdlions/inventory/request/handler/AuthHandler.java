@@ -11,6 +11,8 @@ import com.bdlions.dto.response.SignInResponse;
 import org.bdlions.util.StringUtils;
 import org.bdlions.util.annotation.ClientRequest;
 import com.google.gson.Gson;
+import org.bdlions.inventory.packet.PacketHeaderImpl;
+import org.bdlions.transport.packet.IPacketHeader;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -73,6 +75,7 @@ public class AuthHandler {
 //            return response;
 //        }
         try{
+            credential.setAppId(packet.getPacketHeader().getAppId());
             session = sessionManager.createSession(credential);
         }catch(Exception ex){
             response.setMessage(ClientMessages.INVALID_CREDENTIAL);

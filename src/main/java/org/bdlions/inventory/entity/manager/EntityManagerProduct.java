@@ -14,6 +14,12 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerProduct 
 {
+    private int appId;
+    public EntityManagerProduct(int appId)
+    {
+        this.appId = appId;
+    }
+    
     /**
      * This method will return product info by name
      * @param name, product name
@@ -21,7 +27,7 @@ public class EntityManagerProduct
      */
     public EntityProduct getProductByName(String name)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try {
             
             Query<EntityProduct> query = session.getNamedQuery("getProductByName");
@@ -51,7 +57,7 @@ public class EntityManagerProduct
      */
     public EntityProduct getProductByCode(String code)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try {
             
             Query<EntityProduct> query = session.getNamedQuery("getProductByCode");
@@ -79,7 +85,7 @@ public class EntityManagerProduct
      */
     public EntityProduct getProductByProductId(int productId) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProductByProductId");
@@ -107,7 +113,7 @@ public class EntityManagerProduct
      */
     public List<EntityProduct> getProductsByProductIds(List<Integer> productIds) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProductsByProductIds");
@@ -128,7 +134,7 @@ public class EntityManagerProduct
      */
     public EntityProduct createProduct(EntityProduct entityProduct) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             session.save(entityProduct);
@@ -142,7 +148,7 @@ public class EntityManagerProduct
     
     public EntityProduct createProduct(EntityProduct entityProduct, List<EntityProductSupplier> productSuppliers) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -150,7 +156,7 @@ public class EntityManagerProduct
             session.save(entityProduct);
             if(entityProduct.getId() > 0 && productSuppliers != null && !productSuppliers.isEmpty())
             {
-                EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+                EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier(this.appId);
                 for(EntityProductSupplier entityProductSupplier: productSuppliers)
                 {
                     entityProductSupplier.setProductId(entityProduct.getId());
@@ -178,7 +184,7 @@ public class EntityManagerProduct
         {
             return false;
         }
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -199,7 +205,7 @@ public class EntityManagerProduct
         {
             return false;
         }
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try 
@@ -207,7 +213,7 @@ public class EntityManagerProduct
             session.update(entityProduct);
             if(productSuppliers != null && !productSuppliers.isEmpty())
             {
-                EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+                EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier(this.appId);
                 if(supplierUserIds != null && !supplierUserIds.isEmpty())
                 {
                     entityManagerProductSupplier.deleteProductSuppliersBySupplierUserIds(entityProduct.getId(), supplierUserIds, session);
@@ -236,7 +242,7 @@ public class EntityManagerProduct
      */
     public List<EntityProduct> getProducts(int offset, int limit) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProducts");
@@ -257,7 +263,7 @@ public class EntityManagerProduct
     public int getTotalProducts() 
     {
         // use count agreegate method here
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("getProducts");
@@ -278,7 +284,7 @@ public class EntityManagerProduct
      */
     public List<EntityProduct> searchProductByName(String name, int offset, int limit) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
@@ -301,7 +307,7 @@ public class EntityManagerProduct
     public int searchTotalProductByName(String name) 
     {
         // use count agreegate method here
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProduct> query = session.getNamedQuery("searchProductByName");

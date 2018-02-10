@@ -12,9 +12,15 @@ import org.hibernate.query.Query;
  * @author Nazmul Hasan
  */
 public class EntityManagerProductSupplier {
+    private int appId;
+    public EntityManagerProductSupplier(int appId)
+    {
+        this.appId = appId;
+    }
+    
     public List<EntityProductSupplier> getProductSuppliersByProductId(int productId, int offset, int limit)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersByProductId");
@@ -32,7 +38,7 @@ public class EntityManagerProductSupplier {
     
     public int getTotalProductSuppliersByProductId(int productId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersByProductId");
@@ -47,7 +53,7 @@ public class EntityManagerProductSupplier {
     
     public List<EntityProductSupplier> getProductSuppliersBySupplierUserId(int supplierUserId, int offset, int limit)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");
@@ -64,7 +70,7 @@ public class EntityManagerProductSupplier {
     }
     public int getTotalProductSuppliersBySupplierUserId(int supplierUserId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");

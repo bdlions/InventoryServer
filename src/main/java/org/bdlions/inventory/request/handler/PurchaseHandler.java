@@ -69,7 +69,7 @@ public class PurchaseHandler {
             responseDTOPurchaseOrder.setMessage("Please select product for the purchase.");
             return responseDTOPurchaseOrder;
         }
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
         int autoOrderNo = 1;
         EntityPurchaseOrder tempEntityPurchaseOrder = entityManagerPurchaseOrder.getLastPurchaseOrder();        
         if(tempEntityPurchaseOrder != null)
@@ -152,7 +152,7 @@ public class PurchaseHandler {
         }    
         
         //setting user profile info into purchase order info
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
         if(entityUser != null)
         {
@@ -228,7 +228,7 @@ public class PurchaseHandler {
             response.setMessage("Please select product for the purchase.");
             return response;
         }
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
         //check whether order no exists or not
         EntityPurchaseOrder resultEntityPurchaseOrder = entityManagerPurchaseOrder.getPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
         if(resultEntityPurchaseOrder != null && resultEntityPurchaseOrder.getId() != dtoPurchaseOrder.getEntityPurchaseOrder().getId())
@@ -278,12 +278,12 @@ public class PurchaseHandler {
             }  
             
             //checking whether stock is available or not
-            Stock stock = new Stock();
+            Stock stock = new Stock(packet.getPacketHeader().getAppId());
             List<DTOProduct> stockProducts = stock.getCurrentStockByProductIds(productIds);
             for(int productCounter = 0; productCounter < stockProducts.size(); productCounter++)
             {
                 DTOProduct stockProduct = stockProducts.get(productCounter);
-                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(packet.getPacketHeader().getAppId());
                 EntityShowRoomStock showRoomStockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(stockProduct.getEntityProduct().getId(), currentEntityPurchaseOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
                 if(showRoomStockProduct == null)
                 {
@@ -301,7 +301,7 @@ public class PurchaseHandler {
             }
             
             //setting user profile info into purchase order info
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
             EntityUser entityUser = entityManagerUser.getUserByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
             if(entityUser != null)
             {
@@ -355,17 +355,17 @@ public class PurchaseHandler {
             return response;
         }
         
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
         EntityPurchaseOrder entityPurchaseOrder = entityManagerPurchaseOrder.getPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
         if(entityPurchaseOrder != null)
         {
             dtoPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
-            EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct();
+            EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(packet.getPacketHeader().getAppId());
             List<EntityPOShowRoomProduct> entityPOShowRoomProducts = entityManagerPOShowRoomProduct.getPOShowRoomProductsByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             if(entityPOShowRoomProducts != null && !entityPOShowRoomProducts.isEmpty())
             {
-                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
-                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(packet.getPacketHeader().getAppId());
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
                 for(int counter = 0; counter < entityPOShowRoomProducts.size(); counter++)
                 {
                     EntityPOShowRoomProduct entityPOShowRoomProduct = entityPOShowRoomProducts.get(counter);
@@ -405,7 +405,7 @@ public class PurchaseHandler {
             return response;
         }
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
         List<EntityPurchaseOrder> entityPurchaseOrders = entityManagerPurchaseOrder.getPurchaseOrders(dtoPurchaseOrder.getOffset(), dtoPurchaseOrder.getLimit());
         if(entityPurchaseOrders != null)
         {
@@ -438,7 +438,7 @@ public class PurchaseHandler {
             return response;
         }
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
         List<EntityPurchaseOrder> entityPurchaseOrders = entityManagerPurchaseOrder.searchPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), dtoPurchaseOrder.getOffset(), dtoPurchaseOrder.getLimit());
         if(entityPurchaseOrders != null)
         {
@@ -471,7 +471,7 @@ public class PurchaseHandler {
             return response;
         }
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
         List<EntityPurchaseOrder> entityPurchaseOrders = entityManagerPurchaseOrder.searchPurchaseOrderByCell(dtoPurchaseOrder.getEntityPurchaseOrder().getCell(), dtoPurchaseOrder.getOffset(), dtoPurchaseOrder.getLimit());
         if(entityPurchaseOrders != null)
         {

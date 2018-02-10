@@ -16,6 +16,11 @@ import org.hibernate.query.Query;
  */
 public class Stock 
 {
+    private int appId;
+    public Stock(int appId)
+    {
+        this.appId = appId;
+    }
     /**
      * This method will return current stock of product
      * @param offset offset
@@ -25,7 +30,7 @@ public class Stock
     public List<DTOProduct> getCurrentStock(int offset, int limit)
     {
         List<DTOProduct> products = new ArrayList<>();
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStock");
@@ -37,7 +42,7 @@ public class Stock
                 int productId = (int)entityShowRoomStock[0];
                 double quantity = (double)entityShowRoomStock[1];
                 
-                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(this.appId);
                 EntityProduct entityProduct = entityManagerProduct.getProductByProductId(productId);
                 DTOProduct dtoProduct = new DTOProduct();
                 dtoProduct.setQuantity(quantity);
@@ -58,7 +63,7 @@ public class Stock
      */
     public int getTotalCurrentStock()
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStock");
@@ -80,7 +85,7 @@ public class Stock
     public List<DTOProduct> searchCurrentStockByProductName(String productName, int offset, int limit)
     {
         List<DTOProduct> products = new ArrayList<>();
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("searchCurrentStockByProductName");
@@ -93,7 +98,7 @@ public class Stock
                 int productId = (int)entityShowRoomStock[0];
                 double quantity = (double)entityShowRoomStock[1];
                 
-                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(this.appId);
                 EntityProduct entityProduct = entityManagerProduct.getProductByProductId(productId);
                 DTOProduct dtoProduct = new DTOProduct();
                 dtoProduct.setQuantity(quantity);
@@ -115,7 +120,7 @@ public class Stock
      */
     public int searchTotalCurrentStockByProductName(String productName)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("searchCurrentStockByProductName");
@@ -136,7 +141,7 @@ public class Stock
     public List<DTOProduct> getCurrentStockByProductIds(List<Integer> productIds)
     {
         List<DTOProduct> products = new ArrayList<>();
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try
         {
             Query<Object[]> queryStockProducts = session.getNamedQuery("getCurrentStockByProductIds");
@@ -151,7 +156,7 @@ public class Stock
             }
             if(!reqProductIds.isEmpty())
             {
-                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(this.appId);
                 List<EntityProduct> productList = entityManagerProduct.getProductsByProductIds(reqProductIds);
                 for(EntityProduct entityProduct : productList)
                 {

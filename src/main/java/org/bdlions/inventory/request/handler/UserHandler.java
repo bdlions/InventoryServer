@@ -38,7 +38,7 @@ public class UserHandler {
     public ClientResponse getProfileInfo(ISession session, IPacket packet) throws Exception 
     {
         int userId = (int)session.getUserId();
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         EntityUser entiryUser = entityManagerUser.getUserByUserId(userId);
         entiryUser.setMessage("User Info.");
         entiryUser.setSuccess(true);
@@ -49,7 +49,7 @@ public class UserHandler {
     public ClientResponse getRolesByUser(ISession session, IPacket packet) throws Exception 
     {
         int userId = (int)session.getUserId();
-        EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+        EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole(packet.getPacketHeader().getAppId());
         List<EntityUserRole> entityUserRoles = entityManagerUserRole.getUserRolesByUserId(userId);
         ClientListResponse response = new ClientListResponse();
         response.setList(entityUserRoles);
@@ -69,11 +69,11 @@ public class UserHandler {
             response.setMessage("Invalid request to get user info. Please try again later.");
             return response;
         }
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         EntityUser entityUser = entityManagerUser.getUserByUserId(reqEntityUser.getId());
         if(entityUser != null)
         {
-            EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+            EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole(packet.getPacketHeader().getAppId());
             List<EntityUserRole> entityUserRoles = entityManagerUserRole.getUserRolesByUserId(reqEntityUser.getId());
             response.setEntityUser(entityUser);
             response.setEntityUserRoles(entityUserRoles);
@@ -87,7 +87,7 @@ public class UserHandler {
     {
         ClientListResponse response = new ClientListResponse();
         response.setSuccess(true);
-        EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+        EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole(packet.getPacketHeader().getAppId());
         List<Integer> roleIds = new ArrayList<>();
         roleIds.add(Constants.ROLE_ID_ADMIN);
         roleIds.add(Constants.ROLE_ID_STAFF);
@@ -102,7 +102,7 @@ public class UserHandler {
         }
         if(!userIds.isEmpty())
         {
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
             List<EntityUser> entityUsers = entityManagerUser.getUsersByUserIds(userIds);
             response.setList(entityUsers);            
         }
@@ -113,7 +113,7 @@ public class UserHandler {
     public ClientResponse getUserRoleList(ISession session, IPacket packet) throws Exception 
     {
         //we are sending admin and staff as user role list
-        EntityManagerRole entityManagerRole = new EntityManagerRole();
+        EntityManagerRole entityManagerRole = new EntityManagerRole(packet.getPacketHeader().getAppId());
         List<EntityRole> roleList = entityManagerRole.getRoles();
         List<EntityRole> roles = new ArrayList<>();
         for(EntityRole entityRole: roleList)
@@ -155,7 +155,7 @@ public class UserHandler {
             return response;
         }
         
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         EntityUser tempEntityUser = entityManagerUser.getUserByEmail(dtoUser.getEntityUser().getEmail());
         if(tempEntityUser != null && tempEntityUser.getId() > 0)
         {
@@ -204,7 +204,7 @@ public class UserHandler {
             return response;
         }
         
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         EntityUser tempEntityUser = entityManagerUser.getUserByEmail(dtoUser.getEntityUser().getEmail());
         if(tempEntityUser != null && tempEntityUser.getId() != dtoUser.getEntityUser().getId())
         {

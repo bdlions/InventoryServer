@@ -38,7 +38,8 @@ public class DBUserProvider implements IDBUserProvider {
         if (!StringUtils.isNullOrEmpty(credential.getUserName()) && !StringUtils.isNullOrEmpty(credential.getPassword())) {
             String userName = credential.getUserName();
             String password = credential.getPassword();
-            EntityManagerUser entityManagerUser = new EntityManagerUser();
+            int appId = credential.getAppId();
+            EntityManagerUser entityManagerUser = new EntityManagerUser(appId);
             EntityUser user = entityManagerUser.getUserByCredential(userName, password);
             if (user != null) {
                 credential.setAppType(100);

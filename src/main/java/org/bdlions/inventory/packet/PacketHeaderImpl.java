@@ -14,6 +14,7 @@ public class PacketHeaderImpl implements IPacketHeader {
     private REQUEST_TYPE requestType;
     private String sessionId;
     private String packetId;
+    private int appId;
 
     public void setPacketId(String packetId) {
         this.packetId = packetId;
@@ -31,6 +32,10 @@ public class PacketHeaderImpl implements IPacketHeader {
         this.sessionId = sessionId;
     }
 
+    public void setAppId(int appId) {
+        this.appId = appId;
+    }
+    
     @Override
     public String getPacketId() {
         return packetId;
@@ -49,6 +54,11 @@ public class PacketHeaderImpl implements IPacketHeader {
     @Override
     public String getSessionId() {
         return sessionId;
+    }
+    
+    @Override
+    public int getAppId() {
+        return appId;
     }
 
     @Override

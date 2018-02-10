@@ -44,7 +44,7 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.FETCH_ALL_PRODUCT_CATEGORIES)
     public ClientResponse getAllProductCategories(ISession session, IPacket packet) throws Exception 
     {
-        EntityManagerProductCategory entityManagerProductCategory = new EntityManagerProductCategory();
+        EntityManagerProductCategory entityManagerProductCategory = new EntityManagerProductCategory(packet.getPacketHeader().getAppId());
         List<EntityProductCategory> productCategorys = entityManagerProductCategory.getAllProductCategories();
         ListProductCategory response = new ListProductCategory();
         response.setProductCategories(productCategorys);
@@ -55,7 +55,7 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.FETCH_ALL_PRODUCT_TYPES)
     public ClientResponse getAllProductTypes(ISession session, IPacket packet) throws Exception 
     {
-        EntityManagerProductType entityManagerProductType = new EntityManagerProductType();
+        EntityManagerProductType entityManagerProductType = new EntityManagerProductType(packet.getPacketHeader().getAppId());
         List<EntityProductType> productTypes = entityManagerProductType.getAllProductTypes();
         ListProductType response = new ListProductType();
         response.setProductTypes(productTypes);
@@ -66,7 +66,7 @@ public class ProductHandler {
     @ClientRequest(action = ACTION.FETCH_ALL_UOMS)
     public ClientResponse getAllUOMs(ISession session, IPacket packet) throws Exception 
     {
-        EntityManagerUOM entityManagerUOM = new EntityManagerUOM();
+        EntityManagerUOM entityManagerUOM = new EntityManagerUOM(packet.getPacketHeader().getAppId());
         List<EntityUOM> uoms = entityManagerUOM.getAllUOMs();
         ListUOM response = new ListUOM();
         response.setUoms(uoms);
@@ -112,7 +112,7 @@ public class ProductHandler {
             return responseEntityProduct;
         } 
         
-        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
         EntityProduct resultEntityProduct = entityManagerProduct.getProductByName(entityProduct.getName());
         if(resultEntityProduct != null)
         {
@@ -150,7 +150,7 @@ public class ProductHandler {
             generalResponse.setMessage("Invalid request to get product info. Please try again later");
             return generalResponse;
         } 
-        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
         EntityProduct response = entityManagerProduct.getProductByProductId(entityProduct.getId());
         if(response != null && response.getId() > 0)
         {
@@ -177,7 +177,7 @@ public class ProductHandler {
             response.setMessage("Invalid request to get product supplier list. Please try again later");
             return response;
         } 
-        EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+        EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier(packet.getPacketHeader().getAppId());
         List<EntityProductSupplier> supplierList = entityManagerProductSupplier.getProductSuppliersByProductId(dtoProduct.getEntityProduct().getId(), dtoProduct.getOffset(), dtoProduct.getLimit());
         int counter = entityManagerProductSupplier.getTotalProductSuppliersByProductId(dtoProduct.getEntityProduct().getId());
         response.setCounter(counter);
@@ -230,7 +230,7 @@ public class ProductHandler {
             return response;
         }
         
-        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
         EntityProduct resultEntityProduct = entityManagerProduct.getProductByName(entityProduct.getName());
         if(resultEntityProduct != null && resultEntityProduct.getId() != entityProduct.getId())
         {
@@ -288,7 +288,7 @@ public class ProductHandler {
             return generalResponse;
         }
         
-        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
         List<EntityProduct> products = entityManagerProduct.getProducts(dtoProduct.getOffset(), dtoProduct.getLimit());
         int totalProducts = entityManagerProduct.getTotalProducts();
         ListProduct response = new ListProduct();
@@ -312,7 +312,7 @@ public class ProductHandler {
             return generalResponse;
         }
         
-        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
         List<EntityProduct> products = entityManagerProduct.searchProductByName(dtoProduct.getEntityProduct().getName(), dtoProduct.getOffset(), dtoProduct.getLimit());
         int totalProducts = entityManagerProduct.searchTotalProductByName(dtoProduct.getEntityProduct().getName());
         ListProduct response = new ListProduct();
@@ -334,7 +334,7 @@ public class ProductHandler {
             generalResponse.setMessage("Invalid request to get product info by code. Please try again later");
             return generalResponse;
         }        
-        EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
         EntityProduct response = entityManagerProduct.getProductByCode(entityProduct.getCode());
         if(response != null && response.getId() > 0)
         {

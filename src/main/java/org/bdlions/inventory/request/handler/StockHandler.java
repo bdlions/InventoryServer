@@ -41,7 +41,7 @@ public class StockHandler {
         }
         
         ListDTOProduct listDTOProduct = new ListDTOProduct();
-        Stock stock = new Stock();
+        Stock stock = new Stock(packet.getPacketHeader().getAppId());
         List<DTOProduct> products = stock.getCurrentStock(dtoProduct.getOffset(), dtoProduct.getLimit());
         listDTOProduct.setProducts(products);
         listDTOProduct.setTotalProducts(stock.getTotalCurrentStock());
@@ -63,7 +63,7 @@ public class StockHandler {
         }
         
         ListDTOProduct listDTOProduct = new ListDTOProduct();
-        Stock stock = new Stock();
+        Stock stock = new Stock(packet.getPacketHeader().getAppId());
         List<DTOProduct> products = stock.searchCurrentStockByProductName(dtoProduct.getEntityProduct().getName(), dtoProduct.getOffset(), dtoProduct.getLimit());
         listDTOProduct.setProducts(products);
         listDTOProduct.setTotalProducts(stock.searchTotalCurrentStockByProductName(dtoProduct.getEntityProduct().getName()));

@@ -68,7 +68,7 @@ public class PurchaseReportHandler {
         }
         
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
         List<EntityPurchaseOrder> entityPurchaseOrders =  entityManagerPurchaseOrder.getPurchaseOrdersDQ(startTime, endTime, offset, limit);
         if(entityPurchaseOrders != null)
         {

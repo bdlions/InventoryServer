@@ -67,9 +67,12 @@ public class PurchaseServlet {
         catch(Exception ex)
         {
             //handle logic if invalid param of orderNo
-        }         
+        }  
+        //-------------------------------------------------------------------//
+        //right now app is hardcoded
+        int appId = 10001;
         
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(appId);
         
         DTOSupplier dtoSupplier = new DTOSupplier();
         dtoSupplier.setEntitySupplier(new EntitySupplier());
@@ -78,17 +81,17 @@ public class PurchaseServlet {
         DTOPurchaseOrder dtoPurchaseOrder = new DTOPurchaseOrder();
         dtoPurchaseOrder.setEntityPurchaseOrder(new EntityPurchaseOrder());
         dtoPurchaseOrder.getEntityPurchaseOrder().setOrderNo(orderNo);
-        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder();
+        EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(appId);
         EntityPurchaseOrder entityPurchaseOrder = entityManagerPurchaseOrder.getPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
         if(entityPurchaseOrder != null)
         {
             dtoPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
-            EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct();
+            EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(appId);
             List<EntityPOShowRoomProduct> entityPOShowRoomProducts = entityManagerPOShowRoomProduct.getPOShowRoomProductsByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             if(entityPOShowRoomProducts != null && !entityPOShowRoomProducts.isEmpty())
             {
-                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock();
-                EntityManagerProduct entityManagerProduct = new EntityManagerProduct();
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(appId);
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(appId);
                 for(int counter = 0; counter < entityPOShowRoomProducts.size(); counter++)
                 {
                     EntityPOShowRoomProduct entityPOShowRoomProduct = entityPOShowRoomProducts.get(counter);
@@ -102,7 +105,7 @@ public class PurchaseServlet {
                     dtoPurchaseOrder.getProducts().add(dtoProduct);
                 }
             }
-            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(appId);
             EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
             dtoSupplier.setEntitySupplier(entitySupplier);
             dtoSupplier.setEntityUser(entityManagerUser.getUserByUserId(dtoSupplier.getEntitySupplier().getUserId()));
@@ -137,7 +140,7 @@ public class PurchaseServlet {
         String companyAddress = "";
         String companyCell = "";
         String companyLogo = "";
-        EntityManagerCompany entityManagerCompany = new EntityManagerCompany();
+        EntityManagerCompany entityManagerCompany = new EntityManagerCompany(appId);
         EntityCompany entityCompany = entityManagerCompany.getCompanyInfo();
         if(entityCompany != null)
         {

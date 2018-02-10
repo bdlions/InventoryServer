@@ -14,6 +14,12 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerShowRoomStock 
 {
+    private int appId;
+    public EntityManagerShowRoomStock(int appId)
+    {
+        this.appId = appId;
+    }
+    
     /**
      * This method will add show room stock product using session
      * @param entityShowRoomStock entity show room stock product
@@ -33,7 +39,7 @@ public class EntityManagerShowRoomStock
      */
     public EntityShowRoomStock addShowRoomStock(EntityShowRoomStock entityShowRoomStock)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return addShowRoomStock(entityShowRoomStock, session);
@@ -92,7 +98,7 @@ public class EntityManagerShowRoomStock
      */
     public int deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(String purchaseOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             return deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(purchaseOrderNo, transactionCategoryId, session);
@@ -112,7 +118,7 @@ public class EntityManagerShowRoomStock
      */
     public EntityShowRoomStock getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(int productId, String purchaseOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId");
@@ -144,7 +150,7 @@ public class EntityManagerShowRoomStock
      */
     public EntityShowRoomStock getShowRoomProductBySaleOrderNoAndTransactionCategoryId(int productId, String saleOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getShowRoomProductBySaleOrderNoAndTransactionCategoryId");
@@ -194,7 +200,7 @@ public class EntityManagerShowRoomStock
      */
     public int deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId(String saleOrderNo, int transactionCategoryId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             return deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId(saleOrderNo, transactionCategoryId, session);

@@ -22,7 +22,7 @@ public class JarRunner{
         //OrganizationLoaderManager.getInstance().start();
         
         DatabaseLoader.getInstance().getSession();
-        HibernateUtil.getInstance().getSession();
+        //HibernateUtil.getInstance().getSession();
         
         System.out.println("Server started");
     }

@@ -68,7 +68,7 @@ public class SaleReportHandler {
         }
         
         List<DTOSaleOrder> saleOrders = new ArrayList<>();
-        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder();
+        EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
         List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.getSaleOrdersDQ(startTime, endTime, offset, limit);
         if(entitySaleOrders != null)
         {

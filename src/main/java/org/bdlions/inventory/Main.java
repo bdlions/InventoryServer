@@ -32,8 +32,8 @@ public class Main extends SpringBootServletInitializer {
         {
             Session session1 = DatabaseLoader.getInstance().getSession();
             session1.close();
-            Session session2 = HibernateUtil.getInstance().getSession();
-            session2.close();
+            //Session session2 = HibernateUtil.getInstance().getSession();
+            //session2.close();
         }
         catch(Exception ex)
         {

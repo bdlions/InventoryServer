@@ -58,7 +58,7 @@ public class CustomerHandler {
             EntityUserRole entityUserRole = new EntityUserRole();
             entityUserRole.setRoleId(Constants.ROLE_ID_CUSTOMER);
             dtoCustomer.setEntityUserRole(entityUserRole);
-            EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+            EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
             
             //setting entity customer name, email and cell from entity user
             dtoCustomer.getEntityCustomer().setCustomerName(dtoCustomer.getEntityUser().getUserName());
@@ -71,7 +71,7 @@ public class CustomerHandler {
                 //setting EntitySupplier
                 responseDTOCustomer.setEntityCustomer(resultEntityCustomer);
                 //setting EntityUser
-                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
                 responseDTOCustomer.setEntityUser(entityManagerUser.getUserByUserId(resultEntityCustomer.getUserId()));
                 
                 responseDTOCustomer.setSuccess(true);
@@ -112,7 +112,7 @@ public class CustomerHandler {
         {
             //--------------------if customer first name, last name, cell, email are updated then update EntitySaleOrder for these fields
             
-            EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+            EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
             
             //setting entity customer name, email and cell from entity user
             dtoCustomer.getEntityCustomer().setCustomerName(dtoCustomer.getEntityUser().getUserName());
@@ -151,7 +151,7 @@ public class CustomerHandler {
             generalResponse.setMessage("Invalid customer. Please try again later");
             return generalResponse;
         }
-        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
         EntityCustomer entityCustomer = null;
         if(dtoCustomer.getEntityCustomer().getId() > 0)
         {
@@ -170,7 +170,7 @@ public class CustomerHandler {
             return generalResponse;
         }
         dtoCustomer.setEntityCustomer(entityCustomer);
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         dtoCustomer.setEntityUser(entityManagerUser.getUserByUserId(entityCustomer.getUserId()));
         dtoCustomer.setSuccess(true);
         return dtoCustomer;
@@ -190,9 +190,9 @@ public class CustomerHandler {
         }
         
         List<DTOCustomer> customers = new ArrayList<>();
-        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
         List<EntityCustomer> entityCustomers = entityManagerCustomer.getCustomers(dtoCustomer.getOffset(), dtoCustomer.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntityCustomer entityCustomer : entityCustomers)
         {
             EntityUser reqEntityUser = new EntityUser();
@@ -225,9 +225,9 @@ public class CustomerHandler {
         }
         
         List<DTOCustomer> customers = new ArrayList<>();
-        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
         List<EntityCustomer> entityCustomers = entityManagerCustomer.searchCustomersByName(dtoCustomer.getEntityCustomer().getCustomerName(), dtoCustomer.getOffset(), dtoCustomer.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntityCustomer entityCustomer : entityCustomers)
         {
             EntityUser reqEntityUser = new EntityUser();
@@ -260,9 +260,9 @@ public class CustomerHandler {
         }
         
         List<DTOCustomer> customers = new ArrayList<>();
-        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
         List<EntityCustomer> entityCustomers = entityManagerCustomer.searchCustomersByCell(dtoCustomer.getEntityCustomer().getCell(), dtoCustomer.getOffset(), dtoCustomer.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntityCustomer entityCustomer : entityCustomers)
         {
             EntityUser reqEntityUser = new EntityUser();
@@ -295,9 +295,9 @@ public class CustomerHandler {
         }
         
         List<DTOCustomer> customers = new ArrayList<>();
-        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer();
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
         List<EntityCustomer> entityCustomers = entityManagerCustomer.searchCustomersByEmail(dtoCustomer.getEntityCustomer().getEmail(), dtoCustomer.getOffset(), dtoCustomer.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntityCustomer entityCustomer : entityCustomers)
         {
             EntityUser reqEntityUser = new EntityUser();

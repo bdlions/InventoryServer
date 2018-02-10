@@ -61,7 +61,7 @@ public class SupplierHandler {
             EntityUserRole entityUserRole = new EntityUserRole();
             entityUserRole.setRoleId(Constants.ROLE_ID_SUPPLIER);
             dtoSupplier.setEntityUserRole(entityUserRole);
-            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
             
             //setting entity supplier name, email and cell from entity user
             dtoSupplier.getEntitySupplier().setSupplierName(dtoSupplier.getEntityUser().getUserName());            
@@ -74,7 +74,7 @@ public class SupplierHandler {
                 //setting EntitySupplier
                 responseDTOSupplier.setEntitySupplier(resultEntitySupplier);
                 //setting EntityUser
-                EntityManagerUser entityManagerUser = new EntityManagerUser();
+                EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
                 responseDTOSupplier.setEntityUser(entityManagerUser.getUserByUserId(resultEntitySupplier.getUserId()));
                 
                 responseDTOSupplier.setSuccess(true);
@@ -113,7 +113,7 @@ public class SupplierHandler {
         }
         else
         {
-            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+            EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
             
             //setting entity supplier name, email and cell from entity user
             dtoSupplier.getEntitySupplier().setSupplierName(dtoSupplier.getEntityUser().getUserName());
@@ -176,7 +176,7 @@ public class SupplierHandler {
             generalResponse.setMessage("Invalid supplier. Please try again later");
             return generalResponse;
         }
-        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
         EntitySupplier entitySupplier = null;
         if(dtoSupplier.getEntitySupplier().getId() > 0)
         {
@@ -195,7 +195,7 @@ public class SupplierHandler {
             return generalResponse;
         }
         dtoSupplier.setEntitySupplier(entitySupplier);
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         dtoSupplier.setEntityUser(entityManagerUser.getUserByUserId(dtoSupplier.getEntitySupplier().getUserId()));
 
         dtoSupplier.setSuccess(true);
@@ -214,7 +214,7 @@ public class SupplierHandler {
             response.setMessage("Invalid request to get product supplier list. Please try again later");
             return response;
         } 
-        EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier();
+        EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier(packet.getPacketHeader().getAppId());
         List<EntityProductSupplier> entityProductSupplierList = entityManagerProductSupplier.getProductSuppliersBySupplierUserId(dtoSupplier.getEntityUser().getId(), dtoSupplier.getOffset(), dtoSupplier.getLimit());
         int counter = entityManagerProductSupplier.getTotalProductSuppliersBySupplierUserId(dtoSupplier.getEntityUser().getId());
         response.setList(entityProductSupplierList);
@@ -237,9 +237,9 @@ public class SupplierHandler {
         }
         
         List<DTOSupplier> suppliers = new ArrayList<>();
-        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
         List<EntitySupplier> entitySuppliers = entityManagerSupplier.getSuppliers(dtoSupplier.getOffset(), dtoSupplier.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntitySupplier entitySupplier : entitySuppliers)
         {
             EntityUser reqEntityUser = new EntityUser();
@@ -273,9 +273,9 @@ public class SupplierHandler {
         }
         
         List<DTOSupplier> suppliers = new ArrayList<>();
-        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
         List<EntitySupplier> entitySuppliers = entityManagerSupplier.searchSuppliersByName(dtoSupplier.getEntitySupplier().getSupplierName(), dtoSupplier.getOffset(), dtoSupplier.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntitySupplier entitySupplier : entitySuppliers)
         {
             EntityUser reqEntityUser = new EntityUser();
@@ -309,9 +309,9 @@ public class SupplierHandler {
         }
         
         List<DTOSupplier> suppliers = new ArrayList<>();
-        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
         List<EntitySupplier> entitySuppliers = entityManagerSupplier.searchSuppliersByCell(dtoSupplier.getEntitySupplier().getCell(), dtoSupplier.getOffset(), dtoSupplier.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntitySupplier entitySupplier : entitySuppliers)
         {
             EntityUser reqEntityUser = new EntityUser();
@@ -345,9 +345,9 @@ public class SupplierHandler {
         }
         
         List<DTOSupplier> suppliers = new ArrayList<>();
-        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier();
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
         List<EntitySupplier> entitySuppliers = entityManagerSupplier.searchSuppliersByEmail(dtoSupplier.getEntitySupplier().getEmail(), dtoSupplier.getOffset(), dtoSupplier.getLimit());
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
         for(EntitySupplier entitySupplier : entitySuppliers)
         {
             EntityUser reqEntityUser = new EntityUser();

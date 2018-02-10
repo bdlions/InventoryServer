@@ -12,13 +12,18 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerUOM 
 {
+    private int appId;
+    public EntityManagerUOM(int appId)
+    {
+        this.appId = appId;
+    }
     /**
      * This method will return all unit of measure list
      * @return List, unit of measure list
      */
     public List<EntityUOM> getAllUOMs()
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityUOM> query = session.getNamedQuery("getAllUOMs");

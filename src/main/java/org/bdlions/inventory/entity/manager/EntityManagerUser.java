@@ -16,6 +16,11 @@ import org.hibernate.query.Query;
  */
 public class EntityManagerUser 
 {
+    private int appId;
+    public EntityManagerUser(int appId)
+    {
+        this.appId = appId;
+    }
     /**
      * This method will return entity user by email
      * @param email email
@@ -23,7 +28,7 @@ public class EntityManagerUser
      */
     public EntityUser getUserByEmail(String email)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityUser> query = session.getNamedQuery("getUserByEmail");
@@ -51,7 +56,7 @@ public class EntityManagerUser
      */
     public EntityUser getUserByUserId(int userId)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
             Query<EntityUser> query = session.getNamedQuery("getUserByUserId");
@@ -116,7 +121,7 @@ public class EntityManagerUser
      */
     public EntityUser createUser(EntityUser entityUser)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return createUser(entityUser, session);
@@ -140,7 +145,7 @@ public class EntityManagerUser
         if(entityUser != null && entityUserRole != null)
         {
             entityUserRole.setUserId(entityUser.getId());
-            EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+            EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole(this.appId);
             entityManagerUserRole.createUserRole(entityUserRole, session);
         }
         return entityUser;
@@ -148,7 +153,7 @@ public class EntityManagerUser
     
     public EntityUser createUser(EntityUser entityUser, List<EntityUserRole> entityUserRoles)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try
@@ -159,7 +164,7 @@ public class EntityManagerUser
                 for(EntityUserRole entityUserRole: entityUserRoles)
                 {
                     entityUserRole.setUserId(entityUser.getId());
-                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole(this.appId);
                     entityManagerUserRole.createUserRole(entityUserRole, session);
                 }            
             }
@@ -181,7 +186,7 @@ public class EntityManagerUser
      */
     public EntityUser createUser(EntityUser entityUser, EntityUserRole entityUserRole)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return createUser(entityUser, entityUserRole, session);
@@ -213,7 +218,7 @@ public class EntityManagerUser
      */
     public boolean updateUser(EntityUser entityUser)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             return updateUser(entityUser, session);
@@ -226,7 +231,7 @@ public class EntityManagerUser
     
     public boolean updateUser(EntityUser entityUser, List<EntityUserRole> entityUserRoles)
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
         try
@@ -236,7 +241,7 @@ public class EntityManagerUser
                 updateUser(entityUser, session);
                 if(entityUserRoles != null && !entityUserRoles.isEmpty())
                 {
-                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole();
+                    EntityManagerUserRole entityManagerUserRole = new EntityManagerUserRole(this.appId);
                     entityManagerUserRole.deleteUserRoles(entityUser.getId(), session);
                     for(EntityUserRole entityUserRole: entityUserRoles)
                     {
@@ -262,7 +267,7 @@ public class EntityManagerUser
      */
     public List<EntityUser> getUsers(int offset, int limit) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityUser> query = session.getNamedQuery("getUsers");
@@ -278,7 +283,7 @@ public class EntityManagerUser
     
     public List<EntityUser> getUsersByUserIds(List<Integer> userIds) 
     {
-        Session session = HibernateUtil.getInstance().getSession();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             Query<EntityUser> query = session.getNamedQuery("getUsersByUserIds");
