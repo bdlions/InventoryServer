@@ -84,10 +84,10 @@ INSERT INTO `sale_order_statuses` (`id`, `title`) VALUES
 INSERT INTO `ss_transaction_categories` (`id`, `title`) VALUES
 (1, 'Purchase In'),
 (2, 'Purchase Partial In'),
-(3, 'Purchase partial Out'),
+(3, 'Purchase Return'),
 (4, 'Purchase Delete'),
 (5, 'Sale Out'),
-(6, 'Sale Return partial In'),
+(6, 'Sale Return'),
 (7, 'Sale Delete');
 
 

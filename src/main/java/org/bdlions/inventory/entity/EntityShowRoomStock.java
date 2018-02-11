@@ -28,6 +28,10 @@ import javax.persistence.Table;
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.purchaseOrderNo = :purchaseOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
     @NamedQuery(
+            name = "getShowRoomProductByPurchaseOrderNoAndTransactionCategoryIds",
+            query = "from EntityShowRoomStock showRoomStock where showRoomStock.purchaseOrderNo = :purchaseOrderNo AND showRoomStock.productId = :productId AND showRoomStock.transactionCategoryId IN (:transactionCategoryIds)"
+    ),
+    @NamedQuery(
             name = "getShowRoomProductBySaleOrderNoAndTransactionCategoryId",
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
@@ -46,6 +50,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId",
             query = " delete from EntityShowRoomStock product where product.purchaseOrderNo = :purchaseOrderNo AND product.transactionCategoryId = :transactionCategoryId"
+    ),    
+    @NamedQuery(
+            name = "deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryIds",
+            query = " delete from EntityShowRoomStock product where product.purchaseOrderNo = :purchaseOrderNo AND product.transactionCategoryId IN (:transactionCategoryIds)"
     ),
     @NamedQuery(
             name = "deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId",

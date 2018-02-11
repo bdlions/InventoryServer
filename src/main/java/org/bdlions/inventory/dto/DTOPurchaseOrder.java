@@ -15,12 +15,14 @@ public class DTOPurchaseOrder extends ClientResponse implements java.io.Serializ
     public EntityPurchaseOrder entityPurchaseOrder;
     public DTOSupplier dtoSupplier;
     public List<DTOProduct> products;
+    public List<DTOProduct> returnProducts;
     public String orderDate;
     public DTOPurchaseOrder()
     {
         entityPurchaseOrder = new EntityPurchaseOrder();
         dtoSupplier = new DTOSupplier();
         products = new ArrayList<>();
+        returnProducts = new ArrayList<>();
     }
 
     public int getLimit() {
@@ -69,5 +71,14 @@ public class DTOPurchaseOrder extends ClientResponse implements java.io.Serializ
 
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
-    }    
+    } 
+
+    public List<DTOProduct> getReturnProducts() {
+        return returnProducts;
+    }
+
+    public void setReturnProducts(List<DTOProduct> returnProducts) {
+        this.returnProducts = returnProducts;
+    }
+    
 }

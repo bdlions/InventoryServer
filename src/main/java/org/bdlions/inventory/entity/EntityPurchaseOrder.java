@@ -96,6 +96,9 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     @Column(name = "discount", columnDefinition = "double DEFAULT 0")
     private double discount;
     
+    @Column(name = "total_return", columnDefinition = "double DEFAULT 0")
+    private double totalReturn;
+    
     @Column(name = "total", columnDefinition = "double DEFAULT 0")
     private double total;
     
@@ -293,4 +296,13 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public double getTotalReturn() {
+        return totalReturn;
+    }
+
+    public void setTotalReturn(double totalReturn) {
+        this.totalReturn = totalReturn;
+    }
+    
 }

@@ -90,6 +90,18 @@ public class EntityManagerShowRoomStock
         return 0;
     }
     
+    public int deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryIds(String purchaseOrderNo, List<Integer> transactionCategoryIds, Session session)
+    {
+        if(!StringUtils.isNullOrEmpty(purchaseOrderNo) && transactionCategoryIds != null && !transactionCategoryIds.isEmpty())
+        {
+            Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryIds");
+            queryStockProducts.setParameter("purchaseOrderNo", purchaseOrderNo);
+            queryStockProducts.setParameter("transactionCategoryIds", transactionCategoryIds);
+            return queryStockProducts.executeUpdate();
+        }
+        return 0;
+    }
+    
     /**
      * This method will delete show room stock products based on purchase order no and transaction category id
      * @param purchaseOrderNo purchase order no
@@ -139,7 +151,25 @@ public class EntityManagerShowRoomStock
         {
             session.close();
         }
-    }    
+    }
+
+    public List<EntityShowRoomStock> getShowRoomProductByPurchaseOrderNoAndTransactionCategoryIds(int productId, String purchaseOrderNo, List<Integer> transactionCategoryIds)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {            
+            Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomProductByPurchaseOrderNoAndTransactionCategoryIds");
+            query.setParameter("purchaseOrderNo", purchaseOrderNo);
+            query.setParameter("transactionCategoryIds", transactionCategoryIds);
+            query.setParameter("productId", productId);
+            List<EntityShowRoomStock> productList = query.getResultList();
+            return productList;             
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
     
     /**
      * This method will return show room stock product based on product id, sale order no and transaction category id

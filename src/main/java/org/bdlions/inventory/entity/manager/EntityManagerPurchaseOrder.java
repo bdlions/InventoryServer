@@ -204,7 +204,10 @@ public class EntityManagerPurchaseOrder
                 if(!StringUtils.isNullOrEmpty(entityPurchaseOrder.getOrderNo()))
                 {
                     entityManagerPOShowRoomProduct.deletePOShowRoomProductsByOrderNo(currentEntityPurchaseOrder.getOrderNo(), session);
-                    entityManagerShowRoomStock.deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId(currentEntityPurchaseOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN, session);
+                    List<Integer> transactionCategoryIds = new ArrayList<>();
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_RETURN);
+                    entityManagerShowRoomStock.deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryIds(currentEntityPurchaseOrder.getOrderNo(), transactionCategoryIds, session);
                 }
                 if(entityPOShowRoomProductList != null && !entityPOShowRoomProductList.isEmpty())
                 {
