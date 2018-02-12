@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
+import org.bdlions.inventory.entity.EntityPOShowRoomReturnProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntitySupplier;
@@ -66,12 +67,12 @@ public class EntityManagerPurchaseOrder
      * This method will create new purchase order with product list
      * @param entityPurchaseOrder entity purchase order
      * @param entityPOShowRoomProductList entity purchase order show room product list
+     * @param entityPOShowRoomReturnProductList entity purchase order show room return product list
      * @param entityShowRoomStockList entity show room stock list
      * @return EntityPurchaseOrder EntityPurchaseOrder
      */
-    public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
+    public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityPOShowRoomReturnProduct> entityPOShowRoomReturnProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
-        boolean status = true;
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
@@ -94,7 +95,27 @@ public class EntityManagerPurchaseOrder
                     List<EntityPOShowRoomProduct> resultEntityPOShowRoomProducts = entityManagerPOShowRoomProduct.addPurchaseOrderShowRoomProducts(entityPOShowRoomProducts, session);
                     if(resultEntityPOShowRoomProducts == null || resultEntityPOShowRoomProducts.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return null;
+                    }                    
+                }
+                //storing return product list
+                if(entityPOShowRoomReturnProductList != null && !entityPOShowRoomReturnProductList.isEmpty())
+                {
+                    List<EntityPOShowRoomReturnProduct> entityPOShowRoomReturnProducts = new ArrayList<>();
+                    //for each item, set order no into list
+                    for(int counter = 0; counter < entityPOShowRoomReturnProductList.size(); counter++)
+                    {
+                        EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = entityPOShowRoomReturnProductList.get(counter);
+                        entityPOShowRoomReturnProduct.setOrderNo(entityPurchaseOrder.getOrderNo());
+                        entityPOShowRoomReturnProducts.add(entityPOShowRoomReturnProduct);
+                    }
+                    EntityManagerPOShowRoomReturnProduct entityManagerPOShowRoomReturnProduct = new EntityManagerPOShowRoomReturnProduct(this.appId);
+                    List<EntityPOShowRoomReturnProduct> resultEntityPOShowRoomReturnProducts = entityManagerPOShowRoomReturnProduct.addPurchaseOrderShowRoomReturnProducts(entityPOShowRoomReturnProducts, session);
+                    if(resultEntityPOShowRoomReturnProducts == null || resultEntityPOShowRoomReturnProducts.isEmpty())
+                    {
+                        tx.rollback();
+                        return null;
                     }
                 }
                 if(entityShowRoomStockList != null && !entityShowRoomStockList.isEmpty())
@@ -111,30 +132,23 @@ public class EntityManagerPurchaseOrder
                     List<EntityShowRoomStock> resultEntityShowRoomStocks = entityManagerShowRoomStock.addShowRoomStocks(entityShowRoomStocks, session);                    
                     if(resultEntityShowRoomStocks == null || resultEntityShowRoomStocks.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return null;
                     }
                 }                
-                if(status)
+                if(entityPurchaseOrder.getSupplierUserId() > 0)
                 {
-                    if(entityPurchaseOrder.getSupplierUserId() > 0)
+                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
+                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                    if(entitySupplier != null && entitySupplier.getId() > 0)
                     {
-                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
-                        EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
-                        if(entitySupplier != null && entitySupplier.getId() > 0)
-                        {
-                            double currentDue = this.getSupplierCurrentDue( entityPurchaseOrder.getSupplierUserId(), session);
-                            entitySupplier.setBalance(currentDue);
-                            entityManagerSupplier.updateSupplier(entitySupplier, session);
-                        }                        
-                    }                    
-                    tx.commit();
-                    return entityPurchaseOrder;
-                }
-                else
-                {
-                    tx.rollback();
-                    return null;
-                }
+                        double currentDue = this.getSupplierCurrentDue( entityPurchaseOrder.getSupplierUserId(), session);
+                        entitySupplier.setBalance(currentDue);
+                        entityManagerSupplier.updateSupplier(entitySupplier, session);
+                    }                        
+                }                    
+                tx.commit();
+                return entityPurchaseOrder;
             }
             else
             {
@@ -185,12 +199,12 @@ public class EntityManagerPurchaseOrder
      * @param currentEntityPurchaseOrder current entity purchase order
      * @param entityPurchaseOrder entity purchase order
      * @param entityPOShowRoomProductList entity purchase order show room product list
+     * @param entityPOShowRoomReturnProductList entity purchase order show room return product list
      * @param entityShowRoomStockList entity show room stock list
      * @return boolean true
      */
-    public boolean updatePurchaseOrder(EntityPurchaseOrder currentEntityPurchaseOrder, EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityShowRoomStock> entityShowRoomStockList)
+    public boolean updatePurchaseOrder(EntityPurchaseOrder currentEntityPurchaseOrder, EntityPurchaseOrder entityPurchaseOrder, List<EntityPOShowRoomProduct> entityPOShowRoomProductList, List<EntityPOShowRoomReturnProduct> entityPOShowRoomReturnProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
-        boolean status = true;
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
@@ -199,11 +213,13 @@ public class EntityManagerPurchaseOrder
             if(entityPurchaseOrder != null && entityPurchaseOrder.getId() > 0 && updatePurchaseOrder(entityPurchaseOrder, session))
             {
                 EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(this.appId);
+                EntityManagerPOShowRoomReturnProduct entityManagerPOShowRoomReturnProduct = new EntityManagerPOShowRoomReturnProduct(this.appId);
                 EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
                 //deleting existing products
                 if(!StringUtils.isNullOrEmpty(entityPurchaseOrder.getOrderNo()))
                 {
                     entityManagerPOShowRoomProduct.deletePOShowRoomProductsByOrderNo(currentEntityPurchaseOrder.getOrderNo(), session);
+                    entityManagerPOShowRoomReturnProduct.deletePOShowRoomReturnProductsByOrderNo(currentEntityPurchaseOrder.getOrderNo(), session);
                     List<Integer> transactionCategoryIds = new ArrayList<>();
                     transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
                     transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_RETURN);
@@ -222,7 +238,25 @@ public class EntityManagerPurchaseOrder
                     List<EntityPOShowRoomProduct> resultEntityPOShowRoomProducts = entityManagerPOShowRoomProduct.addPurchaseOrderShowRoomProducts(entityPOShowRoomProducts, session);
                     if(resultEntityPOShowRoomProducts == null || resultEntityPOShowRoomProducts.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return false;
+                    }
+                }
+                if(entityPOShowRoomReturnProductList != null && !entityPOShowRoomReturnProductList.isEmpty())
+                {
+                    List<EntityPOShowRoomReturnProduct> entityPOShowRoomReturnProducts = new ArrayList<>();
+                    //for each item, set order no into list
+                    for(int counter = 0; counter < entityPOShowRoomReturnProductList.size(); counter++)
+                    {
+                        EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = entityPOShowRoomReturnProductList.get(counter);
+                        entityPOShowRoomReturnProduct.setOrderNo(entityPurchaseOrder.getOrderNo());
+                        entityPOShowRoomReturnProducts.add(entityPOShowRoomReturnProduct);
+                    }
+                    List<EntityPOShowRoomReturnProduct> resultEntityPOShowRoomReturnProducts = entityManagerPOShowRoomReturnProduct.addPurchaseOrderShowRoomReturnProducts(entityPOShowRoomReturnProducts, session);
+                    if(resultEntityPOShowRoomReturnProducts == null || resultEntityPOShowRoomReturnProducts.isEmpty())
+                    {
+                        tx.rollback();
+                        return false;
                     }
                 }
                 if(entityShowRoomStockList != null && !entityShowRoomStockList.isEmpty())
@@ -238,33 +272,26 @@ public class EntityManagerPurchaseOrder
                     List<EntityShowRoomStock> resultEntityShowRoomStocks = entityManagerShowRoomStock.addShowRoomStocks(entityShowRoomStocks, session);                    
                     if(resultEntityShowRoomStocks == null || resultEntityShowRoomStocks.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return false;
                     }
                 }                
-                if(status)
+                if(entityPurchaseOrder.getSupplierUserId() > 0)
                 {
-                    if(entityPurchaseOrder.getSupplierUserId() > 0)
+                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
+                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                    if(entitySupplier != null && entitySupplier.getId() > 0)
                     {
-                        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
-                        EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
-                        if(entitySupplier != null && entitySupplier.getId() > 0)
-                        {
-                            double currentDue = this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId(), session);
-                            //double currentDueOfOrder = currentEntityPurchaseOrder.getTotal() - currentEntityPurchaseOrder.getPaid();
-                            //double newDueOfOrder = entityPurchaseOrder.getTotal() - entityPurchaseOrder.getPaid();
-                            //entitySupplier.setBalance( - currentDueOfOrder + newDueOfOrder);
-                            entitySupplier.setBalance(currentDue);
-                            entityManagerSupplier.updateSupplier(entitySupplier, session);
-                        }                        
-                    }
-                    tx.commit();
-                    return true;
+                        double currentDue = this.getSupplierCurrentDue(entityPurchaseOrder.getSupplierUserId(), session);
+                        //double currentDueOfOrder = currentEntityPurchaseOrder.getTotal() - currentEntityPurchaseOrder.getPaid();
+                        //double newDueOfOrder = entityPurchaseOrder.getTotal() - entityPurchaseOrder.getPaid();
+                        //entitySupplier.setBalance( - currentDueOfOrder + newDueOfOrder);
+                        entitySupplier.setBalance(currentDue);
+                        entityManagerSupplier.updateSupplier(entitySupplier, session);
+                    }                        
                 }
-                else
-                {
-                    tx.rollback();
-                    return false;
-                }
+                tx.commit();
+                return true;
             }
             else
             {

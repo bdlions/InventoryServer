@@ -104,10 +104,10 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int createdOn;
+    private long createdOn;
 
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int modifiedOn;
+    private long modifiedOn;
 
     public int getId() {
         return id;
@@ -213,19 +213,19 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
         this.purchaseUOMId = purchaseUOMId;
     }
 
-    public int getCreatedOn() {
+    public long getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(int createdOn) {
+    public void setCreatedOn(long createdOn) {
         this.createdOn = createdOn;
     }
 
-    public int getModifiedOn() {
+    public long getModifiedOn() {
         return modifiedOn;
     }
 
-    public void setModifiedOn(int modifiedOn) {
+    public void setModifiedOn(long modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
 

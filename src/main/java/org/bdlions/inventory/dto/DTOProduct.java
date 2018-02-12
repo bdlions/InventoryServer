@@ -21,6 +21,8 @@ public class DTOProduct {
     public EntityProduct entityProduct;
     public List<EntityProductSupplier> entityProductSupplierList;
     public List<EntityProductSupplier> epsListToBeDeleted;
+    public String createdOn;
+    public String modifiedOn;
     public DTOProduct()
     {
         entityProductType = new EntityProductType();
@@ -106,5 +108,22 @@ public class DTOProduct {
 
     public void setEpsListToBeDeleted(List<EntityProductSupplier> epsListToBeDeleted) {
         this.epsListToBeDeleted = epsListToBeDeleted;
-    }    
+    } 
+
+    public String getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getModifiedOn() {
+        return modifiedOn;
+    }
+
+    public void setModifiedOn(String modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
+    
 }

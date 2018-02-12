@@ -42,11 +42,13 @@
         <mapping class="org.bdlions.inventory.entity.EntityPurchaseOrderStatus" />
         <mapping class="org.bdlions.inventory.entity.EntityPOWarehouseProduct" />
 	<mapping class="org.bdlions.inventory.entity.EntityPOShowRoomProduct" />
+        <mapping class="org.bdlions.inventory.entity.EntityPOShowRoomReturnProduct" />
         <mapping class="org.bdlions.inventory.entity.EntityWSTransactionCategory" />
         <mapping class="org.bdlions.inventory.entity.EntityWarehouseStock" />
         <mapping class="org.bdlions.inventory.entity.EntitySaleOrderStatus" />
         <mapping class="org.bdlions.inventory.entity.EntitySaleOrder" />
 	<mapping class="org.bdlions.inventory.entity.EntitySaleOrderProduct" />
+        <mapping class="org.bdlions.inventory.entity.EntitySaleOrderReturnProduct" />
         <mapping class="org.bdlions.inventory.entity.EntitySSTransactionCategory" />
         <mapping class="org.bdlions.inventory.entity.EntityShowRoomStock" />
         <mapping class="org.bdlions.inventory.entity.EntityProductSupplier" />

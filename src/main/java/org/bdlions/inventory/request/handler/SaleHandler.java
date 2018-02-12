@@ -16,11 +16,13 @@ import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.dto.ListSaleOrder;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
+import org.bdlions.inventory.entity.EntitySaleOrderReturnProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderProduct;
+import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderReturnProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.manager.Stock;
@@ -128,6 +130,7 @@ public class SaleHandler {
         List<DTOProduct> products = dtoSaleOrder.getProducts();
         int totalProducts = products.size();
         List<EntitySaleOrderProduct> entitySaleOrderProducts = new ArrayList<>();
+        List<EntitySaleOrderReturnProduct> entitySaleOrderReturnProducts = new ArrayList<>();
         List<EntityShowRoomStock> entityShowRoomStocks = new ArrayList<>();
         List<Integer> productIds = new ArrayList<>();
         HashMap<Integer, Double> productIdQuantityMap = new HashMap<>();
@@ -143,14 +146,12 @@ public class SaleHandler {
                 }
                 
                 EntitySaleOrderProduct entitySaleOrderProduct = new EntitySaleOrderProduct();
-                entitySaleOrderProduct.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                 entitySaleOrderProduct.setProductId(dtoProduct.getEntityProduct().getId());
                 entitySaleOrderProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
                 entitySaleOrderProduct.setDiscount(dtoProduct.getDiscount());
                 entitySaleOrderProducts.add(entitySaleOrderProduct);
 
                 EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
-                entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                 entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
                 entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                 entityShowRoomStock.setStockIn(0);
@@ -171,8 +172,17 @@ public class SaleHandler {
         for(int counter = 0; counter < totalReturnedProducts; counter++)
         {
             DTOProduct dtoProduct = returnProducts.get(counter);
+            
+            EntitySaleOrderReturnProduct entitySaleOrderReturnProduct = new EntitySaleOrderReturnProduct();
+            entitySaleOrderReturnProduct.setProductId(dtoProduct.getEntityProduct().getId());
+            entitySaleOrderReturnProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+            entitySaleOrderReturnProduct.setDiscount(dtoProduct.getDiscount());
+            TimeUtils timeUtils = new TimeUtils();
+            entitySaleOrderReturnProduct.setCreatedOn(timeUtils.getCurrentTime());
+            entitySaleOrderReturnProduct.setModifiedOn(timeUtils.getCurrentTime());
+            entitySaleOrderReturnProducts.add(entitySaleOrderReturnProduct);
+            
             EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
-            entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
             entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
             entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
             entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
@@ -232,7 +242,7 @@ public class SaleHandler {
             dtoSaleOrder.getEntitySaleOrder().setModifiedByUserName(tempEntityUser.getUserName());
         }  
         
-        EntitySaleOrder entitySaleOrder = entityManagerSaleOrder.createSaleOrder(dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks);
+        EntitySaleOrder entitySaleOrder = entityManagerSaleOrder.createSaleOrder(dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entitySaleOrderReturnProducts, entityShowRoomStocks);
         responseDTOSaleOrder.setEntitySaleOrder(entitySaleOrder);
         if(responseDTOSaleOrder.getEntitySaleOrder() != null && responseDTOSaleOrder.getEntitySaleOrder().getId() > 0)
         {
@@ -302,6 +312,7 @@ public class SaleHandler {
             List<DTOProduct> products = dtoSaleOrder.getProducts();
             int totalProducts = products.size();
             List<EntitySaleOrderProduct> entitySaleOrderProducts = new ArrayList<>();
+            List<EntitySaleOrderReturnProduct> entitySaleOrderReturnProducts = new ArrayList<>();
             List<EntityShowRoomStock> entityShowRoomStocks = new ArrayList<>();
             for(int counter = 0; counter < totalProducts; counter++)
             {
@@ -343,6 +354,24 @@ public class SaleHandler {
             for(int counter = 0; counter < totalReturnedProducts; counter++)
             {
                 DTOProduct dtoProduct = returnProducts.get(counter);
+                
+                EntitySaleOrderReturnProduct entitySaleOrderReturnProduct = new EntitySaleOrderReturnProduct();
+                entitySaleOrderReturnProduct.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+                entitySaleOrderReturnProduct.setProductId(dtoProduct.getEntityProduct().getId());
+                entitySaleOrderReturnProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                entitySaleOrderReturnProduct.setDiscount(dtoProduct.getDiscount());
+                TimeUtils timeUtils = new TimeUtils();
+                if(dtoProduct.getEntityProduct().getCreatedOn() == 0)
+                {                    
+                    entitySaleOrderReturnProduct.setCreatedOn(timeUtils.getCurrentTime());                    
+                }    
+                else
+                {
+                    entitySaleOrderReturnProduct.setCreatedOn(dtoProduct.getEntityProduct().getCreatedOn());
+                }
+                entitySaleOrderReturnProduct.setModifiedOn(timeUtils.getCurrentTime());
+                entitySaleOrderReturnProducts.add(entitySaleOrderReturnProduct);
+                
                 EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
                 entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                 entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
@@ -410,7 +439,7 @@ public class SaleHandler {
                 dtoSaleOrder.getEntitySaleOrder().setModifiedByUserName(tempEntityUser.getUserName());
             }  
             
-            if(entityManagerSaleOrder.updateSaleOrder(currentEntitySaleOrder, dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entityShowRoomStocks))
+            if(entityManagerSaleOrder.updateSaleOrder(currentEntitySaleOrder, dtoSaleOrder.getEntitySaleOrder(), entitySaleOrderProducts, entitySaleOrderReturnProducts, entityShowRoomStocks))
             {
                 response.setSuccess(true);
                 response.setMessage("Sale order is updated successfully.");
@@ -448,6 +477,8 @@ public class SaleHandler {
         if(entitySaleOrder != null)
         {
             dtoSaleOrder.setEntitySaleOrder(entitySaleOrder);
+            
+            //getting products for the sale order
             EntityManagerSaleOrderProduct entityManagerSaleOrderProduct = new EntityManagerSaleOrderProduct(packet.getPacketHeader().getAppId());
             List<EntitySaleOrderProduct> entitySaleOrderProducts = entityManagerSaleOrderProduct.getSaleOrderProductsByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
             if(entitySaleOrderProducts != null && !entitySaleOrderProducts.isEmpty())
@@ -457,43 +488,45 @@ public class SaleHandler {
                 for(int counter = 0; counter < entitySaleOrderProducts.size(); counter++)
                 {
                     EntitySaleOrderProduct entitySaleOrderProduct = entitySaleOrderProducts.get(counter);
-                    //EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
-                    //EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
+                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                    EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
 
-                    //DTOProduct dtoProduct = new DTOProduct();
-                    //dtoProduct.setQuantity(stockProduct.getStockOut());
-                    //dtoProduct.setEntityProduct(entityProduct);
-                    //dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
-                    //dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
-                    //dtoSaleOrder.getProducts().add(dtoProduct);
-                    
-                    List<Integer> transactionCategoryIds = new ArrayList<>();
-                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
-                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
-                    List<EntityShowRoomStock> stockProducts = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryIds(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), transactionCategoryIds);
-                    if(stockProducts != null && !stockProducts.isEmpty())
-                    {
-                        EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProducts.get(0).getProductId());
-                        for(EntityShowRoomStock stockProduct : stockProducts)
-                        {
-                            DTOProduct dtoProduct = new DTOProduct();
-                            dtoProduct.setEntityProduct(entityProduct);
-                            dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
-                            dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
-                            if(stockProduct.getTransactionCategoryId() == Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT)
-                            {
-                                dtoProduct.setQuantity(stockProduct.getStockOut());
-                                dtoSaleOrder.getProducts().add(dtoProduct);
-                            }
-                            else if(stockProduct.getTransactionCategoryId() == Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN)
-                            {
-                                dtoProduct.setQuantity(stockProduct.getStockIn());
-                                dtoSaleOrder.getReturnProducts().add(dtoProduct);
-                            }
-                        }
-                    }
+                    DTOProduct dtoProduct = new DTOProduct();
+                    dtoProduct.setQuantity(stockProduct.getStockOut());
+                    dtoProduct.setEntityProduct(entityProduct);
+                    dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
+                    dtoSaleOrder.getProducts().add(dtoProduct);
                 }
             }
+            
+            //getting returned products for this purchase order
+            EntityManagerSaleOrderReturnProduct entityManagerSaleOrderReturnProduct = new EntityManagerSaleOrderReturnProduct(packet.getPacketHeader().getAppId());
+            List<EntitySaleOrderReturnProduct> entitySaleOrderReturnProducts = entityManagerSaleOrderReturnProduct.getSaleOrderReturnProductsByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+            if(entitySaleOrderReturnProducts != null && !entitySaleOrderReturnProducts.isEmpty())
+            {
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(packet.getPacketHeader().getAppId());
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
+                for(int counter = 0; counter < entitySaleOrderReturnProducts.size(); counter++)
+                {
+                    EntitySaleOrderReturnProduct entitySaleOrderReturnProduct = entitySaleOrderReturnProducts.get(counter);
+                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderReturnProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
+                    
+                    EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
+                    entityProduct.setCreatedOn(entitySaleOrderReturnProduct.getCreatedOn());
+                    entityProduct.setModifiedOn(entitySaleOrderReturnProduct.getModifiedOn());
+
+                    DTOProduct dtoProduct = new DTOProduct();
+                    dtoProduct.setCreatedOn(TimeUtils.convertUnixToHuman(entitySaleOrderReturnProduct.getCreatedOn(), "", ""));
+                    dtoProduct.setModifiedOn(TimeUtils.convertUnixToHuman(entitySaleOrderReturnProduct.getModifiedOn(), "", ""));
+                    dtoProduct.setQuantity(stockProduct.getStockIn());
+                    dtoProduct.setEntityProduct(entityProduct);
+                    dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderReturnProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entitySaleOrderReturnProduct.getDiscount());
+                    dtoSaleOrder.getReturnProducts().add(dtoProduct);
+                }
+            }
+            
             dtoSaleOrder.setSuccess(true);
             return dtoSaleOrder;
         }

@@ -6,6 +6,7 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityCustomer;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderProduct;
+import org.bdlions.inventory.entity.EntitySaleOrderReturnProduct;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
@@ -69,9 +70,8 @@ public class EntityManagerSaleOrder
      * @param entityShowRoomStockList entity show room stock list
      * @return EntitySaleOrder EntitySaleOrder
      */
-    public EntitySaleOrder createSaleOrder(EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntityShowRoomStock> entityShowRoomStockList)
+    public EntitySaleOrder createSaleOrder(EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntitySaleOrderReturnProduct> entitySaleOrderReturnProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
-        boolean status = true;
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
@@ -94,7 +94,27 @@ public class EntityManagerSaleOrder
                     List<EntitySaleOrderProduct> resultEntitySaleOrderProducts = entityManagerSaleOrderProduct.addSaleOrderProducts(entitySaleOrderProducts, session);
                     if(resultEntitySaleOrderProducts == null || resultEntitySaleOrderProducts.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return null;
+                    }
+                }
+                //sale order return product list
+                if(entitySaleOrderReturnProductList != null && !entitySaleOrderReturnProductList.isEmpty())
+                {
+                    List<EntitySaleOrderReturnProduct> entitySaleOrderReturnProducts = new ArrayList<>();
+                    //for each item, set order no into list
+                    for(int counter = 0; counter < entitySaleOrderReturnProductList.size(); counter++)
+                    {
+                        EntitySaleOrderReturnProduct entitySaleOrderReturnProduct = entitySaleOrderReturnProductList.get(counter);
+                        entitySaleOrderReturnProduct.setSaleOrderNo(entitySaleOrder.getOrderNo());
+                        entitySaleOrderReturnProducts.add(entitySaleOrderReturnProduct);
+                    }
+                    EntityManagerSaleOrderReturnProduct entityManagerSaleOrderReturnProduct = new EntityManagerSaleOrderReturnProduct(this.appId);
+                    List<EntitySaleOrderReturnProduct> resultEntitySaleOrderReturnProducts = entityManagerSaleOrderReturnProduct.addSaleOrderReturnProducts(entitySaleOrderReturnProducts, session);
+                    if(resultEntitySaleOrderReturnProducts == null || resultEntitySaleOrderReturnProducts.isEmpty())
+                    {
+                        tx.rollback();
+                        return null;
                     }
                 }
                 if(entityShowRoomStockList != null && !entityShowRoomStockList.isEmpty())
@@ -111,30 +131,23 @@ public class EntityManagerSaleOrder
                     List<EntityShowRoomStock> resultEntityShowRoomStocks = entityManagerShowRoomStock.addShowRoomStocks(entityShowRoomStocks, session);                    
                     if(resultEntityShowRoomStocks == null || resultEntityShowRoomStocks.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return null;
                     }
                 }                
-                if(status)
+                if(entitySaleOrder.getCustomerUserId() > 0)
                 {
-                    if(entitySaleOrder.getCustomerUserId() > 0)
+                    EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(this.appId);
+                    EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
+                    if(entityCustomer != null && entityCustomer.getUserId() > 0)
                     {
-                        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(this.appId);
-                        EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
-                        if(entityCustomer != null && entityCustomer.getUserId() > 0)
-                        {
-                            double currentDue = this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session);
-                            entityCustomer.setBalance(currentDue);
-                            entityManagerCustomer.updateCustomer(entityCustomer, session);
-                        }                        
-                    }                    
-                    tx.commit();
-                    return entitySaleOrder;
-                }
-                else
-                {
-                    tx.rollback();
-                    return null;
-                }
+                        double currentDue = this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session);
+                        entityCustomer.setBalance(currentDue);
+                        entityManagerCustomer.updateCustomer(entityCustomer, session);
+                    }                        
+                }                    
+                tx.commit();
+                return entitySaleOrder;
             }
             else
             {
@@ -188,9 +201,8 @@ public class EntityManagerSaleOrder
      * @param entityShowRoomStockList entity show room stock list
      * @return boolean true
      */
-    public boolean updateSaleOrder(EntitySaleOrder currentEntitySaleOrder, EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntityShowRoomStock> entityShowRoomStockList)
+    public boolean updateSaleOrder(EntitySaleOrder currentEntitySaleOrder, EntitySaleOrder entitySaleOrder, List<EntitySaleOrderProduct> entitySaleOrderProductList, List<EntitySaleOrderReturnProduct> entitySaleOrderReturnProductList, List<EntityShowRoomStock> entityShowRoomStockList)
     {
-        boolean status = true;
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
@@ -199,11 +211,13 @@ public class EntityManagerSaleOrder
             if(entitySaleOrder != null && entitySaleOrder.getId() > 0 && updateSaleOrder(entitySaleOrder, session))
             {
                 EntityManagerSaleOrderProduct entityManagerSaleOrderProduct = new EntityManagerSaleOrderProduct(this.appId);
+                EntityManagerSaleOrderReturnProduct entityManagerSaleOrderReturnProduct = new EntityManagerSaleOrderReturnProduct(this.appId);
                 EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
                 //deleting existing products
                 if(!StringUtils.isNullOrEmpty(entitySaleOrder.getOrderNo()))
                 {
                     entityManagerSaleOrderProduct.deleteSaleOrderProductsByOrderNo(currentEntitySaleOrder.getOrderNo(), session);
+                    entityManagerSaleOrderReturnProduct.deleteSaleOrderReturnProductsByOrderNo(currentEntitySaleOrder.getOrderNo(), session);
                     List<Integer> transactionCategoryIds = new ArrayList<>();
                     transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
                     transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
@@ -222,7 +236,25 @@ public class EntityManagerSaleOrder
                     List<EntitySaleOrderProduct> resultEntitySaleOrderProducts = entityManagerSaleOrderProduct.addSaleOrderProducts(entitySaleOrderProducts, session);
                     if(resultEntitySaleOrderProducts == null || resultEntitySaleOrderProducts.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return false;
+                    }
+                }
+                if(entitySaleOrderReturnProductList != null && !entitySaleOrderReturnProductList.isEmpty())
+                {
+                    List<EntitySaleOrderReturnProduct> entitySaleOrderReturnProducts = new ArrayList<>();
+                    //for each item, set order no into list
+                    for(int counter = 0; counter < entitySaleOrderReturnProductList.size(); counter++)
+                    {
+                        EntitySaleOrderReturnProduct entitySaleOrderReturnProduct = entitySaleOrderReturnProductList.get(counter);
+                        entitySaleOrderReturnProduct.setSaleOrderNo(entitySaleOrder.getOrderNo());
+                        entitySaleOrderReturnProducts.add(entitySaleOrderReturnProduct);
+                    }
+                    List<EntitySaleOrderReturnProduct> resultEntitySaleOrderReturnProducts = entityManagerSaleOrderReturnProduct.addSaleOrderReturnProducts(entitySaleOrderReturnProducts, session);
+                    if(resultEntitySaleOrderReturnProducts == null || resultEntitySaleOrderReturnProducts.isEmpty())
+                    {
+                        tx.rollback();
+                        return false;
                     }
                 }
                 if(entityShowRoomStockList != null && !entityShowRoomStockList.isEmpty())
@@ -238,33 +270,26 @@ public class EntityManagerSaleOrder
                     List<EntityShowRoomStock> resultEntityShowRoomStocks = entityManagerShowRoomStock.addShowRoomStocks(entityShowRoomStocks, session);                    
                     if(resultEntityShowRoomStocks == null || resultEntityShowRoomStocks.isEmpty())
                     {
-                        status = false;
+                        tx.rollback();
+                        return false;
                     }
                 }                
-                if(status)
+                if(entitySaleOrder.getCustomerUserId() > 0)
                 {
-                    if(entitySaleOrder.getCustomerUserId() > 0)
+                    EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(this.appId);
+                    EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
+                    if(entityCustomer != null && entityCustomer.getUserId() > 0)
                     {
-                        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(this.appId);
-                        EntityCustomer entityCustomer = entityManagerCustomer.getCustomerByUserId(entitySaleOrder.getCustomerUserId(), session);
-                        if(entityCustomer != null && entityCustomer.getUserId() > 0)
-                        {
-                            double currentDue = this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session);
-                            entityCustomer.setBalance(currentDue);
-                            //double currentDueOfOrder = entitySaleOrder.getPaid() - entitySaleOrder.getTotal();
-                            //double newDueOfOrder = entitySaleOrder.getPaid() - entitySaleOrder.getTotal();
-                            //entityCustomer.setBalance(this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session) - currentDueOfOrder + newDueOfOrder);
-                            entityManagerCustomer.updateCustomer(entityCustomer, session);
-                        }                        
-                    }
-                    tx.commit();
-                    return true;
+                        double currentDue = this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session);
+                        entityCustomer.setBalance(currentDue);
+                        //double currentDueOfOrder = entitySaleOrder.getPaid() - entitySaleOrder.getTotal();
+                        //double newDueOfOrder = entitySaleOrder.getPaid() - entitySaleOrder.getTotal();
+                        //entityCustomer.setBalance(this.getCustomerCurrentDue(entitySaleOrder.getCustomerUserId(), session) - currentDueOfOrder + newDueOfOrder);
+                        entityManagerCustomer.updateCustomer(entityCustomer, session);
+                    }                        
                 }
-                else
-                {
-                    tx.rollback();
-                    return false;
-                }
+                tx.commit();
+                return true;
             }
             else
             {
