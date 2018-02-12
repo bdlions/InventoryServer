@@ -103,6 +103,9 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     @Column(name = "discount", columnDefinition = "double DEFAULT 0")
     private double discount;
     
+    @Column(name = "total_return", columnDefinition = "double DEFAULT 0")
+    private double totalReturn;
+    
     @Column(name = "total", columnDefinition = "double DEFAULT 0")
     private double total;
     

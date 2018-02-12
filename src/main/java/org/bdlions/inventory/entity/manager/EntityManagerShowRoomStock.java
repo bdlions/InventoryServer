@@ -203,6 +203,24 @@ public class EntityManagerShowRoomStock
         }
     }
     
+    public List<EntityShowRoomStock> getShowRoomProductBySaleOrderNoAndTransactionCategoryIds(int productId, String saleOrderNo, List<Integer> transactionCategoryIds)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {            
+            Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("getShowRoomProductBySaleOrderNoAndTransactionCategoryIds");
+            queryStockProducts.setParameter("saleOrderNo", saleOrderNo);
+            queryStockProducts.setParameter("transactionCategoryIds", transactionCategoryIds);
+            queryStockProducts.setParameter("productId", productId);
+            List<EntityShowRoomStock> productList = queryStockProducts.getResultList();
+            return productList;                    
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     /**
      * This method will return delete room stock product based on sale order no and transaction category id using session
      * @param saleOrderNo sale order no
@@ -217,6 +235,18 @@ public class EntityManagerShowRoomStock
             Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId");
             queryStockProducts.setParameter("saleOrderNo", saleOrderNo);
             queryStockProducts.setParameter("transactionCategoryId", transactionCategoryId);
+            return queryStockProducts.executeUpdate();
+        }
+        return 0;
+    }
+    
+    public int deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryIds(String saleOrderNo, List<Integer> transactionCategoryIds, Session session)
+    {
+        if(!StringUtils.isNullOrEmpty(saleOrderNo) && transactionCategoryIds != null && !transactionCategoryIds.isEmpty())
+        {
+            Query<EntityShowRoomStock> queryStockProducts = session.getNamedQuery("deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryIds");
+            queryStockProducts.setParameter("saleOrderNo", saleOrderNo);
+            queryStockProducts.setParameter("transactionCategoryIds", transactionCategoryIds);
             return queryStockProducts.executeUpdate();
         }
         return 0;

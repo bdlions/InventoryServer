@@ -204,7 +204,10 @@ public class EntityManagerSaleOrder
                 if(!StringUtils.isNullOrEmpty(entitySaleOrder.getOrderNo()))
                 {
                     entityManagerSaleOrderProduct.deleteSaleOrderProductsByOrderNo(currentEntitySaleOrder.getOrderNo(), session);
-                    entityManagerShowRoomStock.deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId(currentEntitySaleOrder.getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT, session);
+                    List<Integer> transactionCategoryIds = new ArrayList<>();
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
+                    entityManagerShowRoomStock.deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryIds(currentEntitySaleOrder.getOrderNo(), transactionCategoryIds, session);
                 }
                 if(entitySaleOrderProductList != null && !entitySaleOrderProductList.isEmpty())
                 {

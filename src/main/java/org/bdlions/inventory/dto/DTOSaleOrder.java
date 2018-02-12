@@ -15,12 +15,14 @@ public class DTOSaleOrder extends ClientResponse implements java.io.Serializable
     public EntitySaleOrder entitySaleOrder;
     public DTOCustomer dtoCustomer;
     public List<DTOProduct> products;
+    public List<DTOProduct> returnProducts;
     public String orderDate;
     public DTOSaleOrder()
     {
         entitySaleOrder = new EntitySaleOrder();
         dtoCustomer = new DTOCustomer();
         products = new ArrayList<>();
+        returnProducts = new ArrayList<>();
     }
 
     public int getLimit() {
@@ -70,5 +72,12 @@ public class DTOSaleOrder extends ClientResponse implements java.io.Serializable
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
-    
+
+    public List<DTOProduct> getReturnProducts() {
+        return returnProducts;
+    }
+
+    public void setReturnProducts(List<DTOProduct> returnProducts) {
+        this.returnProducts = returnProducts;
+    }    
 }

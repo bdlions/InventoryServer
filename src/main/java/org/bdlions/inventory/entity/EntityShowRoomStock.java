@@ -36,6 +36,10 @@ import javax.persistence.Table;
             query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
     @NamedQuery(
+            name = "getShowRoomProductBySaleOrderNoAndTransactionCategoryIds",
+            query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.productId = :productId AND showRoomStock.transactionCategoryId IN (:transactionCategoryIds)"
+    ),
+    @NamedQuery(
             name = "getCurrentStock",
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock group by productId"
     ),
@@ -58,6 +62,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId",
             query = " delete from EntityShowRoomStock product where product.saleOrderNo = :saleOrderNo AND product.transactionCategoryId = :transactionCategoryId"
+    ),
+    @NamedQuery(
+            name = "deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryIds",
+            query = " delete from EntityShowRoomStock product where product.saleOrderNo = :saleOrderNo AND product.transactionCategoryId IN (:transactionCategoryIds)"
     )
 })
 public class EntityShowRoomStock extends ClientResponse implements java.io.Serializable{

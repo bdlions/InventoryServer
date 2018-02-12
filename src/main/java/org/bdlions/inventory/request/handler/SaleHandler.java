@@ -123,7 +123,7 @@ public class SaleHandler {
             dtoSaleOrder.getEntitySaleOrder().setOrderNo(orderNo); 
             autoOrderNo = autoOrderNo + 1;
         }
-        dtoSaleOrder.getEntitySaleOrder().setNextOrderNo(autoOrderNo);     
+        dtoSaleOrder.getEntitySaleOrder().setNextOrderNo(autoOrderNo); 
         
         List<DTOProduct> products = dtoSaleOrder.getProducts();
         int totalProducts = products.size();
@@ -159,7 +159,40 @@ public class SaleHandler {
                 entityShowRoomStocks.add(entityShowRoomStock);
             }
             
-        }      
+        } 
+        
+        //setting returned products during sale
+        List<DTOProduct> returnProducts = dtoSaleOrder.getReturnProducts();
+        int totalReturnedProducts = 0;
+        if(returnProducts != null && !returnProducts.isEmpty())
+        {
+            totalReturnedProducts = returnProducts.size();
+        }
+        for(int counter = 0; counter < totalReturnedProducts; counter++)
+        {
+            DTOProduct dtoProduct = returnProducts.get(counter);
+            EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
+            entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+            entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+            entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
+            entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
+            entityShowRoomStock.setStockOut(0);
+            entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
+            entityShowRoomStocks.add(entityShowRoomStock);
+
+            if(productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
+            {
+                if(productIdQuantityMap.get(dtoProduct.getEntityProduct().getId()) < dtoProduct.getQuantity())
+                {
+                    responseDTOSaleOrder.setSuccess(false);
+                    responseDTOSaleOrder.setMessage("You can't return higher quantity than sale quantity for the product " + dtoProduct.getEntityProduct().getName());
+                    return responseDTOSaleOrder;
+                }
+                productIdQuantityMap.put(dtoProduct.getEntityProduct().getId(), productIdQuantityMap.get(dtoProduct.getEntityProduct().getId()) - dtoProduct.getQuantity());
+            }
+        } 
+        
+        
         //checking whether stock is available or not
         Stock stock = new Stock(packet.getPacketHeader().getAppId());
         List<DTOProduct> stockProducts = stock.getCurrentStockByProductIds(productIds);
@@ -300,6 +333,38 @@ public class SaleHandler {
                 }
             }
             
+            //setting returned products during sale
+            List<DTOProduct> returnProducts = dtoSaleOrder.getReturnProducts();
+            int totalReturnedProducts = 0;
+            if(returnProducts != null && !returnProducts.isEmpty())
+            {
+                totalReturnedProducts = returnProducts.size();
+            }
+            for(int counter = 0; counter < totalReturnedProducts; counter++)
+            {
+                DTOProduct dtoProduct = returnProducts.get(counter);
+                EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
+                entityShowRoomStock.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
+                entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
+                entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
+                entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
+                entityShowRoomStock.setStockOut(0);
+                entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
+                entityShowRoomStocks.add(entityShowRoomStock);
+                
+                if(productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
+                {
+                    if(productIdQuantityMap.get(dtoProduct.getEntityProduct().getId()) < dtoProduct.getQuantity())
+                    {
+                        response.setSuccess(false);
+                        response.setMessage("You can't return higher quantity than sale quantity for the product " + dtoProduct.getEntityProduct().getName());
+                        return response;
+                    }
+                    productIdQuantityMap.put(dtoProduct.getEntityProduct().getId(), productIdQuantityMap.get(dtoProduct.getEntityProduct().getId()) - dtoProduct.getQuantity());
+                }
+            } 
+            
+            //----------------------------check available stock logic in details with more simulation
             //checking whether stock is available or not
             Stock stock = new Stock(packet.getPacketHeader().getAppId());
             List<DTOProduct> stockProducts = stock.getCurrentStockByProductIds(productIds);
@@ -392,15 +457,41 @@ public class SaleHandler {
                 for(int counter = 0; counter < entitySaleOrderProducts.size(); counter++)
                 {
                     EntitySaleOrderProduct entitySaleOrderProduct = entitySaleOrderProducts.get(counter);
-                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
-                    EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
+                    //EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                    //EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
 
-                    DTOProduct dtoProduct = new DTOProduct();
-                    dtoProduct.setQuantity(stockProduct.getStockOut());
-                    dtoProduct.setEntityProduct(entityProduct);
-                    dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
-                    dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
-                    dtoSaleOrder.getProducts().add(dtoProduct);
+                    //DTOProduct dtoProduct = new DTOProduct();
+                    //dtoProduct.setQuantity(stockProduct.getStockOut());
+                    //dtoProduct.setEntityProduct(entityProduct);
+                    //dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
+                    //dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
+                    //dtoSaleOrder.getProducts().add(dtoProduct);
+                    
+                    List<Integer> transactionCategoryIds = new ArrayList<>();
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
+                    List<EntityShowRoomStock> stockProducts = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryIds(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), transactionCategoryIds);
+                    if(stockProducts != null && !stockProducts.isEmpty())
+                    {
+                        EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProducts.get(0).getProductId());
+                        for(EntityShowRoomStock stockProduct : stockProducts)
+                        {
+                            DTOProduct dtoProduct = new DTOProduct();
+                            dtoProduct.setEntityProduct(entityProduct);
+                            dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
+                            dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
+                            if(stockProduct.getTransactionCategoryId() == Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT)
+                            {
+                                dtoProduct.setQuantity(stockProduct.getStockOut());
+                                dtoSaleOrder.getProducts().add(dtoProduct);
+                            }
+                            else if(stockProduct.getTransactionCategoryId() == Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN)
+                            {
+                                dtoProduct.setQuantity(stockProduct.getStockIn());
+                                dtoSaleOrder.getReturnProducts().add(dtoProduct);
+                            }
+                        }
+                    }
                 }
             }
             dtoSaleOrder.setSuccess(true);
