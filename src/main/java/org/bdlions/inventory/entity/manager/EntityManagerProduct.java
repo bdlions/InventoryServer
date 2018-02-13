@@ -224,7 +224,10 @@ public class EntityManagerProduct
                     entityProductSupplier.setProductName(entityProduct.getName());
                     entityManagerProductSupplier.addProductSupplier(entityProductSupplier, session);
                 }
-            }            
+            } 
+            //updating product name at show room stock table
+            EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
+            entityManagerShowRoomStock.updateShowRoomStockProductInfo(entityProduct, session);
             tx.commit();
             return true;
         }

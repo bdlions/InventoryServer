@@ -56,6 +56,10 @@ import javax.persistence.Table;
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where lower(showRoomStock.productName) like :productName group by productId"
     ),
     @NamedQuery(
+            name = "updateShowRoomStockProductInfo",
+            query = "update EntityShowRoomStock set productName = :productName where productId = :productId"
+    ),
+    @NamedQuery(
             name = "deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId",
             query = " delete from EntityShowRoomStock product where product.purchaseOrderNo = :purchaseOrderNo AND product.transactionCategoryId = :transactionCategoryId"
     ),    
