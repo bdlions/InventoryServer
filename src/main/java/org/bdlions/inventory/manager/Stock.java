@@ -6,6 +6,7 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.entity.EntityProduct;
+import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -175,6 +176,40 @@ public class Stock
                     dtoProduct.setEntityProduct(entityProduct);
                     products.add(dtoProduct);
                 }
+            }
+        }
+        finally 
+        {
+            session.close();
+        }
+        return products;
+    }
+    
+    
+    public List<DTOProduct> getEndingCurrentStock(double maxStock)
+    {
+        List<DTOProduct> products = new ArrayList<>();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try
+        {
+            double temp = 10.0;
+            //Query query = session.createSQLQuery(" select product_id, sum(stock_in-stock_out) as total from showroom_stocks group by product_id having sum(stock_in-stock_out) <= " + temp + "  ")
+                    ;
+            
+            Query<Object[]> query = session.getNamedQuery("getEndingCurrentStock");
+            query.setParameter("maxStock", maxStock);
+            List<Object[]> showRoomProducts = query.getResultList();
+            for(Object[] entityShowRoomStock : showRoomProducts)
+            {
+                int productId = (int)entityShowRoomStock[0];
+                double quantity = (double)entityShowRoomStock[1];
+                
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(this.appId);
+                EntityProduct entityProduct = entityManagerProduct.getProductByProductId(productId);
+                DTOProduct dtoProduct = new DTOProduct();
+                dtoProduct.setQuantity(quantity);
+                dtoProduct.setEntityProduct(entityProduct);
+                products.add(dtoProduct);                
             }
         }
         finally 

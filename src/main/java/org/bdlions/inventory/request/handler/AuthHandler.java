@@ -107,8 +107,10 @@ public class AuthHandler {
         if(session != null)
         {
             String sessionId = session.getSessionId();
+            String userName = session.getUserName();
             try
             {
+                sessionManager.removeDeviceSession(userName, 0, sessionId);
                 sessionManager.destroySession(sessionId);
             }
             catch(Exception ex)

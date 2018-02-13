@@ -44,6 +44,10 @@ import javax.persistence.Table;
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock group by productId"
     ),
     @NamedQuery(
+            name = "getEndingCurrentStock",
+            query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock group by productId having sum(stockIn - stockOut) <= :maxStock "
+    ),
+    @NamedQuery(
             name = "getCurrentStockByProductIds",
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where showRoomStock.productId IN (:productIds) group by productId"
     ),
