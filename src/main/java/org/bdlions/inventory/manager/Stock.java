@@ -185,6 +185,34 @@ public class Stock
         return products;
     }
     
+    public List<DTOProduct> getDefaultEndingCurrentStock(int limit)
+    {
+        List<DTOProduct> products = new ArrayList<>();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try
+        {
+            Query<Object[]> query = session.getNamedQuery("getDefaultEndingCurrentStock");
+            query.setMaxResults(limit);
+            List<Object[]> showRoomProducts = query.getResultList();
+            for(Object[] entityShowRoomStock : showRoomProducts)
+            {
+                int productId = (int)entityShowRoomStock[0];
+                double quantity = (double)entityShowRoomStock[1];
+                
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(this.appId);
+                EntityProduct entityProduct = entityManagerProduct.getProductByProductId(productId);
+                DTOProduct dtoProduct = new DTOProduct();
+                dtoProduct.setQuantity(quantity);
+                dtoProduct.setEntityProduct(entityProduct);
+                products.add(dtoProduct);                
+            }
+        }
+        finally 
+        {
+            session.close();
+        }
+        return products;
+    }
     
     public List<DTOProduct> getEndingCurrentStock(double maxStock)
     {

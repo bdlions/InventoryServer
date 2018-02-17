@@ -18,6 +18,8 @@ public class Constants {
     public static final int SS_TRANSACTION_CATEGORY_ID_SALE_OUT = 5;
     public static final int SS_TRANSACTION_CATEGORY_ID_SALE_RETURN = 6;
     
+    public static final int DEFAULT_ENDING_STOCK_LIMIT = 10;
+    
     
     public static final int CURRENCY_UNIT_DEFAULT = 1;    
    

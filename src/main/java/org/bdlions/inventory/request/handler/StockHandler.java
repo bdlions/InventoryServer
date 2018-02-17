@@ -9,11 +9,13 @@ import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListDTOProduct;
 import org.bdlions.inventory.manager.Stock;
+import org.bdlions.inventory.util.Constants;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -80,7 +82,16 @@ public class StockHandler {
         Double maxStock = jsonObject.get("maxStock").getAsDouble();
         ClientListResponse clientListResponse = new ClientListResponse();
         Stock stock = new Stock(packet.getPacketHeader().getAppId());
-        List<DTOProduct> products = stock.getEndingCurrentStock(maxStock);
+        List<DTOProduct> products = new ArrayList<>();
+        if(maxStock == 0)
+        {
+            products = stock.getDefaultEndingCurrentStock(Constants.DEFAULT_ENDING_STOCK_LIMIT);
+        }
+        else
+        {
+            products = stock.getEndingCurrentStock(maxStock);
+        }
+        
         clientListResponse.setList(products);
         clientListResponse.setSuccess(true);
         return clientListResponse;
