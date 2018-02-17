@@ -3,7 +3,9 @@ package org.bdlions.inventory.entity.manager;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityProduct;
+import org.bdlions.inventory.entity.EntityProductCategory;
 import org.bdlions.inventory.entity.EntityProductSupplier;
+import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -235,6 +237,15 @@ public class EntityManagerProduct
         {
             session.close();
         }
+    }
+    
+    public int updateProductCategoryInfo(EntityProductCategory entityProductCategory, Session session) 
+    {
+        Query<EntityShowRoomStock> query = session.getNamedQuery("updateProductCategoryInfo");
+        query.setParameter("categoryTitle", entityProductCategory.getTitle());
+        query.setParameter("vat", entityProductCategory.getVat());
+        query.setParameter("categoryId", entityProductCategory.getId());
+        return query.executeUpdate();
     }
     
     /**

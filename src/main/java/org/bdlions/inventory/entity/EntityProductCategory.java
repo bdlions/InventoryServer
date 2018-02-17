@@ -23,8 +23,20 @@ import javax.persistence.Table;
 )
 @NamedQueries({
     @NamedQuery(
+            name = "getProductCategoryById",
+            query = "from EntityProductCategory category where category.id = :id"
+    ),
+    @NamedQuery(
+            name = "getProductCategoryByTitle",
+            query = "from EntityProductCategory category where category.title = :title"
+    ),
+    @NamedQuery(
             name = "getAllProductCategories",
             query = "from EntityProductCategory productCategory"
+    ),
+    @NamedQuery(
+            name = "searchProductCategoryByTitle",
+            query = "from EntityProductCategory category where lower(category.title) like :title"
     )
 })
 public class EntityProductCategory extends ClientResponse implements java.io.Serializable{
@@ -36,6 +48,9 @@ public class EntityProductCategory extends ClientResponse implements java.io.Ser
 
     @Column(name = "title", length = 200)
     private String title;
+    
+    @Column(name = "vat", columnDefinition = "double DEFAULT 0")
+    private double vat;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int createdOn;
@@ -73,5 +88,13 @@ public class EntityProductCategory extends ClientResponse implements java.io.Ser
 
     public void setModifiedOn(int modifiedOn) {
         this.modifiedOn = modifiedOn;
+    }
+
+    public double getVat() {
+        return vat;
+    }
+
+    public void setVat(double vat) {
+        this.vat = vat;
     }
 }

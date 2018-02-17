@@ -48,6 +48,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "searchProductByName",
             query = "from EntityProduct product where lower(product.name) like :name"
+    ),
+    @NamedQuery(
+            name = "updateProductCategoryInfo",
+            query = "update EntityProduct set categoryTitle = :categoryTitle, vat = :vat where categoryId = :categoryId"
     )
 })
 public class EntityProduct extends ClientResponse implements java.io.Serializable{
@@ -68,6 +72,9 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     
     @Column(name = "category_title", length = 200)
     private String categoryTitle;
+    
+    @Column(name = "vat", columnDefinition = "double DEFAULT 0")
+    private double vat;
     
     @Column(name = "type_id", columnDefinition = "int(11) DEFAULT 1")
     private int typeId;
@@ -251,6 +258,14 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
 
     public void setTypeTitle(String typeTitle) {
         this.typeTitle = typeTitle;
+    }
+
+    public double getVat() {
+        return vat;
+    }
+
+    public void setVat(double vat) {
+        this.vat = vat;
     }
     
 }

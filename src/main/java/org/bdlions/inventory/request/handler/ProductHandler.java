@@ -41,7 +41,7 @@ public class ProductHandler {
         this.sessionManager = sessionManager;
     }
 
-    @ClientRequest(action = ACTION.FETCH_ALL_PRODUCT_CATEGORIES)
+    /*@ClientRequest(action = ACTION.FETCH_ALL_PRODUCT_CATEGORIES)
     public ClientResponse getAllProductCategories(ISession session, IPacket packet) throws Exception 
     {
         EntityManagerProductCategory entityManagerProductCategory = new EntityManagerProductCategory(packet.getPacketHeader().getAppId());
@@ -50,7 +50,7 @@ public class ProductHandler {
         response.setProductCategories(productCategorys);
         response.setSuccess(true);
         return response;
-    }
+    }*/
     
     @ClientRequest(action = ACTION.FETCH_ALL_PRODUCT_TYPES)
     public ClientResponse getAllProductTypes(ISession session, IPacket packet) throws Exception 

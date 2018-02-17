@@ -106,6 +106,9 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     @Column(name = "total_return", columnDefinition = "double DEFAULT 0")
     private double totalReturn;
     
+    @Column(name = "vat", columnDefinition = "double DEFAULT 0")
+    private double vat;
+    
     @Column(name = "total", columnDefinition = "double DEFAULT 0")
     private double total;
     
@@ -297,4 +300,21 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public double getTotalReturn() {
+        return totalReturn;
+    }
+
+    public void setTotalReturn(double totalReturn) {
+        this.totalReturn = totalReturn;
+    }
+
+    public double getVat() {
+        return vat;
+    }
+
+    public void setVat(double vat) {
+        this.vat = vat;
+    }
+    
 }

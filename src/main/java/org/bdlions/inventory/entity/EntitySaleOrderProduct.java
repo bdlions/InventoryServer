@@ -55,6 +55,9 @@ public class EntitySaleOrderProduct extends ClientResponse implements java.io.Se
     @Column(name = "discount")
     private double discount;
     
+    @Column(name = "vat", columnDefinition = "double DEFAULT 0")
+    private double vat;
+    
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private int createdOn;
 
@@ -125,6 +128,11 @@ public class EntitySaleOrderProduct extends ClientResponse implements java.io.Se
         this.modifiedOn = modifiedOn;
     }
 
-    
-    
+    public double getVat() {
+        return vat;
+    }
+
+    public void setVat(double vat) {
+        this.vat = vat;
+    }
 }
