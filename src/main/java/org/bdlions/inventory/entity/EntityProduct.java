@@ -97,6 +97,9 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
     
     @Column(name = "unit_price", columnDefinition = "double DEFAULT 0")
     private double unitPrice;
+    
+    @Column(name = "default_sale_quantity", columnDefinition = "double DEFAULT 1")
+    private double defaultSaleQuantity;
 
     @Column(name = "length", length = 200)
     private String length;
@@ -267,6 +270,14 @@ public class EntityProduct extends ClientResponse implements java.io.Serializabl
 
     public void setVat(double vat) {
         this.vat = vat;
+    }
+
+    public double getDefaultSaleQuantity() {
+        return defaultSaleQuantity;
+    }
+
+    public void setDefaultSaleQuantity(double defaultSaleQuantity) {
+        this.defaultSaleQuantity = defaultSaleQuantity;
     }
     
 }
