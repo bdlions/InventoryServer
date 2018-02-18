@@ -21,7 +21,8 @@ import javax.persistence.Transient;
         name = "products",
         indexes = {
             @Index(name = "idx_product_name", columnList = "name", unique = true),
-            @Index(name = "idx_product_code", columnList = "code", unique = true)
+            @Index(name = "idx_product_code", columnList = "code", unique = true),
+            @Index(name = "idx_category_id", columnList = "category_id")
         }
 )
 @NamedQueries({
