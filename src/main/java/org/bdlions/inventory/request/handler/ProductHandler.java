@@ -25,6 +25,7 @@ import org.bdlions.inventory.entity.manager.EntityManagerProductCategory;
 import org.bdlions.inventory.entity.manager.EntityManagerProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerProductType;
 import org.bdlions.inventory.entity.manager.EntityManagerUOM;
+import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.util.annotation.ClientRequest;
 
 //import org.apache.shiro.authc.UnknownAccountException;
@@ -87,13 +88,7 @@ public class ProductHandler {
             return responseEntityProduct;
         }
         EntityProduct entityProduct = dtoProduct.getEntityProduct();
-        if(entityProduct == null)
-        {
-            responseEntityProduct.setSuccess(false);
-            responseEntityProduct.setMessage("Invalid Porduct Info. Please try again later.");
-            return responseEntityProduct;
-        }
-        else if(entityProduct.getName() == null || entityProduct.getName().equals(""))
+        if(StringUtils.isNullOrEmpty(entityProduct.getName()))
         {
             responseEntityProduct.setSuccess(false);
             responseEntityProduct.setMessage("Product Name is required.");

@@ -19,6 +19,7 @@ import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.util.Constants;
+import org.bdlions.inventory.util.StringUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -47,7 +48,7 @@ public class CustomerHandler {
             responseDTOCustomer.setMessage("Invalid Customer Info. Please try again later.");
             return responseDTOCustomer;
         }
-        else if(dtoCustomer.getEntityUser().getUserName() == null || dtoCustomer.getEntityUser().getUserName().equals(""))
+        else if(StringUtils.isNullOrEmpty(dtoCustomer.getEntityUser().getUserName()))
         {
             responseDTOCustomer.setSuccess(false);
             responseDTOCustomer.setMessage("Name is required.");
@@ -103,7 +104,7 @@ public class CustomerHandler {
             response.setSuccess(false);
             response.setMessage("Invalid Customer Info. Please try again later..");
         }
-        else if(dtoCustomer.getEntityUser().getUserName() == null || dtoCustomer.getEntityUser().getUserName().equals(""))
+        else if(StringUtils.isNullOrEmpty(dtoCustomer.getEntityUser().getUserName()))
         {
             response.setSuccess(false);
             response.setMessage("Name is required.");

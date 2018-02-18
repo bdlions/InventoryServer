@@ -58,6 +58,21 @@ public class SupplierHandler {
         }
         else
         {
+            //check whether supplier product list data is valid or not
+            List<EntityProductSupplier> entityProductSupplierList = dtoSupplier.getEntityProductSupplierList();
+            if(entityProductSupplierList != null && !entityProductSupplierList.isEmpty())
+            {
+                for(int counter = 0; counter < entityProductSupplierList.size(); counter++)
+                {
+                    if(entityProductSupplierList.get(counter).getProductId() <= 0)
+                    {
+                        responseDTOSupplier.setSuccess(false);
+                        responseDTOSupplier.setMessage("Invalid product in Product List. Please try again later.");
+                        return responseDTOSupplier;
+                    }                    
+                }
+            }
+            
             EntityUserRole entityUserRole = new EntityUserRole();
             entityUserRole.setRoleId(Constants.ROLE_ID_SUPPLIER);
             dtoSupplier.setEntityUserRole(entityUserRole);
@@ -113,6 +128,21 @@ public class SupplierHandler {
         }
         else
         {
+            //check whether supplier product list data is valid or not
+            List<EntityProductSupplier> tempEPSList = dtoSupplier.getEntityProductSupplierList();
+            if(tempEPSList != null && !tempEPSList.isEmpty())
+            {
+                for(int counter = 0; counter < tempEPSList.size(); counter++)
+                {
+                    if(tempEPSList.get(counter).getProductId() <= 0)
+                    {
+                        response.setSuccess(false);
+                        response.setMessage("Invalid product in Product List. Please try again later.");
+                        return response;
+                    }                    
+                }
+            }
+            
             EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
             
             //setting entity supplier name, email and cell from entity user
