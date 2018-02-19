@@ -57,8 +57,11 @@ public class EntityManagerProductSupplier {
         try 
         {
             Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersBySupplierUserId");
-            query.setFirstResult(offset);
-            query.setMaxResults(limit);
+            if(limit > 0)
+            {
+                query.setFirstResult(offset);
+                query.setMaxResults(limit);
+            }            
             query.setParameter("supplierUserId", supplierUserId);
             return query.getResultList();
 
