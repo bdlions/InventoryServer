@@ -8,23 +8,22 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.entity.EntityProduct;
-import org.bdlions.inventory.entity.EntityProductCategory;
 import org.bdlions.inventory.entity.EntityProductType;
 import org.bdlions.inventory.entity.EntityUOM;
 import org.bdlions.inventory.dto.ListProduct;
-import org.bdlions.inventory.dto.ListProductCategory;
 import org.bdlions.inventory.dto.ListProductType;
 import org.bdlions.inventory.dto.ListUOM;
 import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
-import org.bdlions.inventory.entity.manager.EntityManagerProductCategory;
 import org.bdlions.inventory.entity.manager.EntityManagerProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerProductType;
 import org.bdlions.inventory.entity.manager.EntityManagerUOM;
+import org.bdlions.inventory.manager.Stock;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.util.annotation.ClientRequest;
 
@@ -293,6 +292,45 @@ public class ProductHandler {
         return response;
     }
     
+    @ClientRequest(action = ACTION.FETCH_PRODUCTS_WITH_STOCKS)
+    public ClientResponse getProductsWithStocks(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);   
+        
+        if( dtoProduct == null)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get product list. Please try again later");
+            return generalResponse;
+        }
+        List<DTOProduct> productWithStocks = new ArrayList<>();
+        int totalProducts = 0;
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
+        List<EntityProduct> products = entityManagerProduct.getProducts(dtoProduct.getOffset(), dtoProduct.getLimit());
+        List<Integer> productIds = new ArrayList<>();
+        if(products != null && !products.isEmpty())
+        {
+            for(int counter = 0; counter < products.size(); counter++)
+            {
+                if(!productIds.contains(products.get(counter).getId()))
+                {
+                    productIds.add(products.get(counter).getId());
+                }
+            }
+            Stock stock = new Stock(packet.getPacketHeader().getAppId());
+            productWithStocks = stock.getCurrentStockByProductIds(productIds);
+            totalProducts = entityManagerProduct.getTotalProducts();
+        }        
+        
+        ClientListResponse response = new ClientListResponse();
+        response.setList(productWithStocks);
+        response.setCounter(totalProducts);
+        response.setSuccess(true);
+        return response;
+    }
+    
     @ClientRequest(action = ACTION.FETCH_PRODUCTS_BY_NAME)
     public ClientResponse getProductsByName(ISession session, IPacket packet) throws Exception 
     {
@@ -341,6 +379,42 @@ public class ProductHandler {
             response.setSuccess(false);
             response.setMessage("Invalid product.");
         }
+        return response;
+    }
+    
+    @ClientRequest(action = ACTION.SEARCH_PRODUCTS_WITH_STOCKS)
+    public ClientResponse searchProductsWithStocks(ISession session, IPacket packet) throws Exception 
+    {
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);     
+        String name = jsonObject.get("name").getAsString();
+        int typeId = jsonObject.get("typeId").getAsInt();
+        int categoryId = jsonObject.get("categoryId").getAsInt();
+        int limit = jsonObject.get("limit").getAsInt();
+        int offset = jsonObject.get("offset").getAsInt();
+        
+        List<DTOProduct> productWithStocks = new ArrayList<>();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
+        List<EntityProduct> products = entityManagerProduct.searchProduct(name, typeId, categoryId, offset, limit);
+        int totalProducts = 0;
+        List<Integer> productIds = new ArrayList<>();
+        if(products != null && !products.isEmpty())
+        {
+            for(int counter = 0; counter < products.size(); counter++)
+            {
+                if(!productIds.contains(products.get(counter).getId()))
+                {
+                    productIds.add(products.get(counter).getId());
+                }
+            }
+            Stock stock = new Stock(packet.getPacketHeader().getAppId());
+            productWithStocks = stock.getCurrentStockByProductIds(productIds);
+            totalProducts = entityManagerProduct.searchTotalProducts(name, typeId, categoryId);
+        }        
+        
+        ClientListResponse response = new ClientListResponse();
+        response.setList(productWithStocks);
+        response.setCounter(totalProducts);
+        response.setSuccess(true);
         return response;
     }
 }

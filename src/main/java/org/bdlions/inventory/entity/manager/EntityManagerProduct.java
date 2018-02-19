@@ -5,7 +5,9 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityProductCategory;
 import org.bdlions.inventory.entity.EntityProductSupplier;
+import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
+import org.bdlions.inventory.util.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -327,6 +329,113 @@ public class EntityManagerProduct
             Query<EntityProduct> query = session.getNamedQuery("searchProductByName");
             query.setParameter("name", "%" + name.toLowerCase() + "%");
             return query.getResultList().size();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public List<EntityProduct> searchProduct(String name, int typeId, int categoryId, int offset, int limit) 
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            String where = "";
+            String strLimit = "";
+            String strOffset = "";
+            if(!StringUtils.isNullOrEmpty(name))
+            {
+                String lowerName = name.toLowerCase();
+                if(where.equals(""))
+                {
+                    where = " where lower(name) like '%" + lowerName + "%'";
+                }
+                else 
+                {
+                    where += " and lower((name) like '%" + lowerName + "%'";
+                }
+            }
+            if(typeId > 0)
+            {
+                if(where.equals(""))
+                {
+                    where = " where type_id = " + typeId;
+                }
+                else 
+                {
+                    where += " and type_id = " + typeId;
+                }
+            }
+            if(categoryId > 0)
+            {
+                if(where.equals(""))
+                {
+                    where = " where category_id = " + categoryId;
+                }
+                else 
+                {
+                    where += " and category_id = " + categoryId;
+                }
+            }
+            if(limit > 0)
+            {
+                strOffset = " offset " + offset;
+                strLimit = " limit " + limit;
+            }
+            
+            Query query = session.createSQLQuery("select {ep.*} from products ep " + where + strLimit + strOffset )
+                    .addEntity("ep",EntityProduct.class);
+            return query.list();           
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    public int searchTotalProducts(String name, int typeId, int categoryId) 
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            String where = "";
+            if(!StringUtils.isNullOrEmpty(name))
+            {
+                String lowerName = name.toLowerCase();
+                if(where.equals(""))
+                {
+                    where = " where lower(name) like '%" + lowerName + "%'";
+                }
+                else 
+                {
+                    where += " and lower((name) like '%" + lowerName + "%'";
+                }
+            }
+            if(typeId > 0)
+            {
+                if(where.equals(""))
+                {
+                    where = " where type_id = " + typeId;
+                }
+                else 
+                {
+                    where += " and type_id = " + typeId;
+                }
+            }
+            if(categoryId > 0)
+            {
+                if(where.equals(""))
+                {
+                    where = " where category_id = " + categoryId;
+                }
+                else 
+                {
+                    where += " and category_id = " + categoryId;
+                }
+            }
+            Query query = session.createSQLQuery("select {ep.*} from products ep " + where)
+                    .addEntity("ep",EntityProduct.class);
+            return query.list().size();           
         } 
         finally 
         {
