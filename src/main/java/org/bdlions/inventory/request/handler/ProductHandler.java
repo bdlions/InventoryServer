@@ -321,6 +321,35 @@ public class ProductHandler {
             }
             Stock stock = new Stock(packet.getPacketHeader().getAppId());
             productWithStocks = stock.getCurrentStockByProductIds(productIds);
+            List<Integer> excludedProductIds = new ArrayList<>();
+            List<Integer> tempProductIds = new ArrayList<>();
+            if(productWithStocks != null && !productWithStocks.isEmpty())
+            {
+                for(int counter = 0; counter < productWithStocks.size(); counter++)
+                {
+                    if(!tempProductIds.contains(productWithStocks.get(counter).getEntityProduct().getId()))
+                    {
+                        tempProductIds.add(productWithStocks.get(counter).getEntityProduct().getId());
+                    }
+                }
+            }
+            for(int productId: productIds)
+            {
+                if(!tempProductIds.contains(productId))
+                {
+                    excludedProductIds.add(productId);
+                }
+            }
+            for(EntityProduct entityProduct: products)
+            {
+                if(excludedProductIds.contains(entityProduct.getId()))
+                {
+                    DTOProduct tempDTOProduct = new DTOProduct();
+                    tempDTOProduct.setQuantity(0);
+                    tempDTOProduct.setEntityProduct(entityProduct);
+                    productWithStocks.add(tempDTOProduct);
+                }
+            }
             totalProducts = entityManagerProduct.getTotalProducts();
         }        
         
@@ -382,6 +411,26 @@ public class ProductHandler {
         return response;
     }
     
+    @ClientRequest(action = ACTION.SEARCH_PRODUCTS)
+    public ClientResponse searchProducts(ISession session, IPacket packet) throws Exception 
+    {
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);     
+        String name = jsonObject.get("name").getAsString();
+        int typeId = jsonObject.get("typeId").getAsInt();
+        int categoryId = jsonObject.get("categoryId").getAsInt();
+        int limit = jsonObject.get("limit").getAsInt();
+        int offset = jsonObject.get("offset").getAsInt();
+        
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
+        List<EntityProduct> products = entityManagerProduct.searchProduct(name, typeId, categoryId, offset, limit);
+        int totalProducts = entityManagerProduct.searchTotalProducts(name, typeId, categoryId);
+        ClientListResponse response = new ClientListResponse();
+        response.setList(products);
+        response.setCounter(totalProducts);
+        response.setSuccess(true);
+        return response;
+    }
+    
     @ClientRequest(action = ACTION.SEARCH_PRODUCTS_WITH_STOCKS)
     public ClientResponse searchProductsWithStocks(ISession session, IPacket packet) throws Exception 
     {
@@ -408,6 +457,35 @@ public class ProductHandler {
             }
             Stock stock = new Stock(packet.getPacketHeader().getAppId());
             productWithStocks = stock.getCurrentStockByProductIds(productIds);
+            List<Integer> excludedProductIds = new ArrayList<>();
+            List<Integer> tempProductIds = new ArrayList<>();
+            if(productWithStocks != null && !productWithStocks.isEmpty())
+            {
+                for(int counter = 0; counter < productWithStocks.size(); counter++)
+                {
+                    if(!tempProductIds.contains(productWithStocks.get(counter).getEntityProduct().getId()))
+                    {
+                        tempProductIds.add(productWithStocks.get(counter).getEntityProduct().getId());
+                    }
+                }
+            }
+            for(int productId: productIds)
+            {
+                if(!tempProductIds.contains(productId))
+                {
+                    excludedProductIds.add(productId);
+                }
+            }
+            for(EntityProduct entityProduct: products)
+            {
+                if(excludedProductIds.contains(entityProduct.getId()))
+                {
+                    DTOProduct tempDTOProduct = new DTOProduct();
+                    tempDTOProduct.setQuantity(0);
+                    tempDTOProduct.setEntityProduct(entityProduct);
+                    productWithStocks.add(tempDTOProduct);
+                }
+            }
             totalProducts = entityManagerProduct.searchTotalProducts(name, typeId, categoryId);
         }        
         
