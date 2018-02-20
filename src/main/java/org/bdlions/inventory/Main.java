@@ -1,6 +1,9 @@
 package org.bdlions.inventory;
+import java.util.List;
 import org.bdlions.inventory.db.DatabaseLoader;
 import org.bdlions.inventory.db.HibernateUtil;
+import org.bdlions.inventory.entity.EntityOrganization;
+import org.bdlions.inventory.entity.manager.EntityManagerOrganization;
 import org.bdlions.session.ISessionManager;
 import org.bdlions.transport.channel.provider.ChannelProviderImpl;
 import org.bdlions.inventory.util.ClientRequestHandler;
@@ -32,8 +35,14 @@ public class Main extends SpringBootServletInitializer {
         {
             Session session1 = DatabaseLoader.getInstance().getSession();
             session1.close();
-            //Session session2 = HibernateUtil.getInstance().getSession();
-            //session2.close();
+            
+            EntityManagerOrganization manager = new EntityManagerOrganization();
+            List<EntityOrganization> organizations = manager.getOrganizations();
+            for (EntityOrganization organization : organizations) 
+            {
+                Session session2 = HibernateUtil.getInstance().getSession(organization.getDatabaseName());
+                session2.close();
+            }
         }
         catch(Exception ex)
         {
