@@ -31,49 +31,49 @@ public class StockHandler {
         this.sessionManager = sessionManager;
     }
 
-    @ClientRequest(action = ACTION.FETCH_CURRENT_STOCK)
-    public ClientResponse getCurrentStock(ISession session, IPacket packet) throws Exception 
-    {
-        Gson gson = new Gson();
-        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);  
-        if(dtoProduct == null)
-        {
-            GeneralResponse generalResponse = new GeneralResponse();
-            generalResponse.setSuccess(false);
-            generalResponse.setMessage("Invalid request to get stock list. Please try again later");
-            return generalResponse;
-        }
-        
-        ListDTOProduct listDTOProduct = new ListDTOProduct();
-        Stock stock = new Stock(packet.getPacketHeader().getAppId());
-        List<DTOProduct> products = stock.getCurrentStock(dtoProduct.getOffset(), dtoProduct.getLimit());
-        listDTOProduct.setProducts(products);
-        listDTOProduct.setTotalProducts(stock.getTotalCurrentStock());
-        listDTOProduct.setSuccess(true);
-        return listDTOProduct;
-    }
-    
-    @ClientRequest(action = ACTION.FETCH_CURRENT_STOCK_BY_PRODUCT_NAME)
-    public ClientResponse getCurrentStockByProductName(ISession session, IPacket packet) throws Exception 
-    {
-        Gson gson = new Gson();
-        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);  
-        if(dtoProduct == null || dtoProduct.getEntityProduct() == null)
-        {
-            GeneralResponse generalResponse = new GeneralResponse();
-            generalResponse.setSuccess(false);
-            generalResponse.setMessage("Invalid request to get stock list. Please try again later");
-            return generalResponse;
-        }
-        
-        ListDTOProduct listDTOProduct = new ListDTOProduct();
-        Stock stock = new Stock(packet.getPacketHeader().getAppId());
-        List<DTOProduct> products = stock.searchCurrentStockByProductName(dtoProduct.getEntityProduct().getName(), dtoProduct.getOffset(), dtoProduct.getLimit());
-        listDTOProduct.setProducts(products);
-        listDTOProduct.setTotalProducts(stock.searchTotalCurrentStockByProductName(dtoProduct.getEntityProduct().getName()));
-        listDTOProduct.setSuccess(true);
-        return listDTOProduct;
-    }
+//    @ClientRequest(action = ACTION.FETCH_CURRENT_STOCK)
+//    public ClientResponse getCurrentStock(ISession session, IPacket packet) throws Exception 
+//    {
+//        Gson gson = new Gson();
+//        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);  
+//        if(dtoProduct == null)
+//        {
+//            GeneralResponse generalResponse = new GeneralResponse();
+//            generalResponse.setSuccess(false);
+//            generalResponse.setMessage("Invalid request to get stock list. Please try again later");
+//            return generalResponse;
+//        }
+//        
+//        ListDTOProduct listDTOProduct = new ListDTOProduct();
+//        Stock stock = new Stock(packet.getPacketHeader().getAppId());
+//        List<DTOProduct> products = stock.getCurrentStock(dtoProduct.getOffset(), dtoProduct.getLimit());
+//        listDTOProduct.setProducts(products);
+//        listDTOProduct.setTotalProducts(stock.getTotalCurrentStock());
+//        listDTOProduct.setSuccess(true);
+//        return listDTOProduct;
+//    }
+//    
+//    @ClientRequest(action = ACTION.FETCH_CURRENT_STOCK_BY_PRODUCT_NAME)
+//    public ClientResponse getCurrentStockByProductName(ISession session, IPacket packet) throws Exception 
+//    {
+//        Gson gson = new Gson();
+//        DTOProduct dtoProduct = gson.fromJson(packet.getPacketBody(), DTOProduct.class);  
+//        if(dtoProduct == null || dtoProduct.getEntityProduct() == null)
+//        {
+//            GeneralResponse generalResponse = new GeneralResponse();
+//            generalResponse.setSuccess(false);
+//            generalResponse.setMessage("Invalid request to get stock list. Please try again later");
+//            return generalResponse;
+//        }
+//        
+//        ListDTOProduct listDTOProduct = new ListDTOProduct();
+//        Stock stock = new Stock(packet.getPacketHeader().getAppId());
+//        List<DTOProduct> products = stock.searchCurrentStockByProductName(dtoProduct.getEntityProduct().getName(), dtoProduct.getOffset(), dtoProduct.getLimit());
+//        listDTOProduct.setProducts(products);
+//        listDTOProduct.setTotalProducts(stock.searchTotalCurrentStockByProductName(dtoProduct.getEntityProduct().getName()));
+//        listDTOProduct.setSuccess(true);
+//        return listDTOProduct;
+//    }
     
     @ClientRequest(action = ACTION.FETCH_ENDING_CURRENT_STOCK)
     public ClientResponse getEndingCurrentStock(ISession session, IPacket packet) throws Exception 
