@@ -207,6 +207,40 @@ public class SaleHandler {
         //checking whether stock is available or not
         Stock stock = new Stock(packet.getPacketHeader().getAppId());
         List<DTOProduct> stockProducts = stock.getCurrentStockByProductIds(productIds);
+        List<Integer> excludedProductIds = new ArrayList<>();
+        List<Integer> tempProductIds = new ArrayList<>();
+        if(stockProducts != null && !stockProducts.isEmpty())
+        {
+            for(int counter = 0; counter < stockProducts.size(); counter++)
+            {
+                if(!tempProductIds.contains(stockProducts.get(counter).getEntityProduct().getId()))
+                {
+                    tempProductIds.add(stockProducts.get(counter).getEntityProduct().getId());
+                }
+            }
+        }
+        for(int productId: productIds)
+        {
+            if(!tempProductIds.contains(productId))
+            {
+                excludedProductIds.add(productId);
+            }
+        }
+        if(stockProducts == null)
+        {
+            stockProducts = new ArrayList<>();
+        }
+        for(DTOProduct tempDTOProduct: products)
+        {
+            if(excludedProductIds.contains(tempDTOProduct.getEntityProduct().getId()))
+            {
+                EntityProduct tempEntityProduct = tempDTOProduct.getEntityProduct();
+                DTOProduct excludedDTOProduct = new DTOProduct();
+                excludedDTOProduct.setQuantity(0);
+                excludedDTOProduct.setEntityProduct(tempEntityProduct);                
+                stockProducts.add(excludedDTOProduct);
+            }
+        }
         for(int productCounter = 0; productCounter < stockProducts.size(); productCounter++)
         {
             DTOProduct stockProduct = stockProducts.get(productCounter);
