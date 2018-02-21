@@ -214,18 +214,20 @@ public class Stock
         return products;
     }
     
-    public List<DTOProduct> getEndingCurrentStock(double maxStock)
+    public List<DTOProduct> getEndingCurrentStock(double maxStock, int offset, int limit)
     {
         List<DTOProduct> products = new ArrayList<>();
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try
         {
-            double temp = 10.0;
+            //double temp = 10.0;
             //Query query = session.createSQLQuery(" select product_id, sum(stock_in-stock_out) as total from showroom_stocks group by product_id having sum(stock_in-stock_out) <= " + temp + "  ")
                     ;
             
             Query<Object[]> query = session.getNamedQuery("getEndingCurrentStock");
             query.setParameter("maxStock", maxStock);
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
             List<Object[]> showRoomProducts = query.getResultList();
             for(Object[] entityShowRoomStock : showRoomProducts)
             {
@@ -245,5 +247,21 @@ public class Stock
             session.close();
         }
         return products;
+    }
+    
+    public int getTotalEndingCurrentStock(double maxStock)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try
+        {
+            Query<Object[]> query = session.getNamedQuery("getEndingCurrentStock");
+            query.setParameter("maxStock", maxStock);
+            return query.getResultList().size();
+            
+        }
+        finally 
+        {
+            session.close();
+        }
     }
 }

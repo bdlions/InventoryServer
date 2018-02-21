@@ -80,19 +80,24 @@ public class StockHandler {
     {
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);    
         Double maxStock = jsonObject.get("maxStock").getAsDouble();
+        int offset = jsonObject.get("offset").getAsInt();
+        int limit = jsonObject.get("limit").getAsInt();
         ClientListResponse clientListResponse = new ClientListResponse();
         Stock stock = new Stock(packet.getPacketHeader().getAppId());
         List<DTOProduct> products = new ArrayList<>();
+        int total = 0;
         if(maxStock == 0)
         {
             products = stock.getDefaultEndingCurrentStock(Constants.DEFAULT_ENDING_STOCK_LIMIT);
+            total = products.size();
         }
         else
         {
-            products = stock.getEndingCurrentStock(maxStock);
-        }
-        
+            products = stock.getEndingCurrentStock(maxStock, offset, limit);
+            total = stock.getTotalEndingCurrentStock(maxStock);
+        }        
         clientListResponse.setList(products);
+        clientListResponse.setCounter(total);
         clientListResponse.setSuccess(true);
         return clientListResponse;
     }
