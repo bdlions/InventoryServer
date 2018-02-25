@@ -51,6 +51,21 @@ public class EntityManagerProductSupplier {
         }
     }
     
+    public List<EntityProductSupplier> getProductSuppliersByProductIds(List<Integer> productIds)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntityProductSupplier> query = session.getNamedQuery("getProductSuppliersByProductIds");
+            query.setParameter("productIds", productIds);
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     public List<EntityProductSupplier> getProductSuppliersBySupplierUserId(int supplierUserId, int offset, int limit)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);

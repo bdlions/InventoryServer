@@ -10,6 +10,7 @@ import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.entity.EntityProduct;
@@ -491,6 +492,125 @@ public class ProductHandler {
         
         ClientListResponse response = new ClientListResponse();
         response.setList(productWithStocks);
+        response.setCounter(totalProducts);
+        response.setSuccess(true);
+        return response;
+    }
+    
+    @ClientRequest(action = ACTION.SEARCH_PRODUCTS_WITH_STOCK_SUPPLIERS_PRICE)
+    public ClientResponse searchProductsWithStockSuppliersPrice(ISession session, IPacket packet) throws Exception 
+    {
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);     
+        String name = jsonObject.get("name").getAsString();
+        int typeId = jsonObject.get("typeId").getAsInt();
+        int categoryId = jsonObject.get("categoryId").getAsInt();
+        int limit = jsonObject.get("limit").getAsInt();
+        int offset = jsonObject.get("offset").getAsInt();
+        
+        List<DTOProduct> productWithStockSuppliersPrice = new ArrayList<>();
+        List<DTOProduct> productWithSuppliersPrice = new ArrayList<>();
+        EntityManagerProduct entityManagerProduct = new EntityManagerProduct(packet.getPacketHeader().getAppId());
+        List<EntityProduct> products = entityManagerProduct.searchProduct(name, typeId, categoryId, offset, limit);
+        int totalProducts = 0;
+        List<Integer> productIds = new ArrayList<>();
+        if(products != null && !products.isEmpty())
+        {
+            for(int counter = 0; counter < products.size(); counter++)
+            {
+                if(!productIds.contains(products.get(counter).getId()))
+                {
+                    productIds.add(products.get(counter).getId());
+                }
+            } 
+            HashMap<Integer, List<EntityProductSupplier>> productIdProductSuppliersMap = new HashMap<>();
+            EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier(packet.getPacketHeader().getAppId());
+            List<EntityProductSupplier> entityProductSuppliers = entityManagerProductSupplier.getProductSuppliersByProductIds(productIds);
+            if(entityProductSuppliers != null && !entityProductSuppliers.isEmpty())
+            {
+                for(EntityProductSupplier entityProductSupplier : entityProductSuppliers)
+                {
+                    if(!productIdProductSuppliersMap.containsKey(entityProductSupplier.getProductId()))
+                    {
+                        List<EntityProductSupplier> tempEntityProductSuppliers = new ArrayList<>();
+                        tempEntityProductSuppliers.add(entityProductSupplier);
+                        productIdProductSuppliersMap.put(entityProductSupplier.getProductId(), tempEntityProductSuppliers);
+                    }
+                    else
+                    {
+                        productIdProductSuppliersMap.get(entityProductSupplier.getProductId()).add(entityProductSupplier);
+                    }
+                }
+            }
+            for(EntityProduct entityProduct : products)
+            {
+                DTOProduct dtoProduct = new DTOProduct();
+                dtoProduct.setEntityProduct(entityProduct);
+                if(productIdProductSuppliersMap.containsKey(entityProduct.getId()))
+                {
+                    dtoProduct.setEntityProductSupplierList(productIdProductSuppliersMap.get(entityProduct.getId()));
+                }
+                else
+                {
+                    dtoProduct.setEntityProductSupplierList(new ArrayList<>());
+                }
+                productWithSuppliersPrice.add(dtoProduct);
+            }
+            Stock stock = new Stock(packet.getPacketHeader().getAppId());
+            List<DTOProduct> productWithStocks = stock.getCurrentStockByProductIds(productIds);
+            if(productWithStocks == null)
+            {
+                productWithStocks = new ArrayList<>();
+            }
+            List<Integer> excludedProductIds = new ArrayList<>();
+            List<Integer> tempProductIds = new ArrayList<>();
+            if(!productWithStocks.isEmpty())
+            {
+                for(int counter = 0; counter < productWithStocks.size(); counter++)
+                {
+                    if(!tempProductIds.contains(productWithStocks.get(counter).getEntityProduct().getId()))
+                    {
+                        tempProductIds.add(productWithStocks.get(counter).getEntityProduct().getId());
+                    }
+                }
+            }
+            for(int productId: productIds)
+            {
+                if(!tempProductIds.contains(productId))
+                {
+                    excludedProductIds.add(productId);
+                }
+            }
+            for(EntityProduct entityProduct: products)
+            {
+                if(excludedProductIds.contains(entityProduct.getId()))
+                {
+                    DTOProduct tempDTOProduct = new DTOProduct();
+                    tempDTOProduct.setQuantity(0);
+                    tempDTOProduct.setEntityProduct(entityProduct);
+                    productWithStocks.add(tempDTOProduct);
+                }
+            }
+            HashMap<Integer, Double> productIdQuantityMap = new HashMap<>();
+            for(DTOProduct dtoProduct : productWithStocks)
+            {
+                if(!productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
+                {
+                    productIdQuantityMap.put(dtoProduct.getEntityProduct().getId(), dtoProduct.getQuantity());
+                }
+            }
+            for(DTOProduct dtoProduct : productWithSuppliersPrice)
+            {
+                if(productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
+                {
+                    dtoProduct.setQuantity(productIdQuantityMap.get(dtoProduct.getEntityProduct().getId()));
+                }
+                productWithStockSuppliersPrice.add(dtoProduct);
+            }
+            totalProducts = entityManagerProduct.searchTotalProducts(name, typeId, categoryId);
+        }        
+        
+        ClientListResponse response = new ClientListResponse();
+        response.setList(productWithStockSuppliersPrice);
         response.setCounter(totalProducts);
         response.setSuccess(true);
         return response;

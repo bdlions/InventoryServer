@@ -198,4 +198,21 @@ public class ProductHandlerTest extends HTTPRequestHelper{
         String result = getResult(packetHeader, packetBody);
         System.out.println("Result : " + result);
     }
+    
+    //@Test
+    public void searchProductsWithStockSuppliersPriceTest() {
+        PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
+        mockPacketHeader.setAction(ACTION.SEARCH_PRODUCTS_WITH_STOCK_SUPPLIERS_PRICE);
+        mockPacketHeader.setRequestType(REQUEST_TYPE.REQUEST);
+        mockPacketHeader.setSessionId(getSessionId());
+
+        String packetHeader = new GsonBuilder().create().toJson(mockPacketHeader);
+        System.out.println(packetHeader);
+
+        String packetBody = "{\"limit\":10, \"offset\":0, \"typeId\":0, \"categoryId\":0, \"name\":\"\"}";
+        System.out.println(packetBody);
+
+        String result = getResult(packetHeader, packetBody);
+        System.out.println("Result : " + result);
+    }
 }

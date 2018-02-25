@@ -28,6 +28,10 @@ import javax.persistence.Table;
             query = "from EntityProductSupplier product where product.productId = :productId"
     ),
     @NamedQuery(
+            name = "getProductSuppliersByProductIds",
+            query = "from EntityProductSupplier product where product.productId IN (:productIds)"
+    ),
+    @NamedQuery(
             name = "getProductSuppliersBySupplierUserId",
             query = "from EntityProductSupplier product where product.supplierUserId = :supplierUserId order by product.productName asc"
     ),
