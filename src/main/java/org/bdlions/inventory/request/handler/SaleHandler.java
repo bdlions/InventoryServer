@@ -148,6 +148,7 @@ public class SaleHandler {
                 EntitySaleOrderProduct entitySaleOrderProduct = new EntitySaleOrderProduct();
                 entitySaleOrderProduct.setProductId(dtoProduct.getEntityProduct().getId());
                 entitySaleOrderProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                entitySaleOrderProduct.setCostPrice(dtoProduct.getEntityProduct().getCostPrice());
                 entitySaleOrderProduct.setDiscount(dtoProduct.getDiscount());
                 entitySaleOrderProduct.setVat(dtoProduct.getEntityProduct().getVat());
                 entitySaleOrderProducts.add(entitySaleOrderProduct);
@@ -365,6 +366,7 @@ public class SaleHandler {
                     entitySaleOrderProduct.setSaleOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo());
                     entitySaleOrderProduct.setProductId(dtoProduct.getEntityProduct().getId());
                     entitySaleOrderProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());   
+                    entitySaleOrderProduct.setCostPrice(dtoProduct.getEntityProduct().getCostPrice());
                     entitySaleOrderProduct.setDiscount(dtoProduct.getDiscount());
                     entitySaleOrderProduct.setVat(dtoProduct.getEntityProduct().getVat());
                     entitySaleOrderProducts.add(entitySaleOrderProduct);
@@ -531,6 +533,7 @@ public class SaleHandler {
                     dtoProduct.setQuantity(stockProduct.getStockOut());
                     dtoProduct.setEntityProduct(entityProduct);
                     dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
+                    dtoProduct.getEntityProduct().setCostPrice(entitySaleOrderProduct.getCostPrice());
                     dtoProduct.getEntityProduct().setVat(entitySaleOrderProduct.getVat());
                     dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
                     dtoSaleOrder.getProducts().add(dtoProduct);

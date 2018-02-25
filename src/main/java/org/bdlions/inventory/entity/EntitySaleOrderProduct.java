@@ -48,6 +48,9 @@ public class EntitySaleOrderProduct extends ClientResponse implements java.io.Se
     
     @Column(name = "purchase_order_no", length = 200)
     private String purchaseOrderNo;
+    
+    @Column(name = "cost_price", columnDefinition = "double DEFAULT 0")
+    private double costPrice;
 
     @Column(name = "unit_price")
     private double unitPrice;
@@ -135,4 +138,12 @@ public class EntitySaleOrderProduct extends ClientResponse implements java.io.Se
     public void setVat(double vat) {
         this.vat = vat;
     }
+
+    public double getCostPrice() {
+        return costPrice;
+    }
+
+    public void setCostPrice(double costPrice) {
+        this.costPrice = costPrice;
+    }    
 }
