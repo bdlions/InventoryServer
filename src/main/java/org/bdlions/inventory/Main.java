@@ -27,10 +27,10 @@ public class Main extends SpringBootServletInitializer {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
         
-        IClientRequestHandler requestHandler = ClientRequestHandler.getInstance();
-        ISessionManager sessionManager = ClientRequestHandler.getInstance().getSessionManager();
-        channelProviderImpl = new ChannelProviderImpl(requestHandler, sessionManager);
-        channelProviderImpl.start();
+//        IClientRequestHandler requestHandler = ClientRequestHandler.getInstance();
+//        ISessionManager sessionManager = ClientRequestHandler.getInstance().getSessionManager();
+//        channelProviderImpl = new ChannelProviderImpl(requestHandler, sessionManager);
+//        channelProviderImpl.start();
         try
         {
             Session session1 = DatabaseLoader.getInstance().getSession();
@@ -43,6 +43,9 @@ public class Main extends SpringBootServletInitializer {
                 Session session2 = HibernateUtil.getInstance().getSession(organization.getDatabaseName());
                 session2.close();
             }
+            
+            KeepAliveDBManager keepAliveDBManager = new KeepAliveDBManager("keepAliveDBManager");
+            keepAliveDBManager.start();
         }
         catch(Exception ex)
         {

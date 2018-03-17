@@ -7,7 +7,7 @@
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/inventory_db?autoReconnect=true</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/inventory_db_%s?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
         <property name="connection.autoReconnect">true</property>

@@ -51,7 +51,8 @@ public final class HibernateUtil {
     }
 
     private static Configuration getConfigByAppID(int appID) {
-        String connectionURL = "jdbc:mysql://localhost:3306/inventory_db_%s?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8";
+        //String connectionURL = "jdbc:mysql://localhost:3306/inventory_db_%s?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8";
+        String connectionURL = "jdbc:mysql://localhost:3306/inventory_db_%s?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC";
         Configuration config = new Configuration().configure();
         Properties properties = new Properties();
         properties.setProperty("hibernate.connection.url", String.format(connectionURL, appID));
