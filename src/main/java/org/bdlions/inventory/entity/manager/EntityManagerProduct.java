@@ -346,6 +346,7 @@ public class EntityManagerProduct
             String strOffset = "";
             if(!StringUtils.isNullOrEmpty(name))
             {
+                //search product by product name or product code
                 String lowerName = name.toLowerCase();
                 if(where.equals(""))
                 {
@@ -354,6 +355,14 @@ public class EntityManagerProduct
                 else 
                 {
                     where += " and lower((name) like '%" + lowerName + "%'";
+                }
+                if(where.equals(""))
+                {
+                    where = " where lower(code) like '%" + lowerName + "%'";
+                }
+                else 
+                {
+                    where += " or lower(code) like '%" + lowerName + "%'";
                 }
             }
             if(typeId > 0)
@@ -401,6 +410,7 @@ public class EntityManagerProduct
             String where = "";
             if(!StringUtils.isNullOrEmpty(name))
             {
+                //search product by product name or product code
                 String lowerName = name.toLowerCase();
                 if(where.equals(""))
                 {
@@ -409,6 +419,14 @@ public class EntityManagerProduct
                 else 
                 {
                     where += " and lower((name) like '%" + lowerName + "%'";
+                }
+                if(where.equals(""))
+                {
+                    where = " where lower(code) like '%" + lowerName + "%'";
+                }
+                else 
+                {
+                    where += " or lower(code) like '%" + lowerName + "%'";
                 }
             }
             if(typeId > 0)
