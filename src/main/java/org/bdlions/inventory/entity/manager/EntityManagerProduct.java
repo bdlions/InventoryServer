@@ -354,7 +354,7 @@ public class EntityManagerProduct
                 }
                 else 
                 {
-                    where += " and lower((name) like '%" + lowerName + "%'";
+                    where += " and lower(name) like '%" + lowerName + "%'";
                 }
                 if(where.equals(""))
                 {
@@ -418,7 +418,7 @@ public class EntityManagerProduct
                 }
                 else 
                 {
-                    where += " and lower((name) like '%" + lowerName + "%'";
+                    where += " and lower(name) like '%" + lowerName + "%'";
                 }
                 if(where.equals(""))
                 {
