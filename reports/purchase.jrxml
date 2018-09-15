@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2018-09-15T17:45:55 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="CompanyName" class="java.lang.String"/>
 	<parameter name="CompanyAddress" class="java.lang.String"/>
@@ -13,6 +14,7 @@
 	<parameter name="Email" class="java.lang.String"/>
 	<parameter name="Phone" class="java.lang.String"/>
 	<parameter name="Remarks" class="java.lang.String"/>
+	<parameter name="DiscountInTotal" class="java.lang.Double"/>
 	<parameter name="TotalPurchasePrice" class="java.lang.Double"/>
 	<parameter name="subreportFile" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="payments" class="java.util.List"/>
@@ -187,35 +189,35 @@
 				<text><![CDATA[Sl.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="3" width="250" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="55" y="3" width="226" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="305" y="4" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="280" y="4" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Quantity]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="355" y="4" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="330" y="0" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Unit Price]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="405" y="4" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="380" y="0" width="99" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Discount]]></text>
+				<text><![CDATA[Discount(%)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="455" y="4" width="105" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="479" y="0" width="83" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
@@ -233,35 +235,35 @@
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="55" y="0" width="250" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74"/>
+				<reportElement x="55" y="0" width="226" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="305" y="0" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
+				<reportElement x="280" y="-4" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="355" y="-1" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
+				<reportElement x="330" y="-4" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="405" y="-1" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
+				<reportElement x="380" y="-4" width="99" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="0" width="105" height="15" uuid="28773627-4177-4f92-8a93-3b51badce811"/>
+				<reportElement x="479" y="0" width="81" height="15" uuid="28773627-4177-4f92-8a93-3b51badce811"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
 				</textElement>
@@ -303,16 +305,16 @@
 				<textFieldExpression><![CDATA[$P{Remarks}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="415" y="10" width="40" height="14" uuid="3ccc1b8a-9eba-4ae7-88d4-16766b696a3b"/>
+				<reportElement x="400" y="2" width="55" height="14" uuid="3ccc1b8a-9eba-4ae7-88d4-16766b696a3b"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Total:]]></text>
+				<text><![CDATA[Discount:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="454" y="10" width="100" height="17" uuid="3bec4e24-19d4-4955-923a-fe32b50c7fe3"/>
+				<reportElement x="458" y="2" width="100" height="17" uuid="3bec4e24-19d4-4955-923a-fe32b50c7fe3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None"/>
-				<textFieldExpression><![CDATA[$P{TotalPurchasePrice}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{DiscountInTotal}]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement x="15" y="52" width="341" height="21" uuid="249bf9d9-a2fd-4f18-9db2-aa91ada712ad"/>
@@ -345,6 +347,18 @@
 			<textField>
 				<reportElement x="309" y="158" width="59" height="19" uuid="9b4ebd04-e165-4427-95d8-35d69a374163"/>
 				<textFieldExpression><![CDATA[$P{TotalReturnAmount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="400" y="25" width="55" height="14" uuid="8f65c718-961c-498e-a14f-f914d8bd6633"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="459" y="25" width="100" height="17" uuid="2ad53ab0-19c2-422f-8305-26b93a68988f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None"/>
+				<textFieldExpression><![CDATA[$P{TotalPurchasePrice}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
