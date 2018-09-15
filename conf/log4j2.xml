@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Appenders>
-        <RollingFile name="E-CARD" fileName="logs/e-card.log" filePattern="logs/e-card-%d{MM-dd-yyyy}.log.gz"
+        <RollingFile name="InventoryMS" fileName="logs/e-card.log" filePattern="logs/inventory-%d{MM-dd-yyyy}.log.gz"
                      ignoreExceptions="false">
             <PatternLayout>
                 <Pattern>%d %C{1} [%t] %m%n</Pattern>
@@ -14,8 +14,8 @@
         </Console>
     </Appenders>
     <loggers>
-        <Logger name="org.bdlions.ecard" level="debug">
-            <AppenderRef ref="E-CARD"/>
+        <Logger name="org.bdlions.inventory" level="error">
+            <AppenderRef ref="InventoryMS"/>
         </Logger>                                                          
         <root level="ERROR">
             <appender-ref ref="STDOUT"/>
