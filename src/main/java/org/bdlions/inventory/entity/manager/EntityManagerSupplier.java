@@ -5,9 +5,11 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
+import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -127,7 +129,7 @@ public class EntityManagerSupplier
      * @param suplierProducts supplier product list
      * @return EntitySupplier EntitySupplier
      */
-    public EntitySupplier createSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityUserRole entityUserRole, List<EntityProductSupplier> suplierProducts)
+    public EntitySupplier createSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityUserRole entityUserRole, List<EntityProductSupplier> suplierProducts, EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
@@ -139,6 +141,20 @@ public class EntityManagerSupplier
                 EntityManagerUser entityManagerUser = new EntityManagerUser(this.appId);
                 EntityUser resultEntityUser = entityManagerUser.createUser(entityUser, entityUserRole, session);
                 entitySupplier.setUserId(resultEntityUser.getId());
+                
+                if(entityPurchaseOrderPaymentIn != null)
+                {
+                    entityPurchaseOrderPaymentIn.setSupplierUserId(entitySupplier.getUserId());
+                    entityPurchaseOrderPaymentIn.setSupplierName(entitySupplier.getSupplierName());
+                    entityPurchaseOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                    entityPurchaseOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                    EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
+                    entityManagerPurchaseOrderPayment.createPurchaseOrderPayment(entityPurchaseOrderPaymentIn, session);
+                    
+                    //setting supplier current balance because of purchase order payment table entry
+                    double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entitySupplier.getUserId(), session);
+                    entitySupplier.setBalance(currentDue);
+                }
                 
                 if(suplierProducts != null && !suplierProducts.isEmpty())
                 {
@@ -200,7 +216,7 @@ public class EntityManagerSupplier
      * @param entityPurchaseOrder entity purchase order
      * @return boolean true
      */
-    public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityPurchaseOrder entityPurchaseOrder, List<EntityProductSupplier> supplierProducts, List<Integer> productIds)
+    public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityPurchaseOrder entityPurchaseOrder, List<EntityProductSupplier> supplierProducts, List<Integer> productIds, EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
@@ -214,6 +230,21 @@ public class EntityManagerSupplier
                 
                 EntityManagerProductSupplier entityManagerProductSupplier = new EntityManagerProductSupplier(this.appId);
                 entityManagerProductSupplier.updateProductSupplierSupplierUserName(entityUser.getId(), entityUser.getUserName(), session);
+                
+                if(entityPurchaseOrderPaymentIn != null)
+                {
+                    EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
+                    //delete current entry
+                    entityManagerPurchaseOrderPayment.deleteSupplierPurchaseOrderPaymentsByPaymentTypeId(entitySupplier.getUserId(), Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_PREVIOUS_DUE_IN, session);
+                    entityPurchaseOrderPaymentIn.setSupplierUserId(entitySupplier.getUserId());
+                    entityPurchaseOrderPaymentIn.setSupplierName(entitySupplier.getSupplierName()); 
+                    entityPurchaseOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                    entityPurchaseOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                    entityManagerPurchaseOrderPayment.createPurchaseOrderPayment(entityPurchaseOrderPaymentIn, session);
+                     //setting supplier current balance because of purchase order payment table entry
+                    double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entitySupplier.getUserId(), session);
+                    entitySupplier.setBalance(currentDue);
+                }
                 
                 if(supplierProducts != null && !supplierProducts.isEmpty())
                 {
@@ -233,6 +264,9 @@ public class EntityManagerSupplier
             {
                 EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(this.appId);
                 entityManagerPurchaseOrder.updatePurchaseOrderSupplierInfo(entityPurchaseOrder, session);
+                
+                EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
+                entityManagerPurchaseOrderPayment.updatePurchaseOrderPaymentSupplierInfo(entityPurchaseOrder.getSupplierUserId(), entityPurchaseOrder.getSupplierName(), session);
             }            
             updateSupplier(entitySupplier, session);
             tx.commit();
@@ -409,6 +443,58 @@ public class EntityManagerSupplier
             Query<EntitySupplier> query = session.getNamedQuery("searchSupplierByEmail");
             query.setParameter("email", "%" + email.toLowerCase() + "%");
             return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public EntityPurchaseOrderPayment addSupplierPurchasePayment(EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        Transaction tx = session.getTransaction(); 
+        tx.begin();           
+        try 
+        {
+            if(entityPurchaseOrderPaymentIn != null)
+            {
+                EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
+                entityPurchaseOrderPaymentIn = entityManagerPurchaseOrderPayment.createPurchaseOrderPayment(entityPurchaseOrderPaymentIn, session);
+                 //setting supplier current balance because of purchase order payment table entry
+                double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entityPurchaseOrderPaymentIn.getSupplierUserId(), session);
+                EntitySupplier entitySupplier = getSupplierByUserId(entityPurchaseOrderPaymentIn.getSupplierUserId());
+                entitySupplier.setBalance(currentDue);
+                updateSupplier(entitySupplier, session);
+            }
+            tx.commit();
+            return entityPurchaseOrderPaymentIn;
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public boolean updateSupplierPurchasePayment(EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        Transaction tx = session.getTransaction(); 
+        tx.begin();           
+        try 
+        {
+            if(entityPurchaseOrderPaymentIn != null)
+            {
+                EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
+                entityManagerPurchaseOrderPayment.updatePurchaseOrderPayment(entityPurchaseOrderPaymentIn, session);
+                 //setting supplier current balance because of purchase order payment table entry
+                double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entityPurchaseOrderPaymentIn.getSupplierUserId(), session);
+                EntitySupplier entitySupplier = getSupplierByUserId(entityPurchaseOrderPaymentIn.getSupplierUserId());
+                entitySupplier.setBalance(currentDue);
+                updateSupplier(entitySupplier, session);
+            }
+            tx.commit();
+            return true;
         } 
         finally 
         {

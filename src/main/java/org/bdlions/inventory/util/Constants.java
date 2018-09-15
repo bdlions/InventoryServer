@@ -11,7 +11,17 @@ public class Constants {
     public static final int ROLE_ID_ADMIN = 1;
     public static final int ROLE_ID_STAFF = 2;
     public static final int ROLE_ID_SUPPLIER = 3;
-    public static final int ROLE_ID_CUSTOMER = 4;    
+    public static final int ROLE_ID_CUSTOMER = 4;  
+    
+    public static final int PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_PURCHASE_IN = 1;
+    public static final int PURCHASE_ORDER_PAYMENT_TYPE_ID_PURCHASE_PAYMENT_OUT = 2;
+    public static final int PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_NEW_PAYMENT_OUT = 3;
+    public static final int PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_PREVIOUS_DUE_IN = 4;
+    
+    public static final String PURCHASE_ORDER_PAYMENT_TYPE_ADD_PURCHASE_IN_DESCRIPTION = "New Purchase";
+    public static final String PURCHASE_ORDER_PAYMENT_TYPE_PURCHASE_PAYMENT_OUT_DESCRIPTION = "Purchase Payment";
+    public static final String PURCHASE_ORDER_PAYMENT_TYPE_ADD_NEW_PAYMENT_OUT_DESCRIPTION = "New Payment";
+    public static final String PURCHASE_ORDER_PAYMENT_TYPE_ADD_ADD_PREVIOUS_DUE_IN_DESCRIPTION = "Previous Due";
     
     public static final int SS_TRANSACTION_CATEGORY_ID_PURCASE_IN = 1;
     public static final int SS_TRANSACTION_CATEGORY_ID_PURCASE_RETURN = 3;

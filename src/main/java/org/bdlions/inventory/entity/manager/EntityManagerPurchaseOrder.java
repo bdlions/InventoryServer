@@ -6,6 +6,7 @@ import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityPOShowRoomReturnProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
+import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.util.Constants;
@@ -81,6 +82,58 @@ public class EntityManagerPurchaseOrder
             entityPurchaseOrder = createPurchaseOrder(entityPurchaseOrder, session);
             if(entityPurchaseOrder != null && !StringUtils.isNullOrEmpty(entityPurchaseOrder.getOrderNo()))
             {
+                //adding entry for purchse order payment table
+                EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
+                EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn = new EntityPurchaseOrderPayment();
+                entityPurchaseOrderPaymentIn.setSupplierUserId(entityPurchaseOrder.getSupplierUserId());
+                entityPurchaseOrderPaymentIn.setSupplierName(entityPurchaseOrder.getSupplierName());
+                entityPurchaseOrderPaymentIn.setReference(entityPurchaseOrder.getOrderNo());
+                entityPurchaseOrderPaymentIn.setAmountIn(entityPurchaseOrder.getTotal());
+                entityPurchaseOrderPaymentIn.setAmountOut(0.0);
+                entityPurchaseOrderPaymentIn.setPaymentTypeId(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_PURCHASE_IN);
+                entityPurchaseOrderPaymentIn.setDescription(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ADD_PURCHASE_IN_DESCRIPTION);
+                entityPurchaseOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                entityPurchaseOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                entityPurchaseOrderPaymentIn.setCreatedByUserId(entityPurchaseOrder.getCreatedByUserId());
+                entityPurchaseOrderPaymentIn.setCreatedByUserName(entityPurchaseOrder.getCreatedByUserName());
+                entityPurchaseOrderPaymentIn.setModifiedByUserId(entityPurchaseOrder.getModifiedByUserId());
+                entityPurchaseOrderPaymentIn.setModifiedByUserName(entityPurchaseOrder.getModifiedByUserName());
+                entityManagerPurchaseOrderPayment.createPurchaseOrderPayment(entityPurchaseOrderPaymentIn, session);
+                
+                double paid = entityPurchaseOrder.getPaid();
+                //if user pays any amount then we are storing it into the db
+                if(paid > 0.0)
+                {
+                    EntityPurchaseOrderPayment entityPurchaseOrderPaymentOut = new EntityPurchaseOrderPayment();
+                    entityPurchaseOrderPaymentOut.setSupplierUserId(entityPurchaseOrder.getSupplierUserId());
+                    entityPurchaseOrderPaymentOut.setSupplierName(entityPurchaseOrder.getSupplierName());
+                    entityPurchaseOrderPaymentOut.setReference(entityPurchaseOrder.getOrderNo());
+                    entityPurchaseOrderPaymentOut.setAmountIn(0.0);
+                    entityPurchaseOrderPaymentOut.setAmountOut(paid);
+                    entityPurchaseOrderPaymentOut.setPaymentTypeId(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_PURCHASE_PAYMENT_OUT);
+                    entityPurchaseOrderPaymentOut.setDescription(Constants.PURCHASE_ORDER_PAYMENT_TYPE_PURCHASE_PAYMENT_OUT_DESCRIPTION);
+                    entityPurchaseOrderPaymentOut.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                    entityPurchaseOrderPaymentOut.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                    entityPurchaseOrderPaymentOut.setCreatedByUserId(entityPurchaseOrder.getCreatedByUserId());
+                    entityPurchaseOrderPaymentOut.setCreatedByUserName(entityPurchaseOrder.getCreatedByUserName());
+                    entityPurchaseOrderPaymentOut.setModifiedByUserId(entityPurchaseOrder.getModifiedByUserId());
+                    entityPurchaseOrderPaymentOut.setModifiedByUserName(entityPurchaseOrder.getModifiedByUserName());
+                    entityManagerPurchaseOrderPayment.createPurchaseOrderPayment(entityPurchaseOrderPaymentOut, session);
+                }
+                //updating supplier current balance because of purchase order payment table entry
+                if(entityPurchaseOrder.getSupplierUserId() > 0)
+                {
+                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
+                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                    if(entitySupplier != null && entitySupplier.getId() > 0)
+                    {
+                        double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entityPurchaseOrder.getSupplierUserId(), session);
+                        entitySupplier.setBalance(currentDue);
+                        entityManagerSupplier.updateSupplier(entitySupplier, session);
+                    }                        
+                }
+                
+                
                 if(entityPOShowRoomProductList != null && !entityPOShowRoomProductList.isEmpty())
                 {
                     List<EntityPOShowRoomProduct> entityPOShowRoomProducts = new ArrayList<>();
@@ -136,7 +189,7 @@ public class EntityManagerPurchaseOrder
                         return null;
                     }
                 }                
-                if(entityPurchaseOrder.getSupplierUserId() > 0)
+                /*if(entityPurchaseOrder.getSupplierUserId() > 0)
                 {
                     EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
                     EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
@@ -146,7 +199,7 @@ public class EntityManagerPurchaseOrder
                         entitySupplier.setBalance(currentDue);
                         entityManagerSupplier.updateSupplier(entitySupplier, session);
                     }                        
-                }                    
+                }*/                    
                 tx.commit();
                 return entityPurchaseOrder;
             }
@@ -212,6 +265,59 @@ public class EntityManagerPurchaseOrder
         {
             if(entityPurchaseOrder != null && entityPurchaseOrder.getId() > 0 && updatePurchaseOrder(entityPurchaseOrder, session))
             {
+                EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
+                //deleting purchase payments entries based on reference where reference is order no
+                entityManagerPurchaseOrderPayment.deletePurchaseOrderPaymentsByReference(entityPurchaseOrder.getOrderNo(), session);
+                //adding entry for purchse order payment table
+                EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn = new EntityPurchaseOrderPayment();
+                entityPurchaseOrderPaymentIn.setSupplierUserId(entityPurchaseOrder.getSupplierUserId());
+                entityPurchaseOrderPaymentIn.setSupplierName(entityPurchaseOrder.getSupplierName());
+                entityPurchaseOrderPaymentIn.setReference(entityPurchaseOrder.getOrderNo());
+                entityPurchaseOrderPaymentIn.setAmountIn(entityPurchaseOrder.getTotal());
+                entityPurchaseOrderPaymentIn.setAmountOut(0.0);
+                entityPurchaseOrderPaymentIn.setPaymentTypeId(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_PURCHASE_IN);
+                entityPurchaseOrderPaymentIn.setDescription(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ADD_PURCHASE_IN_DESCRIPTION);
+                entityPurchaseOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                entityPurchaseOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                entityPurchaseOrderPaymentIn.setCreatedByUserId(entityPurchaseOrder.getCreatedByUserId());
+                entityPurchaseOrderPaymentIn.setCreatedByUserName(entityPurchaseOrder.getCreatedByUserName());
+                entityPurchaseOrderPaymentIn.setModifiedByUserId(entityPurchaseOrder.getModifiedByUserId());
+                entityPurchaseOrderPaymentIn.setModifiedByUserName(entityPurchaseOrder.getModifiedByUserName());
+                entityManagerPurchaseOrderPayment.createPurchaseOrderPayment(entityPurchaseOrderPaymentIn, session);
+                
+                double paid = entityPurchaseOrder.getPaid();
+                //if user pays any amount then we are storing it into the db
+                if(paid > 0.0)
+                {
+                    EntityPurchaseOrderPayment entityPurchaseOrderPaymentOut = new EntityPurchaseOrderPayment();
+                    entityPurchaseOrderPaymentOut.setSupplierUserId(entityPurchaseOrder.getSupplierUserId());
+                    entityPurchaseOrderPaymentOut.setSupplierName(entityPurchaseOrder.getSupplierName());
+                    entityPurchaseOrderPaymentOut.setReference(entityPurchaseOrder.getOrderNo());
+                    entityPurchaseOrderPaymentOut.setAmountIn(0.0);
+                    entityPurchaseOrderPaymentOut.setAmountOut(paid);
+                    entityPurchaseOrderPaymentOut.setPaymentTypeId(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_PURCHASE_PAYMENT_OUT);
+                    entityPurchaseOrderPaymentOut.setDescription(Constants.PURCHASE_ORDER_PAYMENT_TYPE_PURCHASE_PAYMENT_OUT_DESCRIPTION);
+                    entityPurchaseOrderPaymentOut.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                    entityPurchaseOrderPaymentOut.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                    entityPurchaseOrderPaymentOut.setCreatedByUserId(entityPurchaseOrder.getCreatedByUserId());
+                    entityPurchaseOrderPaymentOut.setCreatedByUserName(entityPurchaseOrder.getCreatedByUserName());
+                    entityPurchaseOrderPaymentOut.setModifiedByUserId(entityPurchaseOrder.getModifiedByUserId());
+                    entityPurchaseOrderPaymentOut.setModifiedByUserName(entityPurchaseOrder.getModifiedByUserName());
+                    entityManagerPurchaseOrderPayment.createPurchaseOrderPayment(entityPurchaseOrderPaymentOut, session);
+                }
+                //updating supplier current balance because of purchase order payment table entry
+                if(entityPurchaseOrder.getSupplierUserId() > 0)
+                {
+                    EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
+                    EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
+                    if(entitySupplier != null && entitySupplier.getId() > 0)
+                    {
+                        double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entityPurchaseOrder.getSupplierUserId(), session);
+                        entitySupplier.setBalance(currentDue);
+                        entityManagerSupplier.updateSupplier(entitySupplier, session);
+                    }                        
+                }
+                
                 EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(this.appId);
                 EntityManagerPOShowRoomReturnProduct entityManagerPOShowRoomReturnProduct = new EntityManagerPOShowRoomReturnProduct(this.appId);
                 EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
@@ -276,7 +382,7 @@ public class EntityManagerPurchaseOrder
                         return false;
                     }
                 }                
-                if(entityPurchaseOrder.getSupplierUserId() > 0)
+                /*if(entityPurchaseOrder.getSupplierUserId() > 0)
                 {
                     EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(this.appId);
                     EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(entityPurchaseOrder.getSupplierUserId(), session);
@@ -289,7 +395,7 @@ public class EntityManagerPurchaseOrder
                         entitySupplier.setBalance(currentDue);
                         entityManagerSupplier.updateSupplier(entitySupplier, session);
                     }                        
-                }
+                }*/
                 tx.commit();
                 return true;
             }
@@ -534,52 +640,6 @@ public class EntityManagerPurchaseOrder
         query.setParameter("email", entityPurchaseOrder.getEmail());
         query.setParameter("supplierUserId", entityPurchaseOrder.getSupplierUserId());
         return query.executeUpdate();
-    }
-    
-    public double getSupplierCurrentDue(int supplierUserId, Session session)
-    {
-        if(supplierUserId <= 0)
-        {
-            return 0;
-        }
-        double currentDue = 0;
-        Query<Object[]> query = session.getNamedQuery("getSupplierCurrentDue");
-        query.setParameter("supplierUserId", supplierUserId);
-        List<Object[]> purchaseOrderList = query.getResultList();
-        if(purchaseOrderList == null || purchaseOrderList.isEmpty())
-        {
-            return 0;
-        }
-        else
-        {
-            try
-            {
-                currentDue = (double)purchaseOrderList.get(0)[0];
-            }
-            catch(Exception ex)
-            {
-                logger.error(ex.toString());
-                currentDue = 0;
-            }
-        } 
-        return currentDue;
-    }
-    
-    public double getSupplierCurrentDue(int supplierUserId)
-    {
-        if(supplierUserId <= 0)
-        {
-            return 0;
-        }
-        Session session = HibernateUtil.getInstance().getSession(this.appId);
-        try 
-        {            
-            return this.getSupplierCurrentDue(supplierUserId, session);
-        } 
-        finally 
-        {
-            session.close();
-        }
     }
     
     // --------------------------- Dynamic Query Section Starts ----------------------------------//

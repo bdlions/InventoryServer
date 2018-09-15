@@ -104,6 +104,7 @@ public class SaleServlet {
                     dtoProduct.setQuantity(stockProduct.getStockOut());
                     dtoProduct.setEntityProduct(entityProduct);
                     dtoProduct.getEntityProduct().setUnitPrice(entitySaleOrderProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entitySaleOrderProduct.getDiscount());
                     dtoSaleOrder.getProducts().add(dtoProduct);
                 }
             }
@@ -122,6 +123,7 @@ public class SaleServlet {
         }
 
         double totalSalePrice = 0;
+        double discountInTotal = entitySaleOrder.getDiscount();
         List<DTOProduct> productList = dtoSaleOrder.getProducts();
         List<ReportProduct> products = new ArrayList<>();
         for (int counter = 0; counter < productList.size(); counter++) {
@@ -131,14 +133,16 @@ public class SaleServlet {
             reportProduct.setName(dtoProduct.getEntityProduct().getName());
             reportProduct.setQuantity(dtoProduct.getQuantity());
             reportProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
-            reportProduct.setDiscount(0);
-            reportProduct.setSubTotal(dtoProduct.getQuantity() * dtoProduct.getEntityProduct().getUnitPrice());
+            reportProduct.setDiscount(dtoProduct.getDiscount());
+            double subTotal = (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice()) - (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice() * dtoProduct.getDiscount() / 100);
+            reportProduct.setSubTotal(subTotal);            
             products.add(reportProduct);
             totalSalePrice += reportProduct.getSubTotal();
         }
         
-        TimeUtils timeUtils = new TimeUtils();
-        String currentDate = timeUtils.convertUnixToHuman(timeUtils.getCurrentTime(), "", "");
+        totalSalePrice = totalSalePrice - discountInTotal;
+        
+        String currentDate = TimeUtils.convertUnixToHuman(TimeUtils.getCurrentTime(), "", "");
         
         String companyName = "";
         String companyAddress = "";
@@ -185,6 +189,7 @@ public class SaleServlet {
         parameters.put("Email", dtoCustomer.getEntityUser().getEmail() == null ? "" : dtoCustomer.getEntityUser().getEmail());
         parameters.put("Phone", dtoCustomer.getEntityUser().getCell() == null ? "" : dtoCustomer.getEntityUser().getCell());
         parameters.put("logoURL", reportDirectory + companyLogo);
+        parameters.put("DiscountInTotal", discountInTotal);
         parameters.put("TotalSalePrice", totalSalePrice);
         parameters.put("Remarks", dtoSaleOrder.getEntitySaleOrder().getRemarks() == null ? "" : dtoSaleOrder.getEntitySaleOrder().getRemarks());
 

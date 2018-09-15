@@ -53,11 +53,12 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "updatePurchaseOrderSupplierInfo",
             query = "update EntityPurchaseOrder set supplierName = :supplierName, cell = :cell, email = :email where supplierUserId = :supplierUserId"
-    ),
-    @NamedQuery(
-            name = "getSupplierCurrentDue",
-            query = " select sum(total - paid), supplierUserId from EntityPurchaseOrder purchaseOrder where purchaseOrder.supplierUserId = :supplierUserId group by supplierUserId"
     )
+//    ,
+//    @NamedQuery(
+//            name = "getSupplierCurrentDue",
+//            query = " select sum(total - paid), supplierUserId from EntityPurchaseOrder purchaseOrder where purchaseOrder.supplierUserId = :supplierUserId group by supplierUserId"
+//    )
 })
 public class EntityPurchaseOrder extends ClientResponse implements java.io.Serializable{
 
@@ -117,14 +118,14 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long modifiedOn;
     
-    @Column(name = "created_by_user_id", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private long createdByUserId;
+    @Column(name = "created_by_user_id", length = 11, columnDefinition = "int(11) DEFAULT 0")
+    private int createdByUserId;
 
     @Column(name = "created_by_user_name")
     private String createdByUserName;
     
-    @Column(name = "modified_by_user_id", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private long modifiedByUserId;
+    @Column(name = "modified_by_user_id", length = 11, columnDefinition = "int(11) DEFAULT 0")
+    private int modifiedByUserId;
 
     @Column(name = "modified_by_user_name")
     private String modifiedByUserName;
@@ -257,11 +258,11 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
         this.cell = cell;
     }  
 
-    public long getCreatedByUserId() {
+    public int getCreatedByUserId() {
         return createdByUserId;
     }
 
-    public void setCreatedByUserId(long createdByUserId) {
+    public void setCreatedByUserId(int createdByUserId) {
         this.createdByUserId = createdByUserId;
     }
 
@@ -273,11 +274,11 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
         this.createdByUserName = createdByUserName;
     }
 
-    public long getModifiedByUserId() {
+    public int getModifiedByUserId() {
         return modifiedByUserId;
     }
 
-    public void setModifiedByUserId(long modifiedByUserId) {
+    public void setModifiedByUserId(int modifiedByUserId) {
         this.modifiedByUserId = modifiedByUserId;
     }
 

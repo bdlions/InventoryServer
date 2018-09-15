@@ -9,7 +9,7 @@ import java.util.TimeZone;
  * @author nazmul hasan
  */
 public class TimeUtils {
-    public long getCurrentTime()
+    public static long getCurrentTime()
     {
         long currentTime = System.currentTimeMillis() / 1000L;        
         return currentTime;

@@ -75,6 +75,9 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
     @Column(name = "balance", columnDefinition = "double DEFAULT 0")
     private double balance;
     
+    @Column(name = "previous_balance", columnDefinition = "double DEFAULT 0")
+    private double previousBalance;
+    
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long createdOn;
 
@@ -113,6 +116,14 @@ public class EntitySupplier extends ClientResponse implements java.io.Serializab
         this.balance = balance;
     }
 
+    public double getPreviousBalance() {
+        return previousBalance;
+    }
+
+    public void setPreviousBalance(double previousBalance) {
+        this.previousBalance = previousBalance;
+    }
+    
     public String getSupplierName() {
         return supplierName;
     }

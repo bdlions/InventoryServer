@@ -40,6 +40,7 @@
         <mapping class="org.bdlions.inventory.entity.EntityCustomer" />
         <mapping class="org.bdlions.inventory.entity.EntityPurchaseOrder" />
         <mapping class="org.bdlions.inventory.entity.EntityPurchaseOrderStatus" />
+        <mapping class="org.bdlions.inventory.entity.EntityPurchaseOrderPayment" />
         <mapping class="org.bdlions.inventory.entity.EntityPOWarehouseProduct" />
 	<mapping class="org.bdlions.inventory.entity.EntityPOShowRoomProduct" />
         <mapping class="org.bdlions.inventory.entity.EntityPOShowRoomReturnProduct" />

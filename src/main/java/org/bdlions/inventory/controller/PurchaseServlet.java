@@ -102,6 +102,7 @@ public class PurchaseServlet {
                     dtoProduct.setQuantity(stockProduct.getStockIn());
                     dtoProduct.setEntityProduct(entityProduct);
                     dtoProduct.getEntityProduct().setUnitPrice(entityPOShowRoomProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
                     dtoPurchaseOrder.getProducts().add(dtoProduct);
                 }
             }
@@ -117,6 +118,7 @@ public class PurchaseServlet {
         }
         
         double totalPurchasePrice = 0;
+        double discountInTotal = entityPurchaseOrder.getDiscount();
         List<DTOProduct> productList = dtoPurchaseOrder.getProducts();
         List<ReportProduct> products = new ArrayList<>();
         for(int counter = 0; counter < productList.size(); counter++)
@@ -127,14 +129,17 @@ public class PurchaseServlet {
             reportProduct.setName(dtoProduct.getEntityProduct().getName());
             reportProduct.setQuantity(dtoProduct.getQuantity());
             reportProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
-            reportProduct.setDiscount(0);
-            reportProduct.setSubTotal(dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice());
+            reportProduct.setDiscount(dtoProduct.getDiscount());
+            double subTotal = (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice()) - (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice() * dtoProduct.getDiscount() / 100);
+            reportProduct.setSubTotal(subTotal);
             products.add(reportProduct);
             totalPurchasePrice += reportProduct.getSubTotal();
         }
+        //also subtract total return price
+        //------------------
+        totalPurchasePrice = totalPurchasePrice - discountInTotal;
         
-        TimeUtils timeUtils = new TimeUtils();
-        String currentDate = timeUtils.convertUnixToHuman(timeUtils.getCurrentTime(), "", "");
+        String currentDate = TimeUtils.convertUnixToHuman(TimeUtils.getCurrentTime(), "", "");
         
         String companyName = "";
         String companyAddress = "";
@@ -182,6 +187,7 @@ public class PurchaseServlet {
         parameters.put("Email", dtoSupplier.getEntityUser().getEmail() == null ? "" : dtoSupplier.getEntityUser().getEmail());
         parameters.put("Phone", dtoSupplier.getEntityUser().getCell() == null ? "" : dtoSupplier.getEntityUser().getCell());
         parameters.put("logoURL", reportDirectory + companyLogo);
+        parameters.put("DiscountInTotal", discountInTotal);
         parameters.put("TotalPurchasePrice", totalPurchasePrice);
         parameters.put("Remarks", dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks() == null ? "" : dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks());
         

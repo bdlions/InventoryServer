@@ -8,6 +8,7 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOSupplier;
@@ -15,13 +16,17 @@ import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListSupplier;
 import org.bdlions.inventory.entity.EntityProductSupplier;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
+import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerProductSupplier;
+import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.util.Constants;
+import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -73,6 +78,28 @@ public class SupplierHandler {
                 }
             }
             
+            EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn = null;
+            if(dtoSupplier.getEntitySupplier().getPreviousBalance() > 0.0)
+            {
+                entityPurchaseOrderPaymentIn = new EntityPurchaseOrderPayment();
+                entityPurchaseOrderPaymentIn.setAmountIn(dtoSupplier.getEntitySupplier().getPreviousBalance());
+                entityPurchaseOrderPaymentIn.setAmountOut(0.0);
+                entityPurchaseOrderPaymentIn.setPaymentTypeId(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_PREVIOUS_DUE_IN);
+                entityPurchaseOrderPaymentIn.setDescription(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ADD_ADD_PREVIOUS_DUE_IN_DESCRIPTION);
+                
+                //setting created by and modified by user
+                int userId = (int)session.getUserId();
+                entityPurchaseOrderPaymentIn.setCreatedByUserId(userId);
+                entityPurchaseOrderPaymentIn.setModifiedByUserId(userId);
+                EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+                EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+                if(tempEntityUser != null && tempEntityUser.getId() > 0)
+                {
+                    entityPurchaseOrderPaymentIn.setCreatedByUserName(tempEntityUser.getUserName());
+                    entityPurchaseOrderPaymentIn.setModifiedByUserName(tempEntityUser.getUserName());
+                }  
+            }
+            
             EntityUserRole entityUserRole = new EntityUserRole();
             entityUserRole.setRoleId(Constants.ROLE_ID_SUPPLIER);
             dtoSupplier.setEntityUserRole(entityUserRole);
@@ -83,7 +110,7 @@ public class SupplierHandler {
             dtoSupplier.getEntitySupplier().setEmail(dtoSupplier.getEntityUser().getEmail());
             dtoSupplier.getEntitySupplier().setCell(dtoSupplier.getEntityUser().getCell());
             
-            EntitySupplier resultEntitySupplier = entityManagerSupplier.createSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), dtoSupplier.getEntityUserRole(), dtoSupplier.getEntityProductSupplierList());
+            EntitySupplier resultEntitySupplier = entityManagerSupplier.createSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), dtoSupplier.getEntityUserRole(), dtoSupplier.getEntityProductSupplierList(), entityPurchaseOrderPaymentIn);
             if(resultEntitySupplier != null && resultEntitySupplier.getId() > 0)
             {
                 //setting EntitySupplier
@@ -108,23 +135,24 @@ public class SupplierHandler {
     @ClientRequest(action = ACTION.UPDATE_SUPPLIER_INFO)
     public ClientResponse updateSupplierInfo(ISession session, IPacket packet) throws Exception 
     {
-        GeneralResponse response = new GeneralResponse();
+        //GeneralResponse response = new GeneralResponse();
+        DTOSupplier responseDTOSupplier = new DTOSupplier();
         Gson gson = new Gson();
         DTOSupplier dtoSupplier = gson.fromJson(packet.getPacketBody(), DTOSupplier.class);   
         if(dtoSupplier == null || dtoSupplier.getEntitySupplier() == null || dtoSupplier.getEntityUser() == null)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Supplier Info. Please try again later.");
+            responseDTOSupplier.setSuccess(false);
+            responseDTOSupplier.setMessage("Invalid Supplier Info. Please try again later.");
         }
         else if(dtoSupplier.getEntitySupplier().getId() <= 0)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid Supplier Info. Please try again later..");
+            responseDTOSupplier.setSuccess(false);
+            responseDTOSupplier.setMessage("Invalid Supplier Info. Please try again later..");
         }
         else if(dtoSupplier.getEntityUser().getUserName() == null || dtoSupplier.getEntityUser().getUserName().equals(""))
         {
-            response.setSuccess(false);
-            response.setMessage("Name is required.");
+            responseDTOSupplier.setSuccess(false);
+            responseDTOSupplier.setMessage("Name is required.");
         }
         else
         {
@@ -136,9 +164,9 @@ public class SupplierHandler {
                 {
                     if(tempEPSList.get(counter).getProductId() <= 0)
                     {
-                        response.setSuccess(false);
-                        response.setMessage("Invalid product in Product List. Please try again later.");
-                        return response;
+                        responseDTOSupplier.setSuccess(false);
+                        responseDTOSupplier.setMessage("Invalid product in Product List. Please try again later.");
+                        return responseDTOSupplier;
                     }                    
                 }
             }
@@ -180,18 +208,44 @@ public class SupplierHandler {
                     }
                 }
             }
-            if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), entityPurchaseOrder, entityProductSupplierList, productIds))
+            
+            EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn = null;
+            if(dtoSupplier.getEntitySupplier().getPreviousBalance() > 0.0)
             {
-                response.setSuccess(true);
-                response.setMessage("Supplier is updated successfully.");
+                entityPurchaseOrderPaymentIn = new EntityPurchaseOrderPayment();
+                entityPurchaseOrderPaymentIn.setAmountIn(dtoSupplier.getEntitySupplier().getPreviousBalance());
+                entityPurchaseOrderPaymentIn.setAmountOut(0.0);
+                entityPurchaseOrderPaymentIn.setPaymentTypeId(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_PREVIOUS_DUE_IN);
+                entityPurchaseOrderPaymentIn.setDescription(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ADD_ADD_PREVIOUS_DUE_IN_DESCRIPTION);
+                
+                //setting created by and modified by user
+                int userId = (int)session.getUserId();
+                entityPurchaseOrderPaymentIn.setCreatedByUserId(userId);
+                entityPurchaseOrderPaymentIn.setModifiedByUserId(userId);
+                EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+                EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+                if(tempEntityUser != null && tempEntityUser.getId() > 0)
+                {
+                    entityPurchaseOrderPaymentIn.setCreatedByUserName(tempEntityUser.getUserName());
+                    entityPurchaseOrderPaymentIn.setModifiedByUserName(tempEntityUser.getUserName());
+                }  
+            }
+            
+            if(entityManagerSupplier.updateSupplier(dtoSupplier.getEntitySupplier(), dtoSupplier.getEntityUser(), entityPurchaseOrder, entityProductSupplierList, productIds, entityPurchaseOrderPaymentIn))
+            {
+                EntitySupplier resultEntitySupplier = entityManagerSupplier.getSupplierByUserId(dtoSupplier.getEntitySupplier().getUserId());
+                responseDTOSupplier = dtoSupplier;
+                responseDTOSupplier.setEntitySupplier(resultEntitySupplier);
+                responseDTOSupplier.setSuccess(true);                
+                responseDTOSupplier.setMessage("Supplier is updated successfully.");
             }
             else
             {
-                response.setSuccess(false);
-                response.setMessage("Unable to update supplier. Please try again later.");
+                responseDTOSupplier.setSuccess(false);
+                responseDTOSupplier.setMessage("Unable to update supplier. Please try again later.");
             }
         }        
-        return response;
+        return responseDTOSupplier;
     }
     
     @ClientRequest(action = ACTION.FETCH_SUPPLIER_INFO)
@@ -395,5 +449,127 @@ public class SupplierHandler {
         response.setSuppliers(suppliers);
         response.setSuccess(true);
         return response;
+    }
+    
+    @ClientRequest(action = ACTION.ADD_PURCHASE_ORDER_PAYMENT)
+    public ClientResponse addPurchaseOrderPayment(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        EntityPurchaseOrderPayment entityPurchaseOrderPayment = gson.fromJson(packet.getPacketBody(), EntityPurchaseOrderPayment.class); 
+        //validation of entityPuchaseOrderPayment
+        if(entityPurchaseOrderPayment == null)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid purchase order payment.");
+            return response;
+        }
+        if(entityPurchaseOrderPayment.getSupplierUserId() == 0)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid supplier for the purchase order payment.");
+            return response;
+        }
+        //setting created by and modified by user
+        int userId = (int)session.getUserId();
+        entityPurchaseOrderPayment.setCreatedByUserId(userId);
+        entityPurchaseOrderPayment.setModifiedByUserId(userId);
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+        EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+        if(tempEntityUser != null && tempEntityUser.getId() > 0)
+        {
+            entityPurchaseOrderPayment.setCreatedByUserName(tempEntityUser.getUserName());
+            entityPurchaseOrderPayment.setModifiedByUserName(tempEntityUser.getUserName());
+        } 
+        if(!StringUtils.isNullOrEmpty(entityPurchaseOrderPayment.getPaymentDate()))
+        {
+            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entityPurchaseOrderPayment.getPaymentDate()));
+        }
+        else
+        {
+            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.getCurrentTime());
+            entityPurchaseOrderPayment.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+        }
+        entityPurchaseOrderPayment.setPaymentTypeId(Constants.PURCHASE_ORDER_PAYMENT_TYPE_ID_ADD_NEW_PAYMENT_OUT);
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
+        entityPurchaseOrderPayment = entityManagerSupplier.addSupplierPurchasePayment(entityPurchaseOrderPayment);
+        entityPurchaseOrderPayment.setSuccess(true);
+        return entityPurchaseOrderPayment;
+    }
+    
+    @ClientRequest(action = ACTION.UPDATE_PURCHASE_ORDER_PAYMENT)
+    public ClientResponse updatePurchaseOrderPayment(ISession session, IPacket packet) throws Exception 
+    {
+        GeneralResponse response = new GeneralResponse();
+        Gson gson = new Gson();
+        EntityPurchaseOrderPayment entityPurchaseOrderPayment = gson.fromJson(packet.getPacketBody(), EntityPurchaseOrderPayment.class); 
+        //validation of entityPuchaseOrderPayment
+        if(entityPurchaseOrderPayment == null || entityPurchaseOrderPayment.getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid purchase order payment.");
+            return response;
+        }
+        if(entityPurchaseOrderPayment.getSupplierUserId() == 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid supplier for the purchase order payment.");
+            return response;
+        }
+        //setting created by and modified by user
+        int userId = (int)session.getUserId();
+        entityPurchaseOrderPayment.setModifiedByUserId(userId);
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+        EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+        if(tempEntityUser != null && tempEntityUser.getId() > 0)
+        {
+            entityPurchaseOrderPayment.setModifiedByUserName(tempEntityUser.getUserName());
+        } 
+        if(!StringUtils.isNullOrEmpty(entityPurchaseOrderPayment.getPaymentDate()))
+        {
+            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entityPurchaseOrderPayment.getPaymentDate()));
+        }
+        else
+        {
+            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.getCurrentTime());
+            entityPurchaseOrderPayment.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+        }
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
+        if(entityManagerSupplier.updateSupplierPurchasePayment(entityPurchaseOrderPayment))
+        {            
+            response.setSuccess(true);            
+        }
+        else
+        {
+            response.setSuccess(false);
+        }
+        return response;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_ENTITY_SUPPLIER_INFO)
+    public ClientResponse getEntitySupplierInfo(ISession session, IPacket packet) throws Exception 
+    {
+        EntitySupplier entitySupplier;
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
+        int supplierUserId = jsonObject.get("supplierUserId").getAsInt();
+        if(supplierUserId == 0)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Supplier invalid or doesn't exist.");
+            return generalResponse;
+        }
+        EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(packet.getPacketHeader().getAppId());
+        entitySupplier = entityManagerSupplier.getSupplierByUserId(supplierUserId);
+        if(entitySupplier == null || entitySupplier.getUserId() == 0)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Supplier invalid or doesn't exist.");
+            return generalResponse;
+        }
+        entitySupplier.setSuccess(true);
+        return entitySupplier;
     }
 }

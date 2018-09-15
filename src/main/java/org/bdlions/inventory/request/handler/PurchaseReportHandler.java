@@ -11,9 +11,12 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOPurchaseOrder;
+import org.bdlions.inventory.dto.DTOPurchaseOrderPayment;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
+import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
+import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 
@@ -88,5 +91,36 @@ public class PurchaseReportHandler {
         return response;
     }
     
-    
+    @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDER_PAYMENT_SUMMARY)
+    public ClientResponse getPurchaseOrderPaymentSummary(ISession session, IPacket packet) throws Exception 
+    {
+        ClientListResponse response = new ClientListResponse();
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
+        int supplierUserId = jsonObject.get("supplierUserId").getAsInt();
+        int paymentTypeId = jsonObject.get("paymentTypeId").getAsInt();
+        //handle start time, end time, unix payment start time and unix payment end time later
+        int offset = jsonObject.get("offset").getAsInt();
+        int limit = jsonObject.get("limit").getAsInt();
+
+        List<DTOPurchaseOrderPayment> purchaseOrderPayments = new ArrayList<>();
+        EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(packet.getPacketHeader().getAppId());
+        List<EntityPurchaseOrderPayment> entityPurchaseOrderPayments =  entityManagerPurchaseOrderPayment.getPurchaseOrderPaymentsDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0, offset, limit);
+        if(entityPurchaseOrderPayments != null)
+        {
+            
+            for (int counter = 0; counter < entityPurchaseOrderPayments.size(); counter++) 
+            {
+                EntityPurchaseOrderPayment entityPurchaseOrderPayment = entityPurchaseOrderPayments.get(counter);
+                DTOPurchaseOrderPayment dtoPOP = new DTOPurchaseOrderPayment();
+                dtoPOP.setEntityPurchaseOrderPayment(entityPurchaseOrderPayment);
+                dtoPOP.setCreatedDate(TimeUtils.convertUnixToHuman(entityPurchaseOrderPayment.getCreatedOn(), "", ""));
+                purchaseOrderPayments.add(dtoPOP);
+            }
+        }        
+        response.setList(purchaseOrderPayments);
+        response.setCounter(entityManagerPurchaseOrderPayment.getTotalPurchaseOrderPaymentsDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0));
+        response.setSuccess(true);
+        
+        return response;
+    }
 }
