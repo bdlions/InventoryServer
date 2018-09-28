@@ -39,9 +39,8 @@ public class EntityManagerPurchaseOrder
      */
     public EntityPurchaseOrder createPurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, Session session)
     {
-        TimeUtils timeUtils = new TimeUtils();
-        entityPurchaseOrder.setCreatedOn(timeUtils.getCurrentTime());
-        entityPurchaseOrder.setModifiedOn(timeUtils.getCurrentTime());
+        entityPurchaseOrder.setCreatedOn(TimeUtils.getCurrentTime());
+        entityPurchaseOrder.setModifiedOn(TimeUtils.getCurrentTime());
         session.save(entityPurchaseOrder);
         return entityPurchaseOrder;
     }
@@ -223,8 +222,7 @@ public class EntityManagerPurchaseOrder
      */
     public boolean updatePurchaseOrder(EntityPurchaseOrder entityPurchaseOrder, Session session)
     {
-        TimeUtils timeUtils = new TimeUtils();
-        entityPurchaseOrder.setModifiedOn(timeUtils.getCurrentTime());
+        entityPurchaseOrder.setModifiedOn(TimeUtils.getCurrentTime());
         session.update(entityPurchaseOrder);
         return true;
     }
@@ -649,7 +647,7 @@ public class EntityManagerPurchaseOrder
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
-            Query query = session.createSQLQuery("select {epo.*} from purchase_orders epo " + where + " limit :limit offset :offset")
+            Query query = session.createSQLQuery("select {epo.*} from purchase_orders epo " + where + " order by created_on desc limit :limit offset :offset")
                     .addEntity("epo",EntityPurchaseOrder.class)
                     .setInteger("limit", limit)
                     .setInteger("offset", offset);

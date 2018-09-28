@@ -48,8 +48,8 @@ public class SaleReportHandler {
         }
         long startTime = 0;
         long endTime = 0;
-        startTime = TimeUtils.convertHumanToUnix(startDate);
-        endTime = TimeUtils.convertHumanToUnix(endDate) + 86400;
+        startTime = TimeUtils.convertHumanToUnix(startDate, "", "");
+        endTime = TimeUtils.convertHumanToUnix(endDate, "", "") + 86400;
         
         String offsetString = jsonObject.get("offset").getAsString();
         String limitString = jsonObject.get("limit").getAsString();

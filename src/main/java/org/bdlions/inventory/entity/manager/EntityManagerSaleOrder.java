@@ -587,7 +587,7 @@ public class EntityManagerSaleOrder
         try 
         {
             String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
-            Query query = session.createSQLQuery("select {eso.*} from sale_orders eso " + where + " limit :limit offset :offset")
+            Query query = session.createSQLQuery("select {eso.*} from sale_orders eso " + where + " order by created_on desc limit :limit offset :offset")
                     .addEntity("eso",EntitySaleOrder.class)
                     .setInteger("limit", limit)
                     .setInteger("offset", offset);

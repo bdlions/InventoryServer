@@ -17,18 +17,14 @@ import org.bdlions.inventory.dto.ListPurchaseOrder;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
 import org.bdlions.inventory.entity.EntityPOShowRoomReturnProduct;
 import org.bdlions.inventory.entity.EntityProduct;
-import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomReturnProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
-import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
-import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
-import org.bdlions.inventory.manager.Stock;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
@@ -227,7 +223,16 @@ public class PurchaseHandler {
         {
             dtoPurchaseOrder.getEntityPurchaseOrder().setCreatedByUserName(tempEntityUser.getUserName());
             dtoPurchaseOrder.getEntityPurchaseOrder().setModifiedByUserName(tempEntityUser.getUserName());
-        }       
+        } 
+        
+        if(!StringUtils.isNullOrEmpty(dtoPurchaseOrder.getInvoiceDate()))
+        {
+            dtoPurchaseOrder.getEntityPurchaseOrder().setInvoiceOn(TimeUtils.convertHumanToUnix(dtoPurchaseOrder.getInvoiceDate(), "", ""));
+        }
+        else
+        {
+            dtoPurchaseOrder.getEntityPurchaseOrder().setInvoiceOn(TimeUtils.getCurrentTime());
+        }
         
         EntityPurchaseOrder entityPurchaseOrder = entityManagerPurchaseOrder.createPurchaseOrder(dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityPOShowRoomReturnProducts, entityShowRoomStocks);
         responseDTOPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
@@ -427,6 +432,15 @@ public class PurchaseHandler {
                 dtoPurchaseOrder.getEntityPurchaseOrder().setModifiedByUserName(tempEntityUser.getUserName());
             } 
             
+            if(!StringUtils.isNullOrEmpty(dtoPurchaseOrder.getInvoiceDate()))
+            {
+                dtoPurchaseOrder.getEntityPurchaseOrder().setInvoiceOn(TimeUtils.convertHumanToUnix(dtoPurchaseOrder.getInvoiceDate(), "", ""));
+            }
+            else
+            {
+                dtoPurchaseOrder.getEntityPurchaseOrder().setInvoiceOn(TimeUtils.getCurrentTime());
+            }
+            
             if(entityManagerPurchaseOrder.updatePurchaseOrder(currentEntityPurchaseOrder, dtoPurchaseOrder.getEntityPurchaseOrder(), entityPOShowRoomProducts, entityPOShowRoomReturnProducts, entityShowRoomStocks))
             {
                 response.setSuccess(true);
@@ -465,6 +479,8 @@ public class PurchaseHandler {
         if(entityPurchaseOrder != null)
         {
             dtoPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
+            dtoPurchaseOrder.setInvoiceDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getInvoiceOn(), "yyyy-MM-dd", ""));
+                    
             //getting products for this purchase order
             EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(packet.getPacketHeader().getAppId());
             List<EntityPOShowRoomProduct> entityPOShowRoomProducts = entityManagerPOShowRoomProduct.getPOShowRoomProductsByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
@@ -549,6 +565,7 @@ public class PurchaseHandler {
                 DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
                 dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
                 dtoPO.setOrderDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getCreatedOn(), "", ""));
+                dtoPO.setInvoiceDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getInvoiceOn(), "dd-MM-yyyy", ""));
                 purchaseOrders.add(dtoPO);
             } 
         }               

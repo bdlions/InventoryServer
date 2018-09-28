@@ -9,6 +9,10 @@ import java.util.TimeZone;
  * @author nazmul hasan
  */
 public class TimeUtils {
+    /**
+     * This method returns current UTC unix time
+     * @return long current UTC unix time in seconds
+     */
     public static long getCurrentTime()
     {
         long currentTime = System.currentTimeMillis() / 1000L;        
@@ -20,7 +24,7 @@ public class TimeUtils {
         long currentTime = System.currentTimeMillis() / 1000L;     
         if(StringUtils.isNullOrEmpty(dateFormat))
         {
-            dateFormat = "dd-MM-yyyy";
+            dateFormat = "yyyy-MM-dd";
         }
         if(StringUtils.isNullOrEmpty(reference))
         {
@@ -49,12 +53,20 @@ public class TimeUtils {
         return formattedDate;
     }
     
-    public static long convertHumanToUnix(String humanDate)
+    public static long convertHumanToUnix(String humanDate, String dateFormat, String reference)
     {
+        if(StringUtils.isNullOrEmpty(dateFormat))
+        {
+            dateFormat = "yyyy-MM-dd";
+        }
+        if(StringUtils.isNullOrEmpty(reference))
+        {
+            reference = "+6";
+        }
         try
         {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT" + reference));
             long ts = sdf.parse(humanDate).getTime()/1000;
             return ts;
         }

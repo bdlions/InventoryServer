@@ -248,6 +248,29 @@ CREATE TABLE `purchase_orders` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `purchase_order_payments`
+--
+
+CREATE TABLE `purchase_order_payments` (
+  `id` int(11) NOT NULL,
+  `amount_in` double DEFAULT '0',
+  `amount_out` double DEFAULT '0',
+  `created_by_user_id` int(11) DEFAULT '0',
+  `created_by_user_name` varchar(255) DEFAULT NULL,
+  `created_on` int(11) UNSIGNED DEFAULT '0',
+  `description` varchar(2000) DEFAULT NULL,
+  `modified_by_user_id` int(11) DEFAULT '0',
+  `modified_by_user_name` varchar(255) DEFAULT NULL,
+  `modified_on` int(11) UNSIGNED DEFAULT '0',
+  `payment_type_id` int(11) NOT NULL DEFAULT '1',
+  `reference` varchar(200) DEFAULT NULL,
+  `supplier_name` varchar(255) DEFAULT NULL,
+  `supplier_user_id` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `purchase_order_statuses`
 --
 
@@ -606,6 +629,12 @@ ALTER TABLE `purchase_orders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `purchase_order_payments`
+--
+ALTER TABLE `purchase_order_payments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `purchase_order_statuses`
 --
 ALTER TABLE `purchase_order_statuses`
@@ -755,6 +784,11 @@ ALTER TABLE `profile`
 -- AUTO_INCREMENT for table `purchase_orders`
 --
 ALTER TABLE `purchase_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `purchase_order_payments`
+--
+ALTER TABLE `purchase_order_payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `purchase_order_statuses`

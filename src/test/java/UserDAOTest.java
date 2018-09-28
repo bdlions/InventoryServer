@@ -52,8 +52,8 @@ public class UserDAOTest {
     
     //@Test
     public void getUserByCredential(){
-        EntityManagerUser entityManagerUser = new EntityManagerUser();
-        EntityUser u = entityManagerUser.getUserByCredential("alamgir@yopmail.com", "password");
-        System.out.println("Email: " + u.getEmail());
+//        EntityManagerUser entityManagerUser = new EntityManagerUser();
+//        EntityUser u = entityManagerUser.getUserByCredential("alamgir@yopmail.com", "password");
+//        System.out.println("Email: " + u.getEmail());
     }
 }

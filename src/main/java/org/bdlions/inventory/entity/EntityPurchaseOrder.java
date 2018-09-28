@@ -85,8 +85,8 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     @Column(name = "cell")
     private String cell;
     
-    @Column(name = "order_date", columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int orderDate;
+    @Column(name = "invoice_on", columnDefinition = "int(11) unsigned DEFAULT 0")
+    private long invoiceOn;
 
     @Column(name = "requested_ship_date", columnDefinition = "int(11) unsigned DEFAULT 0")
     private int requestedShipDate;
@@ -162,12 +162,12 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
         this.supplierUserId = supplierUserId;
     }
 
-    public int getOrderDate() {
-        return orderDate;
+    public long getInvoiceOn() {
+        return invoiceOn;
     }
 
-    public void setOrderDate(int orderDate) {
-        this.orderDate = orderDate;
+    public void setInvoiceOn(long invoiceOn) {
+        this.invoiceOn = invoiceOn;
     }
 
     public int getRequestedShipDate() {

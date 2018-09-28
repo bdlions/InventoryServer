@@ -484,7 +484,7 @@ public class SupplierHandler {
         } 
         if(!StringUtils.isNullOrEmpty(entityPurchaseOrderPayment.getPaymentDate()))
         {
-            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entityPurchaseOrderPayment.getPaymentDate()));
+            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entityPurchaseOrderPayment.getPaymentDate(), "", ""));
         }
         else
         {
@@ -528,7 +528,7 @@ public class SupplierHandler {
         } 
         if(!StringUtils.isNullOrEmpty(entityPurchaseOrderPayment.getPaymentDate()))
         {
-            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entityPurchaseOrderPayment.getPaymentDate()));
+            entityPurchaseOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entityPurchaseOrderPayment.getPaymentDate(), "", ""));
         }
         else
         {

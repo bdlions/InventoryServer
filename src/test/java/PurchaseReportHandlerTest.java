@@ -36,7 +36,7 @@ public class PurchaseReportHandlerTest extends HTTPRequestHelper{
 
     @Test
     public void getPurchaseOrderPaymentSummaryTest() {
-        PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
+        /*PacketHeaderImpl mockPacketHeader = new PacketHeaderImpl();
         mockPacketHeader.setAction(ACTION.FETCH_PURCHASE_ORDER_PAYMENT_SUMMARY);
         mockPacketHeader.setRequestType(REQUEST_TYPE.REQUEST);
         mockPacketHeader.setSessionId(getSessionId());
@@ -48,6 +48,6 @@ public class PurchaseReportHandlerTest extends HTTPRequestHelper{
         System.out.println(packetBody);
 
         String result = getResult(packetHeader, packetBody);
-        System.out.println("Result : " + result);
+        System.out.println("Result : " + result);*/
     }
 }

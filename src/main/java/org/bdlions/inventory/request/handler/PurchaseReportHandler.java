@@ -51,8 +51,8 @@ public class PurchaseReportHandler {
         }
         long startTime = 0;
         long endTime = 0;
-        startTime = TimeUtils.convertHumanToUnix(startDate);
-        endTime = TimeUtils.convertHumanToUnix(endDate) + 86400;
+        startTime = TimeUtils.convertHumanToUnix(startDate, "", "");
+        endTime = TimeUtils.convertHumanToUnix(endDate, "", "") + 86400;
         
         String offsetString = jsonObject.get("offset").getAsString();
         String limitString = jsonObject.get("limit").getAsString();
@@ -82,6 +82,7 @@ public class PurchaseReportHandler {
                 DTOPurchaseOrder dtoPO = new DTOPurchaseOrder();
                 dtoPO.setEntityPurchaseOrder(entityPurchaseOrder);
                 dtoPO.setOrderDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getCreatedOn(), "", ""));
+                dtoPO.setInvoiceDate(TimeUtils.convertUnixToHuman(entityPurchaseOrder.getInvoiceOn(), "", ""));
                 purchaseOrders.add(dtoPO);
             }
         }        
