@@ -68,6 +68,9 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
     
     @Column(name = "cell")
     private String cell;
+    
+    @Column(name = "address")
+    private String address;
 
     @Column(name = "account_status_id", nullable = false, columnDefinition = "int default 1")
     private int accountStatusId;
@@ -150,6 +153,14 @@ public class EntityUser extends ClientResponse implements java.io.Serializable {
         this.cell = cell;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
     public long getCreatedOn() {
         return createdOn;
     }
