@@ -2,8 +2,8 @@ package org.bdlions.inventory.entity.manager;
 
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
-import org.bdlions.inventory.entity.EntityPurchaseOrder;
-import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
+import org.bdlions.inventory.entity.EntitySaleOrder;
+import org.bdlions.inventory.entity.EntitySaleOrderPayment;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
@@ -15,28 +15,28 @@ import org.slf4j.LoggerFactory;
  *
  * @author Nazmul Hasan
  */
-public class EntityManagerPurchaseOrderPayment {
-    private final Logger logger = LoggerFactory.getLogger(EntityManagerPurchaseOrderPayment.class);
+public class EntityManagerSaleOrderPayment {
+    private final Logger logger = LoggerFactory.getLogger(EntityManagerSaleOrderPayment.class);
     private int appId;
-    public EntityManagerPurchaseOrderPayment(int appId)
+    public EntityManagerSaleOrderPayment(int appId)
     {
         this.appId = appId;
     }
     
-    public EntityPurchaseOrderPayment createPurchaseOrderPayment(EntityPurchaseOrderPayment entityPurchaseOrderPayment, Session session)
+    public EntitySaleOrderPayment createSaleOrderPayment(EntitySaleOrderPayment entitySaleOrderPayment, Session session)
     {
-        entityPurchaseOrderPayment.setCreatedOn(TimeUtils.getCurrentTime());
-        entityPurchaseOrderPayment.setModifiedOn(TimeUtils.getCurrentTime());
-        session.save(entityPurchaseOrderPayment);
-        return entityPurchaseOrderPayment;
+        entitySaleOrderPayment.setCreatedOn(TimeUtils.getCurrentTime());
+        entitySaleOrderPayment.setModifiedOn(TimeUtils.getCurrentTime());
+        session.save(entitySaleOrderPayment);
+        return entitySaleOrderPayment;
     }
     
-    public EntityPurchaseOrderPayment createPurchaseOrderPayment(EntityPurchaseOrderPayment entityPurchaseOrderPayment)
+    public EntitySaleOrderPayment createSaleOrderPayment(EntitySaleOrderPayment entitySaleOrderPayment)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
-            return createPurchaseOrderPayment(entityPurchaseOrderPayment, session);
+            return createSaleOrderPayment(entitySaleOrderPayment, session);
         } 
         finally 
         {
@@ -44,19 +44,19 @@ public class EntityManagerPurchaseOrderPayment {
         }
     }
     
-    public boolean updatePurchaseOrderPayment(EntityPurchaseOrderPayment entityPurchaseOrderPayment, Session session)
+    public boolean updateSaleOrderPayment(EntitySaleOrderPayment entitySaleOrderPayment, Session session)
     {
-        entityPurchaseOrderPayment.setModifiedOn(TimeUtils.getCurrentTime());
-        session.update(entityPurchaseOrderPayment);
+        entitySaleOrderPayment.setModifiedOn(TimeUtils.getCurrentTime());
+        session.update(entitySaleOrderPayment);
         return true;
     }
     
-    public boolean updatePurchaseOrderPayment(EntityPurchaseOrderPayment entityPurchaseOrderPayment)
+    public boolean updateSaleOrderPayment(EntitySaleOrderPayment entitySaleOrderPayment)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
-            return updatePurchaseOrderPayment(entityPurchaseOrderPayment, session);
+            return updateSaleOrderPayment(entitySaleOrderPayment, session);
         } 
         finally 
         {
@@ -64,7 +64,7 @@ public class EntityManagerPurchaseOrderPayment {
         }
     }
     
-    public List<EntityPurchaseOrderPayment> getPurchaseOrderPaymentListByReference(String reference)
+    public List<EntitySaleOrderPayment> getSaleOrderPaymentListByReference(String reference)
     {
         if(StringUtils.isNullOrEmpty(reference))
         {
@@ -73,16 +73,16 @@ public class EntityManagerPurchaseOrderPayment {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
-            Query<EntityPurchaseOrderPayment> query = session.getNamedQuery("getPurchaseOrderPaymentsByReference");
+            Query<EntitySaleOrderPayment> query = session.getNamedQuery("getSaleOrderPaymentsByReference");
             query.setParameter("reference", reference);
-            List<EntityPurchaseOrderPayment> purchaseOrderPaymentist = query.getResultList();
-            if(purchaseOrderPaymentist == null || purchaseOrderPaymentist.isEmpty())
+            List<EntitySaleOrderPayment> saleOrderPaymentist = query.getResultList();
+            if(saleOrderPaymentist == null || saleOrderPaymentist.isEmpty())
             {
                 return null;
             }
             else
             {
-                return purchaseOrderPaymentist;
+                return saleOrderPaymentist;
             } 
         } 
         finally 
@@ -91,22 +91,22 @@ public class EntityManagerPurchaseOrderPayment {
         }
     }
     
-    public EntityPurchaseOrderPayment getSupplierPurchaseOrderPaymentByPaymentTypeId(int supplierUserId, int paymentTypeId)
+    public EntitySaleOrderPayment getCustomerSaleOrderPaymentByPaymentTypeId(int customerUserId, int paymentTypeId)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
-            Query<EntityPurchaseOrderPayment> query = session.getNamedQuery("getSupplierPurchaseOrderPaymentsByPaymentTypeId");
-            query.setParameter("supplierUserId", supplierUserId);
+            Query<EntitySaleOrderPayment> query = session.getNamedQuery("getCustomerSaleOrderPaymentsByPaymentTypeId");
+            query.setParameter("customerUserId", customerUserId);
             query.setParameter("paymentTypeId", paymentTypeId);
-            List<EntityPurchaseOrderPayment> purchaseOrderPaymentist = query.getResultList();
-            if(purchaseOrderPaymentist == null || purchaseOrderPaymentist.isEmpty())
+            List<EntitySaleOrderPayment> saleOrderPaymentist = query.getResultList();
+            if(saleOrderPaymentist == null || saleOrderPaymentist.isEmpty())
             {
                 return null;
             }
             else
             {
-                return purchaseOrderPaymentist.get(0);
+                return saleOrderPaymentist.get(0);
             } 
         } 
         finally 
@@ -115,22 +115,22 @@ public class EntityManagerPurchaseOrderPayment {
         }
     }
     
-    public List<EntityPurchaseOrderPayment> getSupplierPurchaseOrderPaymentListByPaymentTypeId(int supplierUserId, int paymentTypeId)
+    public List<EntitySaleOrderPayment> getCustomerSaleOrderPaymentListByPaymentTypeId(int customerUserId, int paymentTypeId)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
-            Query<EntityPurchaseOrderPayment> query = session.getNamedQuery("getSupplierPurchaseOrderPaymentsByPaymentTypeId");
-            query.setParameter("supplierUserId", supplierUserId);
+            Query<EntitySaleOrderPayment> query = session.getNamedQuery("getCustomerSaleOrderPaymentsByPaymentTypeId");
+            query.setParameter("customerUserId", customerUserId);
             query.setParameter("paymentTypeId", paymentTypeId);
-            List<EntityPurchaseOrderPayment> purchaseOrderPaymentist = query.getResultList();
-            if(purchaseOrderPaymentist == null || purchaseOrderPaymentist.isEmpty())
+            List<EntitySaleOrderPayment> saleOrderPaymentist = query.getResultList();
+            if(saleOrderPaymentist == null || saleOrderPaymentist.isEmpty())
             {
                 return null;
             }
             else
             {
-                return purchaseOrderPaymentist;
+                return saleOrderPaymentist;
             } 
         } 
         finally 
@@ -138,21 +138,21 @@ public class EntityManagerPurchaseOrderPayment {
             session.close();
         }
     }
-    public EntityPurchaseOrderPayment getPurchaseOrderPaymentById(int id)
+    public EntitySaleOrderPayment getSaleOrderPaymentById(int id)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
-            Query<EntityPurchaseOrderPayment> query = session.getNamedQuery("getPurchaseOrderPaymentById");
+            Query<EntitySaleOrderPayment> query = session.getNamedQuery("getSaleOrderPaymentById");
             query.setParameter("id", id);
-            List<EntityPurchaseOrderPayment> purchaseOrderPaymentist = query.getResultList();
-            if(purchaseOrderPaymentist == null || purchaseOrderPaymentist.isEmpty())
+            List<EntitySaleOrderPayment> saleOrderPaymentist = query.getResultList();
+            if(saleOrderPaymentist == null || saleOrderPaymentist.isEmpty())
             {
                 return null;
             }
             else
             {
-                return purchaseOrderPaymentist.get(0);
+                return saleOrderPaymentist.get(0);
             } 
         } 
         finally 
@@ -161,48 +161,48 @@ public class EntityManagerPurchaseOrderPayment {
         }
     }
     
-    public int deletePurchaseOrderPaymentsByReference(String reference, Session session)
+    public int deleteSaleOrderPaymentsByReference(String reference, Session session)
     {
         if(!StringUtils.isNullOrEmpty(reference))
         {
-            Query<EntityPurchaseOrderPayment> query = session.getNamedQuery("deletePurchaseOrderPaymentsByReference");
+            Query<EntitySaleOrderPayment> query = session.getNamedQuery("deleteSaleOrderPaymentsByReference");
             query.setParameter("reference", reference);
             return query.executeUpdate();
         }
         return 0;
     }
     
-    public int deleteSupplierPurchaseOrderPaymentsByPaymentTypeId(int supplierUserId, int paymentTypeId, Session session)
+    public int deleteCustomerSaleOrderPaymentsByPaymentTypeId(int customerUserId, int paymentTypeId, Session session)
     {
-        if(supplierUserId > 0 && paymentTypeId > 0)
+        if(customerUserId > 0 && paymentTypeId > 0)
         {
-            Query<EntityPurchaseOrderPayment> query = session.getNamedQuery("deleteSupplierPurchaseOrderPaymentsByPaymentTypeId");
-            query.setParameter("supplierUserId", supplierUserId);
+            Query<EntitySaleOrderPayment> query = session.getNamedQuery("deleteCustomerSaleOrderPaymentsByPaymentTypeId");
+            query.setParameter("customerUserId", customerUserId);
             query.setParameter("paymentTypeId", paymentTypeId);
             return query.executeUpdate();
         }
         return 0;
     }
     
-    public int updatePurchaseOrderPaymentSupplierInfo(int supplierUserId, String supplierName, Session session)
+    public int updateSaleOrderPaymentCustomerInfo(int customerUserId, String customerName, Session session)
     {
-        Query<EntityPurchaseOrder> query = session.getNamedQuery("updatePurchaseOrderPaymentSupplierInfo");
-        query.setParameter("supplierName", supplierName);
-        query.setParameter("supplierUserId", supplierUserId);
+        Query<EntitySaleOrder> query = session.getNamedQuery("updateSaleOrderPaymentCustomerInfo");
+        query.setParameter("customerName", customerName);
+        query.setParameter("customerUserId", customerUserId);
         return query.executeUpdate();
     }
     
-    public double getSupplierCurrentDue(int supplierUserId, Session session)
+    public double getCustomerCurrentDue(int customerUserId, Session session)
     {
-        if(supplierUserId <= 0)
+        if(customerUserId <= 0)
         {
             return 0;
         }
         double currentDue = 0;
-        Query<Object[]> query = session.getNamedQuery("getSupplierCurrentDue");
-        query.setParameter("supplierUserId", supplierUserId);
-        List<Object[]> purchaseOrderList = query.getResultList();
-        if(purchaseOrderList == null || purchaseOrderList.isEmpty())
+        Query<Object[]> query = session.getNamedQuery("getCustomerCurrentDue");
+        query.setParameter("customerUserId", customerUserId);
+        List<Object[]> saleOrderList = query.getResultList();
+        if(saleOrderList == null || saleOrderList.isEmpty())
         {
             return 0;
         }
@@ -210,7 +210,7 @@ public class EntityManagerPurchaseOrderPayment {
         {
             try
             {
-                currentDue = (double)purchaseOrderList.get(0)[0];
+                currentDue = (double)saleOrderList.get(0)[0];
             }
             catch(Exception ex)
             {
@@ -221,16 +221,16 @@ public class EntityManagerPurchaseOrderPayment {
         return currentDue;
     }
     
-    public double getSupplierCurrentDue(int supplierUserId)
+    public double getCustomerCurrentDue(int customerUserId)
     {
-        if(supplierUserId <= 0)
+        if(customerUserId <= 0)
         {
             return 0;
         }
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {            
-            return this.getSupplierCurrentDue(supplierUserId, session);
+            return this.getCustomerCurrentDue(customerUserId, session);
         } 
         finally 
         {
@@ -240,19 +240,19 @@ public class EntityManagerPurchaseOrderPayment {
     
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
     // We need dynamic query because for some query, search params are dynamic i.e. param may be included or not
-    public List<EntityPurchaseOrderPayment> getPurchaseOrderPaymentsDQ(int supplierUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime, int offset, int limit)
+    public List<EntitySaleOrderPayment> getSaleOrderPaymentsDQ(int customerUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime, int offset, int limit)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             String whereQuery = "";
-            if(supplierUserId > 0)
+            if(customerUserId > 0)
             {
                 if(!StringUtils.isNullOrEmpty(whereQuery))
                 {
                     whereQuery += " AND ";
                 }
-                whereQuery += " supplier_user_id = " + supplierUserId;
+                whereQuery += " customer_user_id = " + customerUserId;
             }
             if(paymentTypeId > 0)
             {
@@ -299,8 +299,8 @@ public class EntityManagerPurchaseOrderPayment {
                 whereQuery = " where " + whereQuery;
             }
             
-            Query query = session.createSQLQuery("select {epop.*} from purchase_order_payments epop " + whereQuery + " order by created_on desc limit :limit offset :offset ")
-                    .addEntity("epop",EntityPurchaseOrderPayment.class)
+            Query query = session.createSQLQuery("select {esop.*} from sale_order_payments esop " + whereQuery + " order by created_on desc limit :limit offset :offset ")
+                    .addEntity("esop",EntitySaleOrderPayment.class)
                     .setInteger("limit", limit)
                     .setInteger("offset", offset);
             return query.list();           
@@ -310,19 +310,19 @@ public class EntityManagerPurchaseOrderPayment {
             session.close();
         }
     }
-    public int getTotalPurchaseOrderPaymentsDQ(int supplierUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime)
+    public int getTotalSaleOrderPaymentsDQ(int customerUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
         {
             String whereQuery = "";
-            if(supplierUserId > 0)
+            if(customerUserId > 0)
             {
                 if(!StringUtils.isNullOrEmpty(whereQuery))
                 {
                     whereQuery += " AND ";
                 }
-                whereQuery += " supplier_user_id = " + supplierUserId;
+                whereQuery += " customer_user_id = " + customerUserId;
             }
             if(paymentTypeId > 0)
             {
@@ -369,8 +369,8 @@ public class EntityManagerPurchaseOrderPayment {
                 whereQuery = " where " + whereQuery;
             }
             
-            Query query = session.createSQLQuery("select {epop.*} from purchase_order_payments epop " + whereQuery)
-                    .addEntity("epop",EntityPurchaseOrderPayment.class);
+            Query query = session.createSQLQuery("select {esop.*} from sale_order_payments esop " + whereQuery)
+                    .addEntity("esop",EntitySaleOrderPayment.class);
             return query.list().size();           
         } 
         finally 

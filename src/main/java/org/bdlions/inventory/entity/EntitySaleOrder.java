@@ -54,11 +54,12 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "updateSaleOrderCustomerInfo",
             query = "update EntitySaleOrder set customerName = :customerName, cell = :cell, email = :email where customerUserId = :customerUserId"
-    ),
-    @NamedQuery(
-            name = "getCustomerCurrentDue",
-            query = " select sum(paid - total), customerUserId from EntitySaleOrder saleOrder where saleOrder.customerUserId = :customerUserId group by customerUserId"
     )
+//    ,
+//    @NamedQuery(
+//            name = "getCustomerCurrentDue",
+//            query = " select sum(paid - total), customerUserId from EntitySaleOrder saleOrder where saleOrder.customerUserId = :customerUserId group by customerUserId"
+//    )
 })
 public class EntitySaleOrder extends ClientResponse implements java.io.Serializable{
 
@@ -122,13 +123,13 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
     private long modifiedOn;
     
     @Column(name = "created_by_user_id", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private long createdByUserId;
+    private int createdByUserId;
 
     @Column(name = "created_by_user_name")
     private String createdByUserName;
     
     @Column(name = "modified_by_user_id", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private long modifiedByUserId;
+    private int modifiedByUserId;
 
     @Column(name = "modified_by_user_name")
     private String modifiedByUserName;
@@ -261,11 +262,11 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
         this.subtotal = subtotal;
     }
 
-    public long getCreatedByUserId() {
+    public int getCreatedByUserId() {
         return createdByUserId;
     }
 
-    public void setCreatedByUserId(long createdByUserId) {
+    public void setCreatedByUserId(int createdByUserId) {
         this.createdByUserId = createdByUserId;
     }
 
@@ -277,11 +278,11 @@ public class EntitySaleOrder extends ClientResponse implements java.io.Serializa
         this.createdByUserName = createdByUserName;
     }
 
-    public long getModifiedByUserId() {
+    public int getModifiedByUserId() {
         return modifiedByUserId;
     }
 
-    public void setModifiedByUserId(long modifiedByUserId) {
+    public void setModifiedByUserId(int modifiedByUserId) {
         this.modifiedByUserId = modifiedByUserId;
     }
 

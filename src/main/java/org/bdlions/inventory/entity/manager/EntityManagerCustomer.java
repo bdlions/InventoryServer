@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.entity.EntityCustomer;
+import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.inventory.entity.EntitySaleOrder;
+import org.bdlions.inventory.entity.EntitySaleOrderPayment;
+import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
+import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -123,21 +127,36 @@ public class EntityManagerCustomer
      * @param entityCustomer entity customer
      * @param entityUser entity user
      * @param entityUserRole entity user role
+     * @param entitySaleOrderPaymentIn customer last year balance
      * @return EntityCustomer EntityCustomer
      */
-    public EntityCustomer createCustomer(EntityCustomer entityCustomer, EntityUser entityUser, EntityUserRole entityUserRole)
+    public EntityCustomer createCustomer(EntityCustomer entityCustomer, EntityUser entityUser, EntityUserRole entityUserRole, EntitySaleOrderPayment entitySaleOrderPaymentIn)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
-        if(entityUser != null)
-        {
-            EntityManagerUser entityManagerUser = new EntityManagerUser(this.appId);
-            EntityUser resultEntityUser = entityManagerUser.createUser(entityUser, entityUserRole, session);
-            entityCustomer.setUserId(resultEntityUser.getId());
-        }
         try 
         {
+            if(entityUser != null)
+            {
+                EntityManagerUser entityManagerUser = new EntityManagerUser(this.appId);
+                EntityUser resultEntityUser = entityManagerUser.createUser(entityUser, entityUserRole, session);
+                entityCustomer.setUserId(resultEntityUser.getId());
+            }
+            if(entitySaleOrderPaymentIn != null)
+            {
+                entitySaleOrderPaymentIn.setCustomerUserId(entityCustomer.getUserId());
+                entitySaleOrderPaymentIn.setCustomerName(entityCustomer.getCustomerName());
+                entitySaleOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                entitySaleOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                EntityManagerSaleOrderPayment entityManagerSaleOrderPayment = new EntityManagerSaleOrderPayment(appId);
+                entityManagerSaleOrderPayment.createSaleOrderPayment(entitySaleOrderPaymentIn, session);
+
+                //setting customer current balance because of sale order payment table entry
+                double currentDue = entityManagerSaleOrderPayment.getCustomerCurrentDue( entityCustomer.getUserId(), session);
+                entityCustomer.setBalance(currentDue);
+            }
+        
             EntityCustomer resultEntityCustomer = createCustomer(entityCustomer, session);
             tx.commit();
             return resultEntityCustomer;
@@ -185,9 +204,10 @@ public class EntityManagerCustomer
      * @param entityCustomer entity customer
      * @param entityUser entity user
      * @param entitySaleOrder entity sale order
+     * @param entitySaleOrderPaymentIn customer last year balance
      * @return boolean true
      */
-    public boolean updateCustomer(EntityCustomer entityCustomer, EntityUser entityUser, EntitySaleOrder entitySaleOrder)
+    public boolean updateCustomer(EntityCustomer entityCustomer, EntityUser entityUser, EntitySaleOrder entitySaleOrder, EntitySaleOrderPayment entitySaleOrderPaymentIn)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
@@ -203,6 +223,20 @@ public class EntityManagerCustomer
             {
                 EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(this.appId);
                 entityManagerSaleOrder.updateSaleOrderCustomerInfo(entitySaleOrder, session);
+            }
+            if(entitySaleOrderPaymentIn != null)
+            {
+                EntityManagerSaleOrderPayment entityManagerSaleOrderPayment = new EntityManagerSaleOrderPayment(appId);
+                //delete current entry
+                entityManagerSaleOrderPayment.deleteCustomerSaleOrderPaymentsByPaymentTypeId(entityCustomer.getUserId(), Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_PREVIOUS_DUE_IN, session);
+                entitySaleOrderPaymentIn.setCustomerUserId(entityCustomer.getUserId());
+                entitySaleOrderPaymentIn.setCustomerName(entityCustomer.getCustomerName()); 
+                entitySaleOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                entitySaleOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+                entityManagerSaleOrderPayment.createSaleOrderPayment(entitySaleOrderPaymentIn, session);
+                 //setting customer current balance because of sale order payment table entry
+                double currentDue = entityManagerSaleOrderPayment.getCustomerCurrentDue( entityCustomer.getUserId(), session);
+                entityCustomer.setBalance(currentDue);
             }
             updateCustomer(entityCustomer, session);
             tx.commit();
@@ -379,6 +413,58 @@ public class EntityManagerCustomer
             Query<EntityCustomer> query = session.getNamedQuery("searchCustomerByEmail");
             query.setParameter("email", "%" + email.toLowerCase() + "%");
             return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public EntitySaleOrderPayment addCustomerSalePayment(EntitySaleOrderPayment entitySaleOrderPaymentIn)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        Transaction tx = session.getTransaction(); 
+        tx.begin();           
+        try 
+        {
+            if(entitySaleOrderPaymentIn != null)
+            {
+                EntityManagerSaleOrderPayment entityManagerSaleOrderPayment = new EntityManagerSaleOrderPayment(appId);
+                entitySaleOrderPaymentIn = entityManagerSaleOrderPayment.createSaleOrderPayment(entitySaleOrderPaymentIn, session);
+                 //setting customer current balance because of sale order payment table entry
+                double currentDue = entityManagerSaleOrderPayment.getCustomerCurrentDue( entitySaleOrderPaymentIn.getCustomerUserId(), session);
+                EntityCustomer entityCustomer = getCustomerByUserId(entitySaleOrderPaymentIn.getCustomerUserId());
+                entityCustomer.setBalance(currentDue);
+                updateCustomer(entityCustomer, session);
+            }
+            tx.commit();
+            return entitySaleOrderPaymentIn;
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    public boolean updateCustomerSalePayment(EntitySaleOrderPayment entitySaleOrderPaymentIn)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        Transaction tx = session.getTransaction(); 
+        tx.begin();           
+        try 
+        {
+            if(entitySaleOrderPaymentIn != null)
+            {
+                EntityManagerSaleOrderPayment entityManagerSaleOrderPayment = new EntityManagerSaleOrderPayment(appId);
+                entityManagerSaleOrderPayment.updateSaleOrderPayment(entitySaleOrderPaymentIn, session);
+                 //setting customer current balance because of sake order payment table entry
+                double currentDue = entityManagerSaleOrderPayment.getCustomerCurrentDue( entitySaleOrderPaymentIn.getCustomerUserId(), session);
+                EntityCustomer entityCustomer = getCustomerByUserId(entitySaleOrderPaymentIn.getCustomerUserId());
+                entityCustomer.setBalance(currentDue);
+                updateCustomer(entityCustomer, session);
+            }
+            tx.commit();
+            return true;
         } 
         finally 
         {

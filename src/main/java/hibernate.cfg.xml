@@ -48,6 +48,7 @@
         <mapping class="org.bdlions.inventory.entity.EntityWarehouseStock" />
         <mapping class="org.bdlions.inventory.entity.EntitySaleOrderStatus" />
         <mapping class="org.bdlions.inventory.entity.EntitySaleOrder" />
+        <mapping class="org.bdlions.inventory.entity.EntitySaleOrderPayment" />
 	<mapping class="org.bdlions.inventory.entity.EntitySaleOrderProduct" />
         <mapping class="org.bdlions.inventory.entity.EntitySaleOrderReturnProduct" />
         <mapping class="org.bdlions.inventory.entity.EntitySSTransactionCategory" />

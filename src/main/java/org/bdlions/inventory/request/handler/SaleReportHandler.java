@@ -10,10 +10,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
+import org.bdlions.inventory.dto.DTOPurchaseOrderPayment;
 import org.bdlions.inventory.dto.DTOSaleOrder;
+import org.bdlions.inventory.dto.DTOSaleOrderPayment;
+import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.entity.EntitySaleOrder;
+import org.bdlions.inventory.entity.EntitySaleOrderPayment;
+import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
+import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderPayment;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 
@@ -88,5 +94,36 @@ public class SaleReportHandler {
         return response;
     }
     
-    
+    @ClientRequest(action = ACTION.FETCH_SALE_ORDER_PAYMENT_SUMMARY)
+    public ClientResponse getSaleOrderPaymentSummary(ISession session, IPacket packet) throws Exception 
+    {
+        ClientListResponse response = new ClientListResponse();
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
+        int customerUserId = jsonObject.get("customerUserId").getAsInt();
+        int paymentTypeId = jsonObject.get("paymentTypeId").getAsInt();
+        //handle start time, end time, unix payment start time and unix payment end time later
+        int offset = jsonObject.get("offset").getAsInt();
+        int limit = jsonObject.get("limit").getAsInt();
+
+        List<DTOSaleOrderPayment> saleOrderPayments = new ArrayList<>();
+        EntityManagerSaleOrderPayment entityManagerSaleOrderPayment = new EntityManagerSaleOrderPayment(packet.getPacketHeader().getAppId());
+        List<EntitySaleOrderPayment> entitySaleOrderPayments =  entityManagerSaleOrderPayment.getSaleOrderPaymentsDQ(customerUserId, paymentTypeId, 0, 0, 0, 0, offset, limit);
+        if(entitySaleOrderPayments != null)
+        {
+            
+            for (int counter = 0; counter < entitySaleOrderPayments.size(); counter++) 
+            {
+                EntitySaleOrderPayment entitySaleOrderPayment = entitySaleOrderPayments.get(counter);
+                DTOSaleOrderPayment dtoSOP = new DTOSaleOrderPayment();
+                dtoSOP.setEntitySaleOrderPayment(entitySaleOrderPayment);
+                dtoSOP.setCreatedDate(TimeUtils.convertUnixToHuman(entitySaleOrderPayment.getCreatedOn(), "", ""));
+                saleOrderPayments.add(dtoSOP);
+            }
+        }        
+        response.setList(saleOrderPayments);
+        response.setCounter(entityManagerSaleOrderPayment.getTotalSaleOrderPaymentsDQ(customerUserId, paymentTypeId, 0, 0, 0, 0));
+        response.setSuccess(true);
+        
+        return response;
+    }
 }

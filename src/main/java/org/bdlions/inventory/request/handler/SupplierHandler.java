@@ -79,7 +79,7 @@ public class SupplierHandler {
             }
             
             EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn = null;
-            if(dtoSupplier.getEntitySupplier().getPreviousBalance() > 0.0)
+            if(dtoSupplier.getEntitySupplier().getPreviousBalance() >= 0.0)
             {
                 entityPurchaseOrderPaymentIn = new EntityPurchaseOrderPayment();
                 entityPurchaseOrderPaymentIn.setAmountIn(dtoSupplier.getEntitySupplier().getPreviousBalance());
@@ -210,7 +210,7 @@ public class SupplierHandler {
             }
             
             EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn = null;
-            if(dtoSupplier.getEntitySupplier().getPreviousBalance() > 0.0)
+            if(dtoSupplier.getEntitySupplier().getPreviousBalance() >= 0.0)
             {
                 entityPurchaseOrderPaymentIn = new EntityPurchaseOrderPayment();
                 entityPurchaseOrderPaymentIn.setAmountIn(dtoSupplier.getEntitySupplier().getPreviousBalance());

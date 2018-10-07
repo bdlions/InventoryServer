@@ -127,6 +127,7 @@ public class EntityManagerSupplier
      * @param entityUser entity user
      * @param entityUserRole entity user role
      * @param suplierProducts supplier product list
+     * @param entityPurchaseOrderPaymentIn supplier last year due
      * @return EntitySupplier EntitySupplier
      */
     public EntitySupplier createSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityUserRole entityUserRole, List<EntityProductSupplier> suplierProducts, EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn)
@@ -214,6 +215,9 @@ public class EntityManagerSupplier
      * @param entitySupplier entity supplier
      * @param entityUser entity user
      * @param entityPurchaseOrder entity purchase order
+     * @param supplierProducts supplier products
+     * @param productIds product id list
+     * @param entityPurchaseOrderPaymentIn supplier last year balance
      * @return boolean true
      */
     public boolean updateSupplier(EntitySupplier entitySupplier, EntityUser entityUser, EntityPurchaseOrder entityPurchaseOrder, List<EntityProductSupplier> supplierProducts, List<Integer> productIds, EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn)

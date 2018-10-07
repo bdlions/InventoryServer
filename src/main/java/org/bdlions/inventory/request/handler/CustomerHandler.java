@@ -7,19 +7,25 @@ import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
 import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOCustomer;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListCustomer;
 import org.bdlions.inventory.entity.EntityCustomer;
+import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.inventory.entity.EntitySaleOrder;
+import org.bdlions.inventory.entity.EntitySaleOrderPayment;
+import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
+import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -56,6 +62,29 @@ public class CustomerHandler {
         }
         else
         {
+            
+            EntitySaleOrderPayment entitySaleOrderPaymentIn = null;
+            if(dtoCustomer.getEntityCustomer().getPreviousBalance() >= 0.0)
+            {
+                entitySaleOrderPaymentIn = new EntitySaleOrderPayment();
+                entitySaleOrderPaymentIn.setAmountIn(dtoCustomer.getEntityCustomer().getPreviousBalance());
+                entitySaleOrderPaymentIn.setAmountOut(0.0);
+                entitySaleOrderPaymentIn.setPaymentTypeId(Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_PREVIOUS_DUE_IN);
+                entitySaleOrderPaymentIn.setDescription(Constants.SALE_ORDER_PAYMENT_TYPE_ADD_ADD_PREVIOUS_DUE_IN_DESCRIPTION);
+                
+                //setting created by and modified by user
+                int userId = (int)session.getUserId();
+                entitySaleOrderPaymentIn.setCreatedByUserId(userId);
+                entitySaleOrderPaymentIn.setModifiedByUserId(userId);
+                EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+                EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+                if(tempEntityUser != null && tempEntityUser.getId() > 0)
+                {
+                    entitySaleOrderPaymentIn.setCreatedByUserName(tempEntityUser.getUserName());
+                    entitySaleOrderPaymentIn.setModifiedByUserName(tempEntityUser.getUserName());
+                }  
+            }
+            
             EntityUserRole entityUserRole = new EntityUserRole();
             entityUserRole.setRoleId(Constants.ROLE_ID_CUSTOMER);
             dtoCustomer.setEntityUserRole(entityUserRole);
@@ -66,7 +95,7 @@ public class CustomerHandler {
             dtoCustomer.getEntityCustomer().setEmail(dtoCustomer.getEntityUser().getEmail());
             dtoCustomer.getEntityCustomer().setCell(dtoCustomer.getEntityUser().getCell());
             
-            EntityCustomer resultEntityCustomer = entityManagerCustomer.createCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser(), entityUserRole);
+            EntityCustomer resultEntityCustomer = entityManagerCustomer.createCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser(), entityUserRole, entitySaleOrderPaymentIn);
             if(resultEntityCustomer != null && resultEntityCustomer.getId() > 0)
             {
                 //setting EntitySupplier
@@ -91,7 +120,7 @@ public class CustomerHandler {
     @ClientRequest(action = ACTION.UPDATE_CUSTOMER_INFO)
     public ClientResponse updateCustomerInfo(ISession session, IPacket packet) throws Exception 
     {
-        GeneralResponse response = new GeneralResponse();
+        DTOCustomer response = new DTOCustomer();
         Gson gson = new Gson();
         DTOCustomer dtoCustomer = gson.fromJson(packet.getPacketBody(), DTOCustomer.class); 
         if(dtoCustomer == null || dtoCustomer.getEntityCustomer() == null || dtoCustomer.getEntityUser() == null)
@@ -126,8 +155,33 @@ public class CustomerHandler {
             entitySaleOrder.setCell(dtoCustomer.getEntityUser().getCell());
             entitySaleOrder.setCustomerUserId(dtoCustomer.getEntityCustomer().getUserId());
             
-            if(entityManagerCustomer.updateCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser(), entitySaleOrder))
+            EntitySaleOrderPayment entitySaleOrderPaymentIn = null;
+            if(dtoCustomer.getEntityCustomer().getPreviousBalance() >= 0.0)
             {
+                entitySaleOrderPaymentIn = new EntitySaleOrderPayment();
+                entitySaleOrderPaymentIn.setAmountIn(dtoCustomer.getEntityCustomer().getPreviousBalance());
+                entitySaleOrderPaymentIn.setAmountOut(0.0);
+                entitySaleOrderPaymentIn.setPaymentTypeId(Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_PREVIOUS_DUE_IN);
+                entitySaleOrderPaymentIn.setDescription(Constants.SALE_ORDER_PAYMENT_TYPE_ADD_ADD_PREVIOUS_DUE_IN_DESCRIPTION);
+                
+                //setting created by and modified by user
+                int userId = (int)session.getUserId();
+                entitySaleOrderPaymentIn.setCreatedByUserId(userId);
+                entitySaleOrderPaymentIn.setModifiedByUserId(userId);
+                EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+                EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+                if(tempEntityUser != null && tempEntityUser.getId() > 0)
+                {
+                    entitySaleOrderPaymentIn.setCreatedByUserName(tempEntityUser.getUserName());
+                    entitySaleOrderPaymentIn.setModifiedByUserName(tempEntityUser.getUserName());
+                }  
+            }
+            
+            if(entityManagerCustomer.updateCustomer(dtoCustomer.getEntityCustomer(), dtoCustomer.getEntityUser(), entitySaleOrder, entitySaleOrderPaymentIn))
+            {
+                EntityCustomer resultEntityCustomer = entityManagerCustomer.getCustomerByUserId(dtoCustomer.getEntityCustomer().getUserId());
+                response = dtoCustomer;
+                response.setEntityCustomer(resultEntityCustomer);
                 response.setSuccess(true);
                 response.setMessage("Customer is updated successfully.");
             }
@@ -315,5 +369,127 @@ public class CustomerHandler {
         response.setCustomers(customers);
         response.setSuccess(true);
         return response;
+    }
+    
+    @ClientRequest(action = ACTION.ADD_SALE_ORDER_PAYMENT)
+    public ClientResponse addSaleOrderPayment(ISession session, IPacket packet) throws Exception 
+    {
+        Gson gson = new Gson();
+        EntitySaleOrderPayment entitySaleOrderPayment = gson.fromJson(packet.getPacketBody(), EntitySaleOrderPayment.class); 
+        //validation of entitySaleOrderPayment
+        if(entitySaleOrderPayment == null)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid sale order payment.");
+            return response;
+        }
+        if(entitySaleOrderPayment.getCustomerUserId() == 0)
+        {
+            GeneralResponse response = new GeneralResponse();
+            response.setSuccess(false);
+            response.setMessage("Invalid customer for the purchase order payment.");
+            return response;
+        }
+        //setting created by and modified by user
+        int userId = (int)session.getUserId();
+        entitySaleOrderPayment.setCreatedByUserId(userId);
+        entitySaleOrderPayment.setModifiedByUserId(userId);
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+        EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+        if(tempEntityUser != null && tempEntityUser.getId() > 0)
+        {
+            entitySaleOrderPayment.setCreatedByUserName(tempEntityUser.getUserName());
+            entitySaleOrderPayment.setModifiedByUserName(tempEntityUser.getUserName());
+        } 
+        if(!StringUtils.isNullOrEmpty(entitySaleOrderPayment.getPaymentDate()))
+        {
+            entitySaleOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entitySaleOrderPayment.getPaymentDate(), "", ""));
+        }
+        else
+        {
+            entitySaleOrderPayment.setUnixPaymentDate(TimeUtils.getCurrentTime());
+            entitySaleOrderPayment.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+        }
+        entitySaleOrderPayment.setPaymentTypeId(Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_NEW_PAYMENT_OUT);
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
+        entitySaleOrderPayment = entityManagerCustomer.addCustomerSalePayment(entitySaleOrderPayment);
+        entitySaleOrderPayment.setSuccess(true);
+        return entitySaleOrderPayment;
+    }
+    
+    @ClientRequest(action = ACTION.UPDATE_SALE_ORDER_PAYMENT)
+    public ClientResponse updateSaleOrderPayment(ISession session, IPacket packet) throws Exception 
+    {
+        GeneralResponse response = new GeneralResponse();
+        Gson gson = new Gson();
+        EntitySaleOrderPayment entitySaleOrderPayment = gson.fromJson(packet.getPacketBody(), EntitySaleOrderPayment.class); 
+        //validation of entitySaleOrderPayment
+        if(entitySaleOrderPayment == null || entitySaleOrderPayment.getId() <= 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid sale order payment.");
+            return response;
+        }
+        if(entitySaleOrderPayment.getCustomerUserId() == 0)
+        {
+            response.setSuccess(false);
+            response.setMessage("Invalid customer for the sale order payment.");
+            return response;
+        }
+        //setting created by and modified by user
+        int userId = (int)session.getUserId();
+        entitySaleOrderPayment.setModifiedByUserId(userId);
+        EntityManagerUser entityManagerUser = new EntityManagerUser(packet.getPacketHeader().getAppId());
+        EntityUser tempEntityUser = entityManagerUser.getUserByUserId(userId);
+        if(tempEntityUser != null && tempEntityUser.getId() > 0)
+        {
+            entitySaleOrderPayment.setModifiedByUserName(tempEntityUser.getUserName());
+        } 
+        if(!StringUtils.isNullOrEmpty(entitySaleOrderPayment.getPaymentDate()))
+        {
+            entitySaleOrderPayment.setUnixPaymentDate(TimeUtils.convertHumanToUnix(entitySaleOrderPayment.getPaymentDate(), "", ""));
+        }
+        else
+        {
+            entitySaleOrderPayment.setUnixPaymentDate(TimeUtils.getCurrentTime());
+            entitySaleOrderPayment.setPaymentDate(TimeUtils.getCurrentDate("", ""));
+        }
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
+        if(entityManagerCustomer.updateCustomerSalePayment(entitySaleOrderPayment))
+        {            
+            response.setSuccess(true);            
+        }
+        else
+        {
+            response.setSuccess(false);
+        }
+        return response;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_ENTITY_CUSTOMER_INFO)
+    public ClientResponse getEntityCustomerInfo(ISession session, IPacket packet) throws Exception 
+    {
+        EntityCustomer entityCustomer;
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
+        int customerUserId = jsonObject.get("customerUserId").getAsInt();
+        if(customerUserId == 0)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Customer invalid or doesn't exist.");
+            return generalResponse;
+        }
+        EntityManagerCustomer entityManagerCustomer = new EntityManagerCustomer(packet.getPacketHeader().getAppId());
+        entityCustomer = entityManagerCustomer.getCustomerByUserId(customerUserId);
+        if(entityCustomer == null || entityCustomer.getUserId() == 0)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Customer invalid or doesn't exist.");
+            return generalResponse;
+        }
+        entityCustomer.setSuccess(true);
+        return entityCustomer;
     }
 }
