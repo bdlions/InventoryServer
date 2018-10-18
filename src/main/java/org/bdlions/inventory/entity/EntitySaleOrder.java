@@ -44,12 +44,24 @@ import javax.persistence.Transient;
             query = "from EntitySaleOrder saleOrder order by saleOrder.modifiedOn desc"
     ),
     @NamedQuery(
+            name = "getTotalSaleAmount",
+            query = "select sum(total) from EntitySaleOrder saleOrder"
+    ),
+    @NamedQuery(
             name = "searchSaleOrderByOrderNo",
             query = "from EntitySaleOrder saleOrder where lower(saleOrder.orderNo) like :orderNo"
     ),
     @NamedQuery(
+            name = "searchTotalSaleAmountByOrderNo",
+            query = "select sum(total) from EntitySaleOrder saleOrder where lower(saleOrder.orderNo) like :orderNo"
+    ),
+    @NamedQuery(
             name = "searchSaleOrderByCell",
             query = "from EntitySaleOrder saleOrder where lower(saleOrder.cell) like :cell"
+    ),
+    @NamedQuery(
+            name = "searchTotalSaleAmountByCell",
+            query = "select sum(total) from EntitySaleOrder saleOrder where lower(saleOrder.cell) like :cell"
     ),
     @NamedQuery(
             name = "updateSaleOrderCustomerInfo",

@@ -12,6 +12,7 @@ public class ListSaleOrder extends ClientResponse{
     private List<DTOSaleOrder> saleOrders = new ArrayList<>();
     //this is for totalSaleOrders under pagination
     private int totalSaleOrders;
+    private double totalSaleAmount;
 
     public List<DTOSaleOrder> getSaleOrders() {
         return saleOrders;
@@ -27,6 +28,14 @@ public class ListSaleOrder extends ClientResponse{
 
     public void setTotalSaleOrders(int totalSaleOrders) {
         this.totalSaleOrders = totalSaleOrders;
+    }
+
+    public double getTotalSaleAmount() {
+        return totalSaleAmount;
+    }
+
+    public void setTotalSaleAmount(double totalSaleAmount) {
+        this.totalSaleAmount = totalSaleAmount;
     }
     
 }

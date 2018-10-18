@@ -572,6 +572,7 @@ public class PurchaseHandler {
         }               
         ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
         listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.getTotalPurchaseOrders());
+        listPurchaseOrder.setTotalPurchaseAmount(entityManagerPurchaseOrder.getTotalPurchaseAmount());
         listPurchaseOrder.setSuccess(true);
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
         return listPurchaseOrder;
@@ -605,6 +606,7 @@ public class PurchaseHandler {
         }               
         ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
         listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.searchTotalPurchaseOrderByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo()));
+        listPurchaseOrder.setTotalPurchaseAmount(entityManagerPurchaseOrder.searchTotalPurchaseAmountByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo()));
         listPurchaseOrder.setSuccess(true);
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
         return listPurchaseOrder;
@@ -638,6 +640,7 @@ public class PurchaseHandler {
         }               
         ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
         listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.searchTotalPurchaseOrderByCell(dtoPurchaseOrder.getEntityPurchaseOrder().getCell()));
+        listPurchaseOrder.setTotalPurchaseAmount(entityManagerPurchaseOrder.searchTotalPurchaseAmountByCell(dtoPurchaseOrder.getEntityPurchaseOrder().getCell()));
         listPurchaseOrder.setSuccess(true);
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
         return listPurchaseOrder;

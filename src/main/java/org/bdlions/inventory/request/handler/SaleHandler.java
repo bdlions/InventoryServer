@@ -618,6 +618,7 @@ public class SaleHandler {
         }        
         ListSaleOrder listSaleOrder = new ListSaleOrder();
         listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.getTotalSaleOrders());
+        listSaleOrder.setTotalSaleAmount(entityManagerSaleOrder.getTotalSaleAmount());
         listSaleOrder.setSaleOrders(saleOrders);
         listSaleOrder.setSuccess(true);
         return listSaleOrder;
@@ -653,6 +654,7 @@ public class SaleHandler {
         }        
         ListSaleOrder listSaleOrder = new ListSaleOrder();
         listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.searchTotalSaleOrderByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo()));
+        listSaleOrder.setTotalSaleAmount(entityManagerSaleOrder.searchTotalSaleAmountByOrderNo(dtoSaleOrder.getEntitySaleOrder().getOrderNo()));
         listSaleOrder.setSaleOrders(saleOrders);
         listSaleOrder.setSuccess(true);
         return listSaleOrder;
@@ -688,6 +690,7 @@ public class SaleHandler {
         }        
         ListSaleOrder listSaleOrder = new ListSaleOrder();
         listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.searchTotalSaleOrderByCell(dtoSaleOrder.getEntitySaleOrder().getCell()));
+        listSaleOrder.setTotalSaleAmount(entityManagerSaleOrder.searchTotalSaleAmountByCell(dtoSaleOrder.getEntitySaleOrder().getCell()));
         listSaleOrder.setSaleOrders(saleOrders);
         listSaleOrder.setSuccess(true);
         return listSaleOrder;

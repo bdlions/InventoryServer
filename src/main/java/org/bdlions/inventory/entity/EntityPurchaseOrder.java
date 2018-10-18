@@ -43,12 +43,24 @@ import javax.persistence.Table;
             query = "from EntityPurchaseOrder purchaseOrder order by purchaseOrder.modifiedOn desc"
     ),
     @NamedQuery(
+            name = "getTotalPurchaseAmount",
+            query = "select sum(total) from EntityPurchaseOrder purchaseOrder"
+    ),
+    @NamedQuery(
             name = "searchPurchaseOrderByOrderNo",
             query = "from EntityPurchaseOrder purchaseOrder where lower(purchaseOrder.orderNo) like :orderNo"
     ),
     @NamedQuery(
+            name = "searchTotalPurchaseAmountByOrderNo",
+            query = "select sum(total) from EntityPurchaseOrder purchaseOrder where lower(purchaseOrder.orderNo) like :orderNo"
+    ),
+    @NamedQuery(
             name = "searchPurchaseOrderByCell",
             query = "from EntityPurchaseOrder purchaseOrder where lower(purchaseOrder.cell) like :cell"
+    ),
+    @NamedQuery(
+            name = "searchTotalPurchaseAmountByCell",
+            query = "select sum(total) from EntityPurchaseOrder purchaseOrder where lower(purchaseOrder.cell) like :cell"
     ),
     @NamedQuery(
             name = "updatePurchaseOrderSupplierInfo",

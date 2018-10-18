@@ -6,6 +6,7 @@ import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
 import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
+import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.List;
 import org.bdlions.inventory.dto.DTOPurchaseOrderPayment;
 import org.bdlions.inventory.dto.DTOSaleOrder;
 import org.bdlions.inventory.dto.DTOSaleOrderPayment;
+import org.bdlions.inventory.dto.ListSaleOrder;
+import org.bdlions.inventory.dto.ListSaleOrderPayment;
 import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.entity.EntitySaleOrder;
@@ -40,7 +43,7 @@ public class SaleReportHandler {
     @ClientRequest(action = ACTION.FETCH_SALE_ORDER_SUMMARY)
     public ClientResponse getSaleOrderSummary(ISession session, IPacket packet) throws Exception 
     {
-        ClientListResponse response = new ClientListResponse();
+        ListSaleOrder listSaleOrder = new ListSaleOrder();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);        
         String startDate = jsonObject.get("startDate").getAsString();
         String endDate = jsonObject.get("endDate").getAsString();
@@ -68,9 +71,10 @@ public class SaleReportHandler {
         }
         catch(Exception ex)
         {
-            response.setSuccess(false);
-            response.setMessage("Invalid request to get sale list.");
-            return response;
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get sale list.");
+            return generalResponse;
         }
         
         List<DTOSaleOrder> saleOrders = new ArrayList<>();
@@ -88,16 +92,17 @@ public class SaleReportHandler {
                 saleOrders.add(dtoSO);
             }
         }        
-        response.setList(saleOrders);
-        response.setCounter(entityManagerSaleOrder.getTotalSaleOrdersDQ(startTime, endTime));
-        response.setSuccess(true);
-        return response;
+        listSaleOrder.setSaleOrders(saleOrders);
+        listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.getTotalSaleOrdersDQ(startTime, endTime));
+        listSaleOrder.setTotalSaleAmount(entityManagerSaleOrder.getTotalSaleAmountDQ(startTime, endTime));
+        listSaleOrder.setSuccess(true);
+        return listSaleOrder;
     }
     
     @ClientRequest(action = ACTION.FETCH_SALE_ORDER_PAYMENT_SUMMARY)
     public ClientResponse getSaleOrderPaymentSummary(ISession session, IPacket packet) throws Exception 
     {
-        ClientListResponse response = new ClientListResponse();
+        ListSaleOrderPayment listSaleOrderPayment = new ListSaleOrderPayment();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
         int customerUserId = jsonObject.get("customerUserId").getAsInt();
         int paymentTypeId = jsonObject.get("paymentTypeId").getAsInt();
@@ -120,10 +125,11 @@ public class SaleReportHandler {
                 saleOrderPayments.add(dtoSOP);
             }
         }        
-        response.setList(saleOrderPayments);
-        response.setCounter(entityManagerSaleOrderPayment.getTotalSaleOrderPaymentsDQ(customerUserId, paymentTypeId, 0, 0, 0, 0));
-        response.setSuccess(true);
+        listSaleOrderPayment.setSaleOrderPayments(saleOrderPayments);
+        listSaleOrderPayment.setTotalSaleOrderPayments(entityManagerSaleOrderPayment.getTotalSaleOrderPaymentsDQ(customerUserId, paymentTypeId, 0, 0, 0, 0));
+        listSaleOrderPayment.setTotalPaymentAmount(entityManagerSaleOrderPayment.getTotalPaymentAmountDQ(customerUserId, paymentTypeId, 0, 0, 0, 0));
+        listSaleOrderPayment.setSuccess(true);
         
-        return response;
+        return listSaleOrderPayment;
     }
 }

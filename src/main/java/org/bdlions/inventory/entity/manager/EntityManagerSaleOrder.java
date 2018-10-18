@@ -537,6 +537,34 @@ public class EntityManagerSaleOrder
     }
     
     /**
+     * This method will return total amount of sale orders
+     * @return double total amount of sale orders
+     */
+    public double getTotalSaleAmount()
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        double totalSaleAmount = 0 ;
+        try 
+        {
+            Query<Object> query = session.getNamedQuery("getTotalSaleAmount");
+            List<Object> results = query.getResultList();
+            for(Object result : results)
+            {
+                if(result != null)
+                {
+                    totalSaleAmount = (double)result;
+                    break;
+                } 
+            }            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return totalSaleAmount;
+    }
+    
+    /**
      * This method will return sale order list search by order no, case insensitive
      * @param orderNo sale order no
      * @param offset offset
@@ -581,6 +609,36 @@ public class EntityManagerSaleOrder
     }
     
     /**
+     * This method will return total amount of sale orders search by orderNo, case insensitive
+     * @param orderNo Order No
+     * @return double total amount of sale orders
+     */
+    public double searchTotalSaleAmountByOrderNo(String orderNo)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        double totalSaleAmount = 0 ;
+        try 
+        {
+            Query<Object> query = session.getNamedQuery("searchTotalSaleAmountByOrderNo");
+            query.setParameter("orderNo", "%" + orderNo.toLowerCase() + "%");
+            List<Object> results = query.getResultList();
+            for(Object result : results)
+            {
+                if(result != null)
+                {
+                    totalSaleAmount = (double)result;
+                    break;
+                }
+            }            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return totalSaleAmount;
+    }
+    
+    /**
      * This method will return sale order list search by cell, case insensitive
      * @param cell cell no
      * @param offset offset
@@ -622,6 +680,36 @@ public class EntityManagerSaleOrder
         {
             session.close();
         }
+    }
+    
+    /**
+     * This method will return total amount of sale orders search by cell, case insensitive
+     * @param cell cell no
+     * @return double total amount of sale orders
+     */
+    public double searchTotalSaleAmountByCell(String cell)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        double totalSaleAmount = 0 ;
+        try 
+        {
+            Query<Object> query = session.getNamedQuery("searchTotalSaleAmountByCell");
+            query.setParameter("cell", "%" + cell.toLowerCase() + "%");
+            List<Object> results = query.getResultList();
+            for(Object result : results)
+            {
+                if(result != null)
+                {
+                    totalSaleAmount = (double)result;
+                    break;
+                }
+            }            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return totalSaleAmount;
     }
     
     /**
@@ -719,6 +807,31 @@ public class EntityManagerSaleOrder
         {
             session.close();
         }
+    }
+    
+    public double getTotalSaleAmountDQ(long startTime, long endTime)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        double totalSaleAmount = 0 ;
+        try 
+        {
+            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            Query query = session.createSQLQuery("select sum(total) from sale_orders " + where);
+            List<Object> results = query.getResultList();
+            for(Object result : results)
+            {
+                if(result != null)
+                {
+                    totalSaleAmount = (double)result;
+                    break;
+                }                
+            }            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return totalSaleAmount;
     }
     
 }

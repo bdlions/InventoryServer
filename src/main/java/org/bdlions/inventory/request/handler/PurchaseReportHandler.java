@@ -6,12 +6,15 @@ import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
 import com.bdlions.util.ACTION;
 import com.bdlions.dto.response.ClientResponse;
+import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.inventory.dto.DTOPurchaseOrderPayment;
+import org.bdlions.inventory.dto.ListPurchaseOrder;
+import org.bdlions.inventory.dto.ListPurchaseOrderPayment;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
@@ -37,7 +40,7 @@ public class PurchaseReportHandler {
     @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDER_SUMMARY)
     public ClientResponse getPurchaseOrderSummary(ISession session, IPacket packet) throws Exception 
     {
-        ClientListResponse response = new ClientListResponse();
+        ListPurchaseOrder listPurchaseOrder = new ListPurchaseOrder();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);        
         String startDate = jsonObject.get("startDate").getAsString();
         String endDate = jsonObject.get("endDate").getAsString();
@@ -65,6 +68,7 @@ public class PurchaseReportHandler {
         }
         catch(Exception ex)
         {
+            GeneralResponse response = new GeneralResponse();
             response.setSuccess(false);
             response.setMessage("Invalid request to get sale list.");
             return response;
@@ -86,16 +90,17 @@ public class PurchaseReportHandler {
                 purchaseOrders.add(dtoPO);
             }
         }        
-        response.setList(purchaseOrders);
-        response.setCounter(entityManagerPurchaseOrder.getTotalPurchaseOrdersDQ(startTime, endTime));
-        response.setSuccess(true);
-        return response;
+        listPurchaseOrder.setPurchaseOrders(purchaseOrders);
+        listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.getTotalPurchaseOrdersDQ(startTime, endTime));
+        listPurchaseOrder.setTotalPurchaseAmount(entityManagerPurchaseOrder.getTotalPurchaseAmountDQ(startTime, endTime));
+        listPurchaseOrder.setSuccess(true);
+        return listPurchaseOrder;
     }
     
     @ClientRequest(action = ACTION.FETCH_PURCHASE_ORDER_PAYMENT_SUMMARY)
     public ClientResponse getPurchaseOrderPaymentSummary(ISession session, IPacket packet) throws Exception 
     {
-        ClientListResponse response = new ClientListResponse();
+        ListPurchaseOrderPayment response = new ListPurchaseOrderPayment();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
         int supplierUserId = jsonObject.get("supplierUserId").getAsInt();
         int paymentTypeId = jsonObject.get("paymentTypeId").getAsInt();
@@ -118,8 +123,9 @@ public class PurchaseReportHandler {
                 purchaseOrderPayments.add(dtoPOP);
             }
         }        
-        response.setList(purchaseOrderPayments);
-        response.setCounter(entityManagerPurchaseOrderPayment.getTotalPurchaseOrderPaymentsDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0));
+        response.setPurchaseOrderPayments(purchaseOrderPayments);
+        response.setTotalPurchaseOrderPayments(entityManagerPurchaseOrderPayment.getTotalPurchaseOrderPaymentsDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0));
+        response.setTotalPaymentAmount(entityManagerPurchaseOrderPayment.getTotalPaymentAmountDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0));
         response.setSuccess(true);
         
         return response;

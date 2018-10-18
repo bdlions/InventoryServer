@@ -378,4 +378,81 @@ public class EntityManagerSaleOrderPayment {
             session.close();
         }
     }
+    public double getTotalPaymentAmountDQ(int customerUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        double totalSalePaymentAmount = 0 ;
+        try 
+        {
+            String whereQuery = "";
+            if(customerUserId > 0)
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereQuery += " AND ";
+                }
+                whereQuery += " customer_user_id = " + customerUserId;
+            }
+            if(paymentTypeId > 0)
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereQuery += " AND ";
+                }
+                whereQuery += " payment_type_id = " + paymentTypeId;
+            }
+            if(startTime > 0)
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereQuery += " AND ";
+                }
+                whereQuery += " created_on >= " + startTime;
+            }
+            if(endTime > 0)
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereQuery += " AND ";
+                }
+                whereQuery += " created_on <= " + endTime;
+            }
+            if(paymentStartTime > 0)
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereQuery += " AND ";
+                }
+                whereQuery += " unix_payment_date >= " + paymentStartTime;
+            }
+            if(paymentEndTime > 0)
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereQuery += " AND ";
+                }
+                whereQuery += " unix_payment_date <= " + paymentEndTime;
+            }
+            if(!StringUtils.isNullOrEmpty(whereQuery))
+            {
+                whereQuery = " where " + whereQuery;
+            }
+            
+            Query query = session.createSQLQuery("select sum(amount_out) from sale_order_payments " + whereQuery);
+            List<Object> results = query.getResultList();
+            for(Object result : results)
+            {
+                if(result != null)
+                {
+                    totalSalePaymentAmount = (double)result;
+                    break;
+                }                
+            }        
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return totalSalePaymentAmount;
+    }
 }
