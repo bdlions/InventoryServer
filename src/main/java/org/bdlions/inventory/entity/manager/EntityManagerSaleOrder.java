@@ -728,6 +728,21 @@ public class EntityManagerSaleOrder
         return query.executeUpdate();
     }
     
+    /**
+     * This method will update sale order paid amount by order no using session
+     * @param paid paid amount
+     * @param orderNo sale order No
+     * @param session session
+     * @return boolean true
+     */
+    public int updateSaleOrderPaidByOrderNo(double paid, String orderNo, Session session)
+    {
+        Query<EntitySaleOrder> query = session.getNamedQuery("updateSaleOrderPaidByOrderNo");
+        query.setParameter("paid", paid);
+        query.setParameter("orderNo", orderNo);
+        return query.executeUpdate();
+    }
+    
     public double getCustomerCurrentDue(int customerUserId, Session session)
     {
         if(customerUserId <= 0)

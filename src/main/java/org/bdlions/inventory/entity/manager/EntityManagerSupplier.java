@@ -11,6 +11,7 @@ import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.TimeUtils;
+import org.bdlions.util.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -480,22 +481,29 @@ public class EntityManagerSupplier
         }
     }
     
-    public boolean updateSupplierPurchasePayment(EntityPurchaseOrderPayment entityPurchaseOrderPaymentIn)
+    public boolean updateSupplierPurchasePayment(EntityPurchaseOrderPayment entityPurchaseOrderPaymentOut)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();           
         try 
         {
-            if(entityPurchaseOrderPaymentIn != null)
+            if(entityPurchaseOrderPaymentOut != null)
             {
                 EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(appId);
-                entityManagerPurchaseOrderPayment.updatePurchaseOrderPayment(entityPurchaseOrderPaymentIn, session);
+                entityManagerPurchaseOrderPayment.updatePurchaseOrderPayment(entityPurchaseOrderPaymentOut, session);
                  //setting supplier current balance because of purchase order payment table entry
-                double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entityPurchaseOrderPaymentIn.getSupplierUserId(), session);
-                EntitySupplier entitySupplier = getSupplierByUserId(entityPurchaseOrderPaymentIn.getSupplierUserId());
+                double currentDue = entityManagerPurchaseOrderPayment.getSupplierCurrentDue( entityPurchaseOrderPaymentOut.getSupplierUserId(), session);
+                EntitySupplier entitySupplier = getSupplierByUserId(entityPurchaseOrderPaymentOut.getSupplierUserId());
                 entitySupplier.setBalance(currentDue);
                 updateSupplier(entitySupplier, session);
+                
+                if(!StringUtils.isNullOrEmpty(entityPurchaseOrderPaymentOut.getReference()))
+                {
+                    //updating paid in purchase order
+                    EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(appId);
+                    entityManagerPurchaseOrder.updatePurchaseOrderPaidByOrderNo(entityPurchaseOrderPaymentOut.getAmountOut(), entityPurchaseOrderPaymentOut.getReference(), session);
+                }                
             }
             tx.commit();
             return true;

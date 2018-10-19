@@ -13,13 +13,15 @@ import org.bdlions.inventory.entity.EntityProductSupplier;
  * @author Nazmul Hasan
  */
 public class DTOSupplier extends ClientResponse implements java.io.Serializable{
-    public int limit;
-    public int offset;
-    public EntitySupplier entitySupplier;
-    public EntityUser entityUser;
-    public EntityUserRole entityUserRole;
-    public List<EntityProductSupplier> entityProductSupplierList;
-    public List<EntityProductSupplier> epsListToBeDeleted;
+    private int limit;
+    private int offset;
+    private EntitySupplier entitySupplier;
+    private EntityUser entityUser;
+    private EntityUserRole entityUserRole;
+    private List<EntityProductSupplier> entityProductSupplierList;
+    private List<EntityProductSupplier> epsListToBeDeleted;
+    private double totalPurchaseAmount;
+    private double totalPaymentAmount;
     public DTOSupplier()
     {
         entitySupplier = new EntitySupplier();
@@ -81,6 +83,22 @@ public class DTOSupplier extends ClientResponse implements java.io.Serializable{
 
     public void setEpsListToBeDeleted(List<EntityProductSupplier> epsListToBeDeleted) {
         this.epsListToBeDeleted = epsListToBeDeleted;
+    }
+
+    public double getTotalPurchaseAmount() {
+        return totalPurchaseAmount;
+    }
+
+    public void setTotalPurchaseAmount(double totalPurchaseAmount) {
+        this.totalPurchaseAmount = totalPurchaseAmount;
+    }
+
+    public double getTotalPaymentAmount() {
+        return totalPaymentAmount;
+    }
+
+    public void setTotalPaymentAmount(double totalPaymentAmount) {
+        this.totalPaymentAmount = totalPaymentAmount;
     }
     
 }

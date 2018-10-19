@@ -1,6 +1,5 @@
 package org.bdlions.inventory.request.handler;
 
-import com.bdlions.dto.response.ClientListResponse;
 import org.bdlions.transport.packet.IPacket;
 import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
@@ -11,20 +10,19 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
-import org.bdlions.inventory.dto.DTOPurchaseOrderPayment;
 import org.bdlions.inventory.dto.DTOSaleOrder;
 import org.bdlions.inventory.dto.DTOSaleOrderPayment;
 import org.bdlions.inventory.dto.ListSaleOrder;
 import org.bdlions.inventory.dto.ListSaleOrderPayment;
-import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderPayment;
-import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderPayment;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -33,7 +31,7 @@ import org.bdlions.inventory.util.TimeUtils;
  * @author nazmul hasan
  */
 public class SaleReportHandler {
-
+    private final Logger logger = LoggerFactory.getLogger(SaleReportHandler.class);
     private final ISessionManager sessionManager;
 
     public SaleReportHandler(ISessionManager sessionManager) {
@@ -105,14 +103,34 @@ public class SaleReportHandler {
         ListSaleOrderPayment listSaleOrderPayment = new ListSaleOrderPayment();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
         int customerUserId = jsonObject.get("customerUserId").getAsInt();
-        int paymentTypeId = jsonObject.get("paymentTypeId").getAsInt();
+        String strPaymentTypeIds = jsonObject.get("paymentTypeIds").getAsString();
+        List<Integer> paymentTypeIds = new ArrayList<>();
+        if(!StringUtils.isNullOrEmpty(strPaymentTypeIds))
+        {
+            String[] paymentTypeIdList = strPaymentTypeIds.split(",");
+            for(String paymentTypeId: paymentTypeIdList)
+            {
+                paymentTypeId = paymentTypeId.trim();
+                try
+                {
+                    paymentTypeIds.add(Integer.parseInt(paymentTypeId));
+                }
+                catch(Exception ex)
+                {
+                    logger.debug("Invalid paymentTypeIds : " + strPaymentTypeIds);
+                    logger.debug("Exception : " + ex.toString());
+                    paymentTypeIds = new ArrayList<>();
+                    break;
+                }
+            }
+        }
         //handle start time, end time, unix payment start time and unix payment end time later
         int offset = jsonObject.get("offset").getAsInt();
         int limit = jsonObject.get("limit").getAsInt();
 
         List<DTOSaleOrderPayment> saleOrderPayments = new ArrayList<>();
         EntityManagerSaleOrderPayment entityManagerSaleOrderPayment = new EntityManagerSaleOrderPayment(packet.getPacketHeader().getAppId());
-        List<EntitySaleOrderPayment> entitySaleOrderPayments =  entityManagerSaleOrderPayment.getSaleOrderPaymentsDQ(customerUserId, paymentTypeId, 0, 0, 0, 0, offset, limit);
+        List<EntitySaleOrderPayment> entitySaleOrderPayments =  entityManagerSaleOrderPayment.getSaleOrderPaymentsDQ(paymentTypeIds, customerUserId, 0, 0, 0, 0, offset, limit);
         if(entitySaleOrderPayments != null)
         {
             
@@ -126,8 +144,8 @@ public class SaleReportHandler {
             }
         }        
         listSaleOrderPayment.setSaleOrderPayments(saleOrderPayments);
-        listSaleOrderPayment.setTotalSaleOrderPayments(entityManagerSaleOrderPayment.getTotalSaleOrderPaymentsDQ(customerUserId, paymentTypeId, 0, 0, 0, 0));
-        listSaleOrderPayment.setTotalPaymentAmount(entityManagerSaleOrderPayment.getTotalPaymentAmountDQ(customerUserId, paymentTypeId, 0, 0, 0, 0));
+        listSaleOrderPayment.setTotalSaleOrderPayments(entityManagerSaleOrderPayment.getTotalSaleOrderPaymentsDQ(paymentTypeIds, customerUserId, 0, 0, 0, 0));
+        listSaleOrderPayment.setTotalPaymentAmount(entityManagerSaleOrderPayment.getTotalPaymentAmountDQ(paymentTypeIds, customerUserId, 0, 0, 0, 0));
         listSaleOrderPayment.setSuccess(true);
         
         return listSaleOrderPayment;

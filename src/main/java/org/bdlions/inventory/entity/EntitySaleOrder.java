@@ -66,6 +66,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "updateSaleOrderCustomerInfo",
             query = "update EntitySaleOrder set customerName = :customerName, cell = :cell, email = :email where customerUserId = :customerUserId"
+    ),
+    @NamedQuery(
+            name = "updateSaleOrderPaidByOrderNo",
+            query = "update EntitySaleOrder set paid = :paid where orderNo = :orderNo"
     )
 //    ,
 //    @NamedQuery(

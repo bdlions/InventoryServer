@@ -728,6 +728,21 @@ public class EntityManagerPurchaseOrder
         return query.executeUpdate();
     }
     
+    /**
+     * This method will update purchase order paid amount by order no using session
+     * @param paid paid amount
+     * @param orderNo purchase order no
+     * @param session session
+     * @return boolean true
+     */
+    public int updatePurchaseOrderPaidByOrderNo(double paid, String orderNo, Session session)
+    {
+        Query<EntityPurchaseOrder> query = session.getNamedQuery("updatePurchaseOrderPaidByOrderNo");
+        query.setParameter("paid", paid);
+        query.setParameter("orderNo", orderNo);
+        return query.executeUpdate();
+    }
+    
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
     public List<EntityPurchaseOrder> getPurchaseOrdersDQ(long startTime, long endTime, int offset, int limit)
     {

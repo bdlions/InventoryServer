@@ -46,12 +46,16 @@ import javax.persistence.Table;
         query = " delete from EntityPurchaseOrderPayment purchaseOrderPayment where purchaseOrderPayment.supplierUserId = :supplierUserId AND purchaseOrderPayment.paymentTypeId = :paymentTypeId"
     ),
     @NamedQuery(
-            name = "updatePurchaseOrderPaymentSupplierInfo",
-            query = "update EntityPurchaseOrderPayment set supplierName = :supplierName where supplierUserId = :supplierUserId"
+        name = "updatePurchaseOrderPaymentSupplierInfo",
+        query = "update EntityPurchaseOrderPayment set supplierName = :supplierName where supplierUserId = :supplierUserId"
     ),
     @NamedQuery(
-            name = "getSupplierCurrentDue",
-            query = " select sum(amountIn - amountOut), supplierUserId from EntityPurchaseOrderPayment entityPurchaseOrderPayment where entityPurchaseOrderPayment.supplierUserId = :supplierUserId group by supplierUserId"
+        name = "getSupplierCurrentDue",
+        query = " select sum(amountIn - amountOut), supplierUserId from EntityPurchaseOrderPayment entityPurchaseOrderPayment where entityPurchaseOrderPayment.supplierUserId = :supplierUserId group by supplierUserId"
+    ),
+    @NamedQuery(
+        name = "getSupplierPurchaseAndPaymentAmount",
+        query = " select sum(amountIn), sum(amountOut) from EntityPurchaseOrderPayment entityPurchaseOrderPayment where entityPurchaseOrderPayment.supplierUserId = :supplierUserId AND entityPurchaseOrderPayment.paymentTypeId IN (:paymentTypeIds)"
     )
 })
 public class EntityPurchaseOrderPayment extends ClientResponse implements java.io.Serializable{

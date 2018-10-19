@@ -10,13 +10,13 @@ import java.util.List;
  * @author Nazmul Hasan
  */
 public class DTOSaleOrder extends ClientResponse implements java.io.Serializable{
-    public int limit;
-    public int offset;
-    public EntitySaleOrder entitySaleOrder;
-    public DTOCustomer dtoCustomer;
-    public List<DTOProduct> products;
-    public List<DTOProduct> returnProducts;
-    public String orderDate;
+    private int limit;
+    private int offset;
+    private EntitySaleOrder entitySaleOrder;
+    private DTOCustomer dtoCustomer;
+    private List<DTOProduct> products;
+    private List<DTOProduct> returnProducts;
+    private String orderDate;
     public DTOSaleOrder()
     {
         entitySaleOrder = new EntitySaleOrder();

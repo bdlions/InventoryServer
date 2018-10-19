@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOCustomer;
+import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.dto.ListCustomer;
 import org.bdlions.inventory.entity.EntityCustomer;
@@ -21,6 +22,8 @@ import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.entity.manager.EntityManagerCustomer;
+import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
+import org.bdlions.inventory.entity.manager.EntityManagerSaleOrderPayment;
 import org.bdlions.inventory.entity.manager.EntityManagerSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerUser;
 import org.bdlions.inventory.util.Constants;
@@ -491,5 +494,23 @@ public class CustomerHandler {
         }
         entityCustomer.setSuccess(true);
         return entityCustomer;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_CUSTOMER_SALE_AND_PAYMENT_AMOUNT)
+    public ClientResponse getCustomerSaleAndPaymentAmount(ISession session, IPacket packet) throws Exception 
+    {
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
+        int customerUserId = jsonObject.get("customerUserId").getAsInt();
+        if(customerUserId == 0)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Customer invalid or doesn't exist.");
+            return generalResponse;
+        }
+        EntityManagerSaleOrderPayment entityManagerSaleOrderPayment = new EntityManagerSaleOrderPayment(packet.getPacketHeader().getAppId());
+        DTOCustomer dtoCustomer = entityManagerSaleOrderPayment.getCustomerPurchaseAndPaymentAmount(customerUserId);
+        dtoCustomer.setSuccess(true);
+        return dtoCustomer;
     }
 }

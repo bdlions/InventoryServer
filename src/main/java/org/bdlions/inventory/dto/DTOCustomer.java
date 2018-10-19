@@ -10,11 +10,13 @@ import com.bdlions.dto.response.ClientResponse;
  * @author Nazmul Hasan
  */
 public class DTOCustomer extends ClientResponse implements java.io.Serializable{
-    public int limit;
-    public int offset;
-    public EntityCustomer entityCustomer;
-    public EntityUser entityUser;
-    public EntityUserRole entityUserRole;
+    private int limit;
+    private int offset;
+    private EntityCustomer entityCustomer;
+    private EntityUser entityUser;
+    private EntityUserRole entityUserRole;
+    private double totalSaleAmount;
+    private double totalPaymentAmount;
     public DTOCustomer()
     {
         entityCustomer = new EntityCustomer();
@@ -60,6 +62,22 @@ public class DTOCustomer extends ClientResponse implements java.io.Serializable{
 
     public void setEntityUserRole(EntityUserRole entityUserRole) {
         this.entityUserRole = entityUserRole;
+    }
+
+    public double getTotalSaleAmount() {
+        return totalSaleAmount;
+    }
+
+    public void setTotalSaleAmount(double totalSaleAmount) {
+        this.totalSaleAmount = totalSaleAmount;
+    }
+
+    public double getTotalPaymentAmount() {
+        return totalPaymentAmount;
+    }
+
+    public void setTotalPaymentAmount(double totalPaymentAmount) {
+        this.totalPaymentAmount = totalPaymentAmount;
     }
     
 }

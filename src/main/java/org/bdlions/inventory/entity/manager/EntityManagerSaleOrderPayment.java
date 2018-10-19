@@ -1,9 +1,13 @@
 package org.bdlions.inventory.entity.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
+import org.bdlions.inventory.dto.DTOCustomer;
+import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.EntitySaleOrderPayment;
+import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 import org.hibernate.Session;
@@ -238,9 +242,61 @@ public class EntityManagerSaleOrderPayment {
         }
     }
     
+    public DTOCustomer getCustomerPurchaseAndPaymentAmount(int customerUserId, Session session)
+    {
+        DTOCustomer dtoCustomer = new DTOCustomer();
+        if(customerUserId <= 0)
+        {
+            return dtoCustomer;
+        }
+        List<Integer> paymentTypeIds = new ArrayList<>();
+        paymentTypeIds.add(Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_SALE_IN);
+        paymentTypeIds.add(Constants.SALE_ORDER_PAYMENT_TYPE_ID_SALE_PAYMENT_OUT);
+        paymentTypeIds.add(Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_NEW_PAYMENT_OUT);
+        Query<Object[]> query = session.getNamedQuery("getCustomerSaleAndPaymentAmount");
+        query.setParameter("customerUserId", customerUserId);
+        query.setParameter("paymentTypeIds", paymentTypeIds);
+        List<Object[]> paymentList = query.getResultList();
+        if(paymentList == null || paymentList.isEmpty())
+        {
+            return dtoCustomer;
+        }
+        else
+        {
+            try
+            {
+                dtoCustomer.setTotalSaleAmount((double)paymentList.get(0)[0]);
+                dtoCustomer.setTotalPaymentAmount((double)paymentList.get(0)[1]);
+            }
+            catch(Exception ex)
+            {
+                logger.error(ex.toString());  
+                return new DTOCustomer();
+            }
+        } 
+        return dtoCustomer;
+    }
+    
+    public DTOCustomer getCustomerPurchaseAndPaymentAmount(int customerUserId)
+    {
+        if(customerUserId <= 0)
+        {
+            return new DTOCustomer();
+        }
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {            
+            return this.getCustomerPurchaseAndPaymentAmount(customerUserId, session);
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
     // We need dynamic query because for some query, search params are dynamic i.e. param may be included or not
-    public List<EntitySaleOrderPayment> getSaleOrderPaymentsDQ(int customerUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime, int offset, int limit)
+    public List<EntitySaleOrderPayment> getSaleOrderPaymentsDQ(List<Integer> paymentTypeIds, int customerUserId, long startTime, long endTime, long paymentStartTime, long paymentEndTime, int offset, int limit)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
@@ -253,14 +309,6 @@ public class EntityManagerSaleOrderPayment {
                     whereQuery += " AND ";
                 }
                 whereQuery += " customer_user_id = " + customerUserId;
-            }
-            if(paymentTypeId > 0)
-            {
-                if(!StringUtils.isNullOrEmpty(whereQuery))
-                {
-                    whereQuery += " AND ";
-                }
-                whereQuery += " payment_type_id = " + paymentTypeId;
             }
             if(startTime > 0)
             {
@@ -299,7 +347,31 @@ public class EntityManagerSaleOrderPayment {
                 whereQuery = " where " + whereQuery;
             }
             
-            Query query = session.createSQLQuery("select {esop.*} from sale_order_payments esop " + whereQuery + " order by created_on desc limit :limit offset :offset ")
+            String whereInQuery = "";
+            if(paymentTypeIds != null && !paymentTypeIds.isEmpty())
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereInQuery += " AND ";
+                }
+                else 
+                {
+                    whereInQuery += " where ";
+                }
+                whereInQuery += " payment_type_id in (";
+                for(int counter = 0; counter < paymentTypeIds.size(); counter++)
+                {
+                    int id = paymentTypeIds.get(counter);
+                    if( counter > 0)
+                    {
+                        whereInQuery += ",";
+                    }
+                    whereInQuery += id;
+                }
+                whereInQuery += ")";
+            }
+            
+            Query query = session.createSQLQuery("select {esop.*} from sale_order_payments esop " + whereQuery + whereInQuery + " order by created_on desc limit :limit offset :offset ")
                     .addEntity("esop",EntitySaleOrderPayment.class)
                     .setInteger("limit", limit)
                     .setInteger("offset", offset);
@@ -310,7 +382,7 @@ public class EntityManagerSaleOrderPayment {
             session.close();
         }
     }
-    public int getTotalSaleOrderPaymentsDQ(int customerUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime)
+    public int getTotalSaleOrderPaymentsDQ(List<Integer> paymentTypeIds, int customerUserId, long startTime, long endTime, long paymentStartTime, long paymentEndTime)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         try 
@@ -323,14 +395,6 @@ public class EntityManagerSaleOrderPayment {
                     whereQuery += " AND ";
                 }
                 whereQuery += " customer_user_id = " + customerUserId;
-            }
-            if(paymentTypeId > 0)
-            {
-                if(!StringUtils.isNullOrEmpty(whereQuery))
-                {
-                    whereQuery += " AND ";
-                }
-                whereQuery += " payment_type_id = " + paymentTypeId;
             }
             if(startTime > 0)
             {
@@ -369,7 +433,31 @@ public class EntityManagerSaleOrderPayment {
                 whereQuery = " where " + whereQuery;
             }
             
-            Query query = session.createSQLQuery("select {esop.*} from sale_order_payments esop " + whereQuery)
+            String whereInQuery = "";
+            if(paymentTypeIds != null && !paymentTypeIds.isEmpty())
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereInQuery += " AND ";
+                }
+                else 
+                {
+                    whereInQuery += " where ";
+                }
+                whereInQuery += " payment_type_id in (";
+                for(int counter = 0; counter < paymentTypeIds.size(); counter++)
+                {
+                    int id = paymentTypeIds.get(counter);
+                    if( counter > 0)
+                    {
+                        whereInQuery += ",";
+                    }
+                    whereInQuery += id;
+                }
+                whereInQuery += ")";
+            }
+            
+            Query query = session.createSQLQuery("select {esop.*} from sale_order_payments esop " + whereQuery + whereInQuery)
                     .addEntity("esop",EntitySaleOrderPayment.class);
             return query.list().size();           
         } 
@@ -378,7 +466,8 @@ public class EntityManagerSaleOrderPayment {
             session.close();
         }
     }
-    public double getTotalPaymentAmountDQ(int customerUserId, int paymentTypeId, long startTime, long endTime, long paymentStartTime, long paymentEndTime)
+    
+    public double getTotalPaymentAmountDQ(List<Integer> paymentTypeIds, int customerUserId, long startTime, long endTime, long paymentStartTime, long paymentEndTime)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         double totalSalePaymentAmount = 0 ;
@@ -393,14 +482,6 @@ public class EntityManagerSaleOrderPayment {
                 }
                 whereQuery += " customer_user_id = " + customerUserId;
             }
-            if(paymentTypeId > 0)
-            {
-                if(!StringUtils.isNullOrEmpty(whereQuery))
-                {
-                    whereQuery += " AND ";
-                }
-                whereQuery += " payment_type_id = " + paymentTypeId;
-            }
             if(startTime > 0)
             {
                 if(!StringUtils.isNullOrEmpty(whereQuery))
@@ -438,7 +519,31 @@ public class EntityManagerSaleOrderPayment {
                 whereQuery = " where " + whereQuery;
             }
             
-            Query query = session.createSQLQuery("select sum(amount_out) from sale_order_payments " + whereQuery);
+            String whereInQuery = "";
+            if(paymentTypeIds != null && !paymentTypeIds.isEmpty())
+            {
+                if(!StringUtils.isNullOrEmpty(whereQuery))
+                {
+                    whereInQuery += " AND ";
+                }
+                else 
+                {
+                    whereInQuery += " where ";
+                }
+                whereInQuery += " payment_type_id in (";
+                for(int counter = 0; counter < paymentTypeIds.size(); counter++)
+                {
+                    int id = paymentTypeIds.get(counter);
+                    if( counter > 0)
+                    {
+                        whereInQuery += ",";
+                    }
+                    whereInQuery += id;
+                }
+                whereInQuery += ")";
+            }
+            
+            Query query = session.createSQLQuery("select sum(amount_out) from sale_order_payments " + whereQuery + whereInQuery);
             List<Object> results = query.getResultList();
             for(Object result : results)
             {

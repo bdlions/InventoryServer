@@ -12,6 +12,7 @@ import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.EntityUserRole;
 import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.TimeUtils;
+import org.bdlions.util.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -462,6 +463,13 @@ public class EntityManagerCustomer
                 EntityCustomer entityCustomer = getCustomerByUserId(entitySaleOrderPaymentIn.getCustomerUserId());
                 entityCustomer.setBalance(currentDue);
                 updateCustomer(entityCustomer, session);
+                
+                if(!StringUtils.isNullOrEmpty(entitySaleOrderPaymentIn.getReference()))
+                {
+                    //updating paid in purchase order
+                    EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(appId);
+                    entityManagerSaleOrder.updateSaleOrderPaidByOrderNo(entitySaleOrderPaymentIn.getAmountOut(), entitySaleOrderPaymentIn.getReference(), session);
+                }
             }
             tx.commit();
             return true;

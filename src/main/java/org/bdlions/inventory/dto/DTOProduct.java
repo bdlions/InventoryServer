@@ -11,18 +11,18 @@ import org.bdlions.inventory.entity.EntityProductSupplier;
  * @author Nazmul Hasan
  */
 public class DTOProduct {
-    public int limit;
-    public int offset;
-    public double quantity;
-    public double discount;
-    public double total;
-    public EntityProductType entityProductType;
-    public EntityProductCategory entityProductCategory;
-    public EntityProduct entityProduct;
-    public List<EntityProductSupplier> entityProductSupplierList;
-    public List<EntityProductSupplier> epsListToBeDeleted;
-    public String createdOn;
-    public String modifiedOn;
+    private int limit;
+    private int offset;
+    private double quantity;
+    private double discount;
+    private double total;
+    private EntityProductType entityProductType;
+    private EntityProductCategory entityProductCategory;
+    private EntityProduct entityProduct;
+    private List<EntityProductSupplier> entityProductSupplierList;
+    private List<EntityProductSupplier> epsListToBeDeleted;
+    private String createdOn;
+    private String modifiedOn;
     public DTOProduct()
     {
         entityProductType = new EntityProductType();

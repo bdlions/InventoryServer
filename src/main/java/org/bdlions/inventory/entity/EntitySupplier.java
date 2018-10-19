@@ -48,7 +48,7 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "searchSupplierByEmail",
             query = "from EntitySupplier supplier where lower(supplier.email) like :email"
-    )        
+    )
 })
 public class EntitySupplier extends ClientResponse implements java.io.Serializable{
 

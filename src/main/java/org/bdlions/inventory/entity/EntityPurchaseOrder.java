@@ -65,6 +65,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "updatePurchaseOrderSupplierInfo",
             query = "update EntityPurchaseOrder set supplierName = :supplierName, cell = :cell, email = :email where supplierUserId = :supplierUserId"
+    ),
+    @NamedQuery(
+            name = "updatePurchaseOrderPaidByOrderNo",
+            query = "update EntityPurchaseOrder set paid = :paid where orderNo = :orderNo"
     )
 //    ,
 //    @NamedQuery(

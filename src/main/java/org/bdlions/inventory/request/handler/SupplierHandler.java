@@ -572,4 +572,22 @@ public class SupplierHandler {
         entitySupplier.setSuccess(true);
         return entitySupplier;
     }
+    
+    @ClientRequest(action = ACTION.FETCH_SUPPLIER_PURCHASE_AND_PAYMENT_AMOUNT)
+    public ClientResponse getSupplierPurchaseAndPaymentAmount(ISession session, IPacket packet) throws Exception 
+    {
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
+        int supplierUserId = jsonObject.get("supplierUserId").getAsInt();
+        if(supplierUserId == 0)
+        {
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Supplier invalid or doesn't exist.");
+            return generalResponse;
+        }
+        EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(packet.getPacketHeader().getAppId());
+        DTOSupplier dtoSupplier = entityManagerPurchaseOrderPayment.getSupplierPurchaseAndPaymentAmount(supplierUserId);
+        dtoSupplier.setSuccess(true);
+        return dtoSupplier;
+    }
 }

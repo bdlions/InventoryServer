@@ -1,6 +1,5 @@
 package org.bdlions.inventory.request.handler;
 
-import com.bdlions.dto.response.ClientListResponse;
 import org.bdlions.transport.packet.IPacket;
 import org.bdlions.session.ISession;
 import org.bdlions.session.ISessionManager;
@@ -22,6 +21,8 @@ import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -30,7 +31,7 @@ import org.bdlions.inventory.util.TimeUtils;
  * @author nazmul hasan
  */
 public class PurchaseReportHandler {
-
+    private final Logger logger = LoggerFactory.getLogger(PurchaseReportHandler.class);
     private final ISessionManager sessionManager;
 
     public PurchaseReportHandler(ISessionManager sessionManager) {
@@ -103,14 +104,34 @@ public class PurchaseReportHandler {
         ListPurchaseOrderPayment response = new ListPurchaseOrderPayment();
         JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);  
         int supplierUserId = jsonObject.get("supplierUserId").getAsInt();
-        int paymentTypeId = jsonObject.get("paymentTypeId").getAsInt();
+        String strPaymentTypeIds = jsonObject.get("paymentTypeIds").getAsString();
+        List<Integer> paymentTypeIds = new ArrayList<>();
+        if(!StringUtils.isNullOrEmpty(strPaymentTypeIds))
+        {
+            String[] paymentTypeIdList = strPaymentTypeIds.split(",");
+            for(String paymentTypeId: paymentTypeIdList)
+            {
+                paymentTypeId = paymentTypeId.trim();
+                try
+                {
+                    paymentTypeIds.add(Integer.parseInt(paymentTypeId));
+                }
+                catch(Exception ex)
+                {
+                    logger.debug("Invalid paymentTypeIds : " + strPaymentTypeIds);
+                    logger.debug("Exception : " + ex.toString());
+                    paymentTypeIds = new ArrayList<>();
+                    break;
+                }
+            }
+        }
         //handle start time, end time, unix payment start time and unix payment end time later
         int offset = jsonObject.get("offset").getAsInt();
         int limit = jsonObject.get("limit").getAsInt();
 
         List<DTOPurchaseOrderPayment> purchaseOrderPayments = new ArrayList<>();
         EntityManagerPurchaseOrderPayment entityManagerPurchaseOrderPayment = new EntityManagerPurchaseOrderPayment(packet.getPacketHeader().getAppId());
-        List<EntityPurchaseOrderPayment> entityPurchaseOrderPayments =  entityManagerPurchaseOrderPayment.getPurchaseOrderPaymentsDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0, offset, limit);
+        List<EntityPurchaseOrderPayment> entityPurchaseOrderPayments =  entityManagerPurchaseOrderPayment.getPurchaseOrderPaymentsDQ(paymentTypeIds, supplierUserId, 0, 0, 0, 0, offset, limit);
         if(entityPurchaseOrderPayments != null)
         {
             
@@ -124,8 +145,8 @@ public class PurchaseReportHandler {
             }
         }        
         response.setPurchaseOrderPayments(purchaseOrderPayments);
-        response.setTotalPurchaseOrderPayments(entityManagerPurchaseOrderPayment.getTotalPurchaseOrderPaymentsDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0));
-        response.setTotalPaymentAmount(entityManagerPurchaseOrderPayment.getTotalPaymentAmountDQ(supplierUserId, paymentTypeId, 0, 0, 0, 0));
+        response.setTotalPurchaseOrderPayments(entityManagerPurchaseOrderPayment.getTotalPurchaseOrderPaymentsDQ(paymentTypeIds, supplierUserId, 0, 0, 0, 0));
+        response.setTotalPaymentAmount(entityManagerPurchaseOrderPayment.getTotalPaymentAmountDQ(paymentTypeIds, supplierUserId, 0, 0, 0, 0));
         response.setSuccess(true);
         
         return response;
