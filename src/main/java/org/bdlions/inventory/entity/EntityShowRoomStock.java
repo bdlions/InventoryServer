@@ -25,19 +25,19 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId",
-            query = "from EntityShowRoomStock showRoomStock where showRoomStock.purchaseOrderNo = :purchaseOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
+            query = "from EntityShowRoomStock showRoomStock where showRoomStock.orderNo = :purchaseOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
     @NamedQuery(
             name = "getShowRoomProductByPurchaseOrderNoAndTransactionCategoryIds",
-            query = "from EntityShowRoomStock showRoomStock where showRoomStock.purchaseOrderNo = :purchaseOrderNo AND showRoomStock.productId = :productId AND showRoomStock.transactionCategoryId IN (:transactionCategoryIds)"
+            query = "from EntityShowRoomStock showRoomStock where showRoomStock.orderNo = :purchaseOrderNo AND showRoomStock.productId = :productId AND showRoomStock.transactionCategoryId IN (:transactionCategoryIds)"
     ),
     @NamedQuery(
             name = "getShowRoomProductBySaleOrderNoAndTransactionCategoryId",
-            query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
+            query = "from EntityShowRoomStock showRoomStock where showRoomStock.orderNo = :saleOrderNo AND showRoomStock.transactionCategoryId = :transactionCategoryId AND showRoomStock.productId = :productId"
     ),
     @NamedQuery(
             name = "getShowRoomProductBySaleOrderNoAndTransactionCategoryIds",
-            query = "from EntityShowRoomStock showRoomStock where showRoomStock.saleOrderNo = :saleOrderNo AND showRoomStock.productId = :productId AND showRoomStock.transactionCategoryId IN (:transactionCategoryIds)"
+            query = "from EntityShowRoomStock showRoomStock where showRoomStock.orderNo = :saleOrderNo AND showRoomStock.productId = :productId AND showRoomStock.transactionCategoryId IN (:transactionCategoryIds)"
     ),
     @NamedQuery(
             name = "getCurrentStock",
@@ -53,7 +53,7 @@ import javax.persistence.Table;
     ),
     @NamedQuery(
             name = "getCurrentStockByProductIds",
-            query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where showRoomStock.productId IN (:productIds) group by productId"
+            query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where showRoomStock.productId IN (:productIds) group by productId order by productName asc "
     ),
     @NamedQuery(
             name = "searchCurrentStockByProductName",
@@ -65,19 +65,19 @@ import javax.persistence.Table;
     ),
     @NamedQuery(
             name = "deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryId",
-            query = " delete from EntityShowRoomStock product where product.purchaseOrderNo = :purchaseOrderNo AND product.transactionCategoryId = :transactionCategoryId"
+            query = " delete from EntityShowRoomStock product where product.orderNo = :purchaseOrderNo AND product.transactionCategoryId = :transactionCategoryId"
     ),    
     @NamedQuery(
             name = "deleteShowRoomProductsByPurchaseOrderNoAndTransactionCategoryIds",
-            query = " delete from EntityShowRoomStock product where product.purchaseOrderNo = :purchaseOrderNo AND product.transactionCategoryId IN (:transactionCategoryIds)"
+            query = " delete from EntityShowRoomStock product where product.orderNo = :purchaseOrderNo AND product.transactionCategoryId IN (:transactionCategoryIds)"
     ),
     @NamedQuery(
             name = "deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryId",
-            query = " delete from EntityShowRoomStock product where product.saleOrderNo = :saleOrderNo AND product.transactionCategoryId = :transactionCategoryId"
+            query = " delete from EntityShowRoomStock product where product.orderNo = :saleOrderNo AND product.transactionCategoryId = :transactionCategoryId"
     ),
     @NamedQuery(
             name = "deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryIds",
-            query = " delete from EntityShowRoomStock product where product.saleOrderNo = :saleOrderNo AND product.transactionCategoryId IN (:transactionCategoryIds)"
+            query = " delete from EntityShowRoomStock product where product.orderNo = :saleOrderNo AND product.transactionCategoryId IN (:transactionCategoryIds)"
     )
 })
 public class EntityShowRoomStock extends ClientResponse implements java.io.Serializable{
@@ -87,11 +87,14 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
     @Column(name = "id")    
     private int id;
  
-    @Column(name = "purchase_order_no", length = 200)
-    private String purchaseOrderNo;
+//    @Column(name = "purchase_order_no", length = 200)
+//    private String purchaseOrderNo;
+//    
+//    @Column(name = "sale_order_no", length = 200)
+//    private String saleOrderNo;
     
-    @Column(name = "sale_order_no", length = 200)
-    private String saleOrderNo;
+    @Column(name = "order_no", length = 200)
+    private String orderNo;
     
     @Column(name = "product_id")
     private int productId;
@@ -105,14 +108,20 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
     @Column(name = "stock_out", columnDefinition = "double DEFAULT 0")
     private double stockOut;
     
+    @Column(name = "description")
+    private String description;
+    
     @Column(name = "transaction_category_id")
     private int transactionCategoryId;
     
+    @Column(name = "transaction_category_title")
+    private String transactionCategoryTitle;
+    
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int createdOn;
+    private long createdOn;
 
     @Column(name = "modified_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
-    private int modifiedOn;
+    private long modifiedOn;
 
     public int getId() {
         return id;
@@ -122,22 +131,30 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
         this.id = id;
     }
 
-    public String getPurchaseOrderNo() {
-        return purchaseOrderNo;
+//    public String getPurchaseOrderNo() {
+//        return purchaseOrderNo;
+//    }
+//
+//    public void setPurchaseOrderNo(String purchaseOrderNo) {
+//        this.purchaseOrderNo = purchaseOrderNo;
+//    }
+//
+//    public String getSaleOrderNo() {
+//        return saleOrderNo;
+//    }
+//
+//    public void setSaleOrderNo(String saleOrderNo) {
+//        this.saleOrderNo = saleOrderNo;
+//    }
+
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setPurchaseOrderNo(String purchaseOrderNo) {
-        this.purchaseOrderNo = purchaseOrderNo;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
-
-    public String getSaleOrderNo() {
-        return saleOrderNo;
-    }
-
-    public void setSaleOrderNo(String saleOrderNo) {
-        this.saleOrderNo = saleOrderNo;
-    }
-
+    
     public int getProductId() {
         return productId;
     }
@@ -170,19 +187,27 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
         this.transactionCategoryId = transactionCategoryId;
     }
 
-    public int getCreatedOn() {
+    public String getTransactionCategoryTitle() {
+        return transactionCategoryTitle;
+    }
+
+    public void setTransactionCategoryTitle(String transactionCategoryTitle) {
+        this.transactionCategoryTitle = transactionCategoryTitle;
+    }
+    
+    public long getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(int createdOn) {
+    public void setCreatedOn(long createdOn) {
         this.createdOn = createdOn;
     }
 
-    public int getModifiedOn() {
+    public long getModifiedOn() {
         return modifiedOn;
     }
 
-    public void setModifiedOn(int modifiedOn) {
+    public void setModifiedOn(long modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
 
@@ -193,4 +218,12 @@ public class EntityShowRoomStock extends ClientResponse implements java.io.Seria
     public void setProductName(String productName) {
         this.productName = productName;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }    
 }

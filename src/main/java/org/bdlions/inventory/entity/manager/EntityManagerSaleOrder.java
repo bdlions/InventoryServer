@@ -76,6 +76,7 @@ public class EntityManagerSaleOrder
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
+        long currentUnixTime = TimeUtils.getCurrentTime();
         try 
         {
             entitySaleOrder = createSaleOrder(entitySaleOrder, session);
@@ -92,7 +93,7 @@ public class EntityManagerSaleOrder
                 entitySaleOrderPaymentIn.setAmountOut(0.0);
                 entitySaleOrderPaymentIn.setPaymentTypeId(Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_SALE_IN);
                 entitySaleOrderPaymentIn.setDescription(Constants.SALE_ORDER_PAYMENT_TYPE_ADD_SALE_IN_DESCRIPTION);
-                entitySaleOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                entitySaleOrderPaymentIn.setUnixPaymentDate(currentUnixTime);
                 entitySaleOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
                 entitySaleOrderPaymentIn.setCreatedByUserId(entitySaleOrder.getCreatedByUserId());
                 entitySaleOrderPaymentIn.setCreatedByUserName(entitySaleOrder.getCreatedByUserName());
@@ -177,7 +178,10 @@ public class EntityManagerSaleOrder
                     for(int counter = 0; counter < entityShowRoomStockList.size(); counter++)
                     {
                         EntityShowRoomStock entityShowRoomStock = entityShowRoomStockList.get(counter);
-                        entityShowRoomStock.setSaleOrderNo(entitySaleOrder.getOrderNo());
+                        //entityShowRoomStock.setSaleOrderNo(entitySaleOrder.getOrderNo());
+                        entityShowRoomStock.setOrderNo(entitySaleOrder.getOrderNo());
+                        entityShowRoomStock.setCreatedOn(currentUnixTime);
+                        entityShowRoomStock.setModifiedOn(currentUnixTime);
                         entityShowRoomStocks.add(entityShowRoomStock);
                     }
                     EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
@@ -259,6 +263,7 @@ public class EntityManagerSaleOrder
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         Transaction tx = session.getTransaction(); 
         tx.begin();
+        long currentUnixTime = TimeUtils.getCurrentTime();
         try 
         {
             if(entitySaleOrder != null && entitySaleOrder.getId() > 0 && updateSaleOrder(entitySaleOrder, session))
@@ -275,7 +280,7 @@ public class EntityManagerSaleOrder
                 entitySaleOrderPaymentIn.setAmountOut(0.0);
                 entitySaleOrderPaymentIn.setPaymentTypeId(Constants.SALE_ORDER_PAYMENT_TYPE_ID_ADD_SALE_IN);
                 entitySaleOrderPaymentIn.setDescription(Constants.SALE_ORDER_PAYMENT_TYPE_ADD_SALE_IN_DESCRIPTION);
-                entitySaleOrderPaymentIn.setUnixPaymentDate(TimeUtils.getCurrentTime());
+                entitySaleOrderPaymentIn.setUnixPaymentDate(currentUnixTime);
                 entitySaleOrderPaymentIn.setPaymentDate(TimeUtils.getCurrentDate("", ""));
                 entitySaleOrderPaymentIn.setCreatedByUserId(entitySaleOrder.getCreatedByUserId());
                 entitySaleOrderPaymentIn.setCreatedByUserName(entitySaleOrder.getCreatedByUserName());
@@ -325,8 +330,8 @@ public class EntityManagerSaleOrder
                     entityManagerSaleOrderProduct.deleteSaleOrderProductsByOrderNo(currentEntitySaleOrder.getOrderNo(), session);
                     entityManagerSaleOrderReturnProduct.deleteSaleOrderReturnProductsByOrderNo(currentEntitySaleOrder.getOrderNo(), session);
                     List<Integer> transactionCategoryIds = new ArrayList<>();
-                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
-                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_RETURN);
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_ORDER_FULFILLED);
+                    transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_SALE_ORDER_RESTOCK);
                     entityManagerShowRoomStock.deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryIds(currentEntitySaleOrder.getOrderNo(), transactionCategoryIds, session);
                 }
                 if(entitySaleOrderProductList != null && !entitySaleOrderProductList.isEmpty())
@@ -370,7 +375,10 @@ public class EntityManagerSaleOrder
                     for(int counter = 0; counter < entityShowRoomStockList.size(); counter++)
                     {
                         EntityShowRoomStock entityShowRoomStock = entityShowRoomStockList.get(counter);
-                        entityShowRoomStock.setSaleOrderNo(entitySaleOrder.getOrderNo());
+                        //entityShowRoomStock.setSaleOrderNo(entitySaleOrder.getOrderNo());
+                        entityShowRoomStock.setOrderNo(entitySaleOrder.getOrderNo());
+                        entityShowRoomStock.setCreatedOn(currentUnixTime);
+                        entityShowRoomStock.setModifiedOn(currentUnixTime);
                         entityShowRoomStocks.add(entityShowRoomStock);
                     }
                     List<EntityShowRoomStock> resultEntityShowRoomStocks = entityManagerShowRoomStock.addShowRoomStocks(entityShowRoomStocks, session);                    

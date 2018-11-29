@@ -33,10 +33,16 @@ public class Constants {
     public static final String SALE_ORDER_PAYMENT_TYPE_ADD_NEW_PAYMENT_OUT_DESCRIPTION = "New Payment";
     public static final String SALE_ORDER_PAYMENT_TYPE_ADD_ADD_PREVIOUS_DUE_IN_DESCRIPTION = "Previous Due";
     
-    public static final int SS_TRANSACTION_CATEGORY_ID_PURCASE_IN = 1;
-    public static final int SS_TRANSACTION_CATEGORY_ID_PURCASE_RETURN = 3;
-    public static final int SS_TRANSACTION_CATEGORY_ID_SALE_OUT = 5;
-    public static final int SS_TRANSACTION_CATEGORY_ID_SALE_RETURN = 6;
+    public static final int SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE = 1;
+    public static final int SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK = 3;
+    public static final int SS_TRANSACTION_CATEGORY_ID_SALE_ORDER_FULFILLED = 5;
+    public static final int SS_TRANSACTION_CATEGORY_ID_SALE_ORDER_RESTOCK = 6;
+    public static final int SS_TRANSACTION_CATEGORY_ID_STOCK_ADJUSTMENT = 8;
+    public static final String SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_RECEIVE = "Purchase Order Receive";
+    public static final String SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_UNSTOCK = "Purchase Order Unstock";
+    public static final String SS_TRANSACTION_CATEGORY_TITLE_SALE_ORDER_FULFILLED = "Sale Order Fulfilled";
+    public static final String SS_TRANSACTION_CATEGORY_TITLE_SALE_ORDER_RESTOCK = "Sale Order Restock";
+    public static final String SS_TRANSACTION_CATEGORY_TITLE_STOCK_ADJUSTMENT = "Stock Adjustment";
     
     public static final int DEFAULT_ENDING_STOCK_LIMIT = 10;
     

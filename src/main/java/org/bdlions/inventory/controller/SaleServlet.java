@@ -97,7 +97,7 @@ public class SaleServlet {
                 EntityManagerProduct entityManagerProduct = new EntityManagerProduct(appId);
                 for (int counter = 0; counter < entitySaleOrderProducts.size(); counter++) {
                     EntitySaleOrderProduct entitySaleOrderProduct = entitySaleOrderProducts.get(counter);
-                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_OUT);
+                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductBySaleOrderNoAndTransactionCategoryId(entitySaleOrderProduct.getProductId(), dtoSaleOrder.getEntitySaleOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_SALE_ORDER_FULFILLED);
                     EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
 
                     DTOProduct dtoProduct = new DTOProduct();

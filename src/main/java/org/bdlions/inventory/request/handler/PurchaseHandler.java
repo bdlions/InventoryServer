@@ -156,7 +156,8 @@ public class PurchaseHandler {
                     entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                     entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
                     entityShowRoomStock.setStockOut(0);
-                    entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                    entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE);
+                    entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_RECEIVE);
                     entityShowRoomStocks.add(entityShowRoomStock);
                 }
             } 
@@ -184,7 +185,8 @@ public class PurchaseHandler {
                 entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                 entityShowRoomStock.setStockIn(0);
                 entityShowRoomStock.setStockOut(dtoProduct.getQuantity());
-                entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_RETURN);
+                entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
+                entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_UNSTOCK);
                 entityShowRoomStocks.add(entityShowRoomStock);
 
                 if(productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
@@ -328,12 +330,14 @@ public class PurchaseHandler {
                         entityPOShowRoomProducts.add(entityPOShowRoomProduct);
 
                         EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
-                        entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                        //entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                        entityShowRoomStock.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                         entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
                         entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                         entityShowRoomStock.setStockIn(dtoProduct.getQuantity());
                         entityShowRoomStock.setStockOut(0);
-                        entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                        entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE);
+                        entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_RECEIVE);
                         entityShowRoomStocks.add(entityShowRoomStock);
                     }
                 }
@@ -365,12 +369,14 @@ public class PurchaseHandler {
                     entityPOShowRoomReturnProducts.add(entityPOShowRoomReturnProduct);
 
                     EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
-                    entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                    //entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+                    entityShowRoomStock.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                     entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
                     entityShowRoomStock.setProductName(dtoProduct.getEntityProduct().getName());
                     entityShowRoomStock.setStockIn(0);
                     entityShowRoomStock.setStockOut(dtoProduct.getQuantity());
-                    entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_RETURN);
+                    entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
+                    entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_UNSTOCK);
                     entityShowRoomStocks.add(entityShowRoomStock);
 
                     if(productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
@@ -492,7 +498,7 @@ public class PurchaseHandler {
                 for(int counter = 0; counter < entityPOShowRoomProducts.size(); counter++)
                 {
                     EntityPOShowRoomProduct entityPOShowRoomProduct = entityPOShowRoomProducts.get(counter);
-                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(entityPOShowRoomProduct.getProductId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_IN);
+                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(entityPOShowRoomProduct.getProductId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE);
                     
                     EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
 
@@ -514,7 +520,7 @@ public class PurchaseHandler {
                 for(int counter = 0; counter < entityPOShowRoomReturnProducts.size(); counter++)
                 {
                     EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = entityPOShowRoomReturnProducts.get(counter);
-                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(entityPOShowRoomReturnProduct.getProductId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_RETURN);
+                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(entityPOShowRoomReturnProduct.getProductId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
                     
                     EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
                     entityProduct.setCreatedOn(entityPOShowRoomReturnProduct.getCreatedOn());

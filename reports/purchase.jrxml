@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2018-09-15T17:45:55 -->
+<!-- 2018-11-05T00:21:50 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="CompanyName" class="java.lang.String"/>
@@ -182,21 +182,21 @@
 		<band height="23">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement x="15" y="3" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
+				<reportElement x="15" y="-1" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Sl.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="3" width="226" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="55" y="-1" width="226" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="280" y="4" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="280" y="0" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>

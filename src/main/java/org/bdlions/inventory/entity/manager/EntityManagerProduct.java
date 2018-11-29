@@ -272,6 +272,20 @@ public class EntityManagerProduct
         }
     }
     
+    public List<EntityProduct> getProducts() 
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntityProduct> query = session.getNamedQuery("getProducts");
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
     /**
      * This method will return total number of products
      * @return Integer total number products
