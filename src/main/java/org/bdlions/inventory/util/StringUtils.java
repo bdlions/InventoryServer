@@ -24,4 +24,11 @@ public class StringUtils
         String paddedNumberAsString = ServerConfig.getInstance().get(ServerConfig.SALE_ORDER_TEMPLATE).substring(numberAsString.length()) + numberAsString;      
         return ServerConfig.getInstance().get(ServerConfig.SALE_ORDER_PREFIX) + paddedNumberAsString;
     }
+    
+    public static String generateAdjustStockOrderNo(int number)
+    {
+        String numberAsString = String.valueOf(number);
+        String paddedNumberAsString = ServerConfig.getInstance().get(ServerConfig.ADJUST_STOCK_ORDER_TEMPLATE).substring(numberAsString.length()) + numberAsString;      
+        return ServerConfig.getInstance().get(ServerConfig.ADJUST_STOCK_ORDER_PREFIX) + paddedNumberAsString;
+    }
 }

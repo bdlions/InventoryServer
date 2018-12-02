@@ -16,6 +16,8 @@ public class ServerConfig extends PropertyProvider{
     public static final String PURCHASE_ORDER_TEMPLATE   = "PURCHASE_ORDER_TEMPLATE";
     public static final String SALE_ORDER_PREFIX         = "SALE_ORDER_PREFIX";
     public static final String SALE_ORDER_TEMPLATE       = "SALE_ORDER_TEMPLATE";
+    public static final String ADJUST_STOCK_ORDER_PREFIX     = "ADJUST_STOCK_ORDER_PREFIX";
+    public static final String ADJUST_STOCK_ORDER_TEMPLATE   = "ADJUST_STOCK_ORDER_TEMPLATE";
     public static final String COMPANY_ADDRESS           = "COMPANY_ADDRESS";
     public static final String COMPANY_CELL              = "COMPANY_CELL";
     public static final String COMPANY_LOGO              = "COMPANY_LOGO";

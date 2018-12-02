@@ -226,8 +226,7 @@ public class EntityManagerSaleOrder
      */
     public boolean updateSaleOrder(EntitySaleOrder entitySaleOrder, Session session)
     {
-        TimeUtils timeUtils = new TimeUtils();
-        entitySaleOrder.setModifiedOn(timeUtils.getCurrentTime());
+        entitySaleOrder.setModifiedOn(TimeUtils.getCurrentTime());
         session.update(entitySaleOrder);
         return true;
     }

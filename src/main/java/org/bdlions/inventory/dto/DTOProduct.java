@@ -16,6 +16,9 @@ public class DTOProduct {
     private double quantity;
     private double discount;
     private double total;
+    private double oldQuantity;
+    private double newQuantity;
+    private String description;
     private EntityProductType entityProductType;
     private EntityProductCategory entityProductCategory;
     private EntityProduct entityProduct;
@@ -68,6 +71,30 @@ public class DTOProduct {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public double getOldQuantity() {
+        return oldQuantity;
+    }
+
+    public void setOldQuantity(double oldQuantity) {
+        this.oldQuantity = oldQuantity;
+    }
+
+    public double getNewQuantity() {
+        return newQuantity;
+    }
+
+    public void setNewQuantity(double newQuantity) {
+        this.newQuantity = newQuantity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
     public EntityProduct getEntityProduct() {
