@@ -323,6 +323,7 @@ public class PurchaseHandler {
                             productIdQuantityMap.put(dtoProduct.getEntityProduct().getId(), dtoProduct.getQuantity());
                         }
                         EntityPOShowRoomProduct entityPOShowRoomProduct = new EntityPOShowRoomProduct();
+                        entityPOShowRoomProduct.setId(dtoProduct.getId());
                         entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                         entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
                         entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());
@@ -330,6 +331,7 @@ public class PurchaseHandler {
                         entityPOShowRoomProducts.add(entityPOShowRoomProduct);
 
                         EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
+                        entityShowRoomStock.setId(dtoProduct.getStockId());
                         //entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                         entityShowRoomStock.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                         entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
@@ -353,6 +355,7 @@ public class PurchaseHandler {
                     DTOProduct dtoProduct = returnProducts.get(counter);
 
                     EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = new EntityPOShowRoomReturnProduct();
+                    entityPOShowRoomReturnProduct.setId(dtoProduct.getId());
                     entityPOShowRoomReturnProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                     entityPOShowRoomReturnProduct.setProductId(dtoProduct.getEntityProduct().getId());
                     entityPOShowRoomReturnProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());  
@@ -369,6 +372,7 @@ public class PurchaseHandler {
                     entityPOShowRoomReturnProducts.add(entityPOShowRoomReturnProduct);
 
                     EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
+                    entityShowRoomStock.setId(dtoProduct.getStockId());
                     //entityShowRoomStock.setPurchaseOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                     entityShowRoomStock.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                     entityShowRoomStock.setProductId(dtoProduct.getEntityProduct().getId());
@@ -499,15 +503,22 @@ public class PurchaseHandler {
                 {
                     EntityPOShowRoomProduct entityPOShowRoomProduct = entityPOShowRoomProducts.get(counter);
                     EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(entityPOShowRoomProduct.getProductId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE);
-                    
-                    EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
-
-                    DTOProduct dtoProduct = new DTOProduct();
-                    dtoProduct.setQuantity(stockProduct.getStockIn());
-                    dtoProduct.setEntityProduct(entityProduct);
-                    dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomProduct.getUnitPrice());
-                    dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
-                    dtoPurchaseOrder.getProducts().add(dtoProduct);                    
+                    if(stockProduct != null)
+                    {
+                        EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
+                        if(entityProduct != null)
+                        {
+                            DTOProduct dtoProduct = new DTOProduct();
+                            dtoProduct.setId(entityPOShowRoomProduct.getId());
+                            dtoProduct.setStockId(stockProduct.getId());
+                            dtoProduct.setQuantity(stockProduct.getStockIn());
+                            dtoProduct.setEntityProduct(entityProduct);
+                            dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomProduct.getUnitPrice());
+                            dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
+                            dtoPurchaseOrder.getProducts().add(dtoProduct);     
+                        }                        
+                    }
+                                   
                 }
             }
             //getting returned products for this purchase order
@@ -521,20 +532,25 @@ public class PurchaseHandler {
                 {
                     EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = entityPOShowRoomReturnProducts.get(counter);
                     EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(entityPOShowRoomReturnProduct.getProductId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
-                    
-                    EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
-                    entityProduct.setCreatedOn(entityPOShowRoomReturnProduct.getCreatedOn());
-                    entityProduct.setModifiedOn(entityPOShowRoomReturnProduct.getModifiedOn());
-                    
-                    DTOProduct dtoProduct = new DTOProduct();
-                    dtoProduct.setCreatedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getCreatedOn(), "", ""));
-                    dtoProduct.setModifiedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getModifiedOn(), "", ""));
-                    dtoProduct.setEntityProduct(entityProduct);
-                    dtoProduct.setQuantity(stockProduct.getStockOut());                    
-                    dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomReturnProduct.getUnitPrice());
-                    dtoProduct.setDiscount(entityPOShowRoomReturnProduct.getDiscount());                    
-                    
-                    dtoPurchaseOrder.getReturnProducts().add(dtoProduct);                    
+                    if(stockProduct != null)
+                    {
+                        EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
+                        if(entityProduct != null)
+                        {
+                            entityProduct.setCreatedOn(entityPOShowRoomReturnProduct.getCreatedOn());
+                            entityProduct.setModifiedOn(entityPOShowRoomReturnProduct.getModifiedOn());
+                            DTOProduct dtoProduct = new DTOProduct();
+                            dtoProduct.setId(entityPOShowRoomReturnProduct.getId());
+                            dtoProduct.setStockId(stockProduct.getId());
+                            dtoProduct.setCreatedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getCreatedOn(), "", ""));
+                            dtoProduct.setModifiedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getModifiedOn(), "", ""));
+                            dtoProduct.setEntityProduct(entityProduct);
+                            dtoProduct.setQuantity(stockProduct.getStockOut());                    
+                            dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomReturnProduct.getUnitPrice());
+                            dtoProduct.setDiscount(entityPOShowRoomReturnProduct.getDiscount());
+                            dtoPurchaseOrder.getReturnProducts().add(dtoProduct);
+                        }                              
+                    }                                  
                 }
             }
             dtoPurchaseOrder.setSuccess(true);

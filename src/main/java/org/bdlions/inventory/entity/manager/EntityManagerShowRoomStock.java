@@ -72,6 +72,26 @@ public class EntityManagerShowRoomStock
         return entityShowRoomStocks;
     }
     
+    public EntityShowRoomStock saveOrUpdateShowRoomStock(EntityShowRoomStock entityShowRoomStock, Session session)
+    {
+        session.saveOrUpdate(entityShowRoomStock);
+        return entityShowRoomStock;
+    }
+    public List<EntityShowRoomStock> saveOrUpdateShowRoomStocks(List<EntityShowRoomStock> entityShowRoomStockList, Session session)
+    {
+        List<EntityShowRoomStock> entityShowRoomStocks = new ArrayList<>();
+        if(entityShowRoomStockList != null && !entityShowRoomStockList.isEmpty())
+        {
+            for(int counter = 0; counter < entityShowRoomStockList.size(); counter++)
+            {
+                EntityShowRoomStock entityShowRoomStock = entityShowRoomStockList.get(counter);
+                entityShowRoomStock = saveOrUpdateShowRoomStock(entityShowRoomStock, session);
+                entityShowRoomStocks.add(entityShowRoomStock);
+            }
+        }
+        return entityShowRoomStocks;
+    }
+    
     /**
      * This method will delete show room stock products based on purchase order no and transaction category id using session
      * @param purchaseOrderNo purchase order no

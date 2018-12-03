@@ -71,6 +71,26 @@ public class EntityManagerSaleOrderProduct
         return entitySaleOrderProducts;
     }
     
+    public EntitySaleOrderProduct saveOrUpdateSaleOrderProduct(EntitySaleOrderProduct entitySaleOrderProduct, Session session)
+    {
+        session.saveOrUpdate(entitySaleOrderProduct);
+        return entitySaleOrderProduct;
+    }
+    public List<EntitySaleOrderProduct> saveOrUpdateSaleOrderProducts(List<EntitySaleOrderProduct> entitySaleOrderProductList, Session session)
+    {
+        List<EntitySaleOrderProduct> entitySaleOrderProducts = new ArrayList<>();
+        if(entitySaleOrderProductList != null && !entitySaleOrderProductList.isEmpty())
+        {
+            for(int counter = 0; counter < entitySaleOrderProductList.size(); counter++)
+            {
+                EntitySaleOrderProduct entitySaleOrderProduct = entitySaleOrderProductList.get(counter);
+                entitySaleOrderProduct = saveOrUpdateSaleOrderProduct(entitySaleOrderProduct, session);
+                entitySaleOrderProducts.add(entitySaleOrderProduct);
+            }
+        }
+        return entitySaleOrderProducts;
+    }
+    
     /**
      * This method will delete sale order products using session
      * @param saleOrderNo sale order no

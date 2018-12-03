@@ -71,6 +71,26 @@ public class EntityManagerPOShowRoomReturnProduct
         return entityPOShowRoomReturnProducts;
     }
     
+    public EntityPOShowRoomReturnProduct saveOrUpdatePurchaseOrderShowRoomReturnProduct(EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct, Session session)
+    {
+        session.saveOrUpdate(entityPOShowRoomReturnProduct);
+        return entityPOShowRoomReturnProduct;
+    }
+    public List<EntityPOShowRoomReturnProduct> saveOrUpdatePurchaseOrderShowRoomReturnProducts(List<EntityPOShowRoomReturnProduct> entityPOShowRoomReturnProductList, Session session)
+    {
+        List<EntityPOShowRoomReturnProduct> entityPOShowRoomReturnProducts = new ArrayList<>();
+        if(entityPOShowRoomReturnProductList != null && !entityPOShowRoomReturnProductList.isEmpty())
+        {
+            for(int counter = 0; counter < entityPOShowRoomReturnProductList.size(); counter++)
+            {
+                EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = entityPOShowRoomReturnProductList.get(counter);
+                entityPOShowRoomReturnProduct = saveOrUpdatePurchaseOrderShowRoomReturnProduct(entityPOShowRoomReturnProduct, session);
+                entityPOShowRoomReturnProducts.add(entityPOShowRoomReturnProduct);
+            }
+        }
+        return entityPOShowRoomReturnProducts;
+    }
+    
     /**
      * This method will delete purchase order show room return products using session
      * @param orderNo purchase order no

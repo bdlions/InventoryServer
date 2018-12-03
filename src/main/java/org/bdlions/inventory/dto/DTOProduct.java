@@ -11,6 +11,8 @@ import org.bdlions.inventory.entity.EntityProductSupplier;
  * @author Nazmul Hasan
  */
 public class DTOProduct {
+    private int id;
+    private int stockId;
     private int limit;
     private int offset;
     private double quantity;
@@ -33,6 +35,22 @@ public class DTOProduct {
         entityProduct = new EntityProduct();        
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
+    }
+    
     public int getLimit() {
         return limit;
     }
