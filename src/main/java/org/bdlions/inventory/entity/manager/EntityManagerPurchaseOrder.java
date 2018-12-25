@@ -180,8 +180,6 @@ public class EntityManagerPurchaseOrder
                         EntityShowRoomStock entityShowRoomStock = entityShowRoomStockList.get(counter);
                         //entityShowRoomStock.setPurchaseOrderNo(entityPurchaseOrder.getOrderNo());
                         entityShowRoomStock.setOrderNo(entityPurchaseOrder.getOrderNo());
-                        entityShowRoomStock.setCreatedOn(currentUnixTime);
-                        entityShowRoomStock.setModifiedOn(currentUnixTime);
                         entityShowRoomStocks.add(entityShowRoomStock);
                     }
                     EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(this.appId);
@@ -377,8 +375,6 @@ public class EntityManagerPurchaseOrder
                         EntityShowRoomStock entityShowRoomStock = entityShowRoomStockList.get(counter);
                         //entityShowRoomStock.setPurchaseOrderNo(entityPurchaseOrder.getOrderNo());
                         entityShowRoomStock.setOrderNo(entityPurchaseOrder.getOrderNo());
-                        entityShowRoomStock.setCreatedOn(currentUnixTime);
-                        entityShowRoomStock.setModifiedOn(currentUnixTime);
                         entityShowRoomStocks.add(entityShowRoomStock);
                     }
                     List<EntityShowRoomStock> resultEntityShowRoomStocks = entityManagerShowRoomStock.saveOrUpdateShowRoomStocks(entityShowRoomStocks, session);                    

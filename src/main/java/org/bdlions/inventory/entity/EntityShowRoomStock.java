@@ -10,6 +10,7 @@ import javax.persistence.Index;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
@@ -20,7 +21,8 @@ import javax.persistence.Table;
         name = "showroom_stocks",
         indexes = {
             @Index(name = "idx_showroom_stock_product_name", columnList = "product_name")
-        }
+        }, 
+        uniqueConstraints= @UniqueConstraint(columnNames={"product_id", "order_no", "transaction_category_id"})
 )
 @NamedQueries({
     @NamedQuery(
@@ -78,6 +80,14 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "deleteShowRoomProductsBySaleOrderNoAndTransactionCategoryIds",
             query = " delete from EntityShowRoomStock product where product.orderNo = :saleOrderNo AND product.transactionCategoryId IN (:transactionCategoryIds)"
+    ),
+    @NamedQuery(
+            name = "getShowRoomStocksByProductId",
+            query = " from EntityShowRoomStock showRoomStock where showRoomStock.productId = :productId order by createdOn desc, id desc "
+    ),
+    @NamedQuery(
+            name = "getCurrentStockByProductIdBeforeTime",
+            query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where showRoomStock.productId = :productId AND showRoomStock.createdOn < :createdOn group by productId "
     )
 })
 public class EntityShowRoomStock extends ClientResponse implements java.io.Serializable{

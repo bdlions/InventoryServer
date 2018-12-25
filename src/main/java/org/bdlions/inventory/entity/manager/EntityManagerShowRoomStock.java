@@ -299,4 +299,35 @@ public class EntityManagerShowRoomStock
         query.setParameter("productId", entityProduct.getId());
         return query.executeUpdate();
     }
+    public int getTotalShowRoomStocksByProductId(int productId)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomStocksByProductId");
+            query.setParameter("productId", productId);
+            return query.getResultList().size();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    public List<EntityShowRoomStock> getShowRoomStocksByProductId(int productId, int offset, int limit)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomStocksByProductId");
+            query.setParameter("productId", productId);
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
 }

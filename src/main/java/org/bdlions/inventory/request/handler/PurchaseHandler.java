@@ -149,6 +149,8 @@ public class PurchaseHandler {
                     entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
                     entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());  
                     entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());
+                    entityPOShowRoomProduct.setCreatedOn(TimeUtils.getCurrentTime());
+                    entityPOShowRoomProduct.setModifiedOn(TimeUtils.getCurrentTime());
                     entityPOShowRoomProducts.add(entityPOShowRoomProduct);
 
                     EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
@@ -158,6 +160,8 @@ public class PurchaseHandler {
                     entityShowRoomStock.setStockOut(0);
                     entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE);
                     entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_RECEIVE);
+                    entityShowRoomStock.setCreatedOn(TimeUtils.getCurrentTime());
+                    entityShowRoomStock.setModifiedOn(TimeUtils.getCurrentTime());
                     entityShowRoomStocks.add(entityShowRoomStock);
                 }
             } 
@@ -187,6 +191,8 @@ public class PurchaseHandler {
                 entityShowRoomStock.setStockOut(dtoProduct.getQuantity());
                 entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
                 entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_UNSTOCK);
+                entityShowRoomStock.setCreatedOn(TimeUtils.getCurrentTime());
+                entityShowRoomStock.setModifiedOn(TimeUtils.getCurrentTime());
                 entityShowRoomStocks.add(entityShowRoomStock);
 
                 if(productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
@@ -327,7 +333,16 @@ public class PurchaseHandler {
                         entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                         entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
                         entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());
-                        entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());
+                        entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());                        
+                        if(dtoProduct.getEntityProduct().getCreatedOn() == 0)
+                        {                    
+                            entityPOShowRoomProduct.setCreatedOn(TimeUtils.getCurrentTime());                    
+                        }    
+                        else
+                        {
+                            entityPOShowRoomProduct.setCreatedOn(dtoProduct.getEntityProduct().getCreatedOn());
+                        }
+                        entityPOShowRoomProduct.setModifiedOn(TimeUtils.getCurrentTime());
                         entityPOShowRoomProducts.add(entityPOShowRoomProduct);
 
                         EntityShowRoomStock entityShowRoomStock = new EntityShowRoomStock();
@@ -340,6 +355,15 @@ public class PurchaseHandler {
                         entityShowRoomStock.setStockOut(0);
                         entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE);
                         entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_RECEIVE);
+                        if(dtoProduct.getEntityProduct().getCreatedOn() == 0)
+                        {                    
+                            entityShowRoomStock.setCreatedOn(TimeUtils.getCurrentTime());                    
+                        }    
+                        else
+                        {
+                            entityShowRoomStock.setCreatedOn(dtoProduct.getEntityProduct().getCreatedOn());
+                        }
+                        entityShowRoomStock.setModifiedOn(TimeUtils.getCurrentTime());
                         entityShowRoomStocks.add(entityShowRoomStock);
                     }
                 }
@@ -381,6 +405,15 @@ public class PurchaseHandler {
                     entityShowRoomStock.setStockOut(dtoProduct.getQuantity());
                     entityShowRoomStock.setTransactionCategoryId(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
                     entityShowRoomStock.setTransactionCategoryTitle(Constants.SS_TRANSACTION_CATEGORY_TITLE_PURCASE_ORDER_UNSTOCK);
+                    if(dtoProduct.getEntityProduct().getCreatedOn() == 0)
+                    {                    
+                        entityShowRoomStock.setCreatedOn(TimeUtils.getCurrentTime());                    
+                    }    
+                    else
+                    {
+                        entityShowRoomStock.setCreatedOn(dtoProduct.getEntityProduct().getCreatedOn());
+                    }
+                    entityShowRoomStock.setModifiedOn(TimeUtils.getCurrentTime());
                     entityShowRoomStocks.add(entityShowRoomStock);
 
                     if(productIdQuantityMap.containsKey(dtoProduct.getEntityProduct().getId()))
@@ -515,6 +548,7 @@ public class PurchaseHandler {
                             dtoProduct.setEntityProduct(entityProduct);
                             dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomProduct.getUnitPrice());
                             dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
+                            dtoProduct.getEntityProduct().setCreatedOn(entityPOShowRoomProduct.getCreatedOn());
                             dtoPurchaseOrder.getProducts().add(dtoProduct);     
                         }                        
                     }
@@ -548,6 +582,7 @@ public class PurchaseHandler {
                             dtoProduct.setQuantity(stockProduct.getStockOut());                    
                             dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomReturnProduct.getUnitPrice());
                             dtoProduct.setDiscount(entityPOShowRoomReturnProduct.getDiscount());
+                            dtoProduct.getEntityProduct().setCreatedOn(entityPOShowRoomReturnProduct.getCreatedOn());
                             dtoPurchaseOrder.getReturnProducts().add(dtoProduct);
                         }                              
                     }                                  

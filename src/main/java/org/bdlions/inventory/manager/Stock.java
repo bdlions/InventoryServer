@@ -264,4 +264,26 @@ public class Stock
             session.close();
         }
     }
+    
+    public double getCurrentStockByProductIdBeforeTime(int productId, long createdOn)
+    {
+        double quantity = 0;
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try
+        {
+            Query<Object[]> query = session.getNamedQuery("getCurrentStockByProductIdBeforeTime");
+            query.setParameter("productId", productId);
+            query.setParameter("createdOn", createdOn);
+            List<Object[]> showRoomProducts = query.getResultList();
+            for(Object[] entityShowRoomStock : showRoomProducts)
+            {
+                quantity = (double)entityShowRoomStock[1];
+            }
+        }
+        finally 
+        {
+            session.close();
+        }
+        return quantity;
+    }
 }

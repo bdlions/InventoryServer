@@ -10,9 +10,11 @@ import com.bdlions.dto.response.GeneralResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import org.bdlions.inventory.dto.DTOProduct;
+import org.bdlions.inventory.dto.DTOProductMovement;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityProductType;
 import org.bdlions.inventory.entity.EntityUOM;
@@ -20,13 +22,18 @@ import org.bdlions.inventory.dto.ListProduct;
 import org.bdlions.inventory.dto.ListProductType;
 import org.bdlions.inventory.dto.ListUOM;
 import org.bdlions.inventory.entity.EntityProductSupplier;
+import org.bdlions.inventory.entity.EntityShowRoomStock;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerProductSupplier;
 import org.bdlions.inventory.entity.manager.EntityManagerProductType;
+import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
 import org.bdlions.inventory.entity.manager.EntityManagerUOM;
 import org.bdlions.inventory.manager.Stock;
 import org.bdlions.inventory.util.StringUtils;
+import org.bdlions.inventory.util.TimeUtils;
 import org.bdlions.util.annotation.ClientRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //import org.apache.shiro.authc.UnknownAccountException;
 
@@ -35,7 +42,7 @@ import org.bdlions.util.annotation.ClientRequest;
  * @author nazmul hasan
  */
 public class ProductHandler {
-
+    private final Logger logger = LoggerFactory.getLogger(ProductHandler.class);
     private final ISessionManager sessionManager;
 
     public ProductHandler(ISessionManager sessionManager) {
@@ -614,5 +621,71 @@ public class ProductHandler {
         response.setCounter(totalProducts);
         response.setSuccess(true);
         return response;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_PRODUCT_MOVEMENT_HISTORY)
+    public ClientResponse getProductMovementHistory(ISession session, IPacket packet) throws Exception 
+    {  
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);    
+        String offsetString = jsonObject.get("offset").getAsString();
+        String limitString = jsonObject.get("limit").getAsString();
+        String productIdString = jsonObject.get("productId").getAsString();
+        int offset = 0;
+        int limit = 0;
+        int productId = 0;
+        try
+        {
+            offset = Integer.parseInt(offsetString);
+            limit = Integer.parseInt(limitString);
+            productId = Integer.parseInt(productIdString);
+        }
+        catch(Exception ex)
+        {
+            offset = 0;
+            limit = 0;
+            logger.debug(ex.toString());
+        }
+        
+        List<DTOProductMovement> dtoProductMovementHistory = new ArrayList<>();
+        EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(packet.getPacketHeader().getAppId());
+        List<EntityShowRoomStock> entityShowRoomStocks = entityManagerShowRoomStock.getShowRoomStocksByProductId(productId, offset, limit);
+        int totalEntry = entityManagerShowRoomStock.getTotalShowRoomStocksByProductId(productId);
+        long createdOn = Long.MAX_VALUE;
+        if(entityShowRoomStocks != null && !entityShowRoomStocks.isEmpty())
+        {
+            for(EntityShowRoomStock entityShowRoomStock : entityShowRoomStocks)
+            {
+                if( entityShowRoomStock.getCreatedOn() < createdOn )
+                {
+                    createdOn = entityShowRoomStock.getCreatedOn();
+                }
+            }
+        }
+        
+        Stock stock = new Stock(packet.getPacketHeader().getAppId());
+        double lastStock = stock.getCurrentStockByProductIdBeforeTime(productId, createdOn);
+        if(entityShowRoomStocks != null && !entityShowRoomStocks.isEmpty())
+        {
+            int totalCounter = entityShowRoomStocks.size();
+            for(int counter = totalCounter - 1; counter >=0; counter--)
+            {
+                EntityShowRoomStock entityShowRoomStock = entityShowRoomStocks.get(counter);
+                DTOProductMovement dtoProductMovement = new DTOProductMovement();
+                dtoProductMovement.setQuantityBefore(lastStock);
+                dtoProductMovement.setQuantity(entityShowRoomStock.getStockIn() - entityShowRoomStock.getStockOut());
+                lastStock = dtoProductMovement.getQuantityBefore() + dtoProductMovement.getQuantity();
+                dtoProductMovement.setQuantityAfter(lastStock);
+                dtoProductMovement.setOrderNo(entityShowRoomStock.getOrderNo());
+                dtoProductMovement.setTransactionType(entityShowRoomStock.getTransactionCategoryTitle());
+                dtoProductMovement.setDate(TimeUtils.convertUnixToHuman(entityShowRoomStock.getCreatedOn(), "", ""));
+                dtoProductMovementHistory.add(dtoProductMovement);
+            }
+        }  
+        Collections.reverse(dtoProductMovementHistory);
+        ClientListResponse response = new ClientListResponse();
+        response.setList(dtoProductMovementHistory);
+        response.setCounter(totalEntry);
+        response.setSuccess(true);
+        return response;        
     }
 }
