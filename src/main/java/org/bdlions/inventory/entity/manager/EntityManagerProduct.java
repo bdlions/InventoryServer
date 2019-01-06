@@ -362,9 +362,10 @@ public class EntityManagerProduct
             {
                 //search product by product name or product code
                 String lowerName = name.toLowerCase();
+                //make sure () brackets are closed property
                 if(where.equals(""))
                 {
-                    where = " where lower(name) like '%" + lowerName + "%'";
+                    where = " where (lower(name) like '%" + lowerName + "%'";
                 }
                 else 
                 {
@@ -372,11 +373,11 @@ public class EntityManagerProduct
                 }
                 if(where.equals(""))
                 {
-                    where = " where lower(code) like '%" + lowerName + "%'";
+                    where = " where (lower(code) like '%" + lowerName + "%')";
                 }
                 else 
                 {
-                    where += " or lower(code) like '%" + lowerName + "%'";
+                    where += " or lower(code) like '%" + lowerName + "%')";
                 }
             }
             if(typeId > 0)
@@ -426,9 +427,10 @@ public class EntityManagerProduct
             {
                 //search product by product name or product code
                 String lowerName = name.toLowerCase();
+                //make sure () brackets are closed property
                 if(where.equals(""))
                 {
-                    where = " where lower(name) like '%" + lowerName + "%'";
+                    where = " where (lower(name) like '%" + lowerName + "%'";
                 }
                 else 
                 {
@@ -436,11 +438,11 @@ public class EntityManagerProduct
                 }
                 if(where.equals(""))
                 {
-                    where = " where lower(code) like '%" + lowerName + "%'";
+                    where = " where (lower(code) like '%" + lowerName + "%')";
                 }
                 else 
                 {
-                    where += " or lower(code) like '%" + lowerName + "%'";
+                    where += " or lower(code) like '%" + lowerName + "%')";
                 }
             }
             if(typeId > 0)
