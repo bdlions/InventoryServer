@@ -12,6 +12,7 @@ public class ListCustomer extends ClientResponse{
     private List<DTOCustomer> customers = new ArrayList<>();
     //this is for totalCustomers under pagination
     private int totalCustomers;
+    private double totalDue;
 
     public List<DTOCustomer> getCustomers() {
         return customers;
@@ -28,4 +29,13 @@ public class ListCustomer extends ClientResponse{
     public void setTotalCustomers(int totalCustomers) {
         this.totalCustomers = totalCustomers;
     }
+
+    public double getTotalDue() {
+        return totalDue;
+    }
+
+    public void setTotalDue(double totalDue) {
+        this.totalDue = totalDue;
+    }
+    
 }

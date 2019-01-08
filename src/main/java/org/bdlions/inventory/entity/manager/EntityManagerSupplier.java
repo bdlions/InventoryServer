@@ -307,6 +307,25 @@ public class EntityManagerSupplier
     }
     
     /**
+     * This method will return entity supplier list
+     * @return List entity supplier list
+     */
+    public List<EntitySupplier> getSuppliers() {
+        List<EntitySupplier> entitySuppliers = new ArrayList<>();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
+            entitySuppliers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entitySuppliers;
+    }
+    
+    /**
      * This method will return total number of suppliers
      * @return Integer total number of suppliers
      */
@@ -316,6 +335,28 @@ public class EntityManagerSupplier
         {
             Query<EntitySupplier> query = session.getNamedQuery("getSuppliers");
             return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+     /**
+     * This method will return total due of all suppliers
+     * @return double suppliers total due
+     */
+    public double getSuppliersTotalDue() {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<Object> query = session.getNamedQuery("getSuppliersTotalDue");
+            List<Object> resultList = query.getResultList();
+            if(resultList == null || resultList.isEmpty())
+            {
+                return 0;
+            }
+            return (double)resultList.get(0);
         } 
         finally 
         {

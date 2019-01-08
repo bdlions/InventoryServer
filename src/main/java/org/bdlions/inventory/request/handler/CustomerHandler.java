@@ -264,6 +264,7 @@ public class CustomerHandler {
         }
         ListCustomer response = new ListCustomer();
         response.setTotalCustomers(entityManagerCustomer.getTotalCustomers());
+        response.setTotalDue(entityManagerCustomer.getCustomersTotalDue());
         response.setCustomers(customers);
         response.setSuccess(true);
         return response;

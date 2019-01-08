@@ -56,6 +56,10 @@ import javax.persistence.Table;
     @NamedQuery(
         name = "getSupplierPurchaseAndPaymentAmount",
         query = " select sum(amountIn), sum(amountOut) from EntityPurchaseOrderPayment entityPurchaseOrderPayment where entityPurchaseOrderPayment.supplierUserId = :supplierUserId AND entityPurchaseOrderPayment.paymentTypeId IN (:paymentTypeIds)"
+    ),
+    @NamedQuery(
+            name = "getSuppliersTotalDue",
+            query = " select sum(amountIn - amountOut) from EntityPurchaseOrderPayment entityPurchaseOrderPayment"
     )
 })
 public class EntityPurchaseOrderPayment extends ClientResponse implements java.io.Serializable{

@@ -6,12 +6,13 @@ package org.bdlions.inventory.report;
  */
 public class ReportProduct {
 
-    public int id;
-    public String name;
-    public double quantity;
-    public double unitPrice;
-    public double discount;
-    public double subTotal;
+    private int id;
+    private String name;
+    private String category;
+    private double quantity;
+    private double unitPrice;
+    private double discount;
+    private double subTotal;
 
     public int getId() {
         return id;
@@ -29,6 +30,14 @@ public class ReportProduct {
         this.name = name;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
     public double getQuantity() {
         return quantity;
     }

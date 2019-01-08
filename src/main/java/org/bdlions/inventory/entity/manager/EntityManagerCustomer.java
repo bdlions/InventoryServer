@@ -273,6 +273,25 @@ public class EntityManagerCustomer
     }
     
     /**
+     * This method will return entity customer list
+     * @return List entity customer list
+     */
+    public List<EntityCustomer> getCustomers() {
+        List<EntityCustomer> entityCustomers = new ArrayList<>();
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntityCustomer> query = session.getNamedQuery("getCustomers");
+            entityCustomers = query.getResultList();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+        return entityCustomers;
+    }
+    
+    /**
      * This method will return total number of customers
      * @return Integer total number of customers
      */
@@ -282,6 +301,28 @@ public class EntityManagerCustomer
         {
             Query<EntityCustomer> query = session.getNamedQuery("getCustomers");
             return query.getResultList().size();            
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total due of all customers
+     * @return double customers total due
+     */
+    public double getCustomersTotalDue() {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<Object> query = session.getNamedQuery("getCustomersTotalDue");
+            List<Object> resultList = query.getResultList();
+            if(resultList == null || resultList.isEmpty())
+            {
+                return 0;
+            }
+            return (double)resultList.get(0);
         } 
         finally 
         {

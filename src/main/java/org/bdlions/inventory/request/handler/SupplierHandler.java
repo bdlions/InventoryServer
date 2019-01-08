@@ -338,6 +338,7 @@ public class SupplierHandler {
         }        
         ListSupplier response = new ListSupplier();
         response.setTotalSuppliers(entityManagerSupplier.getTotalSuppliers());
+        response.setTotalDue(entityManagerSupplier.getSuppliersTotalDue());
         response.setSuppliers(suppliers);
         response.setSuccess(true);
         return response;

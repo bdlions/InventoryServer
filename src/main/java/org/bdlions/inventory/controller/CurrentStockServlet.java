@@ -92,6 +92,7 @@ public class CurrentStockServlet {
             DTOProduct dtoProduct = productWithStocks.get(counter);
             ReportProduct reportProduct = new ReportProduct();
             reportProduct.setId(counter+1);
+            reportProduct.setCategory(dtoProduct.getEntityProduct().getCategoryTitle());
             reportProduct.setName(dtoProduct.getEntityProduct().getName());
             reportProduct.setQuantity(dtoProduct.getQuantity());
             reportProducts.add(reportProduct);

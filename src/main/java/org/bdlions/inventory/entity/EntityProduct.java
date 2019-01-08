@@ -44,7 +44,7 @@ import javax.persistence.Transient;
     ),
     @NamedQuery(
             name = "getProducts",
-            query = "from EntityProduct product order by name asc"
+            query = "from EntityProduct product order by categoryTitle asc, name asc"
     ),
     @NamedQuery(
             name = "searchProductByName",
