@@ -26,6 +26,7 @@ import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.inventory.dto.DTOSupplier;
 import org.bdlions.inventory.entity.EntityCompany;
 import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
+import org.bdlions.inventory.entity.EntityPOShowRoomReturnProduct;
 import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityShowRoomStock;
@@ -33,6 +34,7 @@ import org.bdlions.inventory.entity.EntitySupplier;
 import org.bdlions.inventory.entity.EntityUser;
 import org.bdlions.inventory.entity.manager.EntityManagerCompany;
 import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomProduct;
+import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomReturnProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
@@ -86,6 +88,7 @@ public class PurchaseServlet {
         if(entityPurchaseOrder != null)
         {
             dtoPurchaseOrder.setEntityPurchaseOrder(entityPurchaseOrder);
+            //getting products for this purchase order
             EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(appId);
             List<EntityPOShowRoomProduct> entityPOShowRoomProducts = entityManagerPOShowRoomProduct.getPOShowRoomProductsByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
             if(entityPOShowRoomProducts != null && !entityPOShowRoomProducts.isEmpty())
@@ -106,6 +109,41 @@ public class PurchaseServlet {
                     dtoPurchaseOrder.getProducts().add(dtoProduct);
                 }
             }
+            
+            //getting returned products for this purchase order
+            EntityManagerPOShowRoomReturnProduct entityManagerPOShowRoomReturnProduct = new EntityManagerPOShowRoomReturnProduct(appId);
+            List<EntityPOShowRoomReturnProduct> entityPOShowRoomReturnProducts = entityManagerPOShowRoomReturnProduct.getPOShowRoomReturnProductsByOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
+            if(entityPOShowRoomReturnProducts != null && !entityPOShowRoomReturnProducts.isEmpty())
+            {
+                EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(appId);
+                EntityManagerProduct entityManagerProduct = new EntityManagerProduct(appId);
+                for(int counter = 0; counter < entityPOShowRoomReturnProducts.size(); counter++)
+                {
+                    EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = entityPOShowRoomReturnProducts.get(counter);
+                    EntityShowRoomStock stockProduct = entityManagerShowRoomStock.getShowRoomProductByPurchaseOrderNoAndTransactionCategoryId(entityPOShowRoomReturnProduct.getProductId(), dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo(), Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
+                    if(stockProduct != null)
+                    {
+                        EntityProduct entityProduct = entityManagerProduct.getProductByProductId(stockProduct.getProductId());
+                        if(entityProduct != null)
+                        {
+                            entityProduct.setCreatedOn(entityPOShowRoomReturnProduct.getCreatedOn());
+                            entityProduct.setModifiedOn(entityPOShowRoomReturnProduct.getModifiedOn());
+                            DTOProduct dtoProduct = new DTOProduct();
+                            dtoProduct.setId(entityPOShowRoomReturnProduct.getId());
+                            dtoProduct.setStockId(stockProduct.getId());
+                            dtoProduct.setCreatedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getCreatedOn(), "", ""));
+                            dtoProduct.setModifiedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getModifiedOn(), "", ""));
+                            dtoProduct.setEntityProduct(entityProduct);
+                            dtoProduct.setQuantity(stockProduct.getStockOut());                    
+                            dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomReturnProduct.getUnitPrice());
+                            dtoProduct.setDiscount(entityPOShowRoomReturnProduct.getDiscount());
+                            dtoProduct.getEntityProduct().setCreatedOn(entityPOShowRoomReturnProduct.getCreatedOn());
+                            dtoPurchaseOrder.getReturnProducts().add(dtoProduct);
+                        }                              
+                    }                                  
+                }
+            }
+            
             EntityManagerSupplier entityManagerSupplier = new EntityManagerSupplier(appId);
             EntitySupplier entitySupplier = entityManagerSupplier.getSupplierByUserId(dtoPurchaseOrder.getEntityPurchaseOrder().getSupplierUserId());
             dtoSupplier.setEntitySupplier(entitySupplier);
@@ -118,14 +156,16 @@ public class PurchaseServlet {
         }
         
         double totalPurchasePrice = 0;
+        double totalReturnCash = 0;
         double discountInTotal = entityPurchaseOrder.getDiscount();
         List<DTOProduct> productList = dtoPurchaseOrder.getProducts();
         List<ReportProduct> products = new ArrayList<>();
+        int productCounter = 1;
         for(int counter = 0; counter < productList.size(); counter++)
         {
             DTOProduct dtoProduct = productList.get(counter);
             ReportProduct reportProduct = new ReportProduct();
-            reportProduct.setId(counter+1);
+            reportProduct.setId(productCounter++);
             reportProduct.setName(dtoProduct.getEntityProduct().getName());
             reportProduct.setQuantity(dtoProduct.getQuantity());
             reportProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
@@ -133,11 +173,30 @@ public class PurchaseServlet {
             double subTotal = (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice()) - (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice() * dtoProduct.getDiscount() / 100);
             reportProduct.setSubTotal(subTotal);
             products.add(reportProduct);
-            totalPurchasePrice += reportProduct.getSubTotal();
+            //totalPurchasePrice += reportProduct.getSubTotal();
         }
-        //also subtract total return price
-        //------------------
-        totalPurchasePrice = totalPurchasePrice - discountInTotal;
+        
+        List<DTOProduct> returnedProductList = dtoPurchaseOrder.getReturnProducts();
+        for (int counter = 0; counter < returnedProductList.size(); counter++) {
+            DTOProduct dtoProduct = returnedProductList.get(counter);
+            ReportProduct reportProduct = new ReportProduct();
+            reportProduct.setId(productCounter++);
+            reportProduct.setName(dtoProduct.getEntityProduct().getName());
+            reportProduct.setQuantity(-dtoProduct.getQuantity());
+            reportProduct.setUnitPrice(dtoProduct.getEntityProduct().getUnitPrice());
+            reportProduct.setDiscount(dtoProduct.getDiscount());
+            double subTotal = (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice()) - (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice() * dtoProduct.getDiscount() / 100);
+            reportProduct.setSubTotal(-subTotal);            
+            products.add(reportProduct);
+            //totalSalePrice += reportProduct.getSubTotal();
+        }
+        //totalPurchasePrice = totalPurchasePrice - discountInTotal;
+        
+        totalPurchasePrice = entityPurchaseOrder.getTotal();
+        if(entityPurchaseOrder.getCash() > entityPurchaseOrder.getPaid())
+        {
+            totalReturnCash = entityPurchaseOrder.getCash() - entityPurchaseOrder.getPaid();
+        } 
         
         String currentDate = TimeUtils.convertUnixToHuman(TimeUtils.getCurrentTime(), "", "");
         
@@ -189,6 +248,7 @@ public class PurchaseServlet {
         parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("DiscountInTotal", discountInTotal);
         parameters.put("TotalPurchasePrice", totalPurchasePrice);
+        parameters.put("TotalReturnCash", totalReturnCash);
         parameters.put("Remarks", dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks() == null ? "" : dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks());
         
         
@@ -201,7 +261,7 @@ public class PurchaseServlet {
         payments.add(reportPayment);
         parameters.put("payments", payments);
         parameters.put("TotalPaymentAmount", dtoPurchaseOrder.getEntityPurchaseOrder().getPaid());
-        parameters.put("TotalReturnAmount", 0.0);
+        //parameters.put("TotalReturnAmount", 0.0);
         try
         {
             JasperReport subReport = (JasperReport) JRLoader.loadObject(new File(ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.JASPER_FILE_PATH) + "payments.jasper"));

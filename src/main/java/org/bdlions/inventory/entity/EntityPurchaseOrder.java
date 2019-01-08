@@ -122,6 +122,9 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
     @Column(name = "paid", columnDefinition = "double DEFAULT 0")
     private double paid;
     
+    @Column(name = "cash", columnDefinition = "double DEFAULT 0")
+    private double cash;
+    
     @Column(name = "remarks", length = 1000)
     private String remarks;
     
@@ -242,6 +245,14 @@ public class EntityPurchaseOrder extends ClientResponse implements java.io.Seria
         this.paid = paid;
     }
 
+    public double getCash() {
+        return cash;
+    }
+
+    public void setCash(double cash) {
+        this.cash = cash;
+    }
+    
     public String getRemarks() {
         return remarks;
     }
