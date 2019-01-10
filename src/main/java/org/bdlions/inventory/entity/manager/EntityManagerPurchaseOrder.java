@@ -748,12 +748,46 @@ public class EntityManagerPurchaseOrder
     }
     
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
-    public List<EntityPurchaseOrder> getPurchaseOrdersDQ(long startTime, long endTime, int offset, int limit)
+    public List<EntityPurchaseOrder> getPurchaseOrdersDQ(long startTime, long endTime, int userId, int offset, int limit)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
+        String where = "";
+        if(startTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on >= " + startTime;
+            }
+            else 
+            {
+                where += " AND created_on >= " + startTime;
+            }
+        }
+        if(endTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on <= " + endTime;
+            }
+            else 
+            {
+                where += " AND created_on <= " + endTime;
+            }
+        }
+        if(userId > -1)
+        {
+            if(where.equals(""))
+            {
+                where = " where supplier_user_id = " + userId;
+            }
+            else 
+            {
+                where += " AND supplier_user_id = " + userId;
+            }
+        }
         try 
         {
-            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            //where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
             Query query = session.createSQLQuery("select {epo.*} from purchase_orders epo " + where + " order by created_on desc limit :limit offset :offset")
                     .addEntity("epo",EntityPurchaseOrder.class)
                     .setInteger("limit", limit)
@@ -766,12 +800,46 @@ public class EntityManagerPurchaseOrder
         }
     }
     
-    public int getTotalPurchaseOrdersDQ(long startTime, long endTime)
+    public int getTotalPurchaseOrdersDQ(long startTime, long endTime, int userId)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
+        String where = "";
+        if(startTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on >= " + startTime;
+            }
+            else 
+            {
+                where += " AND created_on >= " + startTime;
+            }
+        }
+        if(endTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on <= " + endTime;
+            }
+            else 
+            {
+                where += " AND created_on <= " + endTime;
+            }
+        }
+        if(userId > -1)
+        {
+            if(where.equals(""))
+            {
+                where = " where supplier_user_id = " + userId;
+            }
+            else 
+            {
+                where += " AND supplier_user_id = " + userId;
+            }
+        }
         try 
         {
-            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            //where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
             Query query = session.createSQLQuery("select {epo.*} from purchase_orders epo " + where)
                     .addEntity("epo",EntityPurchaseOrder.class);
             return query.list().size();           
@@ -782,13 +850,47 @@ public class EntityManagerPurchaseOrder
         }
     }
     
-    public double getTotalPurchaseAmountDQ(long startTime, long endTime)
+    public double getTotalPurchaseAmountDQ(long startTime, long endTime, int userId)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         double totalPurchaseAmount = 0 ;
+        String where = "";
+        if(startTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on >= " + startTime;
+            }
+            else 
+            {
+                where += " AND created_on >= " + startTime;
+            }
+        }
+        if(endTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on <= " + endTime;
+            }
+            else 
+            {
+                where += " AND created_on <= " + endTime;
+            }
+        }
+        if(userId > -1)
+        {
+            if(where.equals(""))
+            {
+                where = " where supplier_user_id = " + userId;
+            }
+            else 
+            {
+                where += " AND supplier_user_id = " + userId;
+            }
+        }
         try 
         {
-            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            //where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
             Query query = session.createSQLQuery("select sum(total) from purchase_orders " + where);
             List<Object> results = query.getResultList();
             for(Object result : results)

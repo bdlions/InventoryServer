@@ -60,15 +60,19 @@ public class SaleReportHandler {
         
         String offsetString = jsonObject.get("offset").getAsString();
         String limitString = jsonObject.get("limit").getAsString();
+        String userIdString = jsonObject.get("userId").getAsString();
         int offset = 0;
         int limit = 0;
+        int userId = -1;
         try
         {
             offset = Integer.parseInt(offsetString);
-            limit = Integer.parseInt(limitString);            
+            limit = Integer.parseInt(limitString);    
+            userId = Integer.parseInt(userIdString); 
         }
         catch(Exception ex)
         {
+            logger.error(ex.toString());
             GeneralResponse generalResponse = new GeneralResponse();
             generalResponse.setSuccess(false);
             generalResponse.setMessage("Invalid request to get sale list.");
@@ -77,7 +81,7 @@ public class SaleReportHandler {
         
         List<DTOSaleOrder> saleOrders = new ArrayList<>();
         EntityManagerSaleOrder entityManagerSaleOrder = new EntityManagerSaleOrder(packet.getPacketHeader().getAppId());
-        List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.getSaleOrdersDQ(startTime, endTime, offset, limit);
+        List<EntitySaleOrder> entitySaleOrders =  entityManagerSaleOrder.getSaleOrdersDQ(startTime, endTime, userId, offset, limit);
         if(entitySaleOrders != null)
         {
             
@@ -91,8 +95,8 @@ public class SaleReportHandler {
             }
         }        
         listSaleOrder.setSaleOrders(saleOrders);
-        listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.getTotalSaleOrdersDQ(startTime, endTime));
-        listSaleOrder.setTotalSaleAmount(entityManagerSaleOrder.getTotalSaleAmountDQ(startTime, endTime));
+        listSaleOrder.setTotalSaleOrders(entityManagerSaleOrder.getTotalSaleOrdersDQ(startTime, endTime, userId));
+        listSaleOrder.setTotalSaleAmount(entityManagerSaleOrder.getTotalSaleAmountDQ(startTime, endTime, userId));
         listSaleOrder.setSuccess(true);
         return listSaleOrder;
     }

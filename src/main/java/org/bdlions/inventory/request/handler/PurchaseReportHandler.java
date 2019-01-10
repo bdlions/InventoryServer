@@ -60,15 +60,19 @@ public class PurchaseReportHandler {
         
         String offsetString = jsonObject.get("offset").getAsString();
         String limitString = jsonObject.get("limit").getAsString();
+        String userIdString = jsonObject.get("userId").getAsString();
         int offset = 0;
         int limit = 0;
+        int userId = -1;
         try
         {
             offset = Integer.parseInt(offsetString);
-            limit = Integer.parseInt(limitString);            
+            limit = Integer.parseInt(limitString);    
+            userId = Integer.parseInt(userIdString); 
         }
         catch(Exception ex)
         {
+            logger.error(ex.toString());
             GeneralResponse response = new GeneralResponse();
             response.setSuccess(false);
             response.setMessage("Invalid request to get sale list.");
@@ -77,7 +81,7 @@ public class PurchaseReportHandler {
         
         List<DTOPurchaseOrder> purchaseOrders = new ArrayList<>();
         EntityManagerPurchaseOrder entityManagerPurchaseOrder = new EntityManagerPurchaseOrder(packet.getPacketHeader().getAppId());
-        List<EntityPurchaseOrder> entityPurchaseOrders =  entityManagerPurchaseOrder.getPurchaseOrdersDQ(startTime, endTime, offset, limit);
+        List<EntityPurchaseOrder> entityPurchaseOrders =  entityManagerPurchaseOrder.getPurchaseOrdersDQ(startTime, endTime, userId, offset, limit);
         if(entityPurchaseOrders != null)
         {
             
@@ -92,8 +96,8 @@ public class PurchaseReportHandler {
             }
         }        
         listPurchaseOrder.setPurchaseOrders(purchaseOrders);
-        listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.getTotalPurchaseOrdersDQ(startTime, endTime));
-        listPurchaseOrder.setTotalPurchaseAmount(entityManagerPurchaseOrder.getTotalPurchaseAmountDQ(startTime, endTime));
+        listPurchaseOrder.setTotalPurchaseOrders(entityManagerPurchaseOrder.getTotalPurchaseOrdersDQ(startTime, endTime, userId));
+        listPurchaseOrder.setTotalPurchaseAmount(entityManagerPurchaseOrder.getTotalPurchaseAmountDQ(startTime, endTime, userId));
         listPurchaseOrder.setSuccess(true);
         return listPurchaseOrder;
     }

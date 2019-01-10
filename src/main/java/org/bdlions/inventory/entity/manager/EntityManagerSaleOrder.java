@@ -793,12 +793,46 @@ public class EntityManagerSaleOrder
 //    }
     
     // --------------------------- Dynamic Query Section Starts ----------------------------------//
-    public List<EntitySaleOrder> getSaleOrdersDQ(long startTime, long endTime, int offset, int limit)
+    public List<EntitySaleOrder> getSaleOrdersDQ(long startTime, long endTime, int userId, int offset, int limit)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
+        String where = "";
+        if(startTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on >= " + startTime;
+            }
+            else 
+            {
+                where += " AND created_on >= " + startTime;
+            }
+        }
+        if(endTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on <= " + endTime;
+            }
+            else 
+            {
+                where += " AND created_on <= " + endTime;
+            }
+        }
+        if(userId > -1)
+        {
+            if(where.equals(""))
+            {
+                where = " where customer_user_id = " + userId;
+            }
+            else 
+            {
+                where += " AND customer_user_id = " + userId;
+            }
+        }
         try 
         {
-            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            //where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
             Query query = session.createSQLQuery("select {eso.*} from sale_orders eso " + where + " order by created_on desc limit :limit offset :offset")
                     .addEntity("eso",EntitySaleOrder.class)
                     .setInteger("limit", limit)
@@ -811,12 +845,46 @@ public class EntityManagerSaleOrder
         }
     }
     
-    public int getTotalSaleOrdersDQ(long startTime, long endTime)
+    public int getTotalSaleOrdersDQ(long startTime, long endTime, int userId)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
+        String where = "";
+        if(startTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on >= " + startTime;
+            }
+            else 
+            {
+                where += " AND created_on >= " + startTime;
+            }
+        }
+        if(endTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on <= " + endTime;
+            }
+            else 
+            {
+                where += " AND created_on <= " + endTime;
+            }
+        }
+        if(userId > -1)
+        {
+            if(where.equals(""))
+            {
+                where = " where customer_user_id = " + userId;
+            }
+            else 
+            {
+                where += " AND customer_user_id = " + userId;
+            }
+        }
         try 
         {
-            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            //where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
             Query query = session.createSQLQuery("select {eso.*} from sale_orders eso " + where)
                     .addEntity("eso",EntitySaleOrder.class);
             return query.list().size();           
@@ -827,13 +895,47 @@ public class EntityManagerSaleOrder
         }
     }
     
-    public double getTotalSaleAmountDQ(long startTime, long endTime)
+    public double getTotalSaleAmountDQ(long startTime, long endTime, int userId)
     {
         Session session = HibernateUtil.getInstance().getSession(this.appId);
         double totalSaleAmount = 0 ;
+        String where = "";
+        if(startTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on >= " + startTime;
+            }
+            else 
+            {
+                where += " AND created_on >= " + startTime;
+            }
+        }
+        if(endTime > 0)
+        {
+            if(where.equals(""))
+            {
+                where = " where created_on <= " + endTime;
+            }
+            else 
+            {
+                where += " AND created_on <= " + endTime;
+            }
+        }
+        if(userId > -1)
+        {
+            if(where.equals(""))
+            {
+                where = " where customer_user_id = " + userId;
+            }
+            else 
+            {
+                where += " AND customer_user_id = " + userId;
+            }
+        }
         try 
         {
-            String where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
+            //where = " where created_on >= " + startTime + " AND created_on <= " + endTime + " ";
             Query query = session.createSQLQuery("select sum(total) from sale_orders " + where);
             List<Object> results = query.getResultList();
             for(Object result : results)
