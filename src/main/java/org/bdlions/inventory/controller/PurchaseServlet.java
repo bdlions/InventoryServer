@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.bdlions.inventory.controller;
 
 import java.io.File;
@@ -46,6 +41,8 @@ import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.ServerConfig;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,7 +54,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 public class PurchaseServlet {
-
+    private final Logger logger = LoggerFactory.getLogger(PurchaseServlet.class);
     @RequestMapping("/purchasereport")
     public void getReport(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/pdf");
@@ -69,6 +66,8 @@ public class PurchaseServlet {
         catch(Exception ex)
         {
             //handle logic if invalid param of orderNo
+            logger.error(ex.toString());
+            return;
         }  
         //-------------------------------------------------------------------//
         //right now app is hardcoded
@@ -152,11 +151,10 @@ public class PurchaseServlet {
         else
         {
             //invalid purchase. return from here.
+            logger.error("Invalid purchase order.");
             return;
         }
         
-        double totalPurchasePrice = 0;
-        double totalReturnCash = 0;
         double discountInTotal = entityPurchaseOrder.getDiscount();
         List<DTOProduct> productList = dtoPurchaseOrder.getProducts();
         List<ReportProduct> products = new ArrayList<>();
@@ -173,7 +171,6 @@ public class PurchaseServlet {
             double subTotal = (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice()) - (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice() * dtoProduct.getDiscount() / 100);
             reportProduct.setSubTotal(subTotal);
             products.add(reportProduct);
-            //totalPurchasePrice += reportProduct.getSubTotal();
         }
         
         List<DTOProduct> returnedProductList = dtoPurchaseOrder.getReturnProducts();
@@ -188,15 +185,7 @@ public class PurchaseServlet {
             double subTotal = (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice()) - (dtoProduct.getQuantity()*dtoProduct.getEntityProduct().getUnitPrice() * dtoProduct.getDiscount() / 100);
             reportProduct.setSubTotal(-subTotal);            
             products.add(reportProduct);
-            //totalSalePrice += reportProduct.getSubTotal();
         }
-        //totalPurchasePrice = totalPurchasePrice - discountInTotal;
-        
-        totalPurchasePrice = entityPurchaseOrder.getTotal();
-        if(entityPurchaseOrder.getCash() > entityPurchaseOrder.getPaid())
-        {
-            totalReturnCash = entityPurchaseOrder.getCash() - entityPurchaseOrder.getPaid();
-        } 
         
         String currentDate = TimeUtils.convertUnixToHuman(TimeUtils.getCurrentTime(), "", "");
         
@@ -247,8 +236,8 @@ public class PurchaseServlet {
         parameters.put("Phone", dtoSupplier.getEntityUser().getCell() == null ? "" : dtoSupplier.getEntityUser().getCell());
         parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("DiscountInTotal", discountInTotal);
-        parameters.put("TotalPurchasePrice", totalPurchasePrice);
-        parameters.put("TotalReturnCash", totalReturnCash);
+        parameters.put("TotalPurchasePrice", entityPurchaseOrder.getTotal());
+        parameters.put("TotalReturnCash", entityPurchaseOrder.getCashReturn());
         parameters.put("Remarks", dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks() == null ? "" : dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks());
         
         
@@ -269,7 +258,7 @@ public class PurchaseServlet {
         }
         catch(Exception ex)
         {
-        
+            logger.error(ex.toString());
         }
         
 
@@ -281,13 +270,16 @@ public class PurchaseServlet {
 
         
         String sourceFileName = getClass().getClassLoader().getResource("reports/purchase.jasper").getFile();
-        try {
+        try 
+        {
             JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, parameters, beanColDataSource);
             OutputStream os = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, os);
 
-        } catch (JRException | IOException e) {
-            e.printStackTrace();
+        } 
+        catch (JRException | IOException ex) 
+        {
+            logger.error(ex.toString());
         }
     }
 }

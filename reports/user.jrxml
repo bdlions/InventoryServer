@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2019-01-10T17:09:51 -->
+<!-- 2019-01-08T13:08:24 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="TableRowBackground" backcolor="#C0C0C0"/>
@@ -8,14 +8,16 @@
 	<parameter name="CompanyAddress" class="java.lang.String"/>
 	<parameter name="CompanyCell" class="java.lang.String"/>
 	<parameter name="logoURL" class="java.lang.String"/>
+	<parameter name="TableTitle" class="java.lang.String"/>
 	<parameter name="subreportFile" class="net.sf.jasperreports.engine.JasperReport"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer"/>
-	<field name="category" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
-	<field name="quantity" class="java.lang.Double"/>
+	<field name="fullName" class="java.lang.String"/>
+	<field name="cell" class="java.lang.String"/>
+	<field name="balance" class="java.lang.Double"/>
 	<title>
 		<band height="216" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -56,20 +58,20 @@
 			<rectangle>
 				<reportElement x="12" y="77" width="530" height="22" uuid="d2f38fc4-a671-4fac-afc3-620f3e2b5fd7"/>
 			</rectangle>
-			<staticText>
-				<reportElement x="252" y="81" width="82" height="15" uuid="dfdb7d3a-e96c-4592-b142-5c2fd0aee805"/>
+			<textField>
+				<reportElement x="210" y="81" width="200" height="15" uuid="dfdb7d3a-e96c-4592-b142-5c2fd0aee805"/>
 				<textElement>
 					<font fontName="Times New Roman" size="11" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Current Stock]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{TableTitle}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="23">
+		<band height="24">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement x="15" y="-102" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
+				<reportElement positionType="FixRelativeToBottom" x="15" y="-102" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
@@ -77,20 +79,8 @@
 				<text><![CDATA[Sl.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="54" y="-102" width="150" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				<reportElement x="54" y="-101" width="130" height="15" uuid="b810aa06-53df-41a6-a9f0-60a143d50a95">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
-				<box leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[Category]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="203" y="-102" width="250" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -99,7 +89,17 @@
 				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="452" y="-101" width="90" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+				<reportElement x="183" y="-101" width="150" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Full Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="-101" width="120" height="15" uuid="154954fb-a009-4e67-b397-94b839859ccc">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -107,7 +107,18 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Quantity]]></text>
+				<text><![CDATA[Cell]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="-101" width="90" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Balance]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -122,20 +133,9 @@
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="TableRowBackground" mode="Opaque" x="54" y="-101" width="150" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef44">
+				<reportElement style="TableRowBackground" mode="Opaque" x="54" y="-101" width="130" height="15" uuid="18d2dba7-3e6a-4558-895c-2144d083a94c">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
-				<box topPadding="1" leftPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement style="TableRowBackground" mode="Opaque" x="203" y="-101" width="250" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box topPadding="1" leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -144,7 +144,7 @@
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="TableRowBackground" mode="Opaque" x="452" y="-101" width="90" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12">
+				<reportElement style="TableRowBackground" mode="Opaque" x="332" y="-101" width="120" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -152,7 +152,29 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cell}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TableRowBackground" mode="Opaque" x="451" y="-101" width="90" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{balance}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TableRowBackground" mode="Opaque" x="183" y="-101" width="150" height="15" uuid="df19f410-7b53-4c9e-8e04-8fff85d085fc">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

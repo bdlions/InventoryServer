@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.bdlions.inventory.controller;
 
 import java.io.File;
@@ -46,6 +41,8 @@ import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.ServerConfig;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,7 +54,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 public class SaleServlet {
-
+    private final Logger logger = LoggerFactory.getLogger(SaleServlet.class);
     @RequestMapping("/salereport")
     public void getReport(HttpServletRequest request, HttpServletResponse response) {
 
@@ -70,6 +67,8 @@ public class SaleServlet {
         catch(Exception ex)
         {
             //handle logic if invalid param of orderNo
+            logger.error(ex.toString());
+            return;
         }    
 
         //-------------------------------------------------------------------//
@@ -156,12 +155,13 @@ public class SaleServlet {
         }
         else
         {
-            //invalid purchase. return from here.
+            //invalid sale. return from here.
+            logger.error("Invalid sale order.");
             return;
         }
 
-        double totalSalePrice = 0;
-        double totalReturnCash = 0;
+        //double totalSalePrice = 0;
+        //double totalReturnCash = 0;
         double discountInTotal = entitySaleOrder.getDiscount();
         List<DTOProduct> productList = dtoSaleOrder.getProducts();
         List<ReportProduct> products = new ArrayList<>();
@@ -194,14 +194,6 @@ public class SaleServlet {
             products.add(reportProduct);
             //totalSalePrice += reportProduct.getSubTotal();
         }
-        
-        //totalSalePrice = totalSalePrice - discountInTotal;
-        
-        totalSalePrice = entitySaleOrder.getTotal();
-        if(entitySaleOrder.getCash() > entitySaleOrder.getPaid())
-        {
-            totalReturnCash = entitySaleOrder.getCash() - entitySaleOrder.getPaid();
-        }        
         
         String currentDate = TimeUtils.convertUnixToHuman(TimeUtils.getCurrentTime(), "", "");
         
@@ -251,8 +243,8 @@ public class SaleServlet {
         parameters.put("Phone", dtoCustomer.getEntityUser().getCell() == null ? "" : dtoCustomer.getEntityUser().getCell());
         parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("DiscountInTotal", discountInTotal);
-        parameters.put("TotalSalePrice", totalSalePrice);
-        parameters.put("TotalReturnCash", totalReturnCash);
+        parameters.put("TotalSalePrice", entitySaleOrder.getTotal());
+        parameters.put("TotalReturnCash", entitySaleOrder.getCashReturn());
         parameters.put("Remarks", dtoSaleOrder.getEntitySaleOrder().getRemarks() == null ? "" : dtoSaleOrder.getEntitySaleOrder().getRemarks());
 
         ReportPayment reportPayment = new ReportPayment();
@@ -265,11 +257,14 @@ public class SaleServlet {
         parameters.put("payments", payments);
         parameters.put("TotalPaymentAmount", dtoSaleOrder.getEntitySaleOrder().getPaid());
         //parameters.put("TotalReturnAmount", 0.0);
-        try {
+        try 
+        {
             JasperReport subReport = (JasperReport) JRLoader.loadObject(new File(ServerConfig.getInstance().get(ServerConfig.SERVER_BASE_ABS_PATH) + ServerConfig.getInstance().get(ServerConfig.JASPER_FILE_PATH) + "payments.jasper"));
             parameters.put("subreportFile", subReport);
-        } catch (Exception ex) {
-
+        } 
+        catch (Exception ex) 
+        {
+            logger.error(ex.toString());
         }
 
         
@@ -277,13 +272,15 @@ public class SaleServlet {
         //JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataList);
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(products);
 
-        try {
+        try 
+        {
             JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, parameters, beanColDataSource);
             OutputStream os = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, os);
-
-        } catch (JRException | IOException e) {
-            e.printStackTrace();
+        } 
+        catch (JRException | IOException ex) 
+        {
+            logger.error(ex.toString());
         }
     }
 }
