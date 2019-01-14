@@ -244,16 +244,22 @@ public class SaleServlet {
         parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("DiscountInTotal", discountInTotal);
         parameters.put("TotalSalePrice", entitySaleOrder.getTotal());
+        parameters.put("Paid", entitySaleOrder.getPaid());
         parameters.put("TotalReturnCash", entitySaleOrder.getCashReturn());
         parameters.put("Remarks", dtoSaleOrder.getEntitySaleOrder().getRemarks() == null ? "" : dtoSaleOrder.getEntitySaleOrder().getRemarks());
 
-        ReportPayment reportPayment = new ReportPayment();
-        reportPayment.setId(1);
-        reportPayment.setType("Cash");
-        reportPayment.setAmount(dtoSaleOrder.getEntitySaleOrder().getPaid());
+        ReportPayment reportPayment1 = new ReportPayment();
+        reportPayment1.setId(1);
+        reportPayment1.setType("Cash");
+        reportPayment1.setAmount(entitySaleOrder.getCash());
+        ReportPayment reportPayment2 = new ReportPayment();
+        reportPayment2.setId(2);
+        reportPayment2.setType("Cash Return");
+        reportPayment2.setAmount(entitySaleOrder.getCashReturn());
 
         List<ReportPayment> payments = new ArrayList<>();
-        payments.add(reportPayment);
+        payments.add(reportPayment1);
+        payments.add(reportPayment2);
         parameters.put("payments", payments);
         parameters.put("TotalPaymentAmount", dtoSaleOrder.getEntitySaleOrder().getPaid());
         //parameters.put("TotalReturnAmount", 0.0);

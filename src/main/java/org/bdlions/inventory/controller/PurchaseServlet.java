@@ -237,17 +237,23 @@ public class PurchaseServlet {
         parameters.put("logoURL", reportDirectory + companyLogo);
         parameters.put("DiscountInTotal", discountInTotal);
         parameters.put("TotalPurchasePrice", entityPurchaseOrder.getTotal());
+        parameters.put("Paid", entityPurchaseOrder.getPaid());
         parameters.put("TotalReturnCash", entityPurchaseOrder.getCashReturn());
         parameters.put("Remarks", dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks() == null ? "" : dtoPurchaseOrder.getEntityPurchaseOrder().getRemarks());
         
         
-        ReportPayment reportPayment = new ReportPayment();
-        reportPayment.setId(1);
-        reportPayment.setType("Cash");
-        reportPayment.setAmount(dtoPurchaseOrder.getEntityPurchaseOrder().getPaid());
+        ReportPayment reportPayment1 = new ReportPayment();
+        reportPayment1.setId(1);
+        reportPayment1.setType("Paid");
+        reportPayment1.setAmount(entityPurchaseOrder.getPaid());
+        ReportPayment reportPayment2 = new ReportPayment();
+        reportPayment2.setId(2);
+        reportPayment2.setType("Cash Return");
+        reportPayment2.setAmount(entityPurchaseOrder.getCashReturn());
         
         List<ReportPayment> payments = new ArrayList<>();
-        payments.add(reportPayment);
+        payments.add(reportPayment1);
+        payments.add(reportPayment2);
         parameters.put("payments", payments);
         parameters.put("TotalPaymentAmount", dtoPurchaseOrder.getEntityPurchaseOrder().getPaid());
         //parameters.put("TotalReturnAmount", 0.0);

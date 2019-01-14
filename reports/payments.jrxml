@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2019-01-14T13:06:13 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
 	<field name="id" class="java.lang.Integer"/>
 	<field name="type" class="java.lang.String"/>
 	<field name="amount" class="java.lang.Double"/>
 	<columnHeader>
 		<band height="23" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="3" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
+				<reportElement x="0" y="-5" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
+				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Sl.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="40" y="3" width="250" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="39" y="-5" width="200" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[Type]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="4" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f"/>
+				<reportElement x="238" y="-5" width="50" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
 				</textElement>
@@ -32,21 +41,29 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="40" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
+				<reportElement x="0" y="-10" width="40" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
+				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="0" width="250" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74"/>
+				<reportElement x="39" y="-10" width="200" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="0" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
+				<reportElement x="238" y="-10" width="50" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="10"/>
 				</textElement>
