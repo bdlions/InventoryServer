@@ -10,15 +10,25 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
+import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.dto.DTOPurchaseOrder;
 import org.bdlions.inventory.dto.DTOPurchaseOrderPayment;
+import org.bdlions.inventory.dto.ListDTOProduct;
 import org.bdlions.inventory.dto.ListPurchaseOrder;
 import org.bdlions.inventory.dto.ListPurchaseOrderPayment;
+import org.bdlions.inventory.entity.EntityPOShowRoomProduct;
+import org.bdlions.inventory.entity.EntityPOShowRoomReturnProduct;
+import org.bdlions.inventory.entity.EntityProduct;
 import org.bdlions.util.annotation.ClientRequest;
 import org.bdlions.inventory.entity.EntityPurchaseOrder;
 import org.bdlions.inventory.entity.EntityPurchaseOrderPayment;
+import org.bdlions.inventory.entity.EntityShowRoomStock;
+import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomProduct;
+import org.bdlions.inventory.entity.manager.EntityManagerPOShowRoomReturnProduct;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerPurchaseOrderPayment;
+import org.bdlions.inventory.entity.manager.EntityManagerShowRoomStock;
+import org.bdlions.inventory.util.Constants;
 import org.bdlions.inventory.util.StringUtils;
 import org.bdlions.inventory.util.TimeUtils;
 import org.slf4j.Logger;
@@ -154,5 +164,93 @@ public class PurchaseReportHandler {
         response.setSuccess(true);
         
         return response;
+    }
+    
+    @ClientRequest(action = ACTION.FETCH_PURCHASE_BY_PRODUCT_SUMMARY)
+    public ClientResponse getPurchaseByProductSummary(ISession session, IPacket packet) throws Exception 
+    {
+        ListDTOProduct listDTOProduct = new ListDTOProduct();
+        JsonObject jsonObject = new Gson().fromJson(packet.getPacketBody(), JsonObject.class);        
+        String startDate = jsonObject.get("startDate").getAsString();
+        String endDate = jsonObject.get("endDate").getAsString();
+        if(StringUtils.isNullOrEmpty(startDate))
+        {
+            startDate = TimeUtils.getCurrentDate("", "");
+        }
+        if(StringUtils.isNullOrEmpty(endDate))
+        {
+            endDate = TimeUtils.getCurrentDate("", "");
+        }
+        long startTime = 0;
+        long endTime = 0;
+        startTime = TimeUtils.convertHumanToUnix(startDate, "", "");
+        endTime = TimeUtils.convertHumanToUnix(endDate, "", "") + 86400;
+        
+        String offsetString = jsonObject.get("offset").getAsString();
+        String limitString = jsonObject.get("limit").getAsString();
+        String productIdString = jsonObject.get("productId").getAsString();
+        int offset = 0;
+        int limit = 0;
+        int productId = 0;
+        try
+        {
+            offset = Integer.parseInt(offsetString);
+            limit = Integer.parseInt(limitString);    
+            productId = Integer.parseInt(productIdString); 
+        }
+        catch(Exception ex)
+        {
+            logger.error(ex.toString());
+            GeneralResponse generalResponse = new GeneralResponse();
+            generalResponse.setSuccess(false);
+            generalResponse.setMessage("Invalid request to get purchase order product list.");
+            return generalResponse;
+        }
+        
+        List<Integer> transactionCategoryIds = new ArrayList<>();
+        transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE);
+        transactionCategoryIds.add(Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK);
+        EntityManagerShowRoomStock entityManagerShowRoomStock = new EntityManagerShowRoomStock(packet.getPacketHeader().getAppId());
+        List<EntityShowRoomStock> entityShowRoomStockList = entityManagerShowRoomStock.getShowRoomStockProductByTransactionCategoryIdsInTimeRange(productId, transactionCategoryIds, startTime, endTime, offset, limit);
+        EntityManagerPOShowRoomProduct entityManagerPOShowRoomProduct = new EntityManagerPOShowRoomProduct(packet.getPacketHeader().getAppId());
+        EntityManagerPOShowRoomReturnProduct entityManagerPOShowRoomReturnProduct = new EntityManagerPOShowRoomReturnProduct(packet.getPacketHeader().getAppId());
+        for(EntityShowRoomStock entityShowRoomStock : entityShowRoomStockList)
+        {
+            DTOProduct dtoProduct = new DTOProduct();
+            EntityProduct entityProduct = new EntityProduct();
+            entityProduct.setName(entityShowRoomStock.getProductName());
+            if(entityShowRoomStock.getTransactionCategoryId() == Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_RECEIVE)
+            {
+                EntityPOShowRoomProduct entityPOShowRoomProduct = entityManagerPOShowRoomProduct.getPOShowRoomProductByProductIdAndOrderNo(entityShowRoomStock.getProductId(), entityShowRoomStock.getOrderNo());
+                if(entityPOShowRoomProduct != null)
+                {
+                    entityProduct.setUnitPrice(entityPOShowRoomProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
+                    dtoProduct.setQuantity(entityPOShowRoomProduct.getQuantity());
+                    dtoProduct.setTotal(entityPOShowRoomProduct.getSubtotal());
+                }
+            }
+            else if(entityShowRoomStock.getTransactionCategoryId() == Constants.SS_TRANSACTION_CATEGORY_ID_PURCASE_ORDER_UNSTOCK)
+            {
+                EntityPOShowRoomReturnProduct entityPOShowRoomReturnProduct = entityManagerPOShowRoomReturnProduct.getPOShowRoomReturnProductByProductIdAndOrderNo(entityShowRoomStock.getProductId(), entityShowRoomStock.getOrderNo());
+                if(entityPOShowRoomReturnProduct != null)
+                {
+                    entityProduct.setUnitPrice(entityPOShowRoomReturnProduct.getUnitPrice());
+                    dtoProduct.setDiscount(entityPOShowRoomReturnProduct.getDiscount());
+                    dtoProduct.setQuantity(-entityPOShowRoomReturnProduct.getQuantity());
+                    dtoProduct.setTotal(-entityPOShowRoomReturnProduct.getSubtotal());
+                }
+            }
+            dtoProduct.setEntityProduct(entityProduct);
+            dtoProduct.setDescription(entityShowRoomStock.getTransactionCategoryTitle());
+            dtoProduct.setCreatedOn(TimeUtils.convertUnixToHuman(entityShowRoomStock.getCreatedOn(), "", ""));
+            listDTOProduct.getProducts().add(dtoProduct);
+        }
+        
+        listDTOProduct.setTotalProducts(entityManagerShowRoomStock.getTotalShowRoomStockProductByTransactionCategoryIdsInTimeRange(productId, transactionCategoryIds, startTime, endTime));
+        listDTOProduct.setTotalAmount(entityManagerPOShowRoomProduct.getSubtotalPOShowRoomProductByProductIdInTimeRange(productId, startTime, endTime) - entityManagerPOShowRoomReturnProduct.getSubtotalPOShowRoomReturnProductByProductIdInTimeRange(productId, startTime, endTime));
+        
+        listDTOProduct.setSuccess(true);
+        return listDTOProduct;
     }
 }

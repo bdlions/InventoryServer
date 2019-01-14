@@ -29,6 +29,14 @@ import javax.persistence.Transient;
             query = "from EntitySaleOrderProduct product where product.saleOrderNo = :saleOrderNo"
     ),
     @NamedQuery(
+            name = "getSaleOrderProductByProductIdAndSaleOrderNo",
+            query = "from EntitySaleOrderProduct product where product.productId = :productId AND product.saleOrderNo = :saleOrderNo"
+    ),
+    @NamedQuery(
+            name = "getSubtotalSaleOrderProductByProductIdInTimeRange",
+            query = " select productId, sum(subtotal) from EntitySaleOrderProduct entitySaleOrderProduct where entitySaleOrderProduct.productId = :productId AND entitySaleOrderProduct.createdOn >= :startTime AND entitySaleOrderProduct.createdOn <= :endTime  "
+    ),
+    @NamedQuery(
             name = "deleteSaleOrderProductsByOrderNo",
             query = " delete from EntitySaleOrderProduct product where product.saleOrderNo = :saleOrderNo"
     )
@@ -49,6 +57,9 @@ public class EntitySaleOrderProduct extends ClientResponse implements java.io.Se
     @Column(name = "purchase_order_no", length = 200)
     private String purchaseOrderNo;
     
+    @Column(name = "quantity", columnDefinition = "double DEFAULT 0")
+    private double quantity;
+    
     @Column(name = "cost_price", columnDefinition = "double DEFAULT 0")
     private double costPrice;
 
@@ -60,6 +71,9 @@ public class EntitySaleOrderProduct extends ClientResponse implements java.io.Se
     
     @Column(name = "vat", columnDefinition = "double DEFAULT 0")
     private double vat;
+    
+    @Column(name = "subtotal", columnDefinition = "double DEFAULT 0")
+    private double subtotal;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long createdOn;
@@ -146,4 +160,21 @@ public class EntitySaleOrderProduct extends ClientResponse implements java.io.Se
     public void setCostPrice(double costPrice) {
         this.costPrice = costPrice;
     }    
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+    
 }

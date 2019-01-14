@@ -27,6 +27,14 @@ import javax.persistence.Table;
             query = "from EntityPOShowRoomProduct product where product.orderNo = :orderNo"
     ),
     @NamedQuery(
+            name = "getPOShowRoomProductByProductIdAndOrderNo",
+            query = "from EntityPOShowRoomProduct product where product.productId = :productId AND product.orderNo = :orderNo"
+    ),
+    @NamedQuery(
+            name = "getSubtotalPOShowRoomProductByProductIdInTimeRange",
+            query = " select productId, sum(subtotal) from EntityPOShowRoomProduct entityPOShowRoomProduct where entityPOShowRoomProduct.productId = :productId AND entityPOShowRoomProduct.createdOn >= :startTime AND entityPOShowRoomProduct.createdOn <= :endTime  "
+    ),
+    @NamedQuery(
             name = "deletePOShowRoomProductsByOrderNo",
             query = " delete from EntityPOShowRoomProduct product where product.orderNo = :orderNo"
     )
@@ -44,12 +52,17 @@ public class EntityPOShowRoomProduct extends ClientResponse implements java.io.S
     @Column(name = "product_id", columnDefinition = "int(11) NOT NULL")
     private int productId;
    
+    @Column(name = "quantity", columnDefinition = "double DEFAULT 0")
+    private double quantity;
     
     @Column(name = "discount")
     private double discount;
 
     @Column(name = "unit_price")
     private double unitPrice;
+    
+    @Column(name = "subtotal", columnDefinition = "double DEFAULT 0")
+    private double subtotal;
     
     @Column(name = "created_on", length = 11, columnDefinition = "int(11) unsigned DEFAULT 0")
     private long createdOn;
@@ -113,5 +126,19 @@ public class EntityPOShowRoomProduct extends ClientResponse implements java.io.S
         this.modifiedOn = modifiedOn;
     }
 
-    
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import org.bdlions.inventory.db.HibernateUtil;
 import org.bdlions.inventory.dto.DTOProduct;
 import org.bdlions.inventory.entity.EntityProduct;
-import org.bdlions.inventory.entity.EntitySaleOrder;
 import org.bdlions.inventory.entity.manager.EntityManagerProduct;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -277,7 +276,10 @@ public class Stock
             List<Object[]> showRoomProducts = query.getResultList();
             for(Object[] entityShowRoomStock : showRoomProducts)
             {
-                quantity = (double)entityShowRoomStock[1];
+                if(entityShowRoomStock[1] != null)
+                {
+                    quantity = (double)entityShowRoomStock[1];
+                }                
             }
         }
         finally 

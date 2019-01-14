@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2019-01-10T17:09:51 -->
+<!-- 2019-01-13T02:17:22 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jasper_report_template" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab815e21-495b-4597-825e-04cd41d5df54">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="TableRowBackground" backcolor="#C0C0C0"/>
@@ -17,7 +17,7 @@
 	<field name="name" class="java.lang.String"/>
 	<field name="quantity" class="java.lang.Double"/>
 	<title>
-		<band height="216" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<image onErrorType="Blank">
 				<reportElement x="429" y="10" width="50" height="50" uuid="e20bae1a-402c-4421-9529-88b421241907"/>
@@ -69,7 +69,7 @@
 		<band height="23">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement x="15" y="-102" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
+				<reportElement x="15" y="4" width="40" height="15" uuid="de536377-ad9b-4932-a8d8-13a3b9b64507"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isBold="true" isItalic="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
@@ -77,7 +77,7 @@
 				<text><![CDATA[Sl.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="54" y="-102" width="150" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+				<reportElement x="54" y="4" width="150" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
@@ -88,7 +88,7 @@
 				<text><![CDATA[Category]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="203" y="-102" width="250" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+				<reportElement x="203" y="4" width="250" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -99,7 +99,7 @@
 				<text><![CDATA[Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="452" y="-101" width="90" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
+				<reportElement x="452" y="5" width="90" height="15" uuid="a85b74ba-44f5-4e19-8c5c-e0b6d3c4ca0f">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -114,7 +114,7 @@
 	<detail>
 		<band height="20">
 			<textField>
-				<reportElement style="TableRowBackground" mode="Opaque" x="15" y="-101" width="40" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
+				<reportElement style="TableRowBackground" mode="Opaque" x="15" y="2" width="40" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12"/>
 				<box topPadding="1" leftPadding="2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="10" isItalic="false" isUnderline="false" isPdfEmbedded="true"/>
@@ -122,7 +122,7 @@
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="TableRowBackground" mode="Opaque" x="54" y="-101" width="150" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef44">
+				<reportElement style="TableRowBackground" mode="Opaque" x="54" y="2" width="150" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef44">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
@@ -133,7 +133,7 @@
 				<textFieldExpression><![CDATA[$F{category}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="TableRowBackground" mode="Opaque" x="203" y="-101" width="250" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74">
+				<reportElement style="TableRowBackground" mode="Opaque" x="203" y="2" width="250" height="15" uuid="4a48a638-8b9b-4b87-afb8-088de95bef74">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -144,7 +144,7 @@
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="TableRowBackground" mode="Opaque" x="452" y="-101" width="90" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12">
+				<reportElement style="TableRowBackground" mode="Opaque" x="452" y="2" width="90" height="15" uuid="9e7032ab-c5ca-46b9-9241-84d1ef93df12">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -156,9 +156,4 @@
 			</textField>
 		</band>
 	</detail>
-	<summary>
-		<band height="187" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-		</band>
-	</summary>
 </jasperReport>

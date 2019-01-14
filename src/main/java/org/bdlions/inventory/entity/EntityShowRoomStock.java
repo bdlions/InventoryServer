@@ -58,6 +58,10 @@ import javax.persistence.UniqueConstraint;
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where showRoomStock.productId IN (:productIds) group by productId order by productName asc "
     ),
     @NamedQuery(
+            name = "getShowRoomStockProductByTransactionCategoryIdsInTimeRange",
+            query = " from EntityShowRoomStock showRoomStock where showRoomStock.productId = :productId AND showRoomStock.transactionCategoryId IN (:transactionCategoryIds) AND showRoomStock.createdOn >= :startTime AND showRoomStock.createdOn <= :endTime  "
+    ),
+    @NamedQuery(
             name = "searchCurrentStockByProductName",
             query = " select productId, sum(stockIn - stockOut) from EntityShowRoomStock showRoomStock where lower(showRoomStock.productName) like :productName group by productId"
     ),

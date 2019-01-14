@@ -12,6 +12,7 @@ public class ListDTOProduct extends ClientResponse{
     private List<DTOProduct> products = new ArrayList<>();
     //this is for totalProducts under pagination
     private int totalProducts;
+    private double totalAmount;
 
     public List<DTOProduct> getProducts() {
         return products;
@@ -28,5 +29,12 @@ public class ListDTOProduct extends ClientResponse{
     public void setTotalProducts(int totalProducts) {
         this.totalProducts = totalProducts;
     }
-    
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }        
 }

@@ -149,6 +149,9 @@ public class PurchaseHandler {
                     entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
                     entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());  
                     entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());
+                    entityPOShowRoomProduct.setQuantity(dtoProduct.getQuantity());
+                    //double subtotal = (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() - (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() * dtoProduct.getDiscount() / 100));
+                    entityPOShowRoomProduct.setSubtotal(dtoProduct.getTotal());
                     entityPOShowRoomProduct.setCreatedOn(TimeUtils.getCurrentTime());
                     entityPOShowRoomProduct.setModifiedOn(TimeUtils.getCurrentTime());
                     entityPOShowRoomProducts.add(entityPOShowRoomProduct);
@@ -180,6 +183,9 @@ public class PurchaseHandler {
                 entityPOShowRoomReturnProduct.setProductId(dtoProduct.getEntityProduct().getId());
                 entityPOShowRoomReturnProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());  
                 entityPOShowRoomReturnProduct.setDiscount(dtoProduct.getDiscount());
+                entityPOShowRoomReturnProduct.setQuantity(dtoProduct.getQuantity());
+                //double subtotal = (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() - (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() * dtoProduct.getDiscount() / 100));
+                entityPOShowRoomReturnProduct.setSubtotal(dtoProduct.getTotal());
                 entityPOShowRoomReturnProduct.setCreatedOn(TimeUtils.getCurrentTime());
                 entityPOShowRoomReturnProduct.setModifiedOn(TimeUtils.getCurrentTime());
                 entityPOShowRoomReturnProducts.add(entityPOShowRoomReturnProduct);
@@ -333,7 +339,10 @@ public class PurchaseHandler {
                         entityPOShowRoomProduct.setOrderNo(dtoPurchaseOrder.getEntityPurchaseOrder().getOrderNo());
                         entityPOShowRoomProduct.setProductId(dtoProduct.getEntityProduct().getId());
                         entityPOShowRoomProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());
-                        entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount());                        
+                        entityPOShowRoomProduct.setDiscount(dtoProduct.getDiscount()); 
+                        entityPOShowRoomProduct.setQuantity(dtoProduct.getQuantity());
+                        //double subtotal = (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() - (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() * dtoProduct.getDiscount() / 100));
+                        entityPOShowRoomProduct.setSubtotal(dtoProduct.getTotal());
                         if(dtoProduct.getEntityProduct().getCreatedOn() == 0)
                         {                    
                             entityPOShowRoomProduct.setCreatedOn(TimeUtils.getCurrentTime());                    
@@ -384,6 +393,9 @@ public class PurchaseHandler {
                     entityPOShowRoomReturnProduct.setProductId(dtoProduct.getEntityProduct().getId());
                     entityPOShowRoomReturnProduct.setUnitPrice(dtoProduct.getEntityProduct().getCostPrice());  
                     entityPOShowRoomReturnProduct.setDiscount(dtoProduct.getDiscount());
+                    entityPOShowRoomReturnProduct.setQuantity(dtoProduct.getQuantity());
+                    //double subtotal = (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() - (dtoProduct.getEntityProduct().getCostPrice() * dtoProduct.getQuantity() * dtoProduct.getDiscount() / 100));
+                    entityPOShowRoomReturnProduct.setSubtotal(dtoProduct.getTotal());
                     if(dtoProduct.getEntityProduct().getCreatedOn() == 0)
                     {                    
                         entityPOShowRoomReturnProduct.setCreatedOn(TimeUtils.getCurrentTime());                    
@@ -545,6 +557,7 @@ public class PurchaseHandler {
                             dtoProduct.setId(entityPOShowRoomProduct.getId());
                             dtoProduct.setStockId(stockProduct.getId());
                             dtoProduct.setQuantity(stockProduct.getStockIn());
+                            dtoProduct.setTotal(entityPOShowRoomProduct.getSubtotal());
                             dtoProduct.setEntityProduct(entityProduct);
                             dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomProduct.getUnitPrice());
                             dtoProduct.setDiscount(entityPOShowRoomProduct.getDiscount());
@@ -579,7 +592,8 @@ public class PurchaseHandler {
                             dtoProduct.setCreatedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getCreatedOn(), "", ""));
                             dtoProduct.setModifiedOn(TimeUtils.convertUnixToHuman(entityPOShowRoomReturnProduct.getModifiedOn(), "", ""));
                             dtoProduct.setEntityProduct(entityProduct);
-                            dtoProduct.setQuantity(stockProduct.getStockOut());                    
+                            dtoProduct.setQuantity(stockProduct.getStockOut());   
+                            dtoProduct.setTotal(entityPOShowRoomReturnProduct.getSubtotal());
                             dtoProduct.getEntityProduct().setCostPrice(entityPOShowRoomReturnProduct.getUnitPrice());
                             dtoProduct.setDiscount(entityPOShowRoomReturnProduct.getDiscount());
                             dtoProduct.getEntityProduct().setCreatedOn(entityPOShowRoomReturnProduct.getCreatedOn());

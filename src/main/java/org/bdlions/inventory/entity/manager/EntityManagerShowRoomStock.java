@@ -330,4 +330,59 @@ public class EntityManagerShowRoomStock
         }
     }
     
+    /**
+     * This method will return list of EntityShowRoomStock entries based on product id, transaction category id list and date range
+     * @param productId product id
+     * @param transactionCategoryIds list of transaction category id
+     * @param startTime unix start time
+     * @param endTime unix end time
+     * @param offset offset
+     * @param limit limit
+     * @return List EntityShowRoomStock entries
+     */
+    public List<EntityShowRoomStock> getShowRoomStockProductByTransactionCategoryIdsInTimeRange(int productId, List<Integer> transactionCategoryIds, long startTime, long endTime, int offset, int limit)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomStockProductByTransactionCategoryIdsInTimeRange");
+            query.setParameter("productId", productId);
+            query.setParameter("transactionCategoryIds", transactionCategoryIds);
+            query.setParameter("startTime", startTime);
+            query.setParameter("endTime", endTime);
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+            return query.getResultList();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total counter of EntityShowRoomStock entries based on product id, transaction category id list and date range
+     * @param productId product id
+     * @param transactionCategoryIds list of transaction category id
+     * @param startTime unix start time
+     * @param endTime unix end time
+     * @return int total EntityShowRoomStock entries
+     */
+    public int getTotalShowRoomStockProductByTransactionCategoryIdsInTimeRange(int productId, List<Integer> transactionCategoryIds, long startTime, long endTime)
+    {
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {
+            Query<EntityShowRoomStock> query = session.getNamedQuery("getShowRoomStockProductByTransactionCategoryIdsInTimeRange");
+            query.setParameter("productId", productId);
+            query.setParameter("transactionCategoryIds", transactionCategoryIds);
+            query.setParameter("startTime", startTime);
+            query.setParameter("endTime", endTime);
+            return query.getResultList().size();
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
 }

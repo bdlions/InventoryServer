@@ -150,4 +150,71 @@ public class EntityManagerSaleOrderReturnProduct
             session.close();
         }
     }
+    
+    /**
+     * This method will return EntitySaleOrderReturnProduct based on product id and sale order no
+     * @param productId product id
+     * @param saleOrderNo sale order no
+     * @return EntitySaleOrderReturnProduct
+     */
+    public EntitySaleOrderReturnProduct getSaleOrderReturnProductByProductIdAndSaleOrderNo(int productId, String saleOrderNo)
+    {
+        if(StringUtils.isNullOrEmpty(saleOrderNo) || productId <= 0)
+        {
+            return null;
+        }
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try 
+        {            
+            Query<EntitySaleOrderReturnProduct> queryShowRoomProducts = session.getNamedQuery("getSaleOrderReturnProductByProductIdAndSaleOrderNo");
+            queryShowRoomProducts.setParameter("productId", productId);
+            queryShowRoomProducts.setParameter("saleOrderNo", saleOrderNo);
+            List<EntitySaleOrderReturnProduct> result = queryShowRoomProducts.getResultList();    
+            if(result == null || result.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return result.get(0);
+            } 
+        } 
+        finally 
+        {
+            session.close();
+        }
+    }
+    
+    /**
+     * This method will return total sub total amount of sale order returned products based on product id for a time range
+     * @param productId product id
+     * @param startTime unix start time
+     * @param endTime unix end time
+     * @return double total subtotal amount
+     */
+    public double getSubtotalSaleOrderReturnProductByProductIdInTimeRange(int productId, long startTime, long endTime)
+    {
+        double subtotal = 0;
+        Session session = HibernateUtil.getInstance().getSession(this.appId);
+        try
+        {
+            Query<Object[]> query = session.getNamedQuery("getSubtotalSaleOrderReturnProductByProductIdInTimeRange");
+            query.setParameter("productId", productId);
+            query.setParameter("startTime", startTime);
+            query.setParameter("endTime", endTime);
+            List<Object[]> result = query.getResultList();
+            for(Object[] object : result)
+            {
+                if(object[1] != null)
+                {
+                    subtotal = (double)object[1];
+                }                
+            }
+        }
+        finally 
+        {
+            session.close();
+        }
+        return subtotal;
+    }
 }
